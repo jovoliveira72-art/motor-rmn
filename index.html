@@ -1,841 +1,497 @@
 <!DOCTYPE html>
-<html lang="pt-PT">
+<html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Motor RMN - EdTech com IA</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <style>
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #111827; }
-        ::-webkit-scrollbar-thumb { background: #374151; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #4b5563; }
-        
-        .fade-in { animation: fadeIn 0.3s ease-in-out; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-5px); }
-            75% { transform: translateX(5px); }
-        }
-        .shake-err { animation: shake 0.4s ease-in-out; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Livro de Casa</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<style>
+  :root{
+    --bg:#F1F4EE;
+    --surface:#FFFFFF;
+    --ink:#23342E;
+    --ink-soft:#5B6D63;
+    --line:#D8DED2;
+    --wine:#8C3B4A;
+    --wine-soft:#F4E3E6;
+    --green:#4F7A5B;
+    --green-soft:#E4EDE3;
+    --gold:#B98A4E;
+    --gold-soft:#F3E8D6;
+    --radius:10px;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Inter',sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:880px;margin:0 auto;padding:32px 20px 80px;}
+  header{
+    display:flex;justify-content:space-between;align-items:flex-end;
+    border-bottom:2px solid var(--ink);
+    padding-bottom:16px;margin-bottom:28px;flex-wrap:wrap;gap:12px;
+  }
+  h1{
+    font-family:'Fraunces',serif;font-weight:600;font-size:32px;
+    margin:0;letter-spacing:-0.01em;
+  }
+  h1 span{display:block;font-size:13px;font-family:'Inter';font-weight:500;color:var(--ink-soft);letter-spacing:0.04em;text-transform:uppercase;margin-top:4px;}
+  .month-picker{display:flex;align-items:center;gap:8px;}
+  .month-picker button{
+    background:none;border:1px solid var(--line);border-radius:6px;
+    width:32px;height:32px;cursor:pointer;font-size:16px;color:var(--ink);
+  }
+  .month-picker button:hover{background:var(--surface);}
+  .month-label{font-family:'JetBrains Mono',monospace;font-weight:600;font-size:14px;min-width:130px;text-align:center;text-transform:capitalize;}
 
-        /* Espetro CSS */
-        .spectrum-container {
-            position: relative; width: 100%; height: 120px;
-            border-bottom: 2px solid #4b5563;
-            background: linear-gradient(to top, rgba(16, 185, 129, 0.05), transparent);
-        }
-        .axis-label { position: absolute; bottom: -25px; transform: translateX(-50%); font-size: 0.75rem; color: #9ca3af; }
-        .signal-peak {
-            position: absolute; bottom: 0; width: 4px; background-color: #10b981;
-            transform: translateX(-50%); cursor: pointer; transition: all 0.2s; border-radius: 2px 2px 0 0; z-index: 5;
-        }
-        .signal-peak:hover { background-color: #34d399; box-shadow: 0 0 10px rgba(52, 211, 153, 0.8); width: 6px; }
-        .peak-c13 { background-color: #60a5fa; }
-        .peak-c13:hover { background-color: #93c5fd; box-shadow: 0 0 10px rgba(147, 197, 253, 0.8); }
+  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-bottom:28px;}
+  .card{
+    background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+    padding:16px 18px;
+  }
+  .card .label{font-size:12px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:0.04em;margin-bottom:6px;}
+  .card .value{font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:600;}
+  .card.balance .value{color:var(--wine);}
+  .card.balance.positive .value{color:var(--green);}
 
-        .tooltip {
-            visibility: hidden; position: absolute; bottom: 110%; left: 50%; transform: translateX(-50%);
-            background-color: #1f2937; color: #fff; padding: 8px 12px; border-radius: 6px;
-            font-size: 0.875rem; white-space: nowrap; z-index: 10; border: 1px solid #374151;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.3); opacity: 0; transition: opacity 0.2s; pointer-events: none;
-        }
-        .signal-peak:hover .tooltip { visibility: visible; opacity: 1; }
+  .panel{
+    background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+    padding:20px;margin-bottom:24px;
+  }
+  .panel h2{font-family:'Fraunces',serif;font-size:18px;font-weight:600;margin:0 0 16px;}
+  .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+  .form-grid .full{grid-column:1/-1;}
+  label{display:block;font-size:12px;color:var(--ink-soft);margin-bottom:5px;font-weight:500;}
+  input,select{
+    width:100%;padding:9px 11px;border:1px solid var(--line);border-radius:6px;
+    font-family:'Inter';font-size:14px;background:var(--bg);color:var(--ink);
+  }
+  input:focus,select:focus{outline:2px solid var(--ink);outline-offset:1px;}
+  .btn{
+    background:var(--ink);color:#fff;border:none;border-radius:6px;
+    padding:10px 20px;font-size:14px;font-weight:600;cursor:pointer;font-family:'Inter';
+  }
+  .btn:hover{opacity:0.88;}
+  .btn.secondary{background:none;border:1px solid var(--line);color:var(--ink);}
+  .btn-row{margin-top:14px;display:flex;gap:10px;}
 
-        /* Drag & Drop */
-        .draggable-tag { 
-            cursor: grab; transition: transform 0.1s; 
-            touch-action: none;
-        }
-        .draggable-tag:active { cursor: grabbing; transform: scale(0.95); }
-        .dropzone { transition: all 0.2s ease; }
-        .dropzone.drag-over { background-color: rgba(59, 130, 246, 0.3); border-color: #3b82f6; }
-        
-        /* Chat da IA */
-        .chat-bubble { max-width: 85%; }
-        .chat-bubble-ai { background-color: #374151; color: #e5e7eb; border-bottom-left-radius: 2px; }
-        .chat-bubble-user { background-color: #059669; color: #ffffff; border-bottom-right-radius: 2px; align-self: flex-end; }
-        .typing-indicator span {
-            display: inline-block; width: 6px; height: 6px; background-color: #9ca3af; border-radius: 50%; margin: 0 2px;
-            animation: bounce 1.4s infinite ease-in-out both;
-        }
-        .typing-indicator span:nth-child(1) { animation-delay: -0.32s; }
-        .typing-indicator span:nth-child(2) { animation-delay: -0.16s; }
-        @keyframes bounce { 0%, 80%, 100% { transform: scale(0); } 40% { transform: scale(1); } }
-    </style>
+  .ledger{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);overflow-x:auto;}
+  .cards.stacked{grid-template-columns:1fr;}
+  .ledger-row{
+    display:grid;grid-template-columns:70px 1fr 110px 110px 32px;
+    gap:10px;align-items:center;padding:12px 18px;border-bottom:1px solid var(--line);
+    font-size:14px;
+  }
+  .ledger-row.head{
+    font-size:11px;text-transform:uppercase;letter-spacing:0.04em;color:var(--ink-soft);
+    background:var(--bg);font-weight:600;
+  }
+  .ledger-row:last-child{border-bottom:none;}
+  .ledger-row:not(.head):hover{background:#FAFBF9;}
+  .date-col{font-family:'JetBrains Mono',monospace;color:var(--ink-soft);font-size:13px;}
+  .desc-col .notes{display:block;font-size:12px;color:var(--ink-soft);margin-top:2px;}
+  .stamp{
+    display:inline-block;font-size:10px;font-weight:700;text-transform:uppercase;
+    letter-spacing:0.03em;padding:3px 9px;border-radius:20px;border:1.5px solid currentColor;
+    transform:rotate(-2deg);white-space:nowrap;
+  }
+  .amount-col{font-family:'JetBrains Mono',monospace;font-weight:600;text-align:right;color:var(--wine);}
+  .del-btn{background:none;border:none;color:var(--ink-soft);cursor:pointer;font-size:16px;}
+  .del-btn:hover{color:var(--wine);}
+  .empty{padding:40px 18px;text-align:center;color:var(--ink-soft);font-size:14px;}
+
+  details.settings{margin-top:28px;}
+  details.settings summary{cursor:pointer;font-size:13px;color:var(--ink-soft);font-weight:500;}
+  .settings-body{margin-top:14px;}
+
+  .list-row{
+    display:flex;justify-content:space-between;align-items:center;gap:12px;
+    padding:11px 14px;border:1px solid var(--line);border-radius:8px;margin-bottom:8px;
+    font-size:14px;background:var(--bg);
+  }
+  .list-row .desc{flex:1;}
+  .list-row .desc .sub{display:block;font-size:12px;color:var(--ink-soft);margin-top:2px;}
+  .list-row .amt{font-family:'JetBrains Mono',monospace;font-weight:600;color:var(--wine);white-space:nowrap;}
+  .list-row.settled{opacity:0.6;}
+  .list-row.settled .amt{color:var(--ink-soft);}
+  .list-row .baixa-btn{
+    background:var(--green-soft);color:var(--green);border:1px solid var(--green);
+    border-radius:6px;padding:5px 12px;font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;
+  }
+  .list-row .baixa-btn:hover{background:var(--green);color:#fff;}
+  .fund-tx .amt{color:var(--green);}
+
+  .two-col{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:20px;margin-bottom:24px;align-items:start;}
+  .two-col .panel{margin-bottom:0;}
+  .panel.negative h2{color:var(--wine);}
+  .panel.positive h2{color:var(--green);}
+  @media (max-width:700px){
+    .two-col{grid-template-columns:1fr;}
+  }
+
+  .setup-banner{
+    background:var(--gold-soft);border:1px solid var(--gold);border-radius:var(--radius);
+    padding:24px;font-size:14px;line-height:1.6;
+  }
+  .setup-banner code{background:#fff;padding:2px 6px;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:12.5px;}
+  .setup-banner h2{font-family:'Fraunces',serif;margin-top:0;}
+
+  @media (max-width:600px){
+    .form-grid{grid-template-columns:1fr;}
+    .ledger-row{grid-template-columns:1fr;gap:4px;padding:14px 16px;}
+    .ledger-row.head{display:none;}
+    .amount-col{text-align:left;}
+  }
+</style>
 </head>
-<body class="bg-gray-900 text-gray-100 font-sans h-screen flex flex-col overflow-hidden relative">
+<body>
+<div class="wrap">
 
-    <header class="bg-gray-800 border-b border-gray-700 p-4 flex justify-between items-center shrink-0 shadow-md z-10">
-        <div class="flex items-center gap-3 cursor-pointer" onclick="setView('home')">
-            <div class="bg-emerald-500 text-gray-900 p-2 rounded-lg font-bold">
-                <i class="fas fa-atom"></i>
-            </div>
-            <h1 class="text-xl font-bold tracking-tight text-white hidden sm:block">Motor RMN</h1>
-        </div>
-        <div class="flex items-center gap-4">
-            <div class="flex items-center gap-2 text-sm bg-gray-700 px-4 py-2 rounded-full border border-gray-600">
-                <i class="fas fa-bolt text-yellow-400"></i>
-                <span id="xp-counter" class="font-bold font-mono text-lg transition-all">0 XP</span>
-            </div>
-        </div>
-    </header>
+  <header>
+    <h1>Livro de Casa<span>gastos registrados a dois</span></h1>
+    <div class="month-picker" id="monthPicker" style="display:none;">
+      <button id="prevMonth">‹</button>
+      <span class="month-label" id="monthLabel"></span>
+      <button id="nextMonth">›</button>
+    </div>
+  </header>
 
-    <main id="app-container" class="flex-1 overflow-y-auto p-4 md:p-6 fade-in flex flex-col items-center w-full max-w-5xl mx-auto z-0">
-        <!-- Renderizado via JS -->
-    </main>
+  <div id="setupBanner" class="setup-banner" style="display:none;">
+    <h2>Falta configurar o banco</h2>
+    <p>Abra este arquivo em um editor de texto e, no topo do <code>&lt;script&gt;</code>, preencha:</p>
+    <p><code>SUPABASE_URL</code> — a URL do seu projeto Supabase (Project Settings → API)<br>
+    <code>SUPABASE_ANON_KEY</code> — a chave <code>anon public</code> (mesma tela)</p>
+    <p>Antes disso, rode o arquivo <code>setup.sql</code> no SQL Editor do Supabase pra criar as tabelas.</p>
+  </div>
 
-    <!-- IA Chatbot Floating Button -->
-    <button id="ai-fab" onclick="toggleAIChat()" class="fixed bottom-6 right-6 w-14 h-14 bg-gradient-to-br from-emerald-400 to-emerald-600 rounded-full flex items-center justify-center text-gray-900 text-2xl shadow-[0_4px_14px_rgba(16,185,129,0.5)] hover:scale-110 transition-transform z-50">
-        <i class="fas fa-robot"></i>
-    </button>
+  <div id="app" style="display:none;">
+    <div class="cards" id="summaryCards"></div>
 
-    <!-- IA Chatbot Window -->
-    <div id="ai-chat-window" class="fixed bottom-24 right-6 w-80 md:w-96 bg-gray-800 border border-gray-700 rounded-2xl shadow-2xl flex flex-col overflow-hidden z-50 origin-bottom-right transition-all duration-300 scale-0 opacity-0 pointer-events-none">
-        <div class="bg-gray-700 p-4 border-b border-gray-600 flex justify-between items-center">
-            <div class="flex items-center gap-2">
-                <div class="w-8 h-8 rounded-full bg-emerald-500 flex items-center justify-center text-gray-900"><i class="fas fa-robot"></i></div>
-                <div>
-                    <h3 class="font-bold text-sm text-white">Tutor de RMN (IA)</h3>
-                    <p class="text-[10px] text-emerald-400">Conectado ao Gemini</p>
-                </div>
-            </div>
-            <button onclick="toggleAIChat()" class="text-gray-400 hover:text-white"><i class="fas fa-times"></i></button>
+    <div class="two-col">
+      <div class="panel positive">
+        <h2>Entradas</h2>
+        <div class="cards stacked" id="fundCards" style="margin-bottom:18px;"></div>
+        <div class="form-grid">
+          <div>
+            <label>Data</label>
+            <input type="date" id="fundDate">
+          </div>
+          <div>
+            <label>Valor (R$)</label>
+            <input type="number" id="fundAmount" step="0.01" placeholder="0,00">
+          </div>
+          <div>
+            <label>Depositado por</label>
+            <select id="fundPerson"></select>
+          </div>
+          <div>
+            <label>Nota (opcional)</label>
+            <input type="text" id="fundNote" placeholder="ex: adiantamento salário">
+          </div>
         </div>
-        
-        <div id="ai-chat-messages" class="flex-1 h-64 overflow-y-auto p-4 flex flex-col gap-3 text-sm">
-            <!-- Mensagem de Boas-vindas -->
-            <div class="chat-bubble chat-bubble-ai p-3 rounded-2xl rounded-bl-none shadow-sm fade-in">
-                E aí! Sou seu tutor IA. Tô aqui pra ajudar a desvendar espectros e constantes J. Em que posso ajudar?
-            </div>
+        <div class="btn-row">
+          <button class="btn" id="addFundBtn">Adicionar entrada</button>
         </div>
-        
-        <div class="p-3 bg-gray-900 border-t border-gray-700 flex gap-2">
-            <input type="text" id="ai-chat-input" placeholder="Pergunte sobre RMN..." class="flex-1 bg-gray-800 text-white rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-emerald-500 border border-gray-700" onkeypress="if(event.key === 'Enter') sendAIMessage()">
-            <button onclick="sendAIMessage()" class="bg-emerald-600 hover:bg-emerald-500 text-white w-10 h-10 rounded-xl flex items-center justify-center transition-colors"><i class="fas fa-paper-plane"></i></button>
+        <div id="fundList" style="margin-top:18px;"></div>
+      </div>
+
+      <div class="panel">
+        <h2>Gastos</h2>
+        <div class="form-grid">
+          <div>
+            <label>Data</label>
+            <input type="date" id="fDate">
+          </div>
+          <div>
+            <label>Valor (R$)</label>
+            <input type="number" id="fAmount" step="0.01" placeholder="0,00">
+          </div>
+          <div class="full">
+            <label>Descrição</label>
+            <input type="text" id="fDesc" placeholder="ex: Mercado do mês">
+          </div>
+          <div>
+            <label>Categoria</label>
+            <select id="fCategory"></select>
+          </div>
         </div>
+        <div class="btn-row">
+          <button class="btn" id="addBtn">Adicionar</button>
+        </div>
+        <div class="ledger" style="margin-top:18px;">
+          <div class="ledger-row head">
+            <div>Data</div><div>Descrição</div><div>Categoria</div><div style="text-align:right;">Valor</div><div></div>
+          </div>
+          <div id="ledgerBody"></div>
+        </div>
+      </div>
     </div>
 
-    <script>
-        // --- ESTADO GLOBAL ---
-        const state = {
-            xp: 0,
-            currentView: 'home', 
-            activeMode: null, 
-            currentLevel: 1,
-            activeSpectrumType: '1H',
-            errors: 0,
-            chatOpen: false,
-            chatHistory: [] // Histórico para o Gemini
-        };
+    <details class="settings">
+      <summary>Configurações (nomes)</summary>
+      <div class="settings-body panel" style="margin-top:10px;">
+        <div class="form-grid">
+          <div>
+            <label>Nome — Pessoa A</label>
+            <input type="text" id="sNameA">
+          </div>
+          <div>
+            <label>Nome — Pessoa B</label>
+            <input type="text" id="sNameB">
+          </div>
+        </div>
+        <div class="btn-row">
+          <button class="btn secondary" id="saveSettings">Salvar configurações</button>
+        </div>
+      </div>
+    </details>
+  </div>
 
-        // --- BANCO DE DADOS (Mantido integralmente do estado anterior) ---
-        const db = {
-            tutorial: [
-                {
-                    level: 1, title: "1ª Ordem: Fundamentos Vetoriais", 
-                    content: `
-                        <p class="mb-4 text-gray-300">RMN é dedução lógica, não memorização bruta. Foque em três eixos no 1H RMN:</p>
-                        <ul class="space-y-4">
-                            <li class="bg-gray-800 p-4 rounded border border-gray-700"><strong class="text-emerald-400 block mb-1">1. Deslocamento (δ em ppm):</strong> Alifáticos (sp3) ficam entre 0.8 - 2.0 ppm. Adjacência a heteroátomos (O, N, Cl) desblinda o núcleo puxando os eletrões, atirando o sinal para 3.1 - 4.3 ppm. Aromáticos ressoam longe, entre 6.5 - 8.5 ppm devido à corrente de anel.</li>
-                            <li class="bg-gray-800 p-4 rounded border border-gray-700"><strong class="text-blue-400 block mb-1">2. Integração:</strong> A área indica a proporção de prótons. 3H quase sempre acusa um grupo Metil (-CH3). 2H acusa um Metileno (-CH2-).</li>
-                            <li class="bg-gray-800 p-4 rounded border border-gray-700"><strong class="text-purple-400 block mb-1">3. Multiplicidade (n+1):</strong> Indica os vizinhos. Um tripleto (3 picos) significa que há 2 hidrogénios no carbono ao lado. Um dubleto (2 picos) acusa 1 vizinho.</li>
-                        </ul>`
-                },
-                {
-                    level: 2, title: "13C e a Ferramenta DEPT", 
-                    content: `
-                        <p class="mb-4 text-gray-300">O Carbono-13 (13C) tem escala de 0 a 220 ppm. É o esqueleto puro, sem acoplamento 1H-1H visível. O ensaio DEPT é a lanterna UV do analista:</p>
-                        <div class="grid md:grid-cols-3 gap-4">
-                            <div class="bg-gray-800 p-4 rounded border border-gray-700 text-center"><span class="text-xl font-bold text-gray-100 block mb-2">DEPT-45</span><p class="text-sm text-gray-400">Todos os carbonos protonados (CH, CH2, CH3) aparecem positivos. Quaternários ficam mudos.</p></div>
-                            <div class="bg-gray-800 p-4 rounded border border-gray-700 text-center"><span class="text-xl font-bold text-blue-400 block mb-2">DEPT-90</span><p class="text-sm text-gray-400">Somente grupos Metinos (CH) aparecem. O resto evapora.</p></div>
-                            <div class="bg-gray-800 p-4 rounded border border-gray-700 text-center"><span class="text-xl font-bold text-purple-400 block mb-2">DEPT-135</span><p class="text-sm text-gray-400">CH e CH3 ficam <strong>Positivos</strong> (pico para cima). CH2 sofre inversão e fica <strong>Negativo</strong> (pico para baixo).</p></div>
-                        </div>`
-                },
-                {
-                    level: 3, title: "2ª Ordem: O Abismo Quântico", 
-                    content: `
-                        <p class="mb-4 text-gray-300">Quando a diferença hertziana (Δν) entre dois núcleos que acoplam é pequena comparada à constante J, a regra n+1 colapsa.</p>
-                        <ul class="space-y-4">
-                            <li class="bg-gray-800 p-4 rounded border-l-4 border-red-500"><strong class="text-red-400 block mb-1">Sistemas AA'BB':</strong> Falsos dubletos em anéis aromáticos para-dissubstituídos. Apresentam o "Efeito Telhado" (picos internos maiores que externos).</li>
-                            <li class="bg-gray-800 p-4 rounded border-l-4 border-yellow-500"><strong class="text-yellow-400 block mb-1">Prótons Diastereotópicos:</strong> Um simples -CH2- próximo a um centro quiral perde a equivalência. Os dois hidrogénios ganham frequências distintas e acoplam entre si com J geminal violento (aprox -14 Hz), gerando multipletos caóticos onde se esperava um sinal simples.</li>
-                        </ul>`
-                }
-            ],
-            mapping: [
-                {
-                    level: 1, title: "O Clássico Alifático",
-                    context: "Associe a numeração atómica da molécula de Etanol aos sinais do espetro 1H.",
-                    moleculeHTML: `
-                        <div class="flex items-center justify-center font-mono text-2xl md:text-3xl font-bold bg-gray-800 p-10 rounded-xl border border-gray-700 shadow-inner">
-                            <div class="flex flex-col items-center relative">
-                                <span class="absolute -top-10 bg-blue-600 text-white w-7 h-7 rounded-full flex items-center justify-center text-sm font-sans shadow-md">1</span>
-                                <span>CH<sub class="text-sm">3</sub></span>
-                            </div>
-                            <div class="w-10 h-1 bg-gray-500 mx-3"></div>
-                            <div class="flex flex-col items-center relative">
-                                <span class="absolute -top-10 bg-blue-600 text-white w-7 h-7 rounded-full flex items-center justify-center text-sm font-sans shadow-md">2</span>
-                                <span>CH<sub class="text-sm">2</sub></span>
-                            </div>
-                            <div class="w-10 h-1 bg-gray-500 mx-3"></div>
-                            <div class="flex flex-col items-center relative">
-                                <span class="absolute -top-10 bg-blue-600 text-white w-7 h-7 rounded-full flex items-center justify-center text-sm font-sans shadow-md">3</span>
-                                <span class="text-emerald-400">OH</span>
-                            </div>
-                        </div>
-                    `,
-                    tags: [
-                        { id: 'tag-1', label: '1', correctTarget: 'sig-1.2' },
-                        { id: 'tag-2', label: '2', correctTarget: 'sig-3.7' },
-                        { id: 'tag-3', label: '3', correctTarget: 'sig-2.6' }
-                    ],
-                    signals: [
-                        { id: 'sig-3.7', ppm: '3.7', mult: 'Quarteto', int: '2H', height: 40 },
-                        { id: 'sig-2.6', ppm: '2.6', mult: 'Singleto L.', int: '1H', height: 20 },
-                        { id: 'sig-1.2', ppm: '1.2', mult: 'Tripleto', int: '3H', height: 60 }
-                    ],
-                    maxPpm: 5
-                },
-                {
-                    level: 2, title: "Isolamento Estérico",
-                    context: "Acetato de Etilo. Diferencie os ambientes afetados pelo Oxigénio-éter e pela Carbonila.",
-                    moleculeHTML: `
-                        <div class="flex items-center justify-center font-mono text-xl md:text-3xl font-bold bg-gray-800 p-10 pt-16 rounded-xl border border-gray-700 shadow-inner flex-wrap gap-y-12">
-                            <div class="flex flex-col items-center relative">
-                                <span class="absolute -top-10 bg-blue-600 text-white w-7 h-7 rounded-full flex items-center justify-center text-sm font-sans shadow-md">1</span>
-                                <span>CH<sub class="text-sm">3</sub></span>
-                            </div>
-                            <div class="w-8 h-1 bg-gray-500 mx-2 mt-4"></div>
-                            <div class="flex flex-col items-center relative">
-                                <span class="absolute -top-12 text-red-400">O</span>
-                                <div class="w-1 h-6 bg-gray-500 absolute -top-5 ml-1"></div>
-                                <div class="w-1 h-6 bg-gray-500 absolute -top-5 mr-2"></div>
-                                <span class="mt-4">C</span>
-                            </div>
-                            <div class="w-8 h-1 bg-gray-500 mx-2 mt-4"></div>
-                            <div class="flex flex-col items-center mt-4">
-                                <span class="text-red-400">O</span>
-                            </div>
-                            <div class="w-8 h-1 bg-gray-500 mx-2 mt-4"></div>
-                            <div class="flex flex-col items-center relative">
-                                <span class="absolute -top-10 bg-blue-600 text-white w-7 h-7 rounded-full flex items-center justify-center text-sm font-sans shadow-md">2</span>
-                                <span class="mt-4">CH<sub class="text-sm">2</sub></span>
-                            </div>
-                            <div class="w-8 h-1 bg-gray-500 mx-2 mt-4"></div>
-                            <div class="flex flex-col items-center relative">
-                                <span class="absolute -top-10 bg-blue-600 text-white w-7 h-7 rounded-full flex items-center justify-center text-sm font-sans shadow-md">3</span>
-                                <span class="mt-4">CH<sub class="text-sm">3</sub></span>
-                            </div>
-                        </div>
-                    `,
-                    tags: [
-                        { id: 'tag-1', label: '1', correctTarget: 'sig-2.0' },
-                        { id: 'tag-2', label: '2', correctTarget: 'sig-4.1' },
-                        { id: 'tag-3', label: '3', correctTarget: 'sig-1.2' }
-                    ],
-                    signals: [
-                        { id: 'sig-4.1', ppm: '4.1', mult: 'Quarteto', int: '2H', height: 40 },
-                        { id: 'sig-2.0', ppm: '2.0', mult: 'Singleto', int: '3H', height: 60 },
-                        { id: 'sig-1.2', ppm: '1.2', mult: 'Tripleto', int: '3H', height: 60 }
-                    ],
-                    maxPpm: 6
-                }
-            ],
-            solo: [
-                {
-                    level: 1, title: "Leitura de Esqueleto 1H",
-                    context: "Fórmula: C8H10. O clássico mono-aromático. Avalie ppm, proporção e acoplamento simultaneamente.",
-                    spectra: {
-                        '1H': {
-                            maxPpm: 10,
-                            signals: [
-                                { ppm: 1.2, mult: "Tripleto", int: "3H", height: 60, J: "7.5 Hz" },
-                                { ppm: 2.6, mult: "Quarteto", int: "2H", height: 40, J: "7.5 Hz" },
-                                { ppm: 7.2, mult: "Multipleto", int: "5H", height: 100, J: "Complexo" }
-                            ]
-                        }
-                    },
-                    options: [
-                        { id: 'a', text: "p-Xileno", correct: false, feedback: "A simetria do p-Xileno destruiria o multipleto de 5H, gerando um singleto de 4H no aromático. Além disso, os CH3 estariam isolados (sem tripleto/quarteto)." },
-                        { id: 'b', text: "Etilbenzeno", correct: true, feedback: "Exato. O multipleto em 7.2 ppm (5H) confirma o anel monossubstituído. O sistema tripleto-quarteto é a assinatura isolada do grupo Etil." },
-                        { id: 'c', text: "Estireno", correct: false, feedback: "O estireno possui alcenos. Veria acoplamentos vinílicos intensos (J cis/trans) entre 5 e 6 ppm." }
-                    ]
-                },
-                {
-                    level: 2, title: "Cruzamento de Dados 1H + 13C",
-                    context: "Fórmula: C8H8O2. Alterne os separadores do espetro. Precisa de ambos para validar a estrutura.",
-                    spectra: {
-                        '1H': {
-                            maxPpm: 12,
-                            signals: [
-                                { ppm: 3.8, mult: "Singleto", int: "3H", height: 90, J: "-" },
-                                { ppm: 7.0, mult: "Dubleto Aparente", int: "2H", height: 50, J: "8.5 Hz" },
-                                { ppm: 7.8, mult: "Dubleto Aparente", int: "2H", height: 50, J: "8.5 Hz" },
-                                { ppm: 9.9, mult: "Singleto", int: "1H", height: 20, J: "-" }
-                            ]
-                        },
-                        '13C': {
-                            maxPpm: 220,
-                            signals: [
-                                { ppm: 55, mult: "CH3", height: 80 },
-                                { ppm: 114, mult: "CH", height: 60 },
-                                { ppm: 130, mult: "C Quaternário", height: 30 },
-                                { ppm: 132, mult: "CH", height: 60 },
-                                { ppm: 164, mult: "C Quaternário", height: 30 },
-                                { ppm: 191, mult: "CH (Carbonila)", height: 40 }
-                            ]
-                        }
-                    },
-                    options: [
-                        { id: 'a', text: "Ácido 4-Metilbenzoico", correct: false, feedback: "A carbonila de ácido no 13C ressoa perto de 170 ppm, não 191 ppm. Além disso, o grupo CH3 em 3.8 ppm no 1H indica estar ligado a Oxigénio (O-CH3)." },
-                        { id: 'b', text: "4-Metoxibenzaldeído", correct: true, feedback: "Precisão absoluta. Aldeído provado pelo 1H (9.9 ppm) e 13C (191 ppm). Sistema AA'BB' (7.0/7.8) prova para-substituição, e o O-CH3 bate perfeitamente (3.8 e 55 ppm)." },
-                        { id: 'c', text: "Acetato de Fenilo", correct: false, feedback: "Um éster produziria um sinal de carbonila diferente (~170 ppm) e o padrão aromático seria mais complexo, sem o sinal isolado do aldeído." }
-                    ]
-                },
-                {
-                    level: 3, title: "O Veredito Final (DEPT-135)",
-                    context: "Fragmento isolado de uma estrutura quiral maior. Analise o sinal abaixo no 1H e valide a conectividade no 13C DEPT-135.",
-                    spectra: {
-                        '1H': {
-                            maxPpm: 12,
-                            signals: [
-                                { ppm: 1.45, mult: "Multipleto Caótico", int: "1H", height: 40, J: "J geminal ~ -14 Hz" },
-                                { ppm: 1.60, mult: "Multipleto Caótico", int: "1H", height: 40, J: "J geminal ~ -14 Hz" }
-                            ]
-                        },
-                        '13C': {
-                            maxPpm: 220,
-                            signals: [
-                                { ppm: 32, mult: "DEPT-135 Negativo", height: -70, label: "Fase Invertida" }
-                            ]
-                        }
-                    },
-                    options: [
-                        { id: 'a', text: "Dois grupos CH separados na molécula", correct: false, feedback: "Ignorou o DEPT-135. Se fossem grupos CH isolados, o sinal estaria POSITIVO (para cima). A fase negativa atesta que isto é um CH2 único." },
-                        { id: 'b', text: "Prótons Diastereotópicos (-CH2-)", correct: true, feedback: "Mestria técnica. O DEPT confirma que é um único carbono CH2. A cisão no 1H em sinais separados com forte acoplamento geminal (-14Hz) prova que a assimetria quiral vizinha quebrou a equivalência dos prótons." },
-                        { id: 'c', text: "Sistema Alceno Terminal (=CH2)", correct: false, feedback: "Falta lógica de primeira ordem. Deslocamento de 1.45 ppm é alifático saturado. Alcenos aparecem muito mais desblindados (4.5 - 6.5 ppm)." }
-                    ]
-                }
-            ]
-        };
+</div>
 
-        // --- FUNÇÕES DE ESTADO DA APLICAÇÃO ---
-        function updateXP(amount) {
-            state.xp += amount;
-            const xpEl = document.getElementById('xp-counter');
-            xpEl.innerText = `${state.xp} XP`;
-            xpEl.classList.add('text-yellow-400', 'scale-[1.3]');
-            setTimeout(() => xpEl.classList.remove('text-yellow-400', 'scale-[1.3]'), 300);
-        }
+<script>
+// ====== CONFIGURAÇÃO — preencha com os dados do seu projeto Supabase ======
+const SUPABASE_URL = 'https://wbdzkhquybbtsliggbkw.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndiZHpraHF1eWJidHNsaWdnYmt3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODY4MTY3ODksImV4cCI6MjEwMjM5Mjc4OX0.kIklu8-VRW98gsBee9EEby_MBOjzj1giF9dq8Q3sAIU';
+// ============================================================================
 
-        function setView(viewName, mode = null, level = 1) {
-            state.currentView = viewName;
-            if (mode) state.activeMode = mode;
-            if (level) state.currentLevel = level;
-            state.errors = 0;
-            state.activeSpectrumType = '1H';
-            render();
-        }
+const CATEGORIES = [
+  {name:'Moradia', color:'#8C3B4A'},
+  {name:'Mercado', color:'#4F7A5B'},
+  {name:'Contas', color:'#B98A4E'},
+  {name:'Transporte', color:'#3B5C8C'},
+  {name:'Saúde', color:'#6B4E8C'},
+  {name:'Lazer', color:'#8C6B3B'},
+  {name:'Outros', color:'#5B6D63'},
+];
 
-        // --- LÓGICA DO ASSISTENTE IA (GEMINI API) ---
-        const geminiSystemPrompt = "Atue como um Professor Senior de Química Orgânica focado em RMN (Ressonância Magnética Nuclear). Você está ajudando um aluno que está jogando um jogo educacional. Seu tom deve ser empático, direto, jovem e encorajador. Dê dicas baseadas em conceitos reais (deslocamento, integração, multiplicidade n+1, Karplus), mas NÃO DÊ A RESPOSTA FINAL DIRETAMENTE se o aluno estiver numa missão, guie-o até ela (técnica socrática). Formate sua resposta usando markdown básico (*negrito*). Mantenha as respostas bem curtas (no máximo 1 ou 2 parágrafos curtos).";
+let db, settings = {person_a:'Pessoa 1', person_b:'Pessoa 2'};
+let expenses = [];
+let fundTx = [];
+let currentMonth = new Date();
+currentMonth.setDate(1);
 
-        async function fetchWithBackoff(url, options, maxRetries = 3) {
-            let retries = 0;
-            let delay = 1000;
-            while (retries < maxRetries) {
-                try {
-                    const response = await fetch(url, options);
-                    if (!response.ok && response.status === 429) {
-                        throw new Error('Throttled by API');
-                    }
-                    return response;
-                } catch (error) {
-                    retries++;
-                    if (retries >= maxRetries) return null;
-                    await new Promise(res => setTimeout(res, delay));
-                    delay *= 2; // Exponential backoff (1s, 2s, 4s...)
-                }
-            }
-        }
+function isConfigured(){
+  return SUPABASE_URL && SUPABASE_URL !== 'SUA_URL_AQUI' && SUPABASE_ANON_KEY && SUPABASE_ANON_KEY !== 'SUA_CHAVE_AQUI';
+}
 
-        function toggleAIChat() {
-            const chatWindow = document.getElementById('ai-chat-window');
-            state.chatOpen = !state.chatOpen;
-            if (state.chatOpen) {
-                chatWindow.classList.remove('scale-0', 'opacity-0', 'pointer-events-none');
-                chatWindow.classList.add('scale-100', 'opacity-100', 'pointer-events-auto');
-            } else {
-                chatWindow.classList.remove('scale-100', 'opacity-100', 'pointer-events-auto');
-                chatWindow.classList.add('scale-0', 'opacity-0', 'pointer-events-none');
-            }
-        }
+function fmtMoney(n){
+  return (n||0).toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
+}
+function monthKey(d){ return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0'); }
+function monthLabelStr(d){
+  return d.toLocaleDateString('pt-BR',{month:'long',year:'numeric'});
+}
 
-        function addMessageToChat(text, sender) {
-            const messagesContainer = document.getElementById('ai-chat-messages');
-            
-            // Remove typing indicator se existir
-            const indicator = document.getElementById('typing-indicator');
-            if (indicator) indicator.remove();
+async function init(){
+  if(!isConfigured()){
+    document.getElementById('setupBanner').style.display='block';
+    return;
+  }
+  if(!window.supabase || !window.supabase.createClient){
+    const banner = document.getElementById('setupBanner');
+    banner.style.display='block';
+    banner.innerHTML = '<h2>Não consegui carregar a biblioteca do Supabase</h2>' +
+      '<p>O arquivo veio de um CDN externo (jsdelivr) e não carregou — verifique sua conexão, ' +
+      'se algum bloqueador de anúncios/firewall está barrando o domínio <code>cdn.jsdelivr.net</code>, ' +
+      'ou tente abrir em outra rede.</p>';
+    return;
+  }
+  let supaClient;
+  try{
+    supaClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  } catch(err){
+    const banner = document.getElementById('setupBanner');
+    banner.style.display='block';
+    banner.innerHTML = '<h2>Erro ao conectar</h2><p>' + escapeHtml(err.message) + '</p>';
+    return;
+  }
+  db = supaClient;
+  document.getElementById('app').style.display='block';
+  document.getElementById('monthPicker').style.display='flex';
 
-            const msgDiv = document.createElement('div');
-            msgDiv.className = `chat-bubble p-3 rounded-2xl text-sm shadow-sm fade-in ${sender === 'user' ? 'chat-bubble-user rounded-br-none' : 'chat-bubble-ai rounded-bl-none'}`;
-            
-            // Simple markdown parser for bold
-            const formattedText = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-            msgDiv.innerHTML = formattedText;
-            
-            messagesContainer.appendChild(msgDiv);
-            messagesContainer.scrollTop = messagesContainer.scrollHeight;
-        }
+  populateSelects();
+  document.getElementById('fDate').value = new Date().toISOString().slice(0,10);
 
-        function showTypingIndicator() {
-            const messagesContainer = document.getElementById('ai-chat-messages');
-            const typingDiv = document.createElement('div');
-            typingDiv.id = 'typing-indicator';
-            typingDiv.className = `chat-bubble chat-bubble-ai p-3 rounded-2xl rounded-bl-none shadow-sm fade-in w-16 flex justify-center items-center h-10`;
-            typingDiv.innerHTML = `<div class="typing-indicator"><span></span><span></span><span></span></div>`;
-            messagesContainer.appendChild(typingDiv);
-            messagesContainer.scrollTop = messagesContainer.scrollHeight;
-        }
+  document.getElementById('fundDate').value = new Date().toISOString().slice(0,10);
 
-        async function sendAIMessage() {
-            const input = document.getElementById('ai-chat-input');
-            const message = input.value.trim();
-            if (!message) return;
+  await loadSettings();
+  await loadExpenses();
+  await loadFund();
+  render();
 
-            addMessageToChat(message, 'user');
-            input.value = '';
-            showTypingIndicator();
+  db.channel('changes')
+    .on('postgres_changes', {event:'*', schema:'public', table:'expenses'}, () => { loadExpenses().then(render); })
+    .on('postgres_changes', {event:'*', schema:'public', table:'settings'}, () => { loadSettings().then(render); })
+    .on('postgres_changes', {event:'*', schema:'public', table:'fund_transactions'}, () => { loadFund().then(render); })
+    .subscribe();
 
-            // Montar contexto dinâmico do nível atual para a IA entender onde o aluno está
-            let dynamicContext = "";
-            if (state.currentView === 'gameplay' && state.activeMode) {
-                const currentData = db[state.activeMode].find(q => q.level === state.currentLevel);
-                if (currentData) {
-                    dynamicContext = `\n\n[CONTEXTO OCULTO DO SISTEMA - NÃO MENCIONE ISSO A MENOS QUE NECESSÁRIO: O aluno está no Modo ${state.activeMode}, Nível ${state.currentLevel}. O problema atual é: "${currentData.context}". Sinais fornecidos no espectro: ${JSON.stringify(currentData.signals || currentData.spectra)}. As opções disponíveis são: ${currentData.options ? JSON.stringify(currentData.options.map(o => o.text)) : 'Tags de arrastar'}. Lembre-se, guie sem dar a resposta direta.]`;
-                }
-            }
+  document.getElementById('addBtn').onclick = addExpense;
+  document.getElementById('saveSettings').onclick = saveSettings;
+  document.getElementById('addFundBtn').onclick = addFundDeposit;
+  document.getElementById('prevMonth').onclick = () => { currentMonth.setMonth(currentMonth.getMonth()-1); render(); };
+  document.getElementById('nextMonth').onclick = () => { currentMonth.setMonth(currentMonth.getMonth()+1); render(); };
+}
 
-            state.chatHistory.push({ role: "user", parts: [{ text: message + dynamicContext }] });
+function populateSelects(){
+  const catSel = document.getElementById('fCategory');
+  catSel.innerHTML = CATEGORIES.map(c=>`<option value="${c.name}">${c.name}</option>`).join('');
+}
 
-            const payload = {
-                contents: state.chatHistory,
-                systemInstruction: { parts: [{ text: geminiSystemPrompt }] }
-            };
+function populatePeopleSelects(){
+  const opts = `<option value="${settings.person_a}">${settings.person_a}</option><option value="${settings.person_b}">${settings.person_b}</option>`;
+  document.getElementById('fundPerson').innerHTML = opts;
+  document.getElementById('sNameA').value = settings.person_a;
+  document.getElementById('sNameB').value = settings.person_b;
+}
 
-            const apiKey = ""; // Mantido vazio conforme instrução do sistema Canvas
-            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`;
+async function loadSettings(){
+  const {data, error} = await db.from('settings').select('*').eq('id',1).single();
+  if(!error && data) settings = data;
+  populatePeopleSelects();
+}
 
-            const response = await fetchWithBackoff(apiUrl, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
-            });
+async function loadExpenses(){
+  const {data, error} = await db.from('expenses').select('*').order('date',{ascending:false});
+  if(!error) expenses = data || [];
+}
 
-            if (response && response.ok) {
-                const result = await response.json();
-                const aiText = result.candidates?.[0]?.content?.parts?.[0]?.text || "Desculpe, meu espectrômetro pifou. Pode repetir?";
-                state.chatHistory.push({ role: "model", parts: [{ text: aiText }] });
-                addMessageToChat(aiText, 'ai');
-            } else {
-                addMessageToChat("Erro de conexão no laboratório virtual. Tente novamente mais tarde.", 'ai');
-                state.chatHistory.pop(); // Remove the user message that failed
-            }
-        }
+async function addExpense(){
+  const date = document.getElementById('fDate').value;
+  const amount = parseFloat(document.getElementById('fAmount').value);
+  const description = document.getElementById('fDesc').value.trim();
+  const category = document.getElementById('fCategory').value;
 
-        // --- RENDERIZADORES DE ECRÃS ---
-        function render() {
-            const container = document.getElementById('app-container');
-            container.innerHTML = '';
-            
-            if (state.currentView === 'home') container.appendChild(renderHome());
-            else if (state.currentView === 'modeSelect') container.appendChild(renderLevelSelect());
-            else if (state.currentView === 'tutorial') container.appendChild(renderTutorial());
-            else if (state.currentView === 'gameplay') {
-                if (state.activeMode === 'mapping') container.appendChild(renderMapping());
-                else container.appendChild(renderSolo());
-            }
-        }
+  if(!date || !amount || amount<=0 || !description){
+    alert('Preencha data, descrição e um valor válido.');
+    return;
+  }
+  const {error} = await db.from('expenses').insert([{date, amount, description, category}]);
+  if(error){ alert('Erro ao salvar: '+error.message); return; }
+  document.getElementById('fDesc').value='';
+  document.getElementById('fAmount').value='';
+  await loadExpenses();
+  render();
+}
 
-        function renderHome() {
-            const div = document.createElement('div');
-            div.className = 'flex flex-col items-center justify-center w-full mt-4 md:mt-10 space-y-10';
-            div.innerHTML = `
-                <div class="text-center space-y-4 max-w-2xl px-4">
-                    <h2 class="text-4xl md:text-5xl font-black bg-clip-text text-transparent bg-gradient-to-r from-emerald-400 to-blue-500 tracking-tight leading-tight">
-                        Ressonância Magnética Nuclear
-                    </h2>
-                    <p class="text-gray-400 text-base md:text-lg">
-                        Gamificação focada em elucidação real. Do conceito vetorial ao abismo quântico. Pare de decorar, comece a analisar.
-                    </p>
-                </div>
-                
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 w-full px-4 mb-20">
-                    <button onclick="setView('tutorial', null, 1)" class="group bg-gray-800 border border-emerald-500/50 hover:border-emerald-500 rounded-2xl p-6 transition-all text-left flex flex-col items-start gap-4 shadow-lg hover:-translate-y-1">
-                        <div class="p-4 rounded-xl text-emerald-400 bg-emerald-500/10"><i class="fas fa-book-open text-3xl"></i></div>
-                        <div>
-                            <h3 class="font-bold text-xl text-gray-100">Doutrinação Base</h3>
-                            <p class="text-sm text-gray-400 mt-2">Revisão paramétrica. ppm, Karplus, n+1 e filtros DEPT.</p>
-                        </div>
-                    </button>
+async function deleteExpense(id){
+  if(!confirm('Remover este gasto?')) return;
+  await db.from('expenses').delete().eq('id', id);
+  await loadExpenses();
+  render();
+}
 
-                    <button onclick="setView('modeSelect', 'mapping')" class="group bg-gray-800 border border-blue-500/50 hover:border-blue-500 rounded-2xl p-6 transition-all text-left flex flex-col items-start gap-4 shadow-lg hover:-translate-y-1">
-                        <div class="p-4 rounded-xl text-blue-400 bg-blue-500/10"><i class="fas fa-project-diagram text-3xl"></i></div>
-                        <div>
-                            <h3 class="font-bold text-xl text-gray-100">Mapeamento Topológico</h3>
-                            <p class="text-sm text-gray-400 mt-2">Arraste os números e associe a molécula aos multipletos correspondentes.</p>
-                        </div>
-                    </button>
+async function saveSettings(){
+  const person_a = document.getElementById('sNameA').value.trim() || 'Pessoa 1';
+  const person_b = document.getElementById('sNameB').value.trim() || 'Pessoa 2';
+  const {error} = await db.from('settings').update({person_a, person_b}).eq('id',1);
+  if(error){ alert('Erro: '+error.message); return; }
+  await loadSettings();
+  render();
+}
 
-                    <button onclick="setView('modeSelect', 'solo')" class="group bg-gray-800 border border-purple-500/50 hover:border-purple-500 rounded-2xl p-6 transition-all text-left flex flex-col items-start gap-4 shadow-lg hover:-translate-y-1">
-                        <div class="p-4 rounded-xl text-purple-400 bg-purple-500/10"><i class="fas fa-biohazard text-3xl"></i></div>
-                        <div>
-                            <h3 class="font-bold text-xl text-gray-100">Desafio Solo</h3>
-                            <p class="text-sm text-gray-400 mt-2">Avalie espetros puros (1H/13C) e identifique a estrutura. Perca XP por erros.</p>
-                        </div>
-                    </button>
-                </div>
-            `;
-            return div;
-        }
+async function loadFund(){
+  const {data, error} = await db.from('fund_transactions').select('*').order('date',{ascending:false});
+  if(!error) fundTx = data || [];
+}
 
-        function renderLevelSelect() {
-            const color = state.activeMode === 'mapping' ? 'blue' : 'purple';
-            const levels = db[state.activeMode];
-            const div = document.createElement('div');
-            div.className = 'flex flex-col items-center w-full mt-6 space-y-8 px-4 pb-20';
-            
-            let buttonsHtml = levels.map(l => `
-                <button onclick="setView('gameplay', '${state.activeMode}', ${l.level})" class="w-full text-left bg-gray-800 border border-${color}-500/50 hover:border-${color}-500 p-6 rounded-xl transition-all hover:bg-${color}-900/20 shadow-md">
-                    <span class="font-bold text-${color}-400 text-xl block mb-2">Nível ${l.level}: ${l.title}</span>
-                    <span class="text-gray-400 text-sm font-mono">> Contexto: ${l.context}</span>
-                </button>
-            `).join('');
+async function addFundDeposit(){
+  const date = document.getElementById('fundDate').value;
+  const amount = parseFloat(document.getElementById('fundAmount').value);
+  const person = document.getElementById('fundPerson').value;
+  const note = document.getElementById('fundNote').value.trim();
 
-            div.innerHTML = `
-                <div class="flex items-center gap-4 w-full">
-                    <button onclick="setView('home')" class="text-gray-400 hover:text-white p-3 bg-gray-800 rounded-xl transition-colors shrink-0"><i class="fas fa-arrow-left"></i></button>
-                    <h2 class="text-2xl md:text-3xl font-bold capitalize">Missões: ${state.activeMode === 'mapping' ? 'Mapeamento' : 'Solo'}</h2>
-                </div>
-                <div class="grid gap-4 w-full">${buttonsHtml}</div>
-            `;
-            return div;
-        }
+  if(!date || !amount || amount<=0){
+    alert('Preencha data e um valor válido.');
+    return;
+  }
+  const {error} = await db.from('fund_transactions').insert([{date, amount, person, note: note || null}]);
+  if(error){ alert('Erro ao salvar: '+error.message); return; }
+  document.getElementById('fundAmount').value='';
+  document.getElementById('fundNote').value='';
+  await loadFund();
+  render();
+}
 
-        function renderTutorial() {
-            const data = db.tutorial.find(t => t.level === state.currentLevel);
-            const div = document.createElement('div');
-            div.className = 'w-full max-w-3xl mx-auto mt-6 space-y-6 pb-20';
-            
-            const btnPrev = state.currentLevel > 1 
-                ? `<button onclick="setView('tutorial', null, ${state.currentLevel - 1})" class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-3 px-6 rounded-xl transition-colors">Voltar</button>` 
-                : `<div></div>`;
-                
-            const btnNext = state.currentLevel < db.tutorial.length 
-                ? `<button onclick="setView('tutorial', null, ${state.currentLevel + 1})" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3 px-6 rounded-xl transition-colors shadow-[0_0_15px_rgba(16,185,129,0.2)]">Próxima Base</button>`
-                : `<button onclick="setView('home')" class="bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 px-6 rounded-xl transition-colors">Concluir Revisão</button>`;
+async function deleteFundTx(id){
+  if(!confirm('Remover esta entrada?')) return;
+  await db.from('fund_transactions').delete().eq('id', id);
+  await loadFund();
+  render();
+}
 
-            div.innerHTML = `
-                <div class="flex items-center gap-4 mb-6">
-                    <button onclick="setView('home')" class="text-gray-400 hover:text-white p-3 bg-gray-800 rounded-xl"><i class="fas fa-home"></i></button>
-                    <h2 class="text-2xl font-bold text-emerald-400">${data.title}</h2>
-                </div>
-                <div class="bg-gray-900 border border-gray-700 p-8 rounded-2xl shadow-xl text-lg leading-relaxed">
-                    ${data.content}
-                </div>
-                <div class="flex justify-between pt-4">${btnPrev}${btnNext}</div>
-            `;
-            return div;
-        }
+function categoryColor(name){
+  const c = CATEGORIES.find(c=>c.name===name);
+  return c ? c.color : '#5B6D63';
+}
 
-        // --- COMPONENTE DE ESPETRO E GAMEPLAY ---
-        function renderSpectrum(signals, maxPpm, is13C = false) {
-            let axisHtml = '';
-            const step = is13C ? 20 : 1;
-            for (let i = 0; i <= maxPpm; i += step) {
-                const leftPos = ((maxPpm - i) / maxPpm) * 100;
-                axisHtml += `<div class="axis-label" style="left: ${leftPos}%">${i}</div>`;
-            }
+function render(){
+  document.getElementById('monthLabel').textContent = monthLabelStr(currentMonth);
+  const mk = monthKey(currentMonth);
+  const monthExpenses = expenses.filter(e => e.date && e.date.slice(0,7)===mk);
 
-            let peaksHtml = '';
-            const colorClass = is13C ? 'peak-c13' : '';
-            signals.forEach(sig => {
-                const leftPos = ((maxPpm - sig.ppm) / maxPpm) * 100;
-                const isNegative = sig.height < 0;
-                const absHeight = Math.abs(sig.height);
-                const bottomStyle = isNegative ? `top: 100%; border-radius: 0 0 2px 2px;` : `bottom: 0;`;
-                
-                const tooltipHtml = is13C 
-                    ? `<strong class="block text-blue-300">${sig.ppm} ppm</strong>${sig.mult}<br>${sig.label || ''}`
-                    : `<strong class="block text-emerald-300">${sig.ppm} ppm</strong>Int: ${sig.int}<br>Mult: ${sig.mult}<br>J: ${sig.J || '-'}`;
+  // cards do mês
+  const total = monthExpenses.reduce((s,e)=>s+Number(e.amount),0);
+  const monthFund = fundTx.filter(t => t.date && t.date.slice(0,7)===mk);
+  const totalEntradas = monthFund.reduce((s,t)=>s+Number(t.amount),0);
 
-                peaksHtml += `
-                    <div class="signal-peak ${colorClass}" style="left: ${leftPos}%; height: ${absHeight}px; ${bottomStyle}">
-                        <div class="tooltip">${tooltipHtml}</div>
-                    </div>
-                `;
-            });
+  document.getElementById('summaryCards').innerHTML = `
+    <div class="card" style="border-color:var(--green);"><div class="label">Total de entradas (mês)</div><div class="value" style="color:var(--green);">${fmtMoney(totalEntradas)}</div></div>
+    <div class="card" style="border-color:var(--wine);"><div class="label">Total de gastos (mês)</div><div class="value" style="color:var(--wine);">${fmtMoney(total)}</div></div>
+  `;
 
-            const hasNegative = signals.some(s => s.height < 0);
-            return `
-                <div class="spectrum-container mt-6 mb-12 relative" ${hasNegative ? 'style="border-bottom: 1px dashed #4b5563;"' : ''}>
-                    ${peaksHtml}
-                    ${axisHtml}
-                    ${hasNegative ? '<div class="absolute w-full h-[2px] bg-gray-600 top-full"></div>' : ''}
-                </div>
-            `;
-        }
+  renderFund();
 
-        // Drag functions
-        window.dragStart = e => { e.dataTransfer.setData("text/plain", e.target.id); e.target.classList.add('opacity-50'); };
-        window.dragEnd = e => e.target.classList.remove('opacity-50');
-        window.allowDrop = e => { e.preventDefault(); e.dataTransfer.dropEffect = "move"; };
-        window.dragEnter = e => { if (e.currentTarget.classList.contains('dropzone')) e.currentTarget.classList.add('drag-over'); };
-        window.dragLeave = e => { if (e.currentTarget.classList.contains('dropzone')) e.currentTarget.classList.remove('drag-over'); };
-        
-        window.drop = e => {
-            e.preventDefault();
-            const dropzone = e.currentTarget;
-            dropzone.classList.remove('drag-over');
-            if (!dropzone.classList.contains('dropzone')) return;
+  // ledger
+  const body = document.getElementById('ledgerBody');
+  if(monthExpenses.length===0){
+    body.innerHTML = `<div class="empty">Nenhum gasto lançado neste mês ainda.</div>`;
+    return;
+  }
+  body.innerHTML = monthExpenses.map(e => `
+    <div class="ledger-row">
+      <div class="date-col">${e.date.split('-').reverse().slice(0,2).join('/')}</div>
+      <div class="desc-col">${escapeHtml(e.description)}</div>
+      <div><span class="stamp" style="color:${categoryColor(e.category)}">${e.category}</span></div>
+      <div class="amount-col">${fmtMoney(e.amount)}</div>
+      <div><button class="del-btn" title="Remover" onclick="deleteExpense('${e.id}')">✕</button></div>
+    </div>
+  `).join('');
+}
 
-            const draggedId = e.dataTransfer.getData("text/plain");
-            const draggedEl = document.getElementById(draggedId);
-            const existingTag = dropzone.querySelector('.draggable-tag');
-            
-            if (existingTag && existingTag.id !== draggedId) {
-                document.getElementById('tags-pool').appendChild(existingTag);
-            }
-            if (draggedEl) {
-                dropzone.innerHTML = '';
-                dropzone.appendChild(draggedEl);
-            }
-            checkMappingState();
-        };
+function renderFund(){
+  const totalFund = fundTx.reduce((s,t)=>s+Number(t.amount),0);
+  const fundA = fundTx.filter(t=>t.person===settings.person_a).reduce((s,t)=>s+Number(t.amount),0);
+  const fundB = fundTx.filter(t=>t.person===settings.person_b).reduce((s,t)=>s+Number(t.amount),0);
 
-        function checkMappingState() {
-            const pool = document.getElementById('tags-pool');
-            const btn = document.getElementById('btn-validate');
-            if (!pool || !btn) return;
-            if (pool.children.length === 0) {
-                btn.disabled = false;
-                btn.classList.replace('opacity-50', 'opacity-100');
-                btn.classList.remove('cursor-not-allowed');
-                btn.classList.add('hover:bg-blue-500');
-            } else {
-                btn.disabled = true;
-                btn.classList.replace('opacity-100', 'opacity-50');
-                btn.classList.add('cursor-not-allowed');
-                btn.classList.remove('hover:bg-blue-500');
-            }
-        }
+  document.getElementById('fundCards').innerHTML = `
+    <div class="card"><div class="label">Total no fundo</div><div class="value" style="color:var(--green)">${fmtMoney(totalFund)}</div></div>
+    <div class="card"><div class="label">${settings.person_a} aportou</div><div class="value">${fmtMoney(fundA)}</div></div>
+    <div class="card"><div class="label">${settings.person_b} aportou</div><div class="value">${fmtMoney(fundB)}</div></div>
+  `;
 
-        window.validateMapping = function() {
-            const qData = db.mapping.find(q => q.level === state.currentLevel);
-            let allCorrect = true;
+  const listEl = document.getElementById('fundList');
+  listEl.innerHTML = fundTx.length ? fundTx.slice(0,10).map(t => `
+    <div class="list-row fund-tx">
+      <div class="desc">${escapeHtml(t.person)}${t.note ? ' · '+escapeHtml(t.note) : ''}<span class="sub">${t.date.split('-').reverse().join('/')}</span></div>
+      <div class="amt">+ ${fmtMoney(t.amount)}</div>
+      <button class="del-btn" title="Remover" onclick="deleteFundTx('${t.id}')">✕</button>
+    </div>
+  `).join('') : `<div class="empty">Nenhum aporte registrado ainda.</div>`;
+}
 
-            qData.tags.forEach(tagData => {
-                const dropzone = document.getElementById(`drop-${tagData.correctTarget}`);
-                const tagEl = document.getElementById(tagData.id);
-                const row = document.getElementById(`row-${tagData.correctTarget}`);
-                
-                if (dropzone && dropzone.contains(tagEl)) {
-                    row.classList.add('border-emerald-500', 'bg-emerald-900/20');
-                } else {
-                    allCorrect = false;
-                    const activeDropzone = tagEl.parentElement;
-                    if (activeDropzone.classList.contains('dropzone')) {
-                        const wrongRow = activeDropzone.closest('.signal-row');
-                        wrongRow.classList.add('border-red-500', 'shake-err');
-                        setTimeout(() => wrongRow.classList.remove('shake-err'), 400);
-                    }
-                }
-            });
+function escapeHtml(s){
+  const d = document.createElement('div');
+  d.textContent = s;
+  return d.innerHTML;
+}
 
-            const feedback = document.getElementById('mapping-feedback');
-            if (allCorrect) {
-                let earned = Math.max(30, 150 - (state.errors * 40));
-                updateXP(earned);
-                feedback.innerHTML = `
-                    <div class="p-5 bg-emerald-900/30 border-l-4 border-emerald-500 text-emerald-100 flex gap-3 mt-6 shadow-lg rounded-r-lg">
-                        <i class="fas fa-check-circle text-emerald-400 mt-1 text-xl"></i>
-                        <div><strong class="block text-lg mb-1">Mapeamento Validado! (+${earned} XP)</strong><p class="text-emerald-200/80">Lógica estrutural confirmada.</p></div>
-                    </div>
-                    <button onclick="setView('modeSelect', 'mapping')" class="mt-4 bg-blue-600 hover:bg-blue-500 py-3 px-6 rounded-xl font-bold w-full transition-colors">Retornar ao Painel de Missões</button>
-                `;
-                document.getElementById('btn-validate').style.display = 'none';
-            } else {
-                state.errors++;
-                feedback.innerHTML = `
-                    <div class="p-5 bg-red-900/30 border-l-4 border-red-500 text-red-200 flex gap-3 mt-6 shadow-lg rounded-r-lg">
-                        <i class="fas fa-times-circle text-red-400 mt-1 text-xl"></i>
-                        <div><strong class="block text-lg mb-1">Atribuição Incorreta.</strong><p class="text-red-300/80">As ligações químicas não batem com os deslocamentos. Reiniciando peças incorretas...</p></div>
-                    </div>
-                `;
-                setTimeout(() => {
-                    qData.tags.forEach(tagData => {
-                        const dropzone = document.getElementById(`drop-${tagData.correctTarget}`);
-                        const tagEl = document.getElementById(tagData.id);
-                        if (!dropzone.contains(tagEl)) {
-                            document.getElementById('tags-pool').appendChild(tagEl);
-                            const row = tagEl.closest('.signal-row');
-                            if(row) {
-                                row.classList.remove('border-red-500');
-                                row.querySelector('.dropzone').innerHTML = '<span class="text-gray-600 text-xs text-center pointer-events-none">Soltar nº</span>';
-                            }
-                        }
-                    });
-                    checkMappingState();
-                    feedback.innerHTML = '';
-                }, 2500);
-            }
-            feedback.classList.remove('hidden');
-        };
-
-        function renderMapping() {
-            const qData = db.mapping.find(q => q.level === state.currentLevel);
-            const div = document.createElement('div');
-            div.className = 'w-full max-w-4xl mx-auto pb-20 mt-6';
-
-            let tagsHtml = '';
-            [...qData.tags].sort(() => Math.random() - 0.5).forEach(t => {
-                tagsHtml += `<div id="${t.id}" draggable="true" ondragstart="dragStart(event)" ondragend="dragEnd(event)" class="draggable-tag bg-blue-600 border-2 border-blue-400 text-white w-12 h-12 rounded-full flex items-center justify-center font-bold text-xl shadow-[0_0_15px_rgba(37,99,235,0.4)] z-20">${t.label}</div>`;
-            });
-
-            let signalsListHtml = '';
-            qData.signals.sort((a,b) => b.ppm - a.ppm).forEach(sig => {
-                signalsListHtml += `
-                    <div id="row-${sig.id}" class="signal-row flex items-center justify-between p-4 bg-gray-800 border border-gray-700 rounded-xl transition-colors">
-                        <div class="flex flex-col items-center justify-center w-20 shrink-0 border-r border-gray-600 pr-2 md:pr-4">
-                            <span class="text-2xl font-black text-emerald-400 leading-none">${sig.ppm}</span>
-                        </div>
-                        <div class="flex-1 px-4 md:px-6">
-                            <div class="font-bold text-gray-200">${sig.mult}</div>
-                            <div class="text-sm text-blue-400 font-mono mt-1">Int: ${sig.int}</div>
-                        </div>
-                        <div id="drop-${sig.id}" class="dropzone w-14 h-14 md:w-16 md:h-16 border-2 border-dashed border-gray-500 rounded-lg bg-gray-900 flex items-center justify-center relative shrink-0" ondragover="allowDrop(event)" ondragenter="dragEnter(event)" ondragleave="dragLeave(event)" ondrop="drop(event)">
-                            <span class="text-gray-600 text-[10px] md:text-xs text-center pointer-events-none">Soltar nº</span>
-                        </div>
-                    </div>
-                `;
-            });
-
-            div.innerHTML = `
-                <div class="flex items-center gap-4 mb-6 px-4 md:px-0">
-                    <button onclick="setView('modeSelect', 'mapping')" class="text-gray-400 hover:text-white p-2 bg-gray-800 rounded-lg"><i class="fas fa-arrow-left"></i></button>
-                    <h2 class="text-2xl font-black text-blue-400">Nível ${state.currentLevel}: ${qData.title}</h2>
-                </div>
-                
-                <div class="mb-8 px-4 md:px-0">
-                    ${qData.moleculeHTML}
-                    <div class="mt-4 bg-gray-800/80 p-4 border border-gray-700 rounded-xl flex items-center gap-4">
-                        <span class="text-gray-400 text-sm hidden md:block">Peças:</span>
-                        <div id="tags-pool" class="flex justify-center gap-4 md:gap-6 min-h-[48px] flex-1" ondragover="allowDrop(event)" ondrop="drop(event)">${tagsHtml}</div>
-                    </div>
-                </div>
-
-                <div class="bg-gray-900 border border-gray-700 rounded-xl p-4 md:p-6 pt-10 mb-8 mx-4 md:mx-0 shadow-inner">
-                    <div class="flex justify-between text-[10px] md:text-xs text-gray-500 font-bold uppercase mb-2"><span>Desblindado</span><span>Blindado</span></div>
-                    ${renderSpectrum(qData.signals, qData.maxPpm)}
-                </div>
-
-                <div class="space-y-3 px-4 md:px-0">${signalsListHtml}</div>
-                <div id="mapping-feedback" class="hidden fade-in px-4 md:px-0"></div>
-                <div class="px-4 md:px-0">
-                    <button id="btn-validate" onclick="validateMapping()" disabled class="mt-8 w-full bg-blue-600 text-white font-bold py-4 rounded-xl opacity-50 cursor-not-allowed transition-all uppercase tracking-wide">Validar Atribuição</button>
-                </div>
-            `;
-            return div;
-        }
-
-        window.toggleSpectrum = type => { state.activeSpectrumType = type; render(); }
-
-        window.handleSoloAnswer = function(optionId, btnElement) {
-            const qData = db.solo.find(q => q.level === state.currentLevel);
-            const option = qData.options.find(o => o.id === optionId);
-            const feedbackBox = document.getElementById(`feedback-box`);
-            const btns = document.querySelectorAll(`.option-btn`);
-            btns.forEach(b => b.disabled = true);
-
-            if (option.correct) {
-                btnElement.classList.replace('bg-gray-800', 'bg-emerald-900/80');
-                btnElement.classList.add('border-emerald-500');
-                let earned = Math.max(20, 200 - (state.errors * 70));
-                updateXP(earned);
-                feedbackBox.innerHTML = `
-                    <div class="p-5 bg-emerald-900/30 border-l-4 border-emerald-500 text-emerald-100 flex gap-4 mt-6 shadow-lg rounded-r-lg">
-                        <i class="fas fa-check-circle text-emerald-400 mt-1 text-xl"></i>
-                        <div><strong class="block mb-2 text-lg">Diagnóstico Exato (+${earned} XP)</strong><p class="text-emerald-200/90 leading-relaxed">${option.feedback}</p></div>
-                    </div>
-                    <button onclick="setView('modeSelect', 'solo')" class="mt-6 bg-purple-600 hover:bg-purple-500 py-3 px-6 rounded-xl font-bold w-full transition-colors">Retornar às Missões</button>
-                `;
-            } else {
-                state.errors++;
-                btnElement.classList.replace('bg-gray-800', 'bg-red-900/40');
-                btnElement.classList.add('border-red-500/50', 'opacity-50');
-                feedbackBox.innerHTML = `
-                    <div class="p-5 bg-red-900/20 border-l-4 border-red-500 text-red-200 flex gap-4 mt-6 shadow-lg rounded-r-lg">
-                        <i class="fas fa-exclamation-triangle text-red-400 mt-1 text-xl"></i>
-                        <div><strong class="block mb-1 text-lg">Lógica Falha. XP Penalizado.</strong><p class="text-red-300/90 leading-relaxed">${option.feedback}</p></div>
-                    </div>
-                `;
-                setTimeout(() => btns.forEach(b => { if(!b.classList.contains('border-red-500/50')) b.disabled = false; }), 1000);
-            }
-            feedbackBox.classList.remove('hidden');
-        };
-
-        function renderSolo() {
-            const qData = db.solo.find(q => q.level === state.currentLevel);
-            const div = document.createElement('div');
-            div.className = 'w-full max-w-4xl mx-auto pb-20 mt-6';
-
-            let toggleHtml = '';
-            if (Object.keys(qData.spectra).length > 1) {
-                toggleHtml = `
-                    <div class="flex justify-center gap-3 mt-4 mb-8">
-                        <button onclick="toggleSpectrum('1H')" class="px-8 py-2 rounded-full font-bold transition-all ${state.activeSpectrumType === '1H' ? 'bg-emerald-600 text-white shadow-[0_0_15px_rgba(16,185,129,0.4)]' : 'bg-gray-800 text-gray-400 border border-gray-700 hover:bg-gray-700'}">Varredura 1H</button>
-                        <button onclick="toggleSpectrum('13C')" class="px-8 py-2 rounded-full font-bold transition-all ${state.activeSpectrumType === '13C' ? 'bg-blue-600 text-white shadow-[0_0_15px_rgba(37,99,235,0.4)]' : 'bg-gray-800 text-gray-400 border border-gray-700 hover:bg-gray-700'}">Varredura 13C</button>
-                    </div>
-                `;
-            }
-
-            const is13C = state.activeSpectrumType === '13C';
-            const spectrumUI = renderSpectrum(qData.spectra[state.activeSpectrumType].signals, qData.spectra[state.activeSpectrumType].maxPpm, is13C);
-            
-            const optionsHtml = qData.options.map(o => `
-                <button onclick="handleSoloAnswer('${o.id}', this)" class="option-btn w-full text-left bg-gray-800 hover:bg-gray-700 border border-gray-600 p-5 rounded-xl transition-all shadow-sm text-[15px] leading-relaxed">${o.text}</button>
-            `).join('');
-
-            div.innerHTML = `
-                <div class="flex items-center gap-4 mb-6 px-4 md:px-0">
-                    <button onclick="setView('modeSelect', 'solo')" class="text-gray-400 hover:text-white p-2 bg-gray-800 rounded-lg"><i class="fas fa-arrow-left"></i></button>
-                    <h2 class="text-2xl font-black text-purple-400">Nível ${state.currentLevel}: ${qData.title}</h2>
-                </div>
-                
-                <div class="bg-gray-800/50 border border-gray-700 p-4 md:p-6 rounded-2xl shadow-inner mx-4 md:mx-0">
-                    <div class="bg-purple-900/20 border-l-2 border-purple-500 p-3 mb-4 rounded"><p class="text-gray-300 font-mono text-sm">> ${qData.context}</p></div>
-                    ${toggleHtml}
-                    <div class="bg-gray-900 border border-gray-700 rounded-xl p-4 md:p-6 pt-10">
-                        <div class="flex justify-between text-[10px] md:text-xs text-gray-500 font-bold uppercase mb-2"><span>Baixo Campo</span><span>Alto Campo</span></div>
-                        ${spectrumUI}
-                        <p class="text-center text-xs text-gray-500 mt-2">Passe o rato sobre os picos no eixo X para dados vetoriais.</p>
-                    </div>
-                </div>
-
-                <div class="bg-gray-800 p-4 md:p-6 rounded-2xl border border-gray-700 shadow-xl mt-6 mx-4 md:mx-0">
-                    <h3 class="text-lg font-bold mb-5 border-b border-gray-700 pb-3 text-gray-200">Estrutura Molecular Correspondente</h3>
-                    <div class="space-y-3">${optionsHtml}</div>
-                    <div id="feedback-box" class="mt-6 hidden fade-in"></div>
-                </div>
-            `;
-            return div;
-        }
-
-        // Inicialização
-        render();
-    </script>
+init();
+</script>
 </body>
 </html>
