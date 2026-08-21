@@ -57,9 +57,16 @@
         .dropzone { transition: all 0.15s ease; cursor: pointer; }
         .dropzone.zone-highlight { background-color: rgba(59, 130, 246, 0.25); border-color: #3b82f6; }
         .dropzone.zone-filled { cursor: pointer; }
+
+        /* 100vh não desconta a barra de endereço em navegadores móveis, cortando o scroll.
+           100dvh (dynamic viewport height) resolve isso; mantemos 100vh como fallback pra navegadores antigos. */
+        .app-shell {
+            height: 100vh;
+            height: 100dvh;
+        }
     </style>
 </head>
-<body class="bg-gray-900 text-gray-100 font-sans h-screen flex flex-col overflow-hidden relative">
+<body class="bg-gray-900 text-gray-100 font-sans app-shell flex flex-col overflow-hidden relative">
 
     <header class="bg-gray-800 border-b border-gray-700 p-4 flex justify-between items-center shrink-0 shadow-md z-10">
         <div class="flex items-center gap-3 cursor-pointer" onclick="setView('home')">
@@ -332,8 +339,8 @@
                     <button onclick="setView('tutorial', null, 1)" class="group bg-gray-800 border border-emerald-500/50 hover:border-emerald-500 rounded-2xl p-6 transition-all text-left flex flex-col items-start gap-4 shadow-lg hover:-translate-y-1">
                         <div class="p-4 rounded-xl text-emerald-400 bg-emerald-500/10"><i class="fas fa-book-open text-3xl"></i></div>
                         <div>
-                            <h3 class="font-bold text-xl text-gray-100">Doutrinação Base</h3>
-                            <p class="text-sm text-gray-400 mt-2">Revisão paramétrica. ppm, Karplus, n+1 e filtros DEPT.</p>
+                            <h3 class="font-bold text-xl text-gray-100">Aprenda o Básico</h3>
+                            <p class="text-sm text-gray-400 mt-2">Revisão dos conceitos: ppm, Karplus, n+1 e filtros DEPT.</p>
                         </div>
                     </button>
 
@@ -445,16 +452,24 @@
         }
 
         // --- TAP-TO-SELECT (substitui a Drag and Drop API nativa, que não dispara em touchscreens) ---
-        window.selectTag = function(tagId) {
+        function dropzonePlaceholder() {
+            return '<span class="text-gray-600 text-[10px] md:text-xs text-center pointer-events-none">Toque numa peça</span>';
+        }
+
+        window.selectTag = function(tagId, event) {
+            // stopPropagation é essencial aqui: a peça, quando já colocada, fica DENTRO
+            // da dropzone. Sem isto, o clique nela também dispara o onclick da dropzone
+            // (bubbling), que a colocava de volta no mesmo lugar instantaneamente —
+            // por isso parecia "impossível mover" uma peça já posicionada.
+            if (event) event.stopPropagation();
             const el = document.getElementById(tagId);
             if (!el) return;
-            // Se já estava selecionada, desseleciona
+
             if (state.selectedTagId === tagId) {
                 el.classList.remove('is-selected');
                 state.selectedTagId = null;
                 return;
             }
-            // Limpa seleção anterior
             if (state.selectedTagId) {
                 const prev = document.getElementById(state.selectedTagId);
                 if (prev) prev.classList.remove('is-selected');
@@ -467,15 +482,17 @@
             const dropzone = document.getElementById(`drop-${zoneSignalId}`);
             if (!dropzone) return;
 
-            // Caso 1: há uma peça selecionada no pool -> colocar aqui
+            // Caso 1: há uma peça selecionada (do pool OU de outra zona) -> mover pra cá
             if (state.selectedTagId) {
                 const tagEl = document.getElementById(state.selectedTagId);
                 if (!tagEl) { state.selectedTagId = null; return; }
 
-                // Se a zona já tem peça, devolve a peça antiga ao pool
-                const existing = dropzone.querySelector('.select-tag');
-                if (existing) {
-                    document.getElementById('tags-pool').appendChild(existing);
+                const originParent = tagEl.parentElement;
+
+                // Se a zona destino já tem outra peça, devolve-a ao pool
+                const existingInTarget = dropzone.querySelector('.select-tag');
+                if (existingInTarget && existingInTarget.id !== tagEl.id) {
+                    document.getElementById('tags-pool').appendChild(existingInTarget);
                 }
 
                 dropzone.innerHTML = '';
@@ -483,17 +500,22 @@
                 dropzone.appendChild(tagEl);
                 dropzone.classList.add('zone-filled');
                 state.selectedTagId = null;
+
+                // Se a peça veio de OUTRA dropzone (não do pool), restaura o placeholder lá
+                if (originParent && originParent.classList.contains('dropzone') && originParent !== dropzone) {
+                    originParent.innerHTML = dropzonePlaceholder();
+                    originParent.classList.remove('zone-filled');
+                }
+
                 checkMappingState();
                 return;
             }
 
-            // Caso 2: nenhuma peça selecionada, mas a zona já tem uma peça -> devolve ao pool (toque de novo pra remover)
+            // Caso 2: nenhuma peça selecionada. Se a zona clicada já tem uma peça,
+            // seleciona-a (pronta para ser movida com o próximo toque).
             const placedTag = dropzone.querySelector('.select-tag');
             if (placedTag) {
-                document.getElementById('tags-pool').appendChild(placedTag);
-                dropzone.innerHTML = '<span class="text-gray-600 text-[10px] md:text-xs text-center pointer-events-none">Toque numa peça</span>';
-                dropzone.classList.remove('zone-filled');
-                checkMappingState();
+                selectTag(placedTag.id);
             }
         };
 
@@ -585,7 +607,7 @@
 
             let tagsHtml = '';
             [...qData.tags].sort(() => Math.random() - 0.5).forEach(t => {
-                tagsHtml += `<div id="${t.id}" onclick="selectTag('${t.id}')" class="select-tag bg-blue-600 border-2 border-blue-400 text-white w-12 h-12 rounded-full flex items-center justify-center font-bold text-xl shadow-[0_0_15px_rgba(37,99,235,0.4)] z-20">${t.label}</div>`;
+                tagsHtml += `<div id="${t.id}" onclick="selectTag('${t.id}', event)" class="select-tag bg-blue-600 border-2 border-blue-400 text-white w-12 h-12 rounded-full flex items-center justify-center font-bold text-xl shadow-[0_0_15px_rgba(37,99,235,0.4)] z-20">${t.label}</div>`;
             });
 
             let signalsListHtml = '';
@@ -612,7 +634,7 @@
                     <h2 class="text-2xl font-black text-blue-400">Nível ${state.currentLevel}: ${qData.title}</h2>
                 </div>
 
-                <p class="text-sm text-gray-400 mb-4 px-4 md:px-0"><i class="fas fa-hand-pointer text-blue-400 mr-1"></i> Toque num número e depois no sinal correspondente. Toque numa peça já colocada para devolvê-la.</p>
+                <p class="text-sm text-gray-400 mb-4 px-4 md:px-0"><i class="fas fa-hand-pointer text-blue-400 mr-1"></i> Toque num número para selecioná-lo e depois no sinal correspondente. Para mover uma peça já colocada, toque nela e depois na nova posição.</p>
 
                 <div class="mb-8 px-4 md:px-0">
                     ${qData.moleculeHTML}
