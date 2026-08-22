@@ -1,779 +1,685 @@
 <!DOCTYPE html>
 <html lang="pt-PT">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Motor RMN - Ferramenta de Ensino e Prática</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <style>
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #111827; }
-        ::-webkit-scrollbar-thumb { background: #374151; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #4b5563; }
-
-        .fade-in { animation: fadeIn 0.3s ease-in-out; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-5px); }
-            75% { transform: translateX(5px); }
-        }
-        .shake-err { animation: shake 0.4s ease-in-out; }
-
-        /* Espetro CSS */
-        .spectrum-container {
-            position: relative; width: 100%; height: 120px;
-            border-bottom: 2px solid #4b5563;
-            background: linear-gradient(to top, rgba(16, 185, 129, 0.05), transparent);
-        }
-        .axis-label { position: absolute; bottom: -25px; transform: translateX(-50%); font-size: 0.75rem; color: #9ca3af; }
-        .signal-peak {
-            position: absolute; bottom: 0; width: 4px; background-color: #10b981;
-            transform: translateX(-50%); cursor: pointer; transition: all 0.2s; border-radius: 2px 2px 0 0; z-index: 5;
-        }
-        .signal-peak:hover, .signal-peak:active { background-color: #34d399; box-shadow: 0 0 10px rgba(52, 211, 153, 0.8); width: 6px; }
-        .peak-c13 { background-color: #60a5fa; }
-        .peak-c13:hover, .peak-c13:active { background-color: #93c5fd; box-shadow: 0 0 10px rgba(147, 197, 253, 0.8); }
-
-        .tooltip {
-            visibility: hidden; position: absolute; bottom: 110%; left: 50%; transform: translateX(-50%);
-            background-color: #1f2937; color: #fff; padding: 8px 12px; border-radius: 6px;
-            font-size: 0.875rem; white-space: nowrap; z-index: 10; border: 1px solid #374151;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.3); opacity: 0; transition: opacity 0.2s; pointer-events: none;
-        }
-        .signal-peak:hover .tooltip, .signal-peak.tt-active .tooltip { visibility: visible; opacity: 1; }
-
-        /* Tap-to-select (substitui drag & drop nativo, que não funciona em touch) */
-        .select-tag {
-            cursor: pointer; transition: transform 0.1s, box-shadow 0.15s;
-            user-select: none; -webkit-tap-highlight-color: transparent;
-        }
-        .select-tag:active { transform: scale(0.94); }
-        .select-tag.is-selected {
-            box-shadow: 0 0 0 3px #fbbf24, 0 0 15px rgba(251,191,36,0.5);
-            transform: scale(1.08);
-        }
-        .dropzone { transition: all 0.15s ease; cursor: pointer; }
-        .dropzone.zone-highlight { background-color: rgba(59, 130, 246, 0.25); border-color: #3b82f6; }
-        .dropzone.zone-filled { cursor: pointer; }
-
-        /* 100vh não desconta a barra de endereço em navegadores móveis, cortando o scroll.
-           100dvh (dynamic viewport height) resolve isso; mantemos 100vh como fallback pra navegadores antigos. */
-        .app-shell {
-            height: 100vh;
-            height: 100dvh;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Motor RMN - Ferramenta de Ensino e Prática</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+<style>
+::-webkit-scrollbar { width:8px; }
+::-webkit-scrollbar-track { background:#111827; }
+::-webkit-scrollbar-thumb { background:#374151; border-radius:4px; }
+::-webkit-scrollbar-thumb:hover { background:#4b5563; }
+.fade-in { animation: fadeIn 0.3s ease-in-out; }
+@keyframes fadeIn { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
+@keyframes shake {
+0%,100% { transform:translateX(0); }
+25% { transform:translateX(-5px); }
+75% { transform:translateX(5px); }
+}
+.shake-err { animation: shake 0.4s ease-in-out; }
+.spectrum-container {
+position: relative; width:100%; height:120px;
+border-bottom:2px solid #4b5563;
+background:linear-gradient(to top,rgba(16,185,129,0.05), transparent);
+}
+.axis-label { position: absolute; bottom:-25px; transform:translateX(-50%); font-size:0.75rem; color:#9ca3af; }
+.signal-peak {
+position: absolute; bottom:0; width:4px; background-color:#10b981;
+transform:translateX(-50%); cursor: pointer; transition: all 0.2s; border-radius:2px 2px 0 0; z-index:5;
+}
+.signal-peak:hover, .signal-peak:active { background-color:#34d399; box-shadow:0 0 10px rgba(52,211,153,0.8); width:6px; }
+.peak-c13 { background-color:#60a5fa; }
+.peak-c13:hover, .peak-c13:active { background-color:#93c5fd; box-shadow:0 0 10px rgba(147,197,253,0.8); }
+.tooltip {
+visibility: hidden; position: absolute; bottom:110%; left:50%; transform:translateX(-50%);
+background-color:#1f2937; color:#fff; padding:8px 12px; border-radius:6px;
+font-size:0.875rem; white-space: nowrap; z-index:10; border:1px solid #374151;
+box-shadow:0 4px 6px rgba(0,0,0,0.3); opacity:0; transition: opacity 0.2s; pointer-events: none;
+}
+.signal-peak:hover .tooltip, .signal-peak.tt-active .tooltip { visibility: visible; opacity:1; }
+.select-tag {
+cursor: pointer; transition: transform 0.1s, box-shadow 0.15s;
+user-select: none; -webkit-tap-highlight-color: transparent;
+}
+.select-tag:active { transform:scale(0.94); }
+.select-tag.is-selected {
+box-shadow:0 0 0 3px #fbbf24,0 0 15px rgba(251,191,36,0.5);
+transform:scale(1.08);
+}
+.dropzone { transition: all 0.15s ease; cursor: pointer; }
+.dropzone.zone-highlight { background-color:rgba(59,130,246,0.25); border-color:#3b82f6; }
+.dropzone.zone-filled { cursor: pointer; }
+.app-shell {
+height:100vh;
+height:100dvh;
+}
+</style>
 </head>
 <body class="bg-gray-900 text-gray-100 font-sans app-shell flex flex-col overflow-hidden relative">
-
-    <header class="bg-gray-800 border-b border-gray-700 p-4 flex justify-between items-center shrink-0 shadow-md z-10">
-        <div class="flex items-center gap-3 cursor-pointer" onclick="setView('home')">
-            <div class="bg-emerald-500 text-gray-900 p-2 rounded-lg font-bold">
-                <i class="fas fa-atom"></i>
-            </div>
-            <h1 class="text-xl font-bold tracking-tight text-white hidden sm:block">Motor RMN</h1>
-        </div>
-        <div class="flex items-center gap-4">
-            <div class="flex items-center gap-2 text-sm bg-gray-700 px-4 py-2 rounded-full border border-gray-600">
-                <i class="fas fa-bolt text-yellow-400"></i>
-                <span id="xp-counter" class="font-bold font-mono text-lg transition-all">0 XP</span>
-            </div>
-        </div>
-    </header>
-
-    <main id="app-container" class="flex-1 overflow-y-auto p-4 md:p-6 fade-in flex flex-col items-center w-full max-w-5xl mx-auto z-0">
-        <!-- Renderizado via JS -->
-    </main>
-
-    <script>
-        // --- ESTADO GLOBAL ---
-        const state = {
-            xp: 0,
-            currentView: 'home',
-            activeMode: null,
-            currentLevel: 1,
-            activeSpectrumType: '1H',
-            errors: 0,
-            selectedTagId: null, // tap-to-select: id da peça atualmente selecionada
-            mappingTier: null,   // dificuldade escolhida no modo Atribuição H/C
-            lastMappingLevel: null // evita sortear a mesma molécula duas vezes seguidas
-        };
-
-        // --- BANCO DE DADOS ---
-        // Os dados (tutorial, mapping, solo) NÃO ficam mais escritos aqui dentro.
-        // Vêm de arquivos JSON na pasta data/, carregados via fetch() abaixo.
-        // Isto significa: para adicionar ou corrigir uma molécula, edita-se o JSON,
-        // nunca este arquivo HTML/JS.
-        const db = {
-            tutorial: [],
-            mapping: [],
-            solo: []
-        };
-
-        async function carregarDados() {
-            const arquivos = ['tutorial', 'mapping', 'solo'];
-            try {
-                const respostas = await Promise.all(
-                    arquivos.map(nome => fetch(`data/${nome}.json`))
-                );
-                for (const r of respostas) {
-                    if (!r.ok) throw new Error(`Falha ao carregar ${r.url} (status ${r.status})`);
-                }
-                const dados = await Promise.all(respostas.map(r => r.json()));
-                db.tutorial = dados[0];
-                db.mapping = dados[1];
-                db.solo = dados[2];
-                return true;
-            } catch (erro) {
-                console.error('Erro ao carregar dados:', erro);
-                return false;
-            }
-        }
-
-        // --- FUNÇÕES DE ESTADO DA APLICAÇÃO ---
-        function updateXP(amount) {
-            state.xp += amount;
-            const xpEl = document.getElementById('xp-counter');
-            xpEl.innerText = `${state.xp} XP`;
-            xpEl.classList.add('text-yellow-400', 'scale-[1.3]');
-            setTimeout(() => xpEl.classList.remove('text-yellow-400', 'scale-[1.3]'), 300);
-        }
-
-        function setView(viewName, mode = null, level = 1) {
-            state.currentView = viewName;
-            if (mode) state.activeMode = mode;
-            if (level) state.currentLevel = level;
-            state.errors = 0;
-            state.activeSpectrumType = '1H';
-            state.selectedTagId = null;
-            render();
-        }
-
-        // --- RENDERIZADORES DE ECRÃS ---
-        function render() {
-            const container = document.getElementById('app-container');
-            container.innerHTML = '';
-
-            if (state.currentView === 'home') container.appendChild(renderHome());
-            else if (state.currentView === 'modeSelect') container.appendChild(renderLevelSelect());
-            else if (state.currentView === 'tutorial') container.appendChild(renderTutorial());
-            else if (state.currentView === 'gameplay') {
-                if (state.activeMode === 'mapping') container.appendChild(renderMapping());
-                else container.appendChild(renderSolo());
-            }
-        }
-
-        function renderHome() {
-            const div = document.createElement('div');
-            div.className = 'flex flex-col items-center justify-center w-full mt-4 md:mt-10 space-y-10';
-            div.innerHTML = `
-                <div class="text-center space-y-4 max-w-2xl px-4">
-                    <h2 class="text-4xl md:text-5xl font-black bg-clip-text text-transparent bg-gradient-to-r from-emerald-400 to-blue-500 tracking-tight leading-tight">
-                        Ressonância Magnética Nuclear
-                    </h2>
-                    <p class="text-gray-400 text-base md:text-lg">
-                        Gamificação focada em elucidação real. Do conceito vetorial ao abismo quântico. Pare de decorar, comece a analisar.
-                    </p>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 w-full px-4 mb-20">
-                    <button onclick="setView('tutorial', null, 1)" class="group bg-gray-800 border border-emerald-500/50 hover:border-emerald-500 rounded-2xl p-6 transition-all text-left flex flex-col items-start gap-4 shadow-lg hover:-translate-y-1">
-                        <div class="p-4 rounded-xl text-emerald-400 bg-emerald-500/10"><i class="fas fa-book-open text-3xl"></i></div>
-                        <div>
-                            <h3 class="font-bold text-xl text-gray-100">Aprenda o Básico</h3>
-                            <p class="text-sm text-gray-400 mt-2">Revisão dos conceitos: ppm, Karplus, n+1 e filtros DEPT.</p>
-                        </div>
-                    </button>
-
-                    <button onclick="setView('modeSelect', 'mapping')" class="group bg-gray-800 border border-blue-500/50 hover:border-blue-500 rounded-2xl p-6 transition-all text-left flex flex-col items-start gap-4 shadow-lg hover:-translate-y-1">
-                        <div class="p-4 rounded-xl text-blue-400 bg-blue-500/10"><i class="fas fa-project-diagram text-3xl"></i></div>
-                        <div>
-                            <h3 class="font-bold text-xl text-gray-100">Atribuição H/C</h3>
-                            <p class="text-sm text-gray-400 mt-2">Toque num número e depois no sinal correspondente do espetro.</p>
-                        </div>
-                    </button>
-
-                    <button onclick="setView('modeSelect', 'solo')" class="group bg-gray-800 border border-purple-500/50 hover:border-purple-500 rounded-2xl p-6 transition-all text-left flex flex-col items-start gap-4 shadow-lg hover:-translate-y-1">
-                        <div class="p-4 rounded-xl text-purple-400 bg-purple-500/10"><i class="fas fa-biohazard text-3xl"></i></div>
-                        <div>
-                            <h3 class="font-bold text-xl text-gray-100">Desafio Solo</h3>
-                            <p class="text-sm text-gray-400 mt-2">Avalie espetros puros (1H/13C) e identifique a estrutura. Perca XP por erros.</p>
-                        </div>
-                    </button>
-                </div>
-            `;
-            return div;
-        }
-
-        function renderLevelSelect() {
-            const div = document.createElement('div');
-            div.className = 'flex flex-col items-center w-full mt-6 space-y-8 px-4 pb-20';
-
-            if (state.activeMode === 'mapping') {
-                // Modo Atribuição H/C: em vez de listar cada molécula, mostra
-                // dificuldade. Cada escolha sorteia uma molécula aleatória
-                // daquele tier — isto é o que dá a sensação de variedade que
-                // faltava quando os níveis eram fixos.
-                const tiers = [
-                    { id: 'facil', nome: 'Fácil', desc: '3 atribuições — moléculas simples de cadeia curta.', cor: 'emerald' },
-                    { id: 'medio', nome: 'Médio', desc: '5 atribuições — inclui protões lábeis e anéis aromáticos.', cor: 'blue' },
-                    { id: 'dificil', nome: 'Difícil', desc: '6+ atribuições — substituição orto, ambientes assimétricos.', cor: 'red' }
-                ];
-
-                const disponiveis = tiers.filter(t => db.mapping.some(m => m.tier === t.id));
-
-                let buttonsHtml = disponiveis.map(t => `
-                    <button onclick="iniciarMappingAleatorio('${t.id}')" class="w-full text-left bg-gray-800 border border-${t.cor}-500/50 hover:border-${t.cor}-500 p-6 rounded-xl transition-all hover:bg-${t.cor}-900/20 shadow-md">
-                        <span class="font-bold text-${t.cor}-400 text-xl block mb-2">${t.nome}</span>
-                        <span class="text-gray-400 text-sm font-mono">> ${t.desc}</span>
-                    </button>
-                `).join('');
-
-                div.innerHTML = `
-                    <div class="flex items-center gap-4 w-full">
-                        <button onclick="setView('home')" class="text-gray-400 hover:text-white p-3 bg-gray-800 rounded-xl transition-colors shrink-0"><i class="fas fa-arrow-left"></i></button>
-                        <h2 class="text-2xl md:text-3xl font-bold capitalize">Atribuição H/C: escolha a dificuldade</h2>
-                    </div>
-                    <div class="grid gap-4 w-full">${buttonsHtml}</div>
-                `;
-                return div;
-            }
-
-            // Modo Solo: mantém a lista fixa de níveis, como antes.
-            const color = 'purple';
-            const levels = db[state.activeMode];
-            let buttonsHtml = levels.map(l => `
-                <button onclick="setView('gameplay', '${state.activeMode}', ${l.level})" class="w-full text-left bg-gray-800 border border-${color}-500/50 hover:border-${color}-500 p-6 rounded-xl transition-all hover:bg-${color}-900/20 shadow-md">
-                    <span class="font-bold text-${color}-400 text-xl block mb-2">Nível ${l.level}: ${l.title}</span>
-                    <span class="text-gray-400 text-sm font-mono">> Contexto: ${l.context}</span>
-                </button>
-            `).join('');
-
-            div.innerHTML = `
-                <div class="flex items-center gap-4 w-full">
-                    <button onclick="setView('home')" class="text-gray-400 hover:text-white p-3 bg-gray-800 rounded-xl transition-colors shrink-0"><i class="fas fa-arrow-left"></i></button>
-                    <h2 class="text-2xl md:text-3xl font-bold capitalize">Missões: Solo</h2>
-                </div>
-                <div class="grid gap-4 w-full">${buttonsHtml}</div>
-            `;
-            return div;
-        }
-
-        // Sorteia uma molécula do tier escolhido, evitando repetir a última
-        // vista (quando o tier tem mais de uma opção disponível).
-        window.iniciarMappingAleatorio = function(tier) {
-            const pool = db.mapping.filter(m => m.tier === tier);
-            if (pool.length === 0) return;
-            let candidatos = pool;
-            if (pool.length > 1 && state.lastMappingLevel !== null) {
-                candidatos = pool.filter(m => m.level !== state.lastMappingLevel);
-            }
-            const escolhido = candidatos[Math.floor(Math.random() * candidatos.length)];
-            state.lastMappingLevel = escolhido.level;
-            state.mappingTier = tier;
-            setView('gameplay', 'mapping', escolhido.level);
-        };
-
-        function renderTutorial() {
-            const data = db.tutorial.find(t => t.level === state.currentLevel);
-            const div = document.createElement('div');
-            div.className = 'w-full max-w-3xl mx-auto mt-6 space-y-6 pb-20';
-
-            const btnPrev = state.currentLevel > 1
-                ? `<button onclick="setView('tutorial', null, ${state.currentLevel - 1})" class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-3 px-6 rounded-xl transition-colors">Voltar</button>`
-                : `<div></div>`;
-
-            const btnNext = state.currentLevel < db.tutorial.length
-                ? `<button onclick="setView('tutorial', null, ${state.currentLevel + 1})" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3 px-6 rounded-xl transition-colors shadow-[0_0_15px_rgba(16,185,129,0.2)]">Próxima Base</button>`
-                : `<button onclick="setView('home')" class="bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 px-6 rounded-xl transition-colors">Concluir Revisão</button>`;
-
-            div.innerHTML = `
-                <div class="flex items-center gap-4 mb-6">
-                    <button onclick="setView('home')" class="text-gray-400 hover:text-white p-3 bg-gray-800 rounded-xl"><i class="fas fa-home"></i></button>
-                    <h2 class="text-2xl font-bold text-emerald-400">${data.title}</h2>
-                </div>
-                <div class="bg-gray-900 border border-gray-700 p-8 rounded-2xl shadow-xl text-lg leading-relaxed">
-                    ${data.content}
-                </div>
-                <div class="flex justify-between pt-4">${btnPrev}${btnNext}</div>
-            `;
-            return div;
-        }
-
-        // --- COMPONENTE DE ESPETRO E GAMEPLAY ---
-        function renderSpectrum(signals, maxPpm, is13C = false) {
-            let axisHtml = '';
-            const step = is13C ? 20 : 1;
-            for (let i = 0; i <= maxPpm; i += step) {
-                const leftPos = ((maxPpm - i) / maxPpm) * 100;
-                axisHtml += `<div class="axis-label" style="left: ${leftPos}%">${i}</div>`;
-            }
-
-            let peaksHtml = '';
-            const colorClass = is13C ? 'peak-c13' : '';
-            signals.forEach(sig => {
-                const leftPos = ((maxPpm - sig.ppm) / maxPpm) * 100;
-                const isNegative = sig.height < 0;
-                const absHeight = Math.abs(sig.height);
-                const bottomStyle = isNegative ? `top: 100%; border-radius: 0 0 2px 2px;` : `bottom: 0;`;
-
-                const tooltipHtml = is13C
-                    ? `<strong class="block text-blue-300">${sig.ppm} ppm</strong>${sig.mult}<br>${sig.label || ''}`
-                    : `<strong class="block text-emerald-300">${sig.ppm} ppm</strong>Int: ${sig.int}<br>Mult: ${sig.mult}<br>J: ${sig.J || '-'}`;
-
-                peaksHtml += `
-                    <div class="signal-peak ${colorClass}" style="left: ${leftPos}%; height: ${absHeight}px; ${bottomStyle}" ontouchstart="this.classList.add('tt-active')" ontouchend="setTimeout(()=>this.classList.remove('tt-active'), 1500)">
-                        <div class="tooltip">${tooltipHtml}</div>
-                    </div>
-                `;
-            });
-
-            const hasNegative = signals.some(s => s.height < 0);
-            return `
-                <div class="spectrum-container mt-6 mb-12 relative" ${hasNegative ? 'style="border-bottom: 1px dashed #4b5563;"' : ''}>
-                    ${peaksHtml}
-                    ${axisHtml}
-                    ${hasNegative ? '<div class="absolute w-full h-[2px] bg-gray-600 top-full"></div>' : ''}
-                </div>
-            `;
-        }
-
-        // --- TAP-TO-SELECT (substitui a Drag and Drop API nativa, que não dispara em touchscreens) ---
-        // Design: cada peça NÃO tem clique próprio. O clique é sempre tratado pelo
-        // contentor (pool ou dropzone) onde ela está. Isto evita que, no toque num
-        // ecrã pequeno, o dedo acerte ora na peça ora na borda da zona de forma
-        // imprevisível — a zona inteira, com a peça lá dentro, é um único alvo.
-        function dropzonePlaceholder() {
-            return '<span class="text-gray-600 text-[10px] md:text-xs text-center pointer-events-none">Toque numa peça</span>';
-        }
-
-        window.selectTag = function(tagId) {
-            const el = document.getElementById(tagId);
-            if (!el) return;
-
-            if (state.selectedTagId === tagId) {
-                el.classList.remove('is-selected');
-                state.selectedTagId = null;
-                return;
-            }
-            if (state.selectedTagId) {
-                const prev = document.getElementById(state.selectedTagId);
-                if (prev) prev.classList.remove('is-selected');
-            }
-            el.classList.add('is-selected');
-            state.selectedTagId = tagId;
-        };
-
-        window.selectDropzone = function(zoneSignalId) {
-            const dropzone = document.getElementById(`drop-${zoneSignalId}`);
-            if (!dropzone) return;
-
-            // Caso 1: há uma peça selecionada -> mover pra cá (esta zona inteira é o alvo,
-            // não importa se o toque caiu sobre a peça já lá dentro ou na borda)
-            if (state.selectedTagId) {
-                const tagEl = document.getElementById(state.selectedTagId);
-                if (!tagEl) { state.selectedTagId = null; return; }
-
-                const originParent = tagEl.parentElement;
-
-                const existingInTarget = dropzone.querySelector('.select-tag');
-                if (existingInTarget && existingInTarget.id !== tagEl.id) {
-                    document.getElementById('tags-pool').appendChild(existingInTarget);
-                }
-
-                dropzone.innerHTML = '';
-                tagEl.classList.remove('is-selected');
-                dropzone.appendChild(tagEl);
-                dropzone.classList.add('zone-filled');
-                state.selectedTagId = null;
-
-                if (originParent && originParent.classList.contains('dropzone') && originParent !== dropzone) {
-                    originParent.innerHTML = dropzonePlaceholder();
-                    originParent.classList.remove('zone-filled');
-                }
-
-                checkMappingState();
-                return;
-            }
-
-            // Caso 2: nenhuma peça selecionada. Toque em qualquer ponto de uma zona
-            // ocupada seleciona a peça que está lá (pronta para o próximo toque a mover).
-            const placedTag = dropzone.querySelector('.select-tag');
-            if (placedTag) {
-                selectTag(placedTag.id);
-            }
-        };
-
-        // Clique no pool: se caiu numa peça, seleciona-a. Se caiu no fundo do pool
-        // (fora de qualquer peça) e havia uma peça selecionada, devolve-a ao pool —
-        // este é o atalho de "2 toques" para retirar uma peça de uma zona: toque na
-        // zona ocupada (seleciona) e depois toque no fundo do pool (devolve).
-        window.handlePoolClick = function(event) {
-            const tagHit = event.target.closest('.select-tag');
-            if (tagHit) {
-                selectTag(tagHit.id);
-                return;
-            }
-            if (state.selectedTagId) {
-                const tagEl = document.getElementById(state.selectedTagId);
-                if (!tagEl) { state.selectedTagId = null; return; }
-                const originParent = tagEl.parentElement;
-                const pool = document.getElementById('tags-pool');
-
-                tagEl.classList.remove('is-selected');
-                pool.appendChild(tagEl);
-                state.selectedTagId = null;
-
-                if (originParent && originParent.classList.contains('dropzone') && originParent !== pool) {
-                    originParent.innerHTML = dropzonePlaceholder();
-                    originParent.classList.remove('zone-filled');
-                }
-                checkMappingState();
-            }
-        };
-
-        function checkMappingState() {
-            const pool = document.getElementById('tags-pool');
-            const btn = document.getElementById('btn-validate');
-            if (!pool || !btn) return;
-            if (pool.children.length === 0) {
-                btn.disabled = false;
-                btn.classList.replace('opacity-50', 'opacity-100');
-                btn.classList.remove('cursor-not-allowed');
-                btn.classList.add('hover:bg-blue-500');
-            } else {
-                btn.disabled = true;
-                btn.classList.replace('opacity-100', 'opacity-50');
-                btn.classList.add('cursor-not-allowed');
-                btn.classList.remove('hover:bg-blue-500');
-            }
-        }
-
-        window.validateMapping = function() {
-            const qData = db.mapping.find(q => q.level === state.currentLevel);
-            const tags = qData._derivedTags || deriveTagsFromChain(qData.chain);
-            let allCorrect = true;
-
-            tags.forEach(tagData => {
-                const dropzone = document.getElementById(`drop-${tagData.correctTarget}`);
-                const tagEl = document.getElementById(tagData.id);
-                const row = document.getElementById(`row-${tagData.correctTarget}`);
-
-                if (dropzone && dropzone.contains(tagEl)) {
-                    row.classList.add('border-emerald-500', 'bg-emerald-900/20');
-                } else {
-                    allCorrect = false;
-                    const activeDropzone = tagEl.parentElement;
-                    if (activeDropzone.classList.contains('dropzone')) {
-                        const wrongRow = activeDropzone.closest('.signal-row');
-                        wrongRow.classList.add('border-red-500', 'shake-err');
-                        setTimeout(() => wrongRow.classList.remove('shake-err'), 400);
-                    }
-                }
-            });
-
-            const feedback = document.getElementById('mapping-feedback');
-            if (allCorrect) {
-                let earned = Math.max(30, 150 - (state.errors * 40));
-                updateXP(earned);
-                const tier = state.mappingTier;
-                feedback.innerHTML = `
-                    <div class="p-5 bg-emerald-900/30 border-l-4 border-emerald-500 text-emerald-100 flex gap-3 mt-6 shadow-lg rounded-r-lg">
-                        <i class="fas fa-check-circle text-emerald-400 mt-1 text-xl"></i>
-                        <div><strong class="block text-lg mb-1">Atribuição Validada! (+${earned} XP)</strong><p class="text-emerald-200/80">Lógica estrutural confirmada.</p></div>
-                    </div>
-                    <div class="flex gap-3 mt-4">
-                        ${tier ? `<button onclick="iniciarMappingAleatorio('${tier}')" class="bg-emerald-600 hover:bg-emerald-500 py-3 px-6 rounded-xl font-bold flex-1 transition-colors"><i class="fas fa-shuffle mr-2"></i>Nova Molécula (${tier === 'facil' ? 'Fácil' : tier === 'medio' ? 'Médio' : 'Difícil'})</button>` : ''}
-                        <button onclick="setView('modeSelect', 'mapping')" class="bg-blue-600 hover:bg-blue-500 py-3 px-6 rounded-xl font-bold flex-1 transition-colors">Mudar Dificuldade</button>
-                    </div>
-                `;
-                document.getElementById('btn-validate').style.display = 'none';
-            } else {
-                state.errors++;
-                feedback.innerHTML = `
-                    <div class="p-5 bg-red-900/30 border-l-4 border-red-500 text-red-200 flex gap-3 mt-6 shadow-lg rounded-r-lg">
-                        <i class="fas fa-times-circle text-red-400 mt-1 text-xl"></i>
-                        <div><strong class="block text-lg mb-1">Atribuição Incorreta.</strong><p class="text-red-300/80">As ligações químicas não batem com os deslocamentos. Reiniciando peças incorretas...</p></div>
-                    </div>
-                `;
-                setTimeout(() => {
-                    tags.forEach(tagData => {
-                        const dropzone = document.getElementById(`drop-${tagData.correctTarget}`);
-                        const tagEl = document.getElementById(tagData.id);
-                        if (!dropzone.contains(tagEl)) {
-                            document.getElementById('tags-pool').appendChild(tagEl);
-                            const row = tagEl.closest('.signal-row');
-                            if(row) {
-                                row.classList.remove('border-red-500');
-                                const dz = row.querySelector('.dropzone');
-                                dz.innerHTML = '<span class="text-gray-600 text-xs text-center pointer-events-none">Toque numa peça</span>';
-                                dz.classList.remove('zone-filled');
-                            }
-                        }
-                    });
-                    checkMappingState();
-                    feedback.innerHTML = '';
-                }, 2500);
-            }
-            feedback.classList.remove('hidden');
-        };
-
-        // Percorre a chain (incluindo branches) e devolve a lista de peças
-        // atribuíveis, numeradas na ordem em que aparecem. O número mostrado
-        // no diagrama e o rótulo da peça no pool vêm da MESMA fonte — isto é
-        // o que elimina o risco de dessincronia que existia quando o HTML da
-        // molécula e o array de tags eram escritos à mão separadamente.
-        function deriveTagsFromChain(chain) {
-            const tags = [];
-            let contador = 1;
-            chain.forEach(item => {
-                if (item.tagId) {
-                    tags.push({ id: item.tagId, label: String(contador), correctTarget: item.correctTarget });
-                    contador++;
-                }
-                (item.branches || []).forEach(branch => {
-                    if (branch.tagId) {
-                        tags.push({ id: branch.tagId, label: String(contador), correctTarget: branch.correctTarget });
-                        contador++;
-                    }
-                });
-            });
-            return tags;
-        }
-
-        // Desenha o diagrama esquemático da molécula a partir da chain.
-        // Itens "fixed" (sem tagId, ex: "C=O", "Anel") aparecem sem número,
-        // só como contexto estrutural. Itens com "branches" mostram sub-caixas
-        // empilhadas acima da caixa principal (ex: pares de H aromático).
-        function renderChainDiagram(chain, tagNumbers) {
-            const caixas = chain.map(item => {
-                const num = item.tagId ? tagNumbers[item.tagId] : null;
-                const badge = num
-                    ? `<span class="absolute -top-9 bg-blue-600 text-white w-7 h-7 rounded-full flex items-center justify-center text-sm font-sans shadow-md">${num}</span>`
-                    : '';
-
-                const branchesHtml = (item.branches || []).map(b => {
-                    const bNum = b.tagId ? tagNumbers[b.tagId] : null;
-                    const bBadge = bNum
-                        ? `<span class="absolute -top-9 bg-blue-600 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs font-sans shadow-md">${bNum}</span>`
-                        : '';
-                    return `
-                        <div class="flex flex-col items-center relative mb-2">
-                            ${bBadge}
-                            <div class="bg-gray-900 border border-gray-600 rounded px-2 py-1 text-xs md:text-sm">${b.label}</div>
-                            <div class="w-px h-3 bg-gray-500"></div>
-                        </div>
-                    `;
-                }).join('');
-
-                return `
-                    <div class="flex flex-col items-center shrink-0">
-                        ${branchesHtml ? `<div class="flex flex-col items-center mb-1">${branchesHtml}</div>` : ''}
-                        <div class="flex flex-col items-center relative">
-                            ${badge}
-                            <div class="bg-gray-800 border ${item.fixed ? 'border-gray-600 text-gray-400' : 'border-blue-500/60 text-gray-100'} rounded-lg px-3 py-2 text-sm md:text-base font-mono font-bold">${item.label}</div>
-                        </div>
-                    </div>
-                `;
-            });
-
-            const linha = caixas.join('<div class="w-6 md:w-10 h-1 bg-gray-500 mx-1 md:mx-2 self-center shrink-0"></div>');
-
-            return `
-                <div class="flex items-end justify-center flex-wrap gap-y-6 bg-gray-800 p-6 md:p-10 rounded-xl border border-gray-700 shadow-inner overflow-x-auto">
-                    ${linha}
-                </div>
-            `;
-        }
-
-        function renderMapping() {
-            const qData = db.mapping.find(q => q.level === state.currentLevel);
-            const tags = deriveTagsFromChain(qData.chain);
-            const tagNumbers = {};
-            tags.forEach(t => { tagNumbers[t.id] = t.label; });
-            // guarda os tags derivados no próprio objeto em memória para que
-            // validateMapping (que roda depois, a partir de outro clique)
-            // consiga reler a mesma lista sem precisar recalculá-la.
-            qData._derivedTags = tags;
-
-            let tagsHtml = '';
-            [...tags].sort(() => Math.random() - 0.5).forEach(t => {
-                tagsHtml += `<div id="${t.id}" class="select-tag bg-blue-600 border-2 border-blue-400 text-white w-12 h-12 rounded-full flex items-center justify-center font-bold text-xl shadow-[0_0_15px_rgba(37,99,235,0.4)] z-20">${t.label}</div>`;
-            });
-
-            let signalsListHtml = '';
-            [...qData.signals].sort((a,b) => b.ppm - a.ppm).forEach(sig => {
-                signalsListHtml += `
-                    <div id="row-${sig.id}" class="signal-row flex items-center justify-between p-4 bg-gray-800 border border-gray-700 rounded-xl transition-colors">
-                        <div class="flex flex-col items-center justify-center w-20 shrink-0 border-r border-gray-600 pr-2 md:pr-4">
-                            <span class="text-2xl font-black text-emerald-400 leading-none">${sig.ppm}</span>
-                        </div>
-                        <div class="flex-1 px-4 md:px-6">
-                            <div class="font-bold text-gray-200">${sig.mult}</div>
-                            <div class="text-sm text-blue-400 font-mono mt-1">Int: ${sig.int}</div>
-                        </div>
-                        <div id="drop-${sig.id}" class="dropzone w-14 h-14 md:w-16 md:h-16 border-2 border-dashed border-gray-500 rounded-lg bg-gray-900 flex items-center justify-center relative shrink-0" onclick="selectDropzone('${sig.id}')">
-                            <span class="text-gray-600 text-[10px] md:text-xs text-center pointer-events-none">Toque numa peça</span>
-                        </div>
-                    </div>
-                `;
-            });
-
-            const tierNomes = { facil: 'Fácil', medio: 'Médio', dificil: 'Difícil' };
-
-            const div = document.createElement('div');
-            div.className = 'w-full max-w-4xl mx-auto pb-20 mt-6';
-
-            div.innerHTML = `
-                <div class="flex items-center gap-4 mb-6 px-4 md:px-0">
-                    <button onclick="setView('modeSelect', 'mapping')" class="text-gray-400 hover:text-white p-2 bg-gray-800 rounded-lg"><i class="fas fa-arrow-left"></i></button>
-                    <h2 class="text-2xl font-black text-blue-400">${tierNomes[qData.tier] || ''}: ${qData.title}</h2>
-                </div>
-
-                <p class="text-sm text-gray-400 mb-4 px-4 md:px-0"><i class="fas fa-hand-pointer text-blue-400 mr-1"></i> Toque num número para selecioná-lo e depois no sinal correspondente. Para mover uma peça já colocada, toque nela e depois na nova posição.</p>
-                <p class="text-sm text-gray-300 mb-4 px-4 md:px-0 font-mono">> ${qData.context}</p>
-
-                <div class="mb-8 px-4 md:px-0">
-                    ${renderChainDiagram(qData.chain, tagNumbers)}
-                    <div class="mt-4 bg-gray-800/80 p-4 border border-gray-700 rounded-xl flex items-center gap-4">
-                        <span class="text-gray-400 text-sm hidden md:block">Peças:</span>
-                        <div id="tags-pool" class="flex justify-center gap-4 md:gap-6 min-h-[48px] flex-1" onclick="handlePoolClick(event)">${tagsHtml}</div>
-                    </div>
-                </div>
-
-                <div class="bg-gray-900 border border-gray-700 rounded-xl p-4 md:p-6 pt-10 mb-8 mx-4 md:mx-0 shadow-inner">
-                    <div class="flex justify-between text-[10px] md:text-xs text-gray-500 font-bold uppercase mb-2"><span>Desblindado</span><span>Blindado</span></div>
-                    ${renderSpectrum(qData.signals, qData.maxPpm)}
-                </div>
-
-                <div class="space-y-3 px-4 md:px-0">${signalsListHtml}</div>
-                <div id="mapping-feedback" class="hidden fade-in px-4 md:px-0"></div>
-                <div class="px-4 md:px-0">
-                    <button id="btn-validate" onclick="validateMapping()" disabled class="mt-8 w-full bg-blue-600 text-white font-bold py-4 rounded-xl opacity-50 cursor-not-allowed transition-all uppercase tracking-wide">Validar Atribuição</button>
-                </div>
-            `;
-            return div;
-        }
-
-        window.toggleSpectrum = type => { state.activeSpectrumType = type; render(); }
-
-        window.handleSoloAnswer = function(optionId, btnElement) {
-            const qData = db.solo.find(q => q.level === state.currentLevel);
-            const option = qData.options.find(o => o.id === optionId);
-            const feedbackBox = document.getElementById(`feedback-box`);
-            const btns = document.querySelectorAll(`.option-btn`);
-            btns.forEach(b => b.disabled = true);
-
-            if (option.correct) {
-                btnElement.classList.replace('bg-gray-800', 'bg-emerald-900/80');
-                btnElement.classList.add('border-emerald-500');
-                let earned = Math.max(20, 200 - (state.errors * 70));
-                updateXP(earned);
-                feedbackBox.innerHTML = `
-                    <div class="p-5 bg-emerald-900/30 border-l-4 border-emerald-500 text-emerald-100 flex gap-4 mt-6 shadow-lg rounded-r-lg">
-                        <i class="fas fa-check-circle text-emerald-400 mt-1 text-xl"></i>
-                        <div><strong class="block mb-2 text-lg">Diagnóstico Exato (+${earned} XP)</strong><p class="text-emerald-200/90 leading-relaxed">${option.feedback}</p></div>
-                    </div>
-                    <button onclick="setView('modeSelect', 'solo')" class="mt-6 bg-purple-600 hover:bg-purple-500 py-3 px-6 rounded-xl font-bold w-full transition-colors">Retornar às Missões</button>
-                `;
-            } else {
-                state.errors++;
-                btnElement.classList.replace('bg-gray-800', 'bg-red-900/40');
-                btnElement.classList.add('border-red-500/50', 'opacity-50');
-                feedbackBox.innerHTML = `
-                    <div class="p-5 bg-red-900/20 border-l-4 border-red-500 text-red-200 flex gap-4 mt-6 shadow-lg rounded-r-lg">
-                        <i class="fas fa-exclamation-triangle text-red-400 mt-1 text-xl"></i>
-                        <div><strong class="block mb-1 text-lg">Lógica Falha. XP Penalizado.</strong><p class="text-red-300/90 leading-relaxed">${option.feedback}</p></div>
-                    </div>
-                `;
-                setTimeout(() => btns.forEach(b => { if(!b.classList.contains('border-red-500/50')) b.disabled = false; }), 1000);
-            }
-            feedbackBox.classList.remove('hidden');
-        };
-
-        function renderSolo() {
-            const qData = db.solo.find(q => q.level === state.currentLevel);
-            const div = document.createElement('div');
-            div.className = 'w-full max-w-4xl mx-auto pb-20 mt-6';
-
-            let toggleHtml = '';
-            if (Object.keys(qData.spectra).length > 1) {
-                toggleHtml = `
-                    <div class="flex justify-center gap-3 mt-4 mb-8">
-                        <button onclick="toggleSpectrum('1H')" class="px-8 py-2 rounded-full font-bold transition-all ${state.activeSpectrumType === '1H' ? 'bg-emerald-600 text-white shadow-[0_0_15px_rgba(16,185,129,0.4)]' : 'bg-gray-800 text-gray-400 border border-gray-700 hover:bg-gray-700'}">Varredura 1H</button>
-                        <button onclick="toggleSpectrum('13C')" class="px-8 py-2 rounded-full font-bold transition-all ${state.activeSpectrumType === '13C' ? 'bg-blue-600 text-white shadow-[0_0_15px_rgba(37,99,235,0.4)]' : 'bg-gray-800 text-gray-400 border border-gray-700 hover:bg-gray-700'}">Varredura 13C</button>
-                    </div>
-                `;
-            }
-
-            const is13C = state.activeSpectrumType === '13C';
-            const spectrumUI = renderSpectrum(qData.spectra[state.activeSpectrumType].signals, qData.spectra[state.activeSpectrumType].maxPpm, is13C);
-
-            const optionsHtml = qData.options.map(o => `
-                <button onclick="handleSoloAnswer('${o.id}', this)" class="option-btn w-full text-left bg-gray-800 hover:bg-gray-700 border border-gray-600 p-5 rounded-xl transition-all shadow-sm text-[15px] leading-relaxed">${o.text}</button>
-            `).join('');
-
-            div.innerHTML = `
-                <div class="flex items-center gap-4 mb-6 px-4 md:px-0">
-                    <button onclick="setView('modeSelect', 'solo')" class="text-gray-400 hover:text-white p-2 bg-gray-800 rounded-lg"><i class="fas fa-arrow-left"></i></button>
-                    <h2 class="text-2xl font-black text-purple-400">Nível ${state.currentLevel}: ${qData.title}</h2>
-                </div>
-
-                <div class="bg-gray-800/50 border border-gray-700 p-4 md:p-6 rounded-2xl shadow-inner mx-4 md:mx-0">
-                    <div class="bg-purple-900/20 border-l-2 border-purple-500 p-3 mb-4 rounded"><p class="text-gray-300 font-mono text-sm">> ${qData.context}</p></div>
-                    ${toggleHtml}
-                    <div class="bg-gray-900 border border-gray-700 rounded-xl p-4 md:p-6 pt-10">
-                        <div class="flex justify-between text-[10px] md:text-xs text-gray-500 font-bold uppercase mb-2"><span>Baixo Campo</span><span>Alto Campo</span></div>
-                        ${spectrumUI}
-                        <p class="text-center text-xs text-gray-500 mt-2">Toque nos picos do espetro para ver os dados vetoriais.</p>
-                    </div>
-                </div>
-
-                <div class="bg-gray-800 p-4 md:p-6 rounded-2xl border border-gray-700 shadow-xl mt-6 mx-4 md:mx-0">
-                    <h3 class="text-lg font-bold mb-5 border-b border-gray-700 pb-3 text-gray-200">Estrutura Molecular Correspondente</h3>
-                    <div class="space-y-3">${optionsHtml}</div>
-                    <div id="feedback-box" class="mt-6 hidden fade-in"></div>
-                </div>
-            `;
-            return div;
-        }
-
-        // Inicialização: mostra um estado de carregamento, busca os JSONs, só então
-        // desenha a primeira tela. Se o fetch falhar (ex: arquivo ausente na pasta
-        // data/, ou app aberto direto do disco em vez de servido por http), mostra
-        // um erro claro em vez de uma tela em branco.
-        async function iniciar() {
-            const container = document.getElementById('app-container');
-            container.innerHTML = `
-                <div class="flex flex-col items-center justify-center h-full text-gray-400 gap-3 mt-20">
-                    <i class="fas fa-atom text-3xl text-emerald-500 animate-spin"></i>
-                    <span>A carregar dados...</span>
-                </div>
-            `;
-
-            const ok = await carregarDados();
-
-            if (!ok) {
-                container.innerHTML = `
-                    <div class="flex flex-col items-center justify-center h-full text-red-300 gap-3 mt-20 text-center px-4">
-                        <i class="fas fa-triangle-exclamation text-3xl text-red-500"></i>
-                        <span class="font-bold">Não foi possível carregar os dados.</span>
-                        <span class="text-sm text-gray-400 max-w-md">
-                            Confirme que a pasta <code class="bg-gray-800 px-1 rounded">data/</code> com
-                            tutorial.json, mapping.json e solo.json está no mesmo repositório, e que a
-                            página está a ser servida via http (não aberta diretamente como arquivo local).
-                        </span>
-                    </div>
-                `;
-                return;
-            }
-
-            render();
-        }
-
-        iniciar();
-    </script>
+<header class="bg-gray-800 border-b border-gray-700 p-4 flex justify-between items-center shrink-0 shadow-md z-10">
+<div class="flex items-center gap-3 cursor-pointer" onclick="setView('home')">
+<div class="bg-emerald-500 text-gray-900 p-2 rounded-lg font-bold">
+<i class="fas fa-atom"></i>
+</div>
+<h1 class="text-xl font-bold tracking-tight text-white hidden sm:block">Motor RMN</h1>
+</div>
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-2 text-sm bg-gray-700 px-4 py-2 rounded-full border border-gray-600">
+<i class="fas fa-bolt text-yellow-400"></i>
+<span id="xp-counter" class="font-bold font-mono text-lg transition-all">0 XP</span>
+</div>
+</div>
+</header>
+<main id="app-container" class="flex-1 overflow-y-auto p-4 md:p-6 fade-in flex flex-col items-center w-full max-w-5xl mx-auto z-0">
+</main>
+<script>
+// --- ESTADO GLOBAL ---
+const state = {
+xp: 0,
+currentView: 'home',
+activeMode: null,
+currentLevel: 1,
+activeSpectrumType: '1H',
+errors: 0,
+selectedTagId: null,
+mappingTier: null,
+lastMappingLevel: null
+};
+
+// --- BANCO DE DADOS ---
+const db = {
+tutorial: [],
+mapping: [],
+solo: []
+};
+
+async function carregarDados() {
+const arquivos = ['tutorial', 'mapping', 'solo'];
+try {
+const respostas = await Promise.all(
+arquivos.map(nome => fetch(`data/${nome}.json`))
+);
+for (const r of respostas) {
+if (!r.ok) throw new Error(`Falha ao carregar ${r.url} (status ${r.status})`);
+}
+const dados = await Promise.all(respostas.map(r => r.json()));
+db.tutorial = dados[0];
+db.mapping = dados[1];
+db.solo = dados[2];
+return true;
+} catch (erro) {
+console.error('Erro ao carregar dados:', erro);
+return false;
+}
+}
+
+// --- MOTOR DE ALEATORIEDADE E RUÍDO EXPERIMENTAL ---
+function aplicarRuidoExperimental(signals) {
+return signals.map(sig => {
+const ruidoPpm = (Math.random() - 0.5) * 0.08;
+const ruidoInt = Math.max(0.1, sig.int + (Math.random() - 0.5) * (sig.int * 0.2));
+return {
+...sig,
+ppm: parseFloat((sig.ppm + ruidoPpm).toFixed(2)),
+int: parseFloat(ruidoInt.toFixed(1)),
+height: Math.round(sig.height * (0.9 + Math.random() * 0.2))
+};
+});
+}
+
+// --- FUNÇÕES DE ESTADO DA APLICAÇÃO ---
+function updateXP(amount) {
+state.xp += amount;
+const xpEl = document.getElementById('xp-counter');
+xpEl.innerText = `${state.xp} XP`;
+xpEl.classList.add('text-yellow-400', 'scale-[1.3]');
+setTimeout(() => xpEl.classList.remove('text-yellow-400', 'scale-[1.3]'), 300);
+}
+
+function setView(viewName, mode = null, level = 1) {
+state.currentView = viewName;
+if (mode) state.activeMode = mode;
+if (level) state.currentLevel = level;
+state.errors = 0;
+state.activeSpectrumType = '1H';
+state.selectedTagId = null;
+render();
+}
+
+// --- RENDERIZADORES DE ECRÃS ---
+function render() {
+const container = document.getElementById('app-container');
+container.innerHTML = '';
+if (state.currentView === 'home') container.appendChild(renderHome());
+else if (state.currentView === 'modeSelect') container.appendChild(renderLevelSelect());
+else if (state.currentView === 'tutorial') container.appendChild(renderTutorial());
+else if (state.currentView === 'gameplay') {
+if (state.activeMode === 'mapping') container.appendChild(renderMapping());
+else container.appendChild(renderSolo());
+}
+}
+
+function renderHome() {
+const div = document.createElement('div');
+div.className = 'flex flex-col items-center justify-center w-full mt-4 md:mt-10 space-y-10';
+div.innerHTML = `
+<div class="text-center space-y-4 max-w-2xl px-4">
+<h2 class="text-4xl md:text-5xl font-black bg-clip-text text-transparent bg-gradient-to-r from-emerald-400 to-blue-500 tracking-tight leading-tight">
+Ressonância Magnética Nuclear
+</h2>
+<p class="text-gray-400 text-base md:text-lg">
+Gamificação focada em elucidação real. Do conceito vetorial ao abismo quântico. Pare de decorar, comece a analisar.
+</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 w-full px-4 mb-20">
+<button onclick="setView('tutorial', null, 1)" class="group bg-gray-800 border border-emerald-500/50 hover:border-emerald-500 rounded-2xl p-6 transition-all text-left flex flex-col items-start gap-4 shadow-lg hover:-translate-y-1">
+<div class="p-4 rounded-xl text-emerald-400 bg-emerald-500/10"><i class="fas fa-book-open text-3xl"></i></div>
+<div>
+<h3 class="font-bold text-xl text-gray-100">Aprenda o Básico</h3>
+<p class="text-sm text-gray-400 mt-2">Revisão dos conceitos: ppm, Karplus, n+1 e filtros DEPT.</p>
+</div>
+</button>
+<button onclick="iniciarMappingAleatorio('facil')" class="group bg-gray-800 border border-blue-500/50 hover:border-blue-500 rounded-2xl p-6 transition-all text-left flex flex-col items-start gap-4 shadow-lg hover:-translate-y-1">
+<div class="p-4 rounded-xl text-blue-400 bg-blue-500/10"><i class="fas fa-project-diagram text-3xl"></i></div>
+<div>
+<h3 class="font-bold text-xl text-gray-100">Atribuição H/C: Fácil</h3>
+<p class="text-sm text-gray-400 mt-2">Moléculas simples, sorteio aleatório.</p>
+</div>
+</button>
+<button onclick="iniciarMappingAleatorio('medio')" class="group bg-gray-800 border border-blue-500/50 hover:border-blue-500 rounded-2xl p-6 transition-all text-left flex flex-col items-start gap-4 shadow-lg hover:-translate-y-1">
+<div class="p-4 rounded-xl text-blue-400 bg-blue-500/10"><i class="fas fa-project-diagram text-3xl"></i></div>
+<div>
+<h3 class="font-bold text-xl text-gray-100">Atribuição H/C: Médio</h3>
+<p class="text-sm text-gray-400 mt-2">Grupos funcionais e aromáticos simples.</p>
+</div>
+</button>
+<button onclick="iniciarMappingAleatorio('dificil')" class="group bg-gray-800 border border-blue-500/50 hover:border-blue-500 rounded-2xl p-6 transition-all text-left flex flex-col items-start gap-4 shadow-lg hover:-translate-y-1">
+<div class="p-4 rounded-xl text-blue-400 bg-blue-500/10"><i class="fas fa-project-diagram text-3xl"></i></div>
+<div>
+<h3 class="font-bold text-xl text-gray-100">Atribuição H/C: Difícil</h3>
+<p class="text-sm text-gray-400 mt-2">IFAs complexos e múltiplas atribuições.</p>
+</div>
+</button>
+<button onclick="setView('modeSelect', 'solo')" class="group bg-gray-800 border border-purple-500/50 hover:border-purple-500 rounded-2xl p-6 transition-all text-left flex flex-col items-start gap-4 shadow-lg hover:-translate-y-1">
+<div class="p-4 rounded-xl text-purple-400 bg-purple-500/10"><i class="fas fa-biohazard text-3xl"></i></div>
+<div>
+<h3 class="font-bold text-xl text-gray-100">Desafio Solo</h3>
+<p class="text-sm text-gray-400 mt-2">Avalie espetros puros (1H/13C) e identifique a estrutura. Perca XP por erros.</p>
+</div>
+</button>
+</div>
+`;
+return div;
+}
+
+function renderLevelSelect() {
+const div = document.createElement('div');
+div.className = 'flex flex-col items-center w-full mt-6 space-y-8 px-4 pb-20';
+const color = 'purple';
+const levels = db[state.activeMode];
+let buttonsHtml = levels.map(l => `
+<button onclick="setView('gameplay', '${state.activeMode}', ${l.level})" class="w-full text-left bg-gray-800 border border-${color}-500/50 hover:border-${color}-500 p-6 rounded-xl transition-all hover:bg-${color}-900/20 shadow-md">
+<span class="font-bold text-${color}-400 text-xl block mb-2">Nível ${l.level}: ${l.title}</span>
+<span class="text-gray-400 text-sm font-mono">> Contexto: ${l.context}</span>
+</button>
+`).join('');
+div.innerHTML = `
+<div class="flex items-center gap-4 w-full">
+<button onclick="setView('home')" class="text-gray-400 hover:text-white p-3 bg-gray-800 rounded-xl transition-colors shrink-0"><i class="fas fa-arrow-left"></i></button>
+<h2 class="text-2xl md:text-3xl font-bold capitalize">Missões: Solo</h2>
+</div>
+<div class="grid gap-4 w-full">${buttonsHtml}</div>
+`;
+return div;
+}
+
+window.iniciarMappingAleatorio = function(tier) {
+const pool = db.mapping.filter(m => m.tier === tier);
+if (pool.length === 0) return;
+let candidatos = pool;
+if (pool.length > 1 && state.lastMappingLevel !== null) {
+candidatos = pool.filter(m => m.level !== state.lastMappingLevel);
+}
+const escolhido = candidatos[Math.floor(Math.random() * candidatos.length)];
+state.lastMappingLevel = escolhido.level;
+state.mappingTier = tier;
+setView('gameplay', 'mapping', escolhido.level);
+};
+
+function renderTutorial() {
+const data = db.tutorial.find(t => t.level === state.currentLevel);
+const div = document.createElement('div');
+div.className = 'w-full max-w-3xl mx-auto mt-6 space-y-6 pb-20';
+const btnPrev = state.currentLevel > 1
+? `<button onclick="setView('tutorial', null, ${state.currentLevel - 1})" class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-3 px-6 rounded-xl transition-colors">Voltar</button>`
+: `<div></div>`;
+const btnNext = state.currentLevel < db.tutorial.length
+? `<button onclick="setView('tutorial', null, ${state.currentLevel + 1})" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3 px-6 rounded-xl transition-colors shadow-[0_0_15px_rgba(16,185,129,0.2)]">Próxima Base</button>`
+: `<button onclick="setView('home')" class="bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 px-6 rounded-xl transition-colors">Concluir Revisão</button>`;
+div.innerHTML = `
+<div class="flex items-center gap-4 mb-6">
+<button onclick="setView('home')" class="text-gray-400 hover:text-white p-3 bg-gray-800 rounded-xl"><i class="fas fa-home"></i></button>
+<h2 class="text-2xl font-bold text-emerald-400">${data.title}</h2>
+</div>
+<div class="bg-gray-900 border border-gray-700 p-8 rounded-2xl shadow-xl text-lg leading-relaxed">
+${data.content}
+</div>
+<div class="flex justify-between pt-4">${btnPrev}${btnNext}</div>
+`;
+return div;
+}
+
+function renderSpectrum(signals, maxPpm, is13C = false) {
+let axisHtml = '';
+const step = is13C ? 20 : 1;
+for (let i = 0; i <= maxPpm; i += step) {
+const leftPos = ((maxPpm - i) / maxPpm) * 100;
+axisHtml += `<div class="axis-label" style="left: ${leftPos}%">${i}</div>`;
+}
+let peaksHtml = '';
+const colorClass = is13C ? 'peak-c13' : '';
+signals.forEach(sig => {
+const leftPos = ((maxPpm - sig.ppm) / maxPpm) * 100;
+const isNegative = sig.height < 0;
+const absHeight = Math.abs(sig.height);
+const bottomStyle = isNegative ? `top: 100%; border-radius: 0 0 2px 2px;` : `bottom: 0;`;
+const tooltipHtml = is13C
+? `<strong class="block text-blue-300">${sig.ppm} ppm</strong>${sig.mult}<br>${sig.label || ''}`
+: `<strong class="block text-emerald-300">${sig.ppm} ppm</strong>Int: ${sig.int}<br>Mult: ${sig.mult}<br>J: ${sig.J || '-'}`;
+peaksHtml += `
+<div class="signal-peak ${colorClass}" style="left: ${leftPos}%; height: ${absHeight}px; ${bottomStyle}" ontouchstart="this.classList.add('tt-active')" ontouchend="setTimeout(()=>this.classList.remove('tt-active'), 1500)">
+<div class="tooltip">${tooltipHtml}</div>
+</div>
+`;
+});
+const hasNegative = signals.some(s => s.height < 0);
+return `
+<div class="spectrum-container mt-6 mb-12 relative" ${hasNegative ? 'style="border-bottom: 1px dashed #4b5563;"' : ''}>
+${peaksHtml}
+${axisHtml}
+${hasNegative ? '<div class="absolute w-full h-[2px] bg-gray-600 top-full"></div>' : ''}
+</div>
+`;
+}
+
+function dropzonePlaceholder() {
+return '<span class="text-gray-600 text-[10px] md:text-xs text-center pointer-events-none">Toque numa peça</span>';
+}
+
+window.selectTag = function(tagId) {
+const el = document.getElementById(tagId);
+if (!el) return;
+if (state.selectedTagId === tagId) {
+el.classList.remove('is-selected');
+state.selectedTagId = null;
+return;
+}
+if (state.selectedTagId) {
+const prev = document.getElementById(state.selectedTagId);
+if (prev) prev.classList.remove('is-selected');
+}
+el.classList.add('is-selected');
+state.selectedTagId = tagId;
+};
+
+window.selectDropzone = function(zoneSignalId) {
+const dropzone = document.getElementById(`drop-${zoneSignalId}`);
+if (!dropzone) return;
+if (state.selectedTagId) {
+const tagEl = document.getElementById(state.selectedTagId);
+if (!tagEl) { state.selectedTagId = null; return; }
+const originParent = tagEl.parentElement;
+const existingInTarget = dropzone.querySelector('.select-tag');
+if (existingInTarget && existingInTarget.id !== tagEl.id) {
+document.getElementById('tags-pool').appendChild(existingInTarget);
+}
+dropzone.innerHTML = '';
+tagEl.classList.remove('is-selected');
+dropzone.appendChild(tagEl);
+dropzone.classList.add('zone-filled');
+state.selectedTagId = null;
+if (originParent && originParent.classList.contains('dropzone') && originParent !== dropzone) {
+originParent.innerHTML = dropzonePlaceholder();
+originParent.classList.remove('zone-filled');
+}
+checkMappingState();
+return;
+}
+const placedTag = dropzone.querySelector('.select-tag');
+if (placedTag) {
+selectTag(placedTag.id);
+}
+};
+
+window.handlePoolClick = function(event) {
+const tagHit = event.target.closest('.select-tag');
+if (tagHit) {
+selectTag(tagHit.id);
+return;
+}
+if (state.selectedTagId) {
+const tagEl = document.getElementById(state.selectedTagId);
+if (!tagEl) { state.selectedTagId = null; return; }
+const originParent = tagEl.parentElement;
+const pool = document.getElementById('tags-pool');
+tagEl.classList.remove('is-selected');
+pool.appendChild(tagEl);
+state.selectedTagId = null;
+if (originParent && originParent.classList.contains('dropzone') && originParent !== pool) {
+originParent.innerHTML = dropzonePlaceholder();
+originParent.classList.remove('zone-filled');
+}
+checkMappingState();
+}
+};
+
+function checkMappingState() {
+const pool = document.getElementById('tags-pool');
+const btn = document.getElementById('btn-validate');
+if (!pool || !btn) return;
+if (pool.children.length === 0) {
+btn.disabled = false;
+btn.classList.replace('opacity-50', 'opacity-100');
+btn.classList.remove('cursor-not-allowed');
+btn.classList.add('hover:bg-blue-500');
+} else {
+btn.disabled = true;
+btn.classList.replace('opacity-100', 'opacity-50');
+btn.classList.add('cursor-not-allowed');
+btn.classList.remove('hover:bg-blue-500');
+}
+}
+
+window.validateMapping = function() {
+const qData = db.mapping.find(q => q.level === state.currentLevel);
+const tags = qData._derivedTags || deriveTagsFromChain(qData.chain);
+let allCorrect = true;
+tags.forEach(tagData => {
+const dropzone = document.getElementById(`drop-${tagData.correctTarget}`);
+const tagEl = document.getElementById(tagData.id);
+const row = document.getElementById(`row-${tagData.correctTarget}`);
+if (dropzone && dropzone.contains(tagEl)) {
+row.classList.add('border-emerald-500', 'bg-emerald-900/20');
+} else {
+allCorrect = false;
+const activeDropzone = tagEl.parentElement;
+if (activeDropzone.classList.contains('dropzone')) {
+const wrongRow = activeDropzone.closest('.signal-row');
+wrongRow.classList.add('border-red-500', 'shake-err');
+setTimeout(() => wrongRow.classList.remove('shake-err'), 400);
+}
+}
+});
+const feedback = document.getElementById('mapping-feedback');
+if (allCorrect) {
+let earned = Math.max(30, 150 - (state.errors * 40));
+updateXP(earned);
+const tier = state.mappingTier;
+feedback.innerHTML = `
+<div class="p-5 bg-emerald-900/30 border-l-4 border-emerald-500 text-emerald-100 flex gap-3 mt-6 shadow-lg rounded-r-lg">
+<i class="fas fa-check-circle text-emerald-400 mt-1 text-xl"></i>
+<div><strong class="block text-lg mb-1">Atribuição Validada! (+${earned} XP)</strong><p class="text-emerald-200/80">Lógica estrutural confirmada.</p></div>
+</div>
+<div class="flex gap-3 mt-4">
+${tier ? `<button onclick="iniciarMappingAleatorio('${tier}')" class="bg-emerald-600 hover:bg-emerald-500 py-3 px-6 rounded-xl font-bold flex-1 transition-colors"><i class="fas fa-shuffle mr-2"></i>Nova Molécula (${tier === 'facil' ? 'Fácil' : tier === 'medio' ? 'Médio' : 'Difícil'})</button>` : ''}
+<button onclick="setView('modeSelect', 'mapping')" class="bg-blue-600 hover:bg-blue-500 py-3 px-6 rounded-xl font-bold flex-1 transition-colors">Mudar Dificuldade</button>
+</div>
+`;
+document.getElementById('btn-validate').style.display = 'none';
+} else {
+state.errors++;
+feedback.innerHTML = `
+<div class="p-5 bg-red-900/30 border-l-4 border-red-500 text-red-200 flex gap-3 mt-6 shadow-lg rounded-r-lg">
+<i class="fas fa-times-circle text-red-400 mt-1 text-xl"></i>
+<div><strong class="block text-lg mb-1">Atribuição Incorreta.</strong><p class="text-red-300/80">As ligações químicas não batem com os deslocamentos. Reiniciando peças incorretas...</p></div>
+</div>
+`;
+setTimeout(() => {
+tags.forEach(tagData => {
+const dropzone = document.getElementById(`drop-${tagData.correctTarget}`);
+const tagEl = document.getElementById(tagData.id);
+if (!dropzone.contains(tagEl)) {
+document.getElementById('tags-pool').appendChild(tagEl);
+const row = tagEl.closest('.signal-row');
+if (row) {
+row.classList.remove('border-red-500');
+const dz = row.querySelector('.dropzone');
+dz.innerHTML = '<span class="text-gray-600 text-xs text-center pointer-events-none">Toque numa peça</span>';
+dz.classList.remove('zone-filled');
+}
+}
+});
+checkMappingState();
+feedback.innerHTML = '';
+}, 2500);
+}
+feedback.classList.remove('hidden');
+};
+
+function deriveTagsFromChain(chain) {
+const tags = [];
+let contador = 1;
+chain.forEach(item => {
+if (item.tagId) {
+tags.push({ id: item.tagId, label: String(contador), correctTarget: item.correctTarget });
+contador++;
+}
+(item.branches || []).forEach(branch => {
+if (branch.tagId) {
+tags.push({ id: branch.tagId, label: String(contador), correctTarget: branch.correctTarget });
+contador++;
+}
+});
+});
+return tags;
+}
+
+function renderChainDiagram(chain, tagNumbers) {
+const caixas = chain.map(item => {
+const num = item.tagId ? tagNumbers[item.tagId] : null;
+const badge = num
+? `<span class="absolute -top-9 bg-blue-600 text-white w-7 h-7 rounded-full flex items-center justify-center text-sm font-sans shadow-md">${num}</span>`
+: '';
+const branchesHtml = (item.branches || []).map(b => {
+const bNum = b.tagId ? tagNumbers[b.tagId] : null;
+const bBadge = bNum
+? `<span class="absolute -top-9 bg-blue-600 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs font-sans shadow-md">${bNum}</span>`
+: '';
+return `
+<div class="flex flex-col items-center relative mb-2">
+${bBadge}
+<div class="bg-gray-900 border border-gray-600 rounded px-2 py-1 text-xs md:text-sm">${b.label}</div>
+<div class="w-px h-3 bg-gray-500"></div>
+</div>
+`;
+}).join('');
+return `
+<div class="flex flex-col items-center shrink-0">
+${branchesHtml ? `<div class="flex flex-col items-center mb-1">${branchesHtml}</div>` : ''}
+<div class="flex flex-col items-center relative">
+${badge}
+<div class="bg-gray-800 border ${item.fixed ? 'border-gray-600 text-gray-400' : 'border-blue-500/60 text-gray-100'} rounded-lg px-3 py-2 text-sm md:text-base font-mono font-bold">${item.label}</div>
+</div>
+</div>
+`;
+});
+const linha = caixas.join('<div class="w-6 md:w-10 h-1 bg-gray-500 mx-1 md:mx-2 self-center shrink-0"></div>');
+return `
+<div class="flex items-end justify-center flex-wrap gap-y-6 bg-gray-800 p-6 md:p-10 rounded-xl border border-gray-700 shadow-inner overflow-x-auto">
+${linha}
+</div>
+`;
+}
+
+function renderMapping() {
+const qData = db.mapping.find(q => q.level === state.currentLevel);
+const tags = deriveTagsFromChain(qData.chain);
+const tagNumbers = {};
+tags.forEach(t => { tagNumbers[t.id] = t.label; });
+qData._derivedTags = tags;
+
+let tagsHtml = '';
+[...tags].sort(() => Math.random() - 0.5).forEach(t => {
+tagsHtml += `<div id="${t.id}" class="select-tag bg-blue-600 border-2 border-blue-400 text-white w-12 h-12 rounded-full flex items-center justify-center font-bold text-xl shadow-[0_0_15px_rgba(37,99,235,0.4)] z-20">${t.label}</div>`;
+});
+
+// APLICA RUÍDO EXPERIMENTAL E EMBARALHA A ORDEM DOS SINAIS
+const sinaisComRuido = aplicarRuidoExperimental(qData.signals);
+const sinaisEmbaralhados = [...sinaisComRuido].sort(() => Math.random() - 0.5);
+
+let signalsListHtml = '';
+sinaisEmbaralhados.forEach(sig => {
+signalsListHtml += `
+<div id="row-${sig.id}" class="signal-row flex items-center justify-between p-4 bg-gray-800 border border-gray-700 rounded-xl transition-colors">
+<div class="flex flex-col items-center justify-center w-20 shrink-0 border-r border-gray-600 pr-2 md:pr-4">
+<span class="text-2xl font-black text-emerald-400 leading-none">${sig.ppm}</span>
+</div>
+<div class="flex-1 px-4 md:px-6">
+<div class="font-bold text-gray-200">${sig.mult}</div>
+<div class="text-sm text-blue-400 font-mono mt-1">Int: ${sig.int}</div>
+</div>
+<div id="drop-${sig.id}" class="dropzone w-14 h-14 md:w-16 md:h-16 border-2 border-dashed border-gray-500 rounded-lg bg-gray-900 flex items-center justify-center relative shrink-0" onclick="selectDropzone('${sig.id}')">
+<span class="text-gray-600 text-[10px] md:text-xs text-center pointer-events-none">Toque numa peça</span>
+</div>
+</div>
+`;
+});
+
+const tierNomes = { facil: 'Fácil', medio: 'Médio', dificil: 'Difícil' };
+const div = document.createElement('div');
+div.className = 'w-full max-w-4xl mx-auto pb-20 mt-6';
+div.innerHTML = `
+<div class="flex items-center gap-4 mb-6 px-4 md:px-0">
+<button onclick="setView('home')" class="text-gray-400 hover:text-white p-2 bg-gray-800 rounded-lg"><i class="fas fa-arrow-left"></i></button>
+<h2 class="text-2xl font-black text-blue-400">${tierNomes[qData.tier] || ''}: ${qData.title}</h2>
+</div>
+<p class="text-sm text-gray-400 mb-4 px-4 md:px-0"><i class="fas fa-hand-pointer text-blue-400 mr-1"></i> Toque num número para selecioná-lo e depois no sinal correspondente. Para mover uma peça já colocada, toque nela e depois na nova posição.</p>
+<p class="text-sm text-gray-300 mb-4 px-4 md:px-0 font-mono">> ${qData.context}</p>
+<div class="mb-8 px-4 md:px-0">
+${renderChainDiagram(qData.chain, tagNumbers)}
+<div class="mt-4 bg-gray-800/80 p-4 border border-gray-700 rounded-xl flex items-center gap-4">
+<span class="text-gray-400 text-sm hidden md:block">Peças:</span>
+<div id="tags-pool" class="flex justify-center gap-4 md:gap-6 min-h-[48px] flex-1" onclick="handlePoolClick(event)">${tagsHtml}</div>
+</div>
+</div>
+<div class="bg-gray-900 border border-gray-700 rounded-xl p-4 md:p-6 pt-10 mb-8 mx-4 md:mx-0 shadow-inner">
+<div class="flex justify-between text-[10px] md:text-xs text-gray-500 font-bold uppercase mb-2"><span>Desblindado</span><span>Blindado</span></div>
+${renderSpectrum(sinaisComRuido, qData.maxPpm)}
+</div>
+<div class="space-y-3 px-4 md:px-0">${signalsListHtml}</div>
+<div id="mapping-feedback" class="hidden fade-in px-4 md:px-0"></div>
+<div class="px-4 md:px-0">
+<button id="btn-validate" onclick="validateMapping()" disabled class="mt-8 w-full bg-blue-600 text-white font-bold py-4 rounded-xl opacity-50 cursor-not-allowed transition-all uppercase tracking-wide">Validar Atribuição</button>
+</div>
+`;
+return div;
+}
+
+window.toggleSpectrum = type => { state.activeSpectrumType = type; render(); }
+
+window.handleSoloAnswer = function(optionId, btnElement) {
+const qData = db.solo.find(q => q.level === state.currentLevel);
+const option = qData.options.find(o => o.id === optionId);
+const feedbackBox = document.getElementById(`feedback-box`);
+const btns = document.querySelectorAll(`.option-btn`);
+btns.forEach(b => b.disabled = true);
+if (option.correct) {
+btnElement.classList.replace('bg-gray-800', 'bg-emerald-900/80');
+btnElement.classList.add('border-emerald-500');
+let earned = Math.max(20, 200 - (state.errors * 70));
+updateXP(earned);
+feedbackBox.innerHTML = `
+<div class="p-5 bg-emerald-900/30 border-l-4 border-emerald-500 text-emerald-100 flex gap-4 mt-6 shadow-lg rounded-r-lg">
+<i class="fas fa-check-circle text-emerald-400 mt-1 text-xl"></i>
+<div><strong class="block mb-2 text-lg">Diagnóstico Exato (+${earned} XP)</strong><p class="text-emerald-200/90 leading-relaxed">${option.feedback}</p></div>
+</div>
+<button onclick="setView('modeSelect', 'solo')" class="mt-6 bg-purple-600 hover:bg-purple-500 py-3 px-6 rounded-xl font-bold w-full transition-colors">Retornar às Missões</button>
+`;
+} else {
+state.errors++;
+btnElement.classList.replace('bg-gray-800', 'bg-red-900/40');
+btnElement.classList.add('border-red-500/50', 'opacity-50');
+feedbackBox.innerHTML = `
+<div class="p-5 bg-red-900/20 border-l-4 border-red-500 text-red-200 flex gap-4 mt-6 shadow-lg rounded-r-lg">
+<i class="fas fa-exclamation-triangle text-red-400 mt-1 text-xl"></i>
+<div><strong class="block mb-1 text-lg">Lógica Falha. XP Penalizado.</strong><p class="text-red-300/90 leading-relaxed">${option.feedback}</p></div>
+</div>
+`;
+setTimeout(() => btns.forEach(b => { if (!b.classList.contains('border-red-500/50')) b.disabled = false; }), 1000);
+}
+feedbackBox.classList.remove('hidden');
+};
+
+function renderSolo() {
+const qData = db.solo.find(q => q.level === state.currentLevel);
+const div = document.createElement('div');
+div.className = 'w-full max-w-4xl mx-auto pb-20 mt-6';
+let toggleHtml = '';
+if (Object.keys(qData.spectra).length > 1) {
+toggleHtml = `
+<div class="flex justify-center gap-3 mt-4 mb-8">
+<button onclick="toggleSpectrum('1H')" class="px-8 py-2 rounded-full font-bold transition-all ${state.activeSpectrumType === '1H' ? 'bg-emerald-600 text-white shadow-[0_0_15px_rgba(16,185,129,0.4)]' : 'bg-gray-800 text-gray-400 border border-gray-700 hover:bg-gray-700'}">Varredura 1H</button>
+<button onclick="toggleSpectrum('13C')" class="px-8 py-2 rounded-full font-bold transition-all ${state.activeSpectrumType === '13C' ? 'bg-blue-600 text-white shadow-[0_0_15px_rgba(37,99,235,0.4)]' : 'bg-gray-800 text-gray-400 border border-gray-700 hover:bg-gray-700'}">Varredura 13C</button>
+</div>
+`;
+}
+const is13C = state.activeSpectrumType === '13C';
+const spectrumUI = renderSpectrum(qData.spectra[state.activeSpectrumType].signals, qData.spectra[state.activeSpectrumType].maxPpm, is13C);
+const optionsHtml = qData.options.map(o => `
+<button onclick="handleSoloAnswer('${o.id}', this)" class="option-btn w-full text-left bg-gray-800 hover:bg-gray-700 border border-gray-600 p-5 rounded-xl transition-all shadow-sm text-[15px] leading-relaxed">${o.text}</button>
+`).join('');
+div.innerHTML = `
+<div class="flex items-center gap-4 mb-6 px-4 md:px-0">
+<button onclick="setView('modeSelect', 'solo')" class="text-gray-400 hover:text-white p-2 bg-gray-800 rounded-lg"><i class="fas fa-arrow-left"></i></button>
+<h2 class="text-2xl font-black text-purple-400">Nível ${state.currentLevel}: ${qData.title}</h2>
+</div>
+<div class="bg-gray-800/50 border border-gray-700 p-4 md:p-6 rounded-2xl shadow-inner mx-4 md:mx-0">
+<div class="bg-purple-900/20 border-l-2 border-purple-500 p-3 mb-4 rounded"><p class="text-gray-300 font-mono text-sm">> ${qData.context}</p></div>
+${toggleHtml}
+<div class="bg-gray-900 border border-gray-700 rounded-xl p-4 md:p-6 pt-10">
+<div class="flex justify-between text-[10px] md:text-xs text-gray-500 font-bold uppercase mb-2"><span>Baixo Campo</span><span>Alto Campo</span></div>
+${spectrumUI}
+<p class="text-center text-xs text-gray-500 mt-2">Toque nos picos do espetro para ver os dados vetoriais.</p>
+</div>
+</div>
+<div class="bg-gray-800 p-4 md:p-6 rounded-2xl border border-gray-700 shadow-xl mt-6 mx-4 md:mx-0">
+<h3 class="text-lg font-bold mb-5 border-b border-gray-700 pb-3 text-gray-200">Estrutura Molecular Correspondente</h3>
+<div class="space-y-3">${optionsHtml}</div>
+<div id="feedback-box" class="mt-6 hidden fade-in"></div>
+</div>
+`;
+return div;
+}
+
+async function iniciar() {
+const container = document.getElementById('app-container');
+container.innerHTML = `
+<div class="flex flex-col items-center justify-center h-full text-gray-400 gap-3 mt-20">
+<i class="fas fa-atom text-3xl text-emerald-500 animate-spin"></i>
+<span>A carregar dados...</span>
+</div>
+`;
+const ok = await carregarDados();
+if (!ok) {
+container.innerHTML = `
+<div class="flex flex-col items-center justify-center h-full text-red-300 gap-3 mt-20 text-center px-4">
+<i class="fas fa-triangle-exclamation text-3xl text-red-500"></i>
+<span class="font-bold">Não foi possível carregar os dados.</span>
+<span class="text-sm text-gray-400 max-w-md">
+Confirme que a pasta <code class="bg-gray-800 px-1 rounded">data/</code> com
+tutorial.json, mapping.json e solo.json está no mesmo repositório, e que a
+página está a ser servida via http (não aberta diretamente como arquivo local).
+</span>
+</div>
+`;
+return;
+}
+render();
+}
+
+iniciar();
+</script>
 </body>
 </html>
