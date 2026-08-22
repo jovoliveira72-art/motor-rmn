@@ -452,16 +452,15 @@
         }
 
         // --- TAP-TO-SELECT (substitui a Drag and Drop API nativa, que não dispara em touchscreens) ---
+        // Design: cada peça NÃO tem clique próprio. O clique é sempre tratado pelo
+        // contentor (pool ou dropzone) onde ela está. Isto evita que, no toque num
+        // ecrã pequeno, o dedo acerte ora na peça ora na borda da zona de forma
+        // imprevisível — a zona inteira, com a peça lá dentro, é um único alvo.
         function dropzonePlaceholder() {
             return '<span class="text-gray-600 text-[10px] md:text-xs text-center pointer-events-none">Toque numa peça</span>';
         }
 
-        window.selectTag = function(tagId, event) {
-            // stopPropagation é essencial aqui: a peça, quando já colocada, fica DENTRO
-            // da dropzone. Sem isto, o clique nela também dispara o onclick da dropzone
-            // (bubbling), que a colocava de volta no mesmo lugar instantaneamente —
-            // por isso parecia "impossível mover" uma peça já posicionada.
-            if (event) event.stopPropagation();
+        window.selectTag = function(tagId) {
             const el = document.getElementById(tagId);
             if (!el) return;
 
@@ -482,14 +481,14 @@
             const dropzone = document.getElementById(`drop-${zoneSignalId}`);
             if (!dropzone) return;
 
-            // Caso 1: há uma peça selecionada (do pool OU de outra zona) -> mover pra cá
+            // Caso 1: há uma peça selecionada -> mover pra cá (esta zona inteira é o alvo,
+            // não importa se o toque caiu sobre a peça já lá dentro ou na borda)
             if (state.selectedTagId) {
                 const tagEl = document.getElementById(state.selectedTagId);
                 if (!tagEl) { state.selectedTagId = null; return; }
 
                 const originParent = tagEl.parentElement;
 
-                // Se a zona destino já tem outra peça, devolve-a ao pool
                 const existingInTarget = dropzone.querySelector('.select-tag');
                 if (existingInTarget && existingInTarget.id !== tagEl.id) {
                     document.getElementById('tags-pool').appendChild(existingInTarget);
@@ -501,7 +500,6 @@
                 dropzone.classList.add('zone-filled');
                 state.selectedTagId = null;
 
-                // Se a peça veio de OUTRA dropzone (não do pool), restaura o placeholder lá
                 if (originParent && originParent.classList.contains('dropzone') && originParent !== dropzone) {
                     originParent.innerHTML = dropzonePlaceholder();
                     originParent.classList.remove('zone-filled');
@@ -511,11 +509,39 @@
                 return;
             }
 
-            // Caso 2: nenhuma peça selecionada. Se a zona clicada já tem uma peça,
-            // seleciona-a (pronta para ser movida com o próximo toque).
+            // Caso 2: nenhuma peça selecionada. Toque em qualquer ponto de uma zona
+            // ocupada seleciona a peça que está lá (pronta para o próximo toque a mover).
             const placedTag = dropzone.querySelector('.select-tag');
             if (placedTag) {
                 selectTag(placedTag.id);
+            }
+        };
+
+        // Clique no pool: se caiu numa peça, seleciona-a. Se caiu no fundo do pool
+        // (fora de qualquer peça) e havia uma peça selecionada, devolve-a ao pool —
+        // este é o atalho de "2 toques" para retirar uma peça de uma zona: toque na
+        // zona ocupada (seleciona) e depois toque no fundo do pool (devolve).
+        window.handlePoolClick = function(event) {
+            const tagHit = event.target.closest('.select-tag');
+            if (tagHit) {
+                selectTag(tagHit.id);
+                return;
+            }
+            if (state.selectedTagId) {
+                const tagEl = document.getElementById(state.selectedTagId);
+                if (!tagEl) { state.selectedTagId = null; return; }
+                const originParent = tagEl.parentElement;
+                const pool = document.getElementById('tags-pool');
+
+                tagEl.classList.remove('is-selected');
+                pool.appendChild(tagEl);
+                state.selectedTagId = null;
+
+                if (originParent && originParent.classList.contains('dropzone') && originParent !== pool) {
+                    originParent.innerHTML = dropzonePlaceholder();
+                    originParent.classList.remove('zone-filled');
+                }
+                checkMappingState();
             }
         };
 
@@ -607,7 +633,7 @@
 
             let tagsHtml = '';
             [...qData.tags].sort(() => Math.random() - 0.5).forEach(t => {
-                tagsHtml += `<div id="${t.id}" onclick="selectTag('${t.id}', event)" class="select-tag bg-blue-600 border-2 border-blue-400 text-white w-12 h-12 rounded-full flex items-center justify-center font-bold text-xl shadow-[0_0_15px_rgba(37,99,235,0.4)] z-20">${t.label}</div>`;
+                tagsHtml += `<div id="${t.id}" class="select-tag bg-blue-600 border-2 border-blue-400 text-white w-12 h-12 rounded-full flex items-center justify-center font-bold text-xl shadow-[0_0_15px_rgba(37,99,235,0.4)] z-20">${t.label}</div>`;
             });
 
             let signalsListHtml = '';
@@ -640,7 +666,7 @@
                     ${qData.moleculeHTML}
                     <div class="mt-4 bg-gray-800/80 p-4 border border-gray-700 rounded-xl flex items-center gap-4">
                         <span class="text-gray-400 text-sm hidden md:block">Peças:</span>
-                        <div id="tags-pool" class="flex justify-center gap-4 md:gap-6 min-h-[48px] flex-1">${tagsHtml}</div>
+                        <div id="tags-pool" class="flex justify-center gap-4 md:gap-6 min-h-[48px] flex-1" onclick="handlePoolClick(event)">${tagsHtml}</div>
                     </div>
                 </div>
 
