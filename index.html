@@ -6,7 +6,7 @@
 <title>Motor RMN — Elucidação Espectral</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root {
   --bg: #0A0A0A;
@@ -17,10 +17,17 @@
   --text: #EDEDED;
   --text-dim: #8A8A8A;
   --text-faint: #4A4A4A;
-  --accent: #00E08E;
-  --accent-dim: rgba(0, 224, 142, 0.12);
+  
+  /* Cores por modo */
+  --mapping: #00D4FF;
+  --mapping-dim: rgba(0, 212, 255, 0.15);
+  --solo: #FFB800;
+  --solo-dim: rgba(255, 184, 0, 0.15);
+  --tutorial: #00E08E;
+  --tutorial-dim: rgba(0, 224, 142, 0.15);
+  
   --error: #FF5454;
-  --warn: #E8B57A;
+  --success: #00E08E;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -37,16 +44,13 @@ html, body {
   height: 100dvh;
 }
 
-/* Scrollbar discreta */
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--line-strong); }
-::-webkit-scrollbar-thumb:hover { background: var(--text-faint); }
 
-.serif { font-family: 'Fraunces', serif; font-optical-sizing: auto; }
+.serif { font-family: 'Fraunces', serif; }
 .mono { font-family: 'JetBrains Mono', monospace; }
 
-/* Layout shell */
 .app-shell {
   display: flex;
   flex-direction: column;
@@ -54,10 +58,10 @@ html, body {
   height: 100dvh;
 }
 
-/* Header — minimalista, tipográfico */
+/* Header com XP proeminente */
 header {
   border-bottom: 1px solid var(--line);
-  padding: 18px 32px;
+  padding: 16px 32px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -77,7 +81,6 @@ header {
   font-weight: 500;
   font-size: 20px;
   letter-spacing: -0.02em;
-  color: var(--text);
 }
 
 .brand-mark em {
@@ -94,34 +97,57 @@ header {
   text-transform: uppercase;
 }
 
+/* XP READOUT — GRANDE E VISÍVEL */
 .xp-readout {
   display: flex;
-  align-items: baseline;
-  gap: 10px;
-  font-family: 'JetBrains Mono', monospace;
+  align-items: center;
+  gap: 16px;
+  background: var(--bg-elev);
+  border: 1px solid var(--line-strong);
+  padding: 10px 20px;
+  border-radius: 8px;
+}
+
+.xp-icon {
+  width: 32px;
+  height: 32px;
+  background: linear-gradient(135deg, var(--solo), #FF8C00);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  box-shadow: 0 0 20px var(--solo-dim);
+}
+
+.xp-info {
+  display: flex;
+  flex-direction: column;
 }
 
 .xp-label {
-  font-size: 10px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
   color: var(--text-faint);
   letter-spacing: 0.15em;
   text-transform: uppercase;
 }
 
 .xp-value {
-  font-size: 18px;
-  font-weight: 500;
-  color: var(--accent);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--solo);
   letter-spacing: -0.02em;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .xp-value.pulse {
+  transform: scale(1.15);
   color: var(--text);
-  transform: scale(1.1);
+  text-shadow: 0 0 20px var(--solo);
 }
 
-/* Main container */
 main {
   flex: 1;
   overflow-y: auto;
@@ -133,25 +159,33 @@ main {
   margin: 0 auto;
 }
 
-/* Animações discretas */
+/* Animações */
 .fade-in {
   animation: fadeIn 0.4s ease-out;
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(6px); }
+  from { opacity: 0; transform: translateY(8px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes shake {
   0%, 100% { transform: translateX(0); }
-  25% { transform: translateX(-4px); }
-  75% { transform: translateX(4px); }
+  25% { transform: translateX(-6px); }
+  75% { transform: translateX(6px); }
 }
 
-.shake-err { animation: shake 0.3s ease-in-out; }
+.shake-err { animation: shake 0.4s ease-in-out; }
 
-/* ——— HOME ——— */
+@keyframes successPulse {
+  0% { transform: scale(1); box-shadow: 0 0 0 0 var(--success); }
+  50% { transform: scale(1.02); box-shadow: 0 0 40px 10px var(--success); }
+  100% { transform: scale(1); box-shadow: 0 0 0 0 var(--success); }
+}
+
+.success-pulse { animation: successPulse 0.6s ease-out; }
+
+/* HOME */
 .home-header {
   padding-bottom: 48px;
   border-bottom: 1px solid var(--line);
@@ -173,7 +207,6 @@ main {
   font-size: clamp(40px, 6vw, 68px);
   line-height: 1.02;
   letter-spacing: -0.03em;
-  color: var(--text);
   margin-bottom: 20px;
   max-width: 900px;
 }
@@ -191,7 +224,41 @@ main {
   line-height: 1.55;
 }
 
-/* Grid de modos — editorial, não cards */
+/* Progress bar global */
+.global-progress {
+  margin-top: 32px;
+  padding: 20px 24px;
+  background: var(--bg-elev);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+
+.progress-label {
+  display: flex;
+  justify-content: space-between;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--text-dim);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.progress-bar {
+  height: 8px;
+  background: var(--bg);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--tutorial), var(--mapping), var(--solo));
+  border-radius: 4px;
+  transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Modes grid */
 .modes-grid {
   display: grid;
   grid-template-columns: 1fr;
@@ -207,7 +274,7 @@ main {
   padding: 28px 0;
   border-bottom: 1px solid var(--line);
   cursor: pointer;
-  transition: background 0.2s;
+  transition: all 0.2s;
   text-align: left;
   background: transparent;
   border-left: none;
@@ -215,6 +282,22 @@ main {
   color: inherit;
   width: 100%;
   font-family: inherit;
+  position: relative;
+}
+
+.mode-row::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: transparent;
+  transition: background 0.2s;
+}
+
+.mode-row:hover::before {
+  background: var(--accent-color, var(--text));
 }
 
 .mode-row:hover {
@@ -222,8 +305,8 @@ main {
 }
 
 .mode-row:hover .mode-arrow {
-  transform: translateX(4px);
-  color: var(--accent);
+  transform: translateX(6px);
+  color: var(--accent-color, var(--text));
 }
 
 .mode-num {
@@ -239,7 +322,6 @@ main {
   font-size: 24px;
   letter-spacing: -0.01em;
   margin-bottom: 6px;
-  color: var(--text);
 }
 
 .mode-body p {
@@ -255,15 +337,11 @@ main {
   transition: all 0.2s;
 }
 
-/* Subdivisões do modo mapping (fácil/médio/difícil) */
-.mode-row.has-children {
-  cursor: default;
-}
+.mode-row.tutorial { --accent-color: var(--tutorial); }
+.mode-row.mapping { --accent-color: var(--mapping); }
+.mode-row.solo { --accent-color: var(--solo); }
 
-.mode-row.has-children:hover {
-  background: transparent;
-}
-
+/* Submodes */
 .submodes {
   grid-column: 2 / 4;
   display: grid;
@@ -286,17 +364,19 @@ main {
   transition: all 0.2s;
   color: inherit;
   font-family: inherit;
+  border-radius: 6px;
 }
 
 .submode-btn:hover {
-  border-color: var(--accent);
-  background: var(--bg-elev-2);
+  border-color: var(--mapping);
+  background: var(--mapping-dim);
+  transform: translateY(-2px);
 }
 
 .submode-btn .tier-label {
   font-family: 'JetBrains Mono', monospace;
   font-size: 10px;
-  color: var(--text-faint);
+  color: var(--mapping);
   letter-spacing: 0.15em;
   text-transform: uppercase;
   margin-bottom: 8px;
@@ -314,7 +394,7 @@ main {
   color: var(--text-dim);
 }
 
-/* ——— SECTIONS (tutorial, gameplay) ——— */
+/* Sections */
 .section-header {
   display: flex;
   align-items: baseline;
@@ -357,34 +437,21 @@ main {
   transition: color 0.2s;
 }
 
-.back-btn:hover { color: var(--accent); }
+.back-btn:hover { color: var(--mapping); }
+.back-btn::before { content: "← "; }
 
-.back-btn::before {
-  content: "← ";
-}
-
-/* ——— TUTORIAL ——— */
+/* Tutorial */
 .tutorial-body {
   font-family: 'Fraunces', serif;
   font-size: 18px;
   line-height: 1.65;
-  color: var(--text);
   max-width: 680px;
   font-weight: 300;
 }
 
 .tutorial-body strong {
-  color: var(--accent);
+  color: var(--tutorial);
   font-weight: 500;
-}
-
-.tutorial-body code {
-  font-family: 'JetBrains Mono', monospace;
-  background: var(--bg-elev);
-  padding: 2px 6px;
-  border-radius: 2px;
-  font-size: 0.85em;
-  color: var(--warn);
 }
 
 .tutorial-nav {
@@ -409,20 +476,20 @@ main {
 }
 
 .btn-text:hover { color: var(--text); }
-
-.btn-text.primary { color: var(--accent); }
+.btn-text.primary { color: var(--tutorial); }
 .btn-text.primary:hover { color: var(--text); }
 
-/* ——— MAPPING MODE ——— */
+/* Mapping */
 .context-strip {
   font-family: 'JetBrains Mono', monospace;
   font-size: 11px;
   color: var(--text-dim);
   letter-spacing: 0.05em;
   padding: 12px 16px;
-  background: var(--bg-elev);
-  border-left: 2px solid var(--accent);
+  background: var(--mapping-dim);
+  border-left: 3px solid var(--mapping);
   margin-bottom: 32px;
+  border-radius: 0 6px 6px 0;
 }
 
 .context-strip strong {
@@ -431,7 +498,6 @@ main {
   font-family: 'Fraunces', serif;
   font-size: 20px;
   font-weight: 400;
-  letter-spacing: -0.01em;
   margin-bottom: 4px;
   text-transform: none;
 }
@@ -444,13 +510,14 @@ main {
   border-left: 1px solid var(--line-strong);
 }
 
-/* Diagrama molecular — estilo técnico */
+/* Chain diagram */
 .chain-diagram {
   background: var(--bg-elev);
   border: 1px solid var(--line);
   padding: 40px 24px 48px;
   margin-bottom: 24px;
   overflow-x: auto;
+  border-radius: 8px;
 }
 
 .chain-inner {
@@ -496,6 +563,7 @@ main {
   font-size: 11px;
   color: var(--text-dim);
   position: relative;
+  border-radius: 4px;
 }
 
 .chain-link {
@@ -516,6 +584,7 @@ main {
   color: var(--text);
   position: relative;
   font-weight: 500;
+  border-radius: 4px;
 }
 
 .chain-box.fixed {
@@ -530,7 +599,7 @@ main {
   transform: translateX(-50%);
   width: 22px;
   height: 22px;
-  background: var(--accent);
+  background: var(--mapping);
   color: var(--bg);
   border-radius: 50%;
   display: flex;
@@ -538,10 +607,11 @@ main {
   justify-content: center;
   font-family: 'JetBrains Mono', monospace;
   font-size: 11px;
-  font-weight: 600;
+  font-weight: 700;
+  box-shadow: 0 0 12px var(--mapping-dim);
 }
 
-/* Pool de peças */
+/* Tags pool */
 .tags-pool-container {
   background: var(--bg-elev);
   border: 1px solid var(--line);
@@ -550,6 +620,7 @@ main {
   display: flex;
   align-items: center;
   gap: 20px;
+  border-radius: 8px;
 }
 
 .tags-pool-label {
@@ -574,37 +645,40 @@ main {
   width: 36px;
   height: 36px;
   background: var(--bg);
-  border: 1px solid var(--accent);
-  color: var(--accent);
+  border: 2px solid var(--mapping);
+  color: var(--mapping);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   font-family: 'JetBrains Mono', monospace;
   font-size: 13px;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
   transition: all 0.15s;
   user-select: none;
 }
 
 .select-tag:hover {
-  background: var(--accent-dim);
+  background: var(--mapping-dim);
+  transform: scale(1.1);
 }
 
 .select-tag.is-selected {
-  background: var(--accent);
+  background: var(--mapping);
   color: var(--bg);
-  box-shadow: 0 0 0 4px var(--accent-dim);
+  box-shadow: 0 0 0 4px var(--mapping-dim), 0 0 20px var(--mapping-dim);
+  transform: scale(1.15);
 }
 
-/* Espectro — traço contínuo SVG */
+/* Spectrum */
 .spectrum-wrap {
   background: var(--bg-elev);
   border: 1px solid var(--line);
   padding: 24px 20px 40px;
   margin-bottom: 24px;
   position: relative;
+  border-radius: 8px;
 }
 
 .spectrum-axis-labels {
@@ -631,10 +705,11 @@ main {
 
 .spectrum-trace {
   fill: none;
-  stroke: var(--accent);
+  stroke: var(--mapping);
   stroke-width: 1.5;
   stroke-linejoin: round;
   stroke-linecap: round;
+  filter: drop-shadow(0 0 8px var(--mapping-dim));
 }
 
 .spectrum-peak-hit {
@@ -645,7 +720,7 @@ main {
 .spectrum-tooltip {
   position: absolute;
   background: var(--bg);
-  border: 1px solid var(--line-strong);
+  border: 1px solid var(--mapping);
   padding: 8px 12px;
   font-family: 'JetBrains Mono', monospace;
   font-size: 11px;
@@ -655,18 +730,20 @@ main {
   transition: opacity 0.15s;
   z-index: 20;
   white-space: nowrap;
+  border-radius: 4px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
 }
 
 .spectrum-tooltip.visible { opacity: 1; }
 
 .spectrum-tooltip .tt-ppm {
-  color: var(--accent);
-  font-weight: 600;
+  color: var(--mapping);
+  font-weight: 700;
   display: block;
   margin-bottom: 2px;
 }
 
-/* Lista de sinais */
+/* Signals list */
 .signals-list {
   border-top: 1px solid var(--line);
 }
@@ -678,24 +755,25 @@ main {
   align-items: center;
   padding: 16px 0;
   border-bottom: 1px solid var(--line);
-  transition: background 0.2s;
+  transition: all 0.2s;
 }
 
 .signal-row.correct {
-  background: var(--accent-dim);
-  border-left: 2px solid var(--accent);
+  background: var(--success);
+  background: linear-gradient(90deg, rgba(0, 224, 142, 0.15), transparent);
+  border-left: 3px solid var(--success);
   padding-left: 14px;
 }
 
 .signal-row.wrong {
-  background: rgba(255, 84, 84, 0.06);
+  background: linear-gradient(90deg, rgba(255, 84, 84, 0.1), transparent);
+  border-left: 3px solid var(--error);
 }
 
 .signal-ppm {
   font-family: 'JetBrains Mono', monospace;
   font-size: 22px;
   font-weight: 500;
-  color: var(--text);
   letter-spacing: -0.02em;
 }
 
@@ -722,22 +800,25 @@ main {
 .dropzone {
   width: 44px;
   height: 44px;
-  border: 1px dashed var(--line-strong);
+  border: 2px dashed var(--line-strong);
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   transition: all 0.15s;
   justify-self: end;
+  border-radius: 6px;
 }
 
 .dropzone:hover {
-  border-color: var(--text-faint);
+  border-color: var(--mapping);
+  background: var(--mapping-dim);
 }
 
 .dropzone.zone-filled {
   border-style: solid;
-  border-color: var(--accent);
+  border-color: var(--mapping);
+  background: var(--mapping-dim);
 }
 
 .dropzone .placeholder {
@@ -751,19 +832,22 @@ main {
 /* Feedback */
 .feedback {
   margin-top: 32px;
-  padding: 20px 24px;
-  border-left: 2px solid var(--accent);
-  background: var(--bg-elev);
+  padding: 24px 28px;
+  border-left: 3px solid var(--success);
+  background: linear-gradient(90deg, rgba(0, 224, 142, 0.1), transparent);
+  border-radius: 0 8px 8px 0;
 }
 
 .feedback.error {
   border-left-color: var(--error);
+  background: linear-gradient(90deg, rgba(255, 84, 84, 0.08), transparent);
 }
 
 .feedback-title {
   font-family: 'Fraunces', serif;
-  font-size: 18px;
-  margin-bottom: 6px;
+  font-size: 20px;
+  margin-bottom: 8px;
+  font-weight: 500;
 }
 
 .feedback-body {
@@ -778,7 +862,7 @@ main {
   margin-top: 20px;
 }
 
-/* Botões */
+/* Buttons */
 .btn {
   background: transparent;
   border: 1px solid var(--line-strong);
@@ -791,6 +875,7 @@ main {
   cursor: pointer;
   transition: all 0.2s;
   flex: 1;
+  border-radius: 6px;
 }
 
 .btn:hover:not(:disabled) {
@@ -804,21 +889,25 @@ main {
 }
 
 .btn.primary {
-  background: var(--accent);
-  border-color: var(--accent);
+  background: var(--mapping);
+  border-color: var(--mapping);
   color: var(--bg);
+  font-weight: 600;
 }
 
 .btn.primary:hover:not(:disabled) {
   background: var(--text);
   border-color: var(--text);
+  box-shadow: 0 0 20px var(--mapping-dim);
 }
 
-/* ——— SOLO MODE ——— */
+/* Solo */
 .solo-toggle {
   display: inline-flex;
   border: 1px solid var(--line);
   margin-bottom: 24px;
+  border-radius: 6px;
+  overflow: hidden;
 }
 
 .solo-toggle button {
@@ -835,8 +924,8 @@ main {
 }
 
 .solo-toggle button.active {
-  background: var(--bg-elev);
-  color: var(--accent);
+  background: var(--solo-dim);
+  color: var(--solo);
 }
 
 .solo-options {
@@ -862,13 +951,15 @@ main {
 
 .option-btn:hover:not(:disabled) {
   padding-left: 14px;
-  color: var(--accent);
+  color: var(--solo);
+  border-left: 3px solid var(--solo);
 }
 
 .option-btn.correct {
-  color: var(--accent);
+  color: var(--success);
   padding-left: 14px;
-  border-left: 2px solid var(--accent);
+  border-left: 3px solid var(--success);
+  background: linear-gradient(90deg, rgba(0, 224, 142, 0.1), transparent);
 }
 
 .option-btn.wrong {
@@ -876,7 +967,6 @@ main {
   opacity: 0.5;
 }
 
-/* Footer metadata */
 .footer-meta {
   position: fixed;
   bottom: 0;
@@ -902,6 +992,8 @@ main {
   .signal-row { grid-template-columns: 60px 1fr 50px; gap: 12px; }
   .signal-ppm { font-size: 18px; }
   .footer-meta { padding: 8px 20px; }
+  .xp-readout { padding: 8px 14px; }
+  .xp-value { font-size: 20px; }
 }
 </style>
 </head>
@@ -911,17 +1003,18 @@ main {
 <header>
   <div class="brand" onclick="setView('home')">
     <span class="brand-mark">Motor <em>RMN</em></span>
-    <span class="brand-meta">Rev. 2026.08 · Build 0.4</span>
+    <span class="brand-meta">Rev. 2026.08 · Build 0.5</span>
   </div>
   <div class="xp-readout">
-    <span class="xp-label">Score</span>
-    <span class="xp-value mono" id="xp-counter">0</span>
+    <div class="xp-icon">⚡</div>
+    <div class="xp-info">
+      <span class="xp-label">Score</span>
+      <span class="xp-value mono" id="xp-counter">0</span>
+    </div>
   </div>
 </header>
 
-<main id="app-container">
-  <!-- Rendered via JS -->
-</main>
+<main id="app-container"></main>
 
 <div class="footer-meta">
   <span>¹H / ¹³C · Elucidação Espectral</span>
@@ -931,7 +1024,6 @@ main {
 </div>
 
 <script>
-// ——— STATE ———
 const state = {
   xp: 0,
   currentView: 'home',
@@ -957,7 +1049,6 @@ async function carregarDados() {
   } catch (e) { console.error(e); return false; }
 }
 
-// ——— NOISE ENGINE ———
 function aplicarRuido(signals) {
   return signals.map(s => ({
     ...s,
@@ -967,13 +1058,12 @@ function aplicarRuido(signals) {
   }));
 }
 
-// ——— XP ———
 function updateXP(amount) {
   state.xp += amount;
   const el = document.getElementById('xp-counter');
   el.innerText = state.xp;
   el.classList.add('pulse');
-  setTimeout(() => el.classList.remove('pulse'), 300);
+  setTimeout(() => el.classList.remove('pulse'), 400);
 }
 
 function setView(viewName, mode = null, level = 1) {
@@ -986,7 +1076,6 @@ function setView(viewName, mode = null, level = 1) {
   render();
 }
 
-// ——— RENDER DISPATCH ———
 function render() {
   const c = document.getElementById('app-container');
   c.innerHTML = '';
@@ -994,6 +1083,7 @@ function render() {
   wrap.className = 'view-container fade-in';
   
   if (state.currentView === 'home') wrap.appendChild(renderHome());
+  else if (state.currentView === 'modeSelect') wrap.appendChild(renderLevelSelect());
   else if (state.currentView === 'tutorial') wrap.appendChild(renderTutorial());
   else if (state.currentView === 'gameplay') {
     if (state.activeMode === 'mapping') wrap.appendChild(renderMapping());
@@ -1014,31 +1104,43 @@ function updateFooterContext() {
   }
 }
 
-// ——— HOME ———
 function renderHome() {
   const div = document.createElement('div');
+  const totalMolecules = db.mapping.length;
+  const progressPercent = Math.min(100, (state.xp / 500) * 100);
+  
   div.innerHTML = `
     <div class="home-header">
-      <div class="home-eyebrow">Ferramenta de ensino · v0.4</div>
+      <div class="home-eyebrow">Ferramenta de ensino · v0.5</div>
       <h1 class="home-title">Pare de decorar.<br><em>Comece a analisar espectros.</em></h1>
-      <p class="home-sub">Do conceito vetorial ao abismo quântico. Elucidação estrutural por RMN com moléculas reais do mercado farmacêutico — IFAs, excipientes e intermediários sintéticos.</p>
+      <p class="home-sub">Elucidação estrutural por RMN com moléculas reais do mercado farmacêutico. Ganhe pontos, suba de nível, domine a espectroscopia.</p>
+      
+      <div class="global-progress">
+        <div class="progress-label">
+          <span>Progresso geral</span>
+          <span>${state.xp} / 500 pts</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill" style="width: ${progressPercent}%"></div>
+        </div>
+      </div>
     </div>
     
     <div class="modes-grid">
-      <button class="mode-row" onclick="setView('tutorial', null, 1)">
+      <button class="mode-row tutorial" onclick="setView('tutorial', null, 1)">
         <span class="mode-num">01</span>
         <div class="mode-body">
           <h3>Fundamentos</h3>
-          <p>Revisão dos conceitos: ppm, Karplus, n+1, filtros DEPT e a lógica por trás do deslocamento.</p>
+          <p>Revisão dos conceitos: ppm, Karplus, n+1, filtros DEPT. Base teórica para elucidação.</p>
         </div>
         <span class="mode-arrow">→</span>
       </button>
       
-      <div class="mode-row has-children">
+      <div class="mode-row mapping has-children">
         <span class="mode-num">02</span>
         <div class="mode-body">
           <h3>Atribuição H/C</h3>
-          <p>Associe cada próton ou carbono da estrutura ao sinal correspondente no espectro. Sorteio aleatório por dificuldade.</p>
+          <p>Associe cada próton ou carbono ao sinal correspondente. ${totalMolecules} moléculas disponíveis, sorteio aleatório.</p>
         </div>
         <span class="mode-arrow"></span>
       </div>
@@ -1060,7 +1162,7 @@ function renderHome() {
         </button>
       </div>
       
-      <button class="mode-row" onclick="setView('modeSelect', 'solo')">
+      <button class="mode-row solo" onclick="setView('modeSelect', 'solo')">
         <span class="mode-num">03</span>
         <div class="mode-body">
           <h3>Desafio Solo</h3>
@@ -1073,12 +1175,11 @@ function renderHome() {
   return div;
 }
 
-// ——— LEVEL SELECT (SOLO) ———
 function renderLevelSelect() {
   const div = document.createElement('div');
   const levels = db.solo;
   let rows = levels.map((l, i) => `
-    <button class="mode-row" onclick="setView('gameplay', 'solo', ${l.level})">
+    <button class="mode-row solo" onclick="setView('gameplay', 'solo', ${l.level})">
       <span class="mode-num">${String(i + 1).padStart(2, '0')}</span>
       <div class="mode-body">
         <h3>${l.title}</h3>
@@ -1112,7 +1213,6 @@ window.iniciarMappingAleatorio = function(tier) {
   setView('gameplay', 'mapping', escolhido.level);
 };
 
-// ——— TUTORIAL ———
 function renderTutorial() {
   const data = db.tutorial.find(t => t.level === state.currentLevel);
   const div = document.createElement('div');
@@ -1135,14 +1235,12 @@ function renderTutorial() {
   return div;
 }
 
-// ——— SPECTRUM (SVG trace) ———
 function renderSpectrumSVG(signals, maxPpm, is13C = false) {
   const width = 1000;
   const height = 140;
   const baseline = height - 10;
   const maxH = height - 20;
   
-  // Build path: flat baseline with peaks at signal positions
   const sorted = [...signals].sort((a, b) => b.ppm - a.ppm);
   let path = `M 0 ${baseline}`;
   
@@ -1151,17 +1249,11 @@ function renderSpectrumSVG(signals, maxPpm, is13C = false) {
     const peakH = Math.min(Math.abs(sig.height) * 1.5, maxH);
     const peakY = sig.height < 0 ? baseline + peakH * 0.3 : baseline - peakH;
     const w = 8;
-    
-    if (sig.height < 0) {
-      path += ` L ${x - w} ${baseline} L ${x} ${peakY} L ${x + w} ${baseline}`;
-    } else {
-      path += ` L ${x - w} ${baseline} L ${x} ${peakY} L ${x + w} ${baseline}`;
-    }
+    path += ` L ${x - w} ${baseline} L ${x} ${peakY} L ${x + w} ${baseline}`;
   });
   
   path += ` L ${width} ${baseline}`;
   
-  // Axis ticks
   const step = is13C ? 20 : 1;
   let ticks = '';
   for (let i = 0; i <= maxPpm; i += step) {
@@ -1169,24 +1261,24 @@ function renderSpectrumSVG(signals, maxPpm, is13C = false) {
     ticks += `<line x1="${x}" y1="${baseline}" x2="${x}" y2="${baseline + 4}" stroke="var(--line-strong)" stroke-width="1"/>`;
   }
   
-  // Invisible hit areas for tooltips
   let hits = '';
   sorted.forEach((sig, i) => {
     const x = ((maxPpm - sig.ppm) / maxPpm) * width;
     hits += `<rect class="spectrum-peak-hit" data-idx="${i}" x="${x - 12}" y="0" width="24" height="${height}"/>`;
   });
   
+  const color = is13C ? '#60A5FA' : 'var(--mapping)';
+  
   return `
     <svg class="spectrum-svg" viewBox="0 0 ${width} ${height}" preserveAspectRatio="none">
       <line class="spectrum-baseline" x1="0" y1="${baseline}" x2="${width}" y2="${baseline}"/>
       ${ticks}
-      <path class="spectrum-trace" d="${path}" style="stroke: ${is13C ? '#60A5FA' : 'var(--accent)'}"/>
+      <path class="spectrum-trace" d="${path}" style="stroke: ${color}"/>
       ${hits}
     </svg>
   `;
 }
 
-// ——— MAPPING ———
 function deriveTagsFromChain(chain) {
   const tags = [];
   let c = 1;
@@ -1305,14 +1397,12 @@ function renderMapping() {
     <button class="btn primary" id="btn-validate" onclick="validateMapping()" disabled style="margin-top: 32px; width: 100%;">Validar atribuição</button>
   `;
   
-  // Attach events after render
   setTimeout(() => attachMappingEvents(q, signals), 0);
   
   return div;
 }
 
 function attachMappingEvents(q, signals) {
-  // Tag selection
   document.querySelectorAll('.select-tag').forEach(tag => {
     tag.addEventListener('click', () => {
       const id = tag.dataset.tagid;
@@ -1327,7 +1417,6 @@ function attachMappingEvents(q, signals) {
     });
   });
   
-  // Dropzone selection
   document.querySelectorAll('.dropzone').forEach(dz => {
     dz.addEventListener('click', () => {
       const sigId = dz.dataset.signalid;
@@ -1359,7 +1448,6 @@ function attachMappingEvents(q, signals) {
     });
   });
   
-  // Pool click to return
   document.getElementById('tags-pool').addEventListener('click', (e) => {
     const tagHit = e.target.closest('.select-tag');
     if (tagHit) {
@@ -1382,7 +1470,6 @@ function attachMappingEvents(q, signals) {
     }
   });
   
-  // Spectrum tooltips
   const tooltip = document.getElementById('spectrum-tooltip');
   const wrap = document.querySelector('.spectrum-wrap');
   document.querySelectorAll('.spectrum-peak-hit').forEach(hit => {
@@ -1424,7 +1511,7 @@ window.validateMapping = function() {
       const parent = tagEl.parentElement;
       if (parent && parent.classList.contains('dropzone')) {
         parent.closest('.signal-row').classList.add('wrong', 'shake-err');
-        setTimeout(() => parent.closest('.signal-row').classList.remove('shake-err'), 300);
+        setTimeout(() => parent.closest('.signal-row').classList.remove('shake-err'), 400);
       }
     }
   });
@@ -1433,9 +1520,15 @@ window.validateMapping = function() {
   if (allCorrect) {
     const earned = Math.max(30, 150 - state.errors * 40);
     updateXP(earned);
+    
+    // Celebração visual
+    const wrap = document.querySelector('.view-container');
+    wrap.classList.add('success-pulse');
+    setTimeout(() => wrap.classList.remove('success-pulse'), 600);
+    
     fb.innerHTML = `
       <div class="feedback">
-        <div class="feedback-title" style="color: var(--accent);">Atribuição validada · +${earned} pts</div>
+        <div class="feedback-title" style="color: var(--success);">✓ Atribuição validada · +${earned} pts</div>
         <div class="feedback-body">Lógica estrutural confirmada. Todos os deslocamentos químicos coerentes com a estrutura proposta.</div>
         <div class="feedback-actions">
           <button class="btn primary" onclick="iniciarMappingAleatorio('${state.mappingTier}')">Nova molécula</button>
@@ -1448,7 +1541,7 @@ window.validateMapping = function() {
     state.errors++;
     fb.innerHTML = `
       <div class="feedback error">
-        <div class="feedback-title" style="color: var(--error);">Atribuição incorreta</div>
+        <div class="feedback-title" style="color: var(--error);">✗ Atribuição incorreta</div>
         <div class="feedback-body">Os deslocamentos não correspondem aos ambientes químicos assinalados. Reavalie os efeitos eletrônicos e reinicie as peças incorretas.</div>
       </div>
     `;
@@ -1473,7 +1566,6 @@ window.validateMapping = function() {
   }
 };
 
-// ——— SOLO ———
 window.toggleSpectrum = type => { state.activeSpectrumType = type; render(); };
 
 window.handleSoloAnswer = function(optionId, btnEl) {
@@ -1487,9 +1579,14 @@ window.handleSoloAnswer = function(optionId, btnEl) {
     btnEl.classList.add('correct');
     const earned = Math.max(20, 200 - state.errors * 70);
     updateXP(earned);
+    
+    const wrap = document.querySelector('.view-container');
+    wrap.classList.add('success-pulse');
+    setTimeout(() => wrap.classList.remove('success-pulse'), 600);
+    
     fb.innerHTML = `
       <div class="feedback">
-        <div class="feedback-title" style="color: var(--accent);">Diagnóstico exato · +${earned} pts</div>
+        <div class="feedback-title" style="color: var(--success);">✓ Diagnóstico exato · +${earned} pts</div>
         <div class="feedback-body">${opt.feedback}</div>
         <div class="feedback-actions">
           <button class="btn primary" onclick="setView('modeSelect', 'solo')">Próxima missão</button>
@@ -1501,7 +1598,7 @@ window.handleSoloAnswer = function(optionId, btnEl) {
     btnEl.classList.add('wrong');
     fb.innerHTML = `
       <div class="feedback error">
-        <div class="feedback-title" style="color: var(--error);">Lógica falha</div>
+        <div class="feedback-title" style="color: var(--error);">✗ Lógica falha</div>
         <div class="feedback-body">${opt.feedback}</div>
       </div>
     `;
@@ -1536,7 +1633,7 @@ function renderSolo() {
       <h2 class="section-title">${q.title}</h2>
     </div>
     
-    <div class="context-strip">
+    <div class="context-strip" style="background: var(--solo-dim); border-left-color: var(--solo);">
       <strong>${q.title}</strong>
       ${q.context}
     </div>
@@ -1562,7 +1659,6 @@ function renderSolo() {
   return div;
 }
 
-// ——— INIT ———
 async function iniciar() {
   const c = document.getElementById('app-container');
   c.innerHTML = `<div style="display:flex;align-items:center;justify-content:center;height:60vh;color:var(--text-faint);font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.2em;text-transform:uppercase;">Carregando bases de dados…</div>`;
