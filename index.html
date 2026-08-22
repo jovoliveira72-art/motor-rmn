@@ -96,7 +96,9 @@
             currentLevel: 1,
             activeSpectrumType: '1H',
             errors: 0,
-            selectedTagId: null // tap-to-select: id da peça atualmente selecionada
+            selectedTagId: null, // tap-to-select: id da peça atualmente selecionada
+            mappingTier: null,   // dificuldade escolhida no modo Atribuição H/C
+            lastMappingLevel: null // evita sortear a mesma molécula duas vezes seguidas
         };
 
         // --- BANCO DE DADOS ---
@@ -188,7 +190,7 @@
                     <button onclick="setView('modeSelect', 'mapping')" class="group bg-gray-800 border border-blue-500/50 hover:border-blue-500 rounded-2xl p-6 transition-all text-left flex flex-col items-start gap-4 shadow-lg hover:-translate-y-1">
                         <div class="p-4 rounded-xl text-blue-400 bg-blue-500/10"><i class="fas fa-project-diagram text-3xl"></i></div>
                         <div>
-                            <h3 class="font-bold text-xl text-gray-100">Mapeamento Topológico</h3>
+                            <h3 class="font-bold text-xl text-gray-100">Atribuição H/C</h3>
                             <p class="text-sm text-gray-400 mt-2">Toque num número e depois no sinal correspondente do espetro.</p>
                         </div>
                     </button>
@@ -206,11 +208,42 @@
         }
 
         function renderLevelSelect() {
-            const color = state.activeMode === 'mapping' ? 'blue' : 'purple';
-            const levels = db[state.activeMode];
             const div = document.createElement('div');
             div.className = 'flex flex-col items-center w-full mt-6 space-y-8 px-4 pb-20';
 
+            if (state.activeMode === 'mapping') {
+                // Modo Atribuição H/C: em vez de listar cada molécula, mostra
+                // dificuldade. Cada escolha sorteia uma molécula aleatória
+                // daquele tier — isto é o que dá a sensação de variedade que
+                // faltava quando os níveis eram fixos.
+                const tiers = [
+                    { id: 'facil', nome: 'Fácil', desc: '3 atribuições — moléculas simples de cadeia curta.', cor: 'emerald' },
+                    { id: 'medio', nome: 'Médio', desc: '5 atribuições — inclui protões lábeis e anéis aromáticos.', cor: 'blue' },
+                    { id: 'dificil', nome: 'Difícil', desc: '6+ atribuições — substituição orto, ambientes assimétricos.', cor: 'red' }
+                ];
+
+                const disponiveis = tiers.filter(t => db.mapping.some(m => m.tier === t.id));
+
+                let buttonsHtml = disponiveis.map(t => `
+                    <button onclick="iniciarMappingAleatorio('${t.id}')" class="w-full text-left bg-gray-800 border border-${t.cor}-500/50 hover:border-${t.cor}-500 p-6 rounded-xl transition-all hover:bg-${t.cor}-900/20 shadow-md">
+                        <span class="font-bold text-${t.cor}-400 text-xl block mb-2">${t.nome}</span>
+                        <span class="text-gray-400 text-sm font-mono">> ${t.desc}</span>
+                    </button>
+                `).join('');
+
+                div.innerHTML = `
+                    <div class="flex items-center gap-4 w-full">
+                        <button onclick="setView('home')" class="text-gray-400 hover:text-white p-3 bg-gray-800 rounded-xl transition-colors shrink-0"><i class="fas fa-arrow-left"></i></button>
+                        <h2 class="text-2xl md:text-3xl font-bold capitalize">Atribuição H/C: escolha a dificuldade</h2>
+                    </div>
+                    <div class="grid gap-4 w-full">${buttonsHtml}</div>
+                `;
+                return div;
+            }
+
+            // Modo Solo: mantém a lista fixa de níveis, como antes.
+            const color = 'purple';
+            const levels = db[state.activeMode];
             let buttonsHtml = levels.map(l => `
                 <button onclick="setView('gameplay', '${state.activeMode}', ${l.level})" class="w-full text-left bg-gray-800 border border-${color}-500/50 hover:border-${color}-500 p-6 rounded-xl transition-all hover:bg-${color}-900/20 shadow-md">
                     <span class="font-bold text-${color}-400 text-xl block mb-2">Nível ${l.level}: ${l.title}</span>
@@ -221,12 +254,27 @@
             div.innerHTML = `
                 <div class="flex items-center gap-4 w-full">
                     <button onclick="setView('home')" class="text-gray-400 hover:text-white p-3 bg-gray-800 rounded-xl transition-colors shrink-0"><i class="fas fa-arrow-left"></i></button>
-                    <h2 class="text-2xl md:text-3xl font-bold capitalize">Missões: ${state.activeMode === 'mapping' ? 'Mapeamento' : 'Solo'}</h2>
+                    <h2 class="text-2xl md:text-3xl font-bold capitalize">Missões: Solo</h2>
                 </div>
                 <div class="grid gap-4 w-full">${buttonsHtml}</div>
             `;
             return div;
         }
+
+        // Sorteia uma molécula do tier escolhido, evitando repetir a última
+        // vista (quando o tier tem mais de uma opção disponível).
+        window.iniciarMappingAleatorio = function(tier) {
+            const pool = db.mapping.filter(m => m.tier === tier);
+            if (pool.length === 0) return;
+            let candidatos = pool;
+            if (pool.length > 1 && state.lastMappingLevel !== null) {
+                candidatos = pool.filter(m => m.level !== state.lastMappingLevel);
+            }
+            const escolhido = candidatos[Math.floor(Math.random() * candidatos.length)];
+            state.lastMappingLevel = escolhido.level;
+            state.mappingTier = tier;
+            setView('gameplay', 'mapping', escolhido.level);
+        };
 
         function renderTutorial() {
             const data = db.tutorial.find(t => t.level === state.currentLevel);
@@ -405,9 +453,10 @@
 
         window.validateMapping = function() {
             const qData = db.mapping.find(q => q.level === state.currentLevel);
+            const tags = qData._derivedTags || deriveTagsFromChain(qData.chain);
             let allCorrect = true;
 
-            qData.tags.forEach(tagData => {
+            tags.forEach(tagData => {
                 const dropzone = document.getElementById(`drop-${tagData.correctTarget}`);
                 const tagEl = document.getElementById(tagData.id);
                 const row = document.getElementById(`row-${tagData.correctTarget}`);
@@ -429,12 +478,16 @@
             if (allCorrect) {
                 let earned = Math.max(30, 150 - (state.errors * 40));
                 updateXP(earned);
+                const tier = state.mappingTier;
                 feedback.innerHTML = `
                     <div class="p-5 bg-emerald-900/30 border-l-4 border-emerald-500 text-emerald-100 flex gap-3 mt-6 shadow-lg rounded-r-lg">
                         <i class="fas fa-check-circle text-emerald-400 mt-1 text-xl"></i>
-                        <div><strong class="block text-lg mb-1">Mapeamento Validado! (+${earned} XP)</strong><p class="text-emerald-200/80">Lógica estrutural confirmada.</p></div>
+                        <div><strong class="block text-lg mb-1">Atribuição Validada! (+${earned} XP)</strong><p class="text-emerald-200/80">Lógica estrutural confirmada.</p></div>
                     </div>
-                    <button onclick="setView('modeSelect', 'mapping')" class="mt-4 bg-blue-600 hover:bg-blue-500 py-3 px-6 rounded-xl font-bold w-full transition-colors">Retornar ao Painel de Missões</button>
+                    <div class="flex gap-3 mt-4">
+                        ${tier ? `<button onclick="iniciarMappingAleatorio('${tier}')" class="bg-emerald-600 hover:bg-emerald-500 py-3 px-6 rounded-xl font-bold flex-1 transition-colors"><i class="fas fa-shuffle mr-2"></i>Nova Molécula (${tier === 'facil' ? 'Fácil' : tier === 'medio' ? 'Médio' : 'Difícil'})</button>` : ''}
+                        <button onclick="setView('modeSelect', 'mapping')" class="bg-blue-600 hover:bg-blue-500 py-3 px-6 rounded-xl font-bold flex-1 transition-colors">Mudar Dificuldade</button>
+                    </div>
                 `;
                 document.getElementById('btn-validate').style.display = 'none';
             } else {
@@ -446,7 +499,7 @@
                     </div>
                 `;
                 setTimeout(() => {
-                    qData.tags.forEach(tagData => {
+                    tags.forEach(tagData => {
                         const dropzone = document.getElementById(`drop-${tagData.correctTarget}`);
                         const tagEl = document.getElementById(tagData.id);
                         if (!dropzone.contains(tagEl)) {
@@ -467,18 +520,91 @@
             feedback.classList.remove('hidden');
         };
 
+        // Percorre a chain (incluindo branches) e devolve a lista de peças
+        // atribuíveis, numeradas na ordem em que aparecem. O número mostrado
+        // no diagrama e o rótulo da peça no pool vêm da MESMA fonte — isto é
+        // o que elimina o risco de dessincronia que existia quando o HTML da
+        // molécula e o array de tags eram escritos à mão separadamente.
+        function deriveTagsFromChain(chain) {
+            const tags = [];
+            let contador = 1;
+            chain.forEach(item => {
+                if (item.tagId) {
+                    tags.push({ id: item.tagId, label: String(contador), correctTarget: item.correctTarget });
+                    contador++;
+                }
+                (item.branches || []).forEach(branch => {
+                    if (branch.tagId) {
+                        tags.push({ id: branch.tagId, label: String(contador), correctTarget: branch.correctTarget });
+                        contador++;
+                    }
+                });
+            });
+            return tags;
+        }
+
+        // Desenha o diagrama esquemático da molécula a partir da chain.
+        // Itens "fixed" (sem tagId, ex: "C=O", "Anel") aparecem sem número,
+        // só como contexto estrutural. Itens com "branches" mostram sub-caixas
+        // empilhadas acima da caixa principal (ex: pares de H aromático).
+        function renderChainDiagram(chain, tagNumbers) {
+            const caixas = chain.map(item => {
+                const num = item.tagId ? tagNumbers[item.tagId] : null;
+                const badge = num
+                    ? `<span class="absolute -top-9 bg-blue-600 text-white w-7 h-7 rounded-full flex items-center justify-center text-sm font-sans shadow-md">${num}</span>`
+                    : '';
+
+                const branchesHtml = (item.branches || []).map(b => {
+                    const bNum = b.tagId ? tagNumbers[b.tagId] : null;
+                    const bBadge = bNum
+                        ? `<span class="absolute -top-9 bg-blue-600 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs font-sans shadow-md">${bNum}</span>`
+                        : '';
+                    return `
+                        <div class="flex flex-col items-center relative mb-2">
+                            ${bBadge}
+                            <div class="bg-gray-900 border border-gray-600 rounded px-2 py-1 text-xs md:text-sm">${b.label}</div>
+                            <div class="w-px h-3 bg-gray-500"></div>
+                        </div>
+                    `;
+                }).join('');
+
+                return `
+                    <div class="flex flex-col items-center shrink-0">
+                        ${branchesHtml ? `<div class="flex flex-col items-center mb-1">${branchesHtml}</div>` : ''}
+                        <div class="flex flex-col items-center relative">
+                            ${badge}
+                            <div class="bg-gray-800 border ${item.fixed ? 'border-gray-600 text-gray-400' : 'border-blue-500/60 text-gray-100'} rounded-lg px-3 py-2 text-sm md:text-base font-mono font-bold">${item.label}</div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            const linha = caixas.join('<div class="w-6 md:w-10 h-1 bg-gray-500 mx-1 md:mx-2 self-center shrink-0"></div>');
+
+            return `
+                <div class="flex items-end justify-center flex-wrap gap-y-6 bg-gray-800 p-6 md:p-10 rounded-xl border border-gray-700 shadow-inner overflow-x-auto">
+                    ${linha}
+                </div>
+            `;
+        }
+
         function renderMapping() {
             const qData = db.mapping.find(q => q.level === state.currentLevel);
-            const div = document.createElement('div');
-            div.className = 'w-full max-w-4xl mx-auto pb-20 mt-6';
+            const tags = deriveTagsFromChain(qData.chain);
+            const tagNumbers = {};
+            tags.forEach(t => { tagNumbers[t.id] = t.label; });
+            // guarda os tags derivados no próprio objeto em memória para que
+            // validateMapping (que roda depois, a partir de outro clique)
+            // consiga reler a mesma lista sem precisar recalculá-la.
+            qData._derivedTags = tags;
 
             let tagsHtml = '';
-            [...qData.tags].sort(() => Math.random() - 0.5).forEach(t => {
+            [...tags].sort(() => Math.random() - 0.5).forEach(t => {
                 tagsHtml += `<div id="${t.id}" class="select-tag bg-blue-600 border-2 border-blue-400 text-white w-12 h-12 rounded-full flex items-center justify-center font-bold text-xl shadow-[0_0_15px_rgba(37,99,235,0.4)] z-20">${t.label}</div>`;
             });
 
             let signalsListHtml = '';
-            qData.signals.sort((a,b) => b.ppm - a.ppm).forEach(sig => {
+            [...qData.signals].sort((a,b) => b.ppm - a.ppm).forEach(sig => {
                 signalsListHtml += `
                     <div id="row-${sig.id}" class="signal-row flex items-center justify-between p-4 bg-gray-800 border border-gray-700 rounded-xl transition-colors">
                         <div class="flex flex-col items-center justify-center w-20 shrink-0 border-r border-gray-600 pr-2 md:pr-4">
@@ -495,16 +621,22 @@
                 `;
             });
 
+            const tierNomes = { facil: 'Fácil', medio: 'Médio', dificil: 'Difícil' };
+
+            const div = document.createElement('div');
+            div.className = 'w-full max-w-4xl mx-auto pb-20 mt-6';
+
             div.innerHTML = `
                 <div class="flex items-center gap-4 mb-6 px-4 md:px-0">
                     <button onclick="setView('modeSelect', 'mapping')" class="text-gray-400 hover:text-white p-2 bg-gray-800 rounded-lg"><i class="fas fa-arrow-left"></i></button>
-                    <h2 class="text-2xl font-black text-blue-400">Nível ${state.currentLevel}: ${qData.title}</h2>
+                    <h2 class="text-2xl font-black text-blue-400">${tierNomes[qData.tier] || ''}: ${qData.title}</h2>
                 </div>
 
                 <p class="text-sm text-gray-400 mb-4 px-4 md:px-0"><i class="fas fa-hand-pointer text-blue-400 mr-1"></i> Toque num número para selecioná-lo e depois no sinal correspondente. Para mover uma peça já colocada, toque nela e depois na nova posição.</p>
+                <p class="text-sm text-gray-300 mb-4 px-4 md:px-0 font-mono">> ${qData.context}</p>
 
                 <div class="mb-8 px-4 md:px-0">
-                    ${qData.moleculeHTML}
+                    ${renderChainDiagram(qData.chain, tagNumbers)}
                     <div class="mt-4 bg-gray-800/80 p-4 border border-gray-700 rounded-xl flex items-center gap-4">
                         <span class="text-gray-400 text-sm hidden md:block">Peças:</span>
                         <div id="tags-pool" class="flex justify-center gap-4 md:gap-6 min-h-[48px] flex-1" onclick="handlePoolClick(event)">${tagsHtml}</div>
