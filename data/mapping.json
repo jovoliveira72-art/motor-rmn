@@ -1,0 +1,96 @@
+[
+  {
+    "level": 1,
+    "title": "O Clássico Alifático",
+    "context": "Associe a numeração atómica da molécula de Etanol aos sinais do espetro 1H.",
+    "moleculeHTML": "\n                        <div class=\"flex items-center justify-center font-mono text-2xl md:text-3xl font-bold bg-gray-800 p-10 rounded-xl border border-gray-700 shadow-inner\">\n                            <div class=\"flex flex-col items-center relative\">\n                                <span class=\"absolute -top-10 bg-blue-600 text-white w-7 h-7 rounded-full flex items-center justify-center text-sm font-sans shadow-md\">1</span>\n                                <span>CH<sub class=\"text-sm\">3</sub></span>\n                            </div>\n                            <div class=\"w-10 h-1 bg-gray-500 mx-3\"></div>\n                            <div class=\"flex flex-col items-center relative\">\n                                <span class=\"absolute -top-10 bg-blue-600 text-white w-7 h-7 rounded-full flex items-center justify-center text-sm font-sans shadow-md\">2</span>\n                                <span>CH<sub class=\"text-sm\">2</sub></span>\n                            </div>\n                            <div class=\"w-10 h-1 bg-gray-500 mx-3\"></div>\n                            <div class=\"flex flex-col items-center relative\">\n                                <span class=\"absolute -top-10 bg-blue-600 text-white w-7 h-7 rounded-full flex items-center justify-center text-sm font-sans shadow-md\">3</span>\n                                <span class=\"text-emerald-400\">OH</span>\n                            </div>\n                        </div>\n                    ",
+    "tags": [
+      {
+        "id": "tag-1",
+        "label": "1",
+        "correctTarget": "sig-1.2"
+      },
+      {
+        "id": "tag-2",
+        "label": "2",
+        "correctTarget": "sig-3.7"
+      },
+      {
+        "id": "tag-3",
+        "label": "3",
+        "correctTarget": "sig-2.6"
+      }
+    ],
+    "signals": [
+      {
+        "id": "sig-3.7",
+        "ppm": "3.7",
+        "mult": "Quarteto",
+        "int": "2H",
+        "height": 40
+      },
+      {
+        "id": "sig-2.6",
+        "ppm": "2.6",
+        "mult": "Singleto L.",
+        "int": "1H",
+        "height": 20
+      },
+      {
+        "id": "sig-1.2",
+        "ppm": "1.2",
+        "mult": "Tripleto",
+        "int": "3H",
+        "height": 60
+      }
+    ],
+    "maxPpm": 5
+  },
+  {
+    "level": 2,
+    "title": "Isolamento Estérico",
+    "context": "Acetato de Etilo. Diferencie os ambientes afetados pelo Oxigénio-éter e pela Carbonila.",
+    "moleculeHTML": "\n                        <div class=\"flex items-center justify-center font-mono text-xl md:text-3xl font-bold bg-gray-800 p-10 pt-16 rounded-xl border border-gray-700 shadow-inner flex-wrap gap-y-12\">\n                            <div class=\"flex flex-col items-center relative\">\n                                <span class=\"absolute -top-10 bg-blue-600 text-white w-7 h-7 rounded-full flex items-center justify-center text-sm font-sans shadow-md\">1</span>\n                                <span>CH<sub class=\"text-sm\">3</sub></span>\n                            </div>\n                            <div class=\"w-8 h-1 bg-gray-500 mx-2 mt-4\"></div>\n                            <div class=\"flex flex-col items-center relative\">\n                                <span class=\"absolute -top-12 text-red-400\">O</span>\n                                <div class=\"w-1 h-6 bg-gray-500 absolute -top-5 ml-1\"></div>\n                                <div class=\"w-1 h-6 bg-gray-500 absolute -top-5 mr-2\"></div>\n                                <span class=\"mt-4\">C</span>\n                            </div>\n                            <div class=\"w-8 h-1 bg-gray-500 mx-2 mt-4\"></div>\n                            <div class=\"flex flex-col items-center mt-4\">\n                                <span class=\"text-red-400\">O</span>\n                            </div>\n                            <div class=\"w-8 h-1 bg-gray-500 mx-2 mt-4\"></div>\n                            <div class=\"flex flex-col items-center relative\">\n                                <span class=\"absolute -top-10 bg-blue-600 text-white w-7 h-7 rounded-full flex items-center justify-center text-sm font-sans shadow-md\">2</span>\n                                <span class=\"mt-4\">CH<sub class=\"text-sm\">2</sub></span>\n                            </div>\n                            <div class=\"w-8 h-1 bg-gray-500 mx-2 mt-4\"></div>\n                            <div class=\"flex flex-col items-center relative\">\n                                <span class=\"absolute -top-10 bg-blue-600 text-white w-7 h-7 rounded-full flex items-center justify-center text-sm font-sans shadow-md\">3</span>\n                                <span class=\"mt-4\">CH<sub class=\"text-sm\">3</sub></span>\n                            </div>\n                        </div>\n                    ",
+    "tags": [
+      {
+        "id": "tag-1",
+        "label": "1",
+        "correctTarget": "sig-2.0"
+      },
+      {
+        "id": "tag-2",
+        "label": "2",
+        "correctTarget": "sig-4.1"
+      },
+      {
+        "id": "tag-3",
+        "label": "3",
+        "correctTarget": "sig-1.2"
+      }
+    ],
+    "signals": [
+      {
+        "id": "sig-4.1",
+        "ppm": "4.1",
+        "mult": "Quarteto",
+        "int": "2H",
+        "height": 40
+      },
+      {
+        "id": "sig-2.0",
+        "ppm": "2.0",
+        "mult": "Singleto",
+        "int": "3H",
+        "height": 60
+      },
+      {
+        "id": "sig-1.2",
+        "ppm": "1.2",
+        "mult": "Tripleto",
+        "int": "3H",
+        "height": 60
+      }
+    ],
+    "maxPpm": 6
+  }
+]
