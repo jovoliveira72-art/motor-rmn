@@ -1,96 +1,192 @@
 [
   {
-    "level": 1,
-    "title": "O Clássico Alifático",
-    "context": "Associe a numeração atómica da molécula de Etanol aos sinais do espetro 1H.",
-    "moleculeHTML": "\n                        <div class=\"flex items-center justify-center font-mono text-2xl md:text-3xl font-bold bg-gray-800 p-10 rounded-xl border border-gray-700 shadow-inner\">\n                            <div class=\"flex flex-col items-center relative\">\n                                <span class=\"absolute -top-10 bg-blue-600 text-white w-7 h-7 rounded-full flex items-center justify-center text-sm font-sans shadow-md\">1</span>\n                                <span>CH<sub class=\"text-sm\">3</sub></span>\n                            </div>\n                            <div class=\"w-10 h-1 bg-gray-500 mx-3\"></div>\n                            <div class=\"flex flex-col items-center relative\">\n                                <span class=\"absolute -top-10 bg-blue-600 text-white w-7 h-7 rounded-full flex items-center justify-center text-sm font-sans shadow-md\">2</span>\n                                <span>CH<sub class=\"text-sm\">2</sub></span>\n                            </div>\n                            <div class=\"w-10 h-1 bg-gray-500 mx-3\"></div>\n                            <div class=\"flex flex-col items-center relative\">\n                                <span class=\"absolute -top-10 bg-blue-600 text-white w-7 h-7 rounded-full flex items-center justify-center text-sm font-sans shadow-md\">3</span>\n                                <span class=\"text-emerald-400\">OH</span>\n                            </div>\n                        </div>\n                    ",
-    "tags": [
-      {
-        "id": "tag-1",
-        "label": "1",
-        "correctTarget": "sig-1.2"
-      },
-      {
-        "id": "tag-2",
-        "label": "2",
-        "correctTarget": "sig-3.7"
-      },
-      {
-        "id": "tag-3",
-        "label": "3",
-        "correctTarget": "sig-2.6"
-      }
+    "level": 101,
+    "tier": "facil",
+    "title": "Etanol",
+    "context": "Espectro de ¹H RMN em CDCl₃. Observe a troca rápida do próton hidroxílico.",
+    "maxPpm": 6,
+    "chain": [
+      { "label": "CH₃", "tagId": "tag1", "correctTarget": "sig1" },
+      { "label": "CH₂", "tagId": "tag2", "correctTarget": "sig2" },
+      { "label": "OH", "tagId": "tag3", "correctTarget": "sig3" }
     ],
     "signals": [
-      {
-        "id": "sig-3.7",
-        "ppm": "3.7",
-        "mult": "Quarteto",
-        "int": "2H",
-        "height": 40
-      },
-      {
-        "id": "sig-2.6",
-        "ppm": "2.6",
-        "mult": "Singleto L.",
-        "int": "1H",
-        "height": 20
-      },
-      {
-        "id": "sig-1.2",
-        "ppm": "1.2",
-        "mult": "Tripleto",
-        "int": "3H",
-        "height": 60
-      }
-    ],
-    "maxPpm": 5
+      { "id": "sig1", "ppm": 1.2, "int": 3, "mult": "t", "J": 7, "height": 60 },
+      { "id": "sig2", "ppm": 3.7, "int": 2, "mult": "q", "J": 7, "height": 40 },
+      { "id": "sig3", "ppm": 2.6, "int": 1, "mult": "s (largo)", "height": 20 }
+    ]
   },
   {
-    "level": 2,
-    "title": "Isolamento Estérico",
-    "context": "Acetato de Etilo. Diferencie os ambientes afetados pelo Oxigénio-éter e pela Carbonila.",
-    "moleculeHTML": "\n                        <div class=\"flex items-center justify-center font-mono text-xl md:text-3xl font-bold bg-gray-800 p-10 pt-16 rounded-xl border border-gray-700 shadow-inner flex-wrap gap-y-12\">\n                            <div class=\"flex flex-col items-center relative\">\n                                <span class=\"absolute -top-10 bg-blue-600 text-white w-7 h-7 rounded-full flex items-center justify-center text-sm font-sans shadow-md\">1</span>\n                                <span>CH<sub class=\"text-sm\">3</sub></span>\n                            </div>\n                            <div class=\"w-8 h-1 bg-gray-500 mx-2 mt-4\"></div>\n                            <div class=\"flex flex-col items-center relative\">\n                                <span class=\"absolute -top-12 text-red-400\">O</span>\n                                <div class=\"w-1 h-6 bg-gray-500 absolute -top-5 ml-1\"></div>\n                                <div class=\"w-1 h-6 bg-gray-500 absolute -top-5 mr-2\"></div>\n                                <span class=\"mt-4\">C</span>\n                            </div>\n                            <div class=\"w-8 h-1 bg-gray-500 mx-2 mt-4\"></div>\n                            <div class=\"flex flex-col items-center mt-4\">\n                                <span class=\"text-red-400\">O</span>\n                            </div>\n                            <div class=\"w-8 h-1 bg-gray-500 mx-2 mt-4\"></div>\n                            <div class=\"flex flex-col items-center relative\">\n                                <span class=\"absolute -top-10 bg-blue-600 text-white w-7 h-7 rounded-full flex items-center justify-center text-sm font-sans shadow-md\">2</span>\n                                <span class=\"mt-4\">CH<sub class=\"text-sm\">2</sub></span>\n                            </div>\n                            <div class=\"w-8 h-1 bg-gray-500 mx-2 mt-4\"></div>\n                            <div class=\"flex flex-col items-center relative\">\n                                <span class=\"absolute -top-10 bg-blue-600 text-white w-7 h-7 rounded-full flex items-center justify-center text-sm font-sans shadow-md\">3</span>\n                                <span class=\"mt-4\">CH<sub class=\"text-sm\">3</sub></span>\n                            </div>\n                        </div>\n                    ",
-    "tags": [
-      {
-        "id": "tag-1",
-        "label": "1",
-        "correctTarget": "sig-2.0"
-      },
-      {
-        "id": "tag-2",
-        "label": "2",
-        "correctTarget": "sig-4.1"
-      },
-      {
-        "id": "tag-3",
-        "label": "3",
-        "correctTarget": "sig-1.2"
-      }
+    "level": 102,
+    "tier": "facil",
+    "title": "1-Bromopropano",
+    "context": "Haleto de alquila. Note o forte efeito desblindante do bromo.",
+    "maxPpm": 5,
+    "chain": [
+      { "label": "CH₃", "tagId": "tag1", "correctTarget": "sig1" },
+      { "label": "CH₂", "tagId": "tag2", "correctTarget": "sig2" },
+      { "label": "CH₂", "tagId": "tag3", "correctTarget": "sig3" },
+      { "label": "Br", "fixed": true }
     ],
     "signals": [
-      {
-        "id": "sig-4.1",
-        "ppm": "4.1",
-        "mult": "Quarteto",
-        "int": "2H",
-        "height": 40
-      },
-      {
-        "id": "sig-2.0",
-        "ppm": "2.0",
-        "mult": "Singleto",
-        "int": "3H",
-        "height": 60
-      },
-      {
-        "id": "sig-1.2",
-        "ppm": "1.2",
-        "mult": "Tripleto",
-        "int": "3H",
-        "height": 60
-      }
+      { "id": "sig1", "ppm": 1.0, "int": 3, "mult": "t", "J": 7, "height": 60 },
+      { "id": "sig2", "ppm": 1.9, "int": 2, "mult": "sext", "J": 7, "height": 40 },
+      { "id": "sig3", "ppm": 3.4, "int": 2, "mult": "t", "J": 7, "height": 40 }
+    ]
+  },
+  {
+    "level": 103,
+    "tier": "facil",
+    "title": "Propilenoglicol",
+    "context": "Excipiente cosmético e farmacêutico comum. Observe o doublet do grupo metila e o efeito do próton hidroxílico.",
+    "maxPpm": 5,
+    "chain": [
+      { "label": "CH₃", "tagId": "tag1", "correctTarget": "sig1" },
+      { "label": "CH", "tagId": "tag2", "correctTarget": "sig2" },
+      { "label": "CH₂", "tagId": "tag3", "correctTarget": "sig3" },
+      { "label": "OH", "tagId": "tag4", "correctTarget": "sig4" }
     ],
-    "maxPpm": 6
+    "signals": [
+      { "id": "sig1", "ppm": 1.1, "int": 3, "mult": "d", "J": 6, "height": 60 },
+      { "id": "sig2", "ppm": 3.8, "int": 1, "mult": "m", "height": 20 },
+      { "id": "sig3", "ppm": 3.5, "int": 2, "mult": "d", "J": 5, "height": 40 },
+      { "id": "sig4", "ppm": 2.2, "int": 1, "mult": "s (largo)", "height": 20 }
+    ]
+  },
+  {
+    "level": 201,
+    "tier": "medio",
+    "title": "Acetato de Etila",
+    "context": "Éster comum. Compare o deslocamento do CH₃ ligado ao C=O com o CH₂ ligado ao O.",
+    "maxPpm": 5,
+    "chain": [
+      { "label": "CH₃", "tagId": "tag1", "correctTarget": "sig1" },
+      { "label": "C=O", "fixed": true },
+      { "label": "O", "fixed": true },
+      { "label": "CH₂", "tagId": "tag2", "correctTarget": "sig2" },
+      { "label": "CH₃", "tagId": "tag3", "correctTarget": "sig3" }
+    ],
+    "signals": [
+      { "id": "sig1", "ppm": 2.0, "int": 3, "mult": "s", "height": 60 },
+      { "id": "sig2", "ppm": 4.1, "int": 2, "mult": "q", "J": 7, "height": 40 },
+      { "id": "sig3", "ppm": 1.2, "int": 3, "mult": "t", "J": 7, "height": 60 }
+    ]
+  },
+  {
+    "level": 202,
+    "tier": "medio",
+    "title": "Acetofenona",
+    "context": "Cetona aromática. O anel benzênico monossubstituído aparece como um multipletto complexo.",
+    "maxPpm": 8.5,
+    "chain": [
+      { "label": "CH₃", "tagId": "tag1", "correctTarget": "sig1" },
+      { "label": "C=O", "fixed": true },
+      { "label": "Anel Fenila", "fixed": true, "branches": [
+        { "label": "H-Ar (o, m, p)", "tagId": "tag2", "correctTarget": "sig2" }
+      ]}
+    ],
+    "signals": [
+      { "id": "sig1", "ppm": 2.6, "int": 3, "mult": "s", "height": 60 },
+      { "id": "sig2", "ppm": 7.5, "int": 3, "mult": "m", "height": 60 },
+      { "id": "sig3", "ppm": 7.6, "int": 1, "mult": "t", "J": 7, "height": 20 },
+      { "id": "sig4", "ppm": 8.0, "int": 2, "mult": "d", "J": 7, "height": 40 }
+    ]
+  },
+  {
+    "level": 203,
+    "tier": "medio",
+    "title": "Cafeína",
+    "context": "Estimulante do SNC. Note a ausência de acoplamento entre os grupos metila devido aos átomos de nitrogênio e a presença de um único próton aromático.",
+    "maxPpm": 8.5,
+    "chain": [
+      { "label": "N-CH₃", "tagId": "tag1", "correctTarget": "sig1" },
+      { "label": "N-CH₃", "tagId": "tag2", "correctTarget": "sig2" },
+      { "label": "N-CH₃", "tagId": "tag3", "correctTarget": "sig3" },
+      { "label": "C=H (Ar)", "tagId": "tag4", "correctTarget": "sig4" }
+    ],
+    "signals": [
+      { "id": "sig1", "ppm": 3.4, "int": 3, "mult": "s", "height": 60 },
+      { "id": "sig2", "ppm": 3.6, "int": 3, "mult": "s", "height": 60 },
+      { "id": "sig3", "ppm": 4.0, "int": 3, "mult": "s", "height": 60 },
+      { "id": "sig4", "ppm": 7.6, "int": 1, "mult": "s", "height": 20 }
+    ]
+  },
+  {
+    "level": 301,
+    "tier": "dificil",
+    "title": "Paracetamol",
+    "context": "Fármaco analgésico. Substituição para no anel aromático gera dois doublets característicos. Prótons OH e NH aparecem como singletos largos.",
+    "maxPpm": 10.5,
+    "chain": [
+      { "label": "HO", "tagId": "tag1", "correctTarget": "sig1" },
+      { "label": "Anel", "fixed": true, "branches": [
+        { "label": "H-Ar (orto ao OH)", "tagId": "tag2", "correctTarget": "sig2" },
+        { "label": "H-Ar (orto ao NH)", "tagId": "tag3", "correctTarget": "sig3" }
+      ]},
+      { "label": "NH", "tagId": "tag4", "correctTarget": "sig4" },
+      { "label": "C=O", "fixed": true },
+      { "label": "CH₃", "tagId": "tag5", "correctTarget": "sig5" }
+    ],
+    "signals": [
+      { "id": "sig1", "ppm": 9.2, "int": 1, "mult": "s (largo)", "height": 20 },
+      { "id": "sig2", "ppm": 6.7, "int": 2, "mult": "d", "J": 9, "height": 45 },
+      { "id": "sig3", "ppm": 7.3, "int": 2, "mult": "d", "J": 9, "height": 45 },
+      { "id": "sig4", "ppm": 9.8, "int": 1, "mult": "s (largo)", "height": 20 },
+      { "id": "sig5", "ppm": 2.1, "int": 3, "mult": "s", "height": 60 }
+    ]
+  },
+  {
+    "level": 302,
+    "tier": "dificil",
+    "title": "Ácido Acetilsalicílico",
+    "context": "Substituição orto no anel aromático quebra a simetria, gerando 4 sinais aromáticos distintos (dd, t, t, dd).",
+    "maxPpm": 11.5,
+    "chain": [
+      { "label": "COOH", "tagId": "tag1", "correctTarget": "sig1" },
+      { "label": "Anel", "fixed": true, "branches": [
+        { "label": "H-Ar (C3)", "tagId": "tag2", "correctTarget": "sig2" },
+        { "label": "H-Ar (C4)", "tagId": "tag3", "correctTarget": "sig3" },
+        { "label": "H-Ar (C5)", "tagId": "tag4", "correctTarget": "sig4" },
+        { "label": "H-Ar (C6)", "tagId": "tag5", "correctTarget": "sig5" }
+      ]},
+      { "label": "O", "fixed": true },
+      { "label": "C=O", "fixed": true },
+      { "label": "CH₃", "tagId": "tag6", "correctTarget": "sig6" }
+    ],
+    "signals": [
+      { "id": "sig1", "ppm": 11.0, "int": 1, "mult": "s (largo)", "height": 20 },
+      { "id": "sig2", "ppm": 8.1, "int": 1, "mult": "dd", "J": 8, "height": 25 },
+      { "id": "sig3", "ppm": 7.6, "int": 1, "mult": "t", "J": 8, "height": 25 },
+      { "id": "sig4", "ppm": 7.4, "int": 1, "mult": "t", "J": 8, "height": 25 },
+      { "id": "sig5", "ppm": 7.1, "int": 1, "mult": "d", "J": 8, "height": 25 },
+      { "id": "sig6", "ppm": 2.3, "int": 3, "mult": "s", "height": 60 }
+    ]
+  },
+  {
+    "level": 303,
+    "tier": "dificil",
+    "title": "Ibuprofeno",
+    "context": "AINE clássico. O padrão do grupo isobutila (doublet 6H + multiplet 1H) é a chave para a elucidação, junto com o padrão para-substituído do anel.",
+    "maxPpm": 12.5,
+    "chain": [
+      { "label": "COOH", "tagId": "tag1", "correctTarget": "sig1" },
+      { "label": "CH", "tagId": "tag2", "correctTarget": "sig2" },
+      { "label": "CH₃", "tagId": "tag3", "correctTarget": "sig3" },
+      { "label": "CH₂", "tagId": "tag4", "correctTarget": "sig4" },
+      { "label": "Anel (Ar)", "fixed": true, "branches": [
+        { "label": "H-Ar (orto ao CH₂)", "tagId": "tag5", "correctTarget": "sig5" },
+        { "label": "H-Ar (orto ao CH)", "tagId": "tag6", "correctTarget": "sig6" }
+      ]},
+      { "label": "CH₃ (isobutila)", "tagId": "tag7", "correctTarget": "sig7" }
+    ],
+    "signals": [
+      { "id": "sig1", "ppm": 12.0, "int": 1, "mult": "s (largo)", "height": 20 },
+      { "id": "sig2", "ppm": 3.7, "int": 1, "mult": "q", "J": 7, "height": 20 },
+      { "id": "sig3", "ppm": 2.5, "int": 2, "mult": "d", "J": 7, "height": 40 },
+      { "id": "sig4", "ppm": 1.9, "int": 1, "mult": "m", "height": 20 },
+      { "id": "sig5", "ppm": 7.2, "int": 2, "mult": "d", "J": 8, "height": 40 },
+      { "id": "sig6", "ppm": 7.1, "int": 2, "mult": "d", "J": 8, "height": 40 },
+      { "id": "sig7", "ppm": 0.9, "int": 6, "mult": "d", "J": 7, "height": 120 }
+    ]
   }
 ]
