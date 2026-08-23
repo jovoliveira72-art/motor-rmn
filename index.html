@@ -128,10 +128,7 @@ header {
   50% { transform: scale(1.1); }
 }
 
-.xp-info {
-  display: flex;
-  flex-direction: column;
-}
+.xp-info { display: flex; flex-direction: column; }
 
 .xp-label {
   font-size: 10px;
@@ -172,9 +169,7 @@ main {
 }
 
 /* Animations */
-.fade-in {
-  animation: fadeIn 0.4s ease-out;
-}
+.fade-in { animation: fadeIn 0.4s ease-out; }
 
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(10px); }
@@ -309,6 +304,8 @@ main {
   margin-bottom: 12px;
 }
 
+.mode-card .mode-header { margin-bottom: 0; }
+
 .mode-icon {
   width: 56px;
   height: 56px;
@@ -406,6 +403,7 @@ main {
   cursor: pointer;
   font-size: 20px;
   transition: all 0.2s;
+  flex-shrink: 0;
 }
 
 .back-btn:hover {
@@ -947,6 +945,80 @@ main {
   opacity: 0.6;
 }
 
+/* Modo guiado */
+.guided-progress {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-light);
+}
+
+.guided-progress .progress-bar { flex: 1; }
+
+.signal-row.hl {
+  background: linear-gradient(90deg, var(--secondary-light), transparent);
+  border-left: 4px solid var(--secondary);
+}
+
+.guided-step-card {
+  background: white;
+  border-radius: 20px;
+  padding: 24px;
+  margin-top: 24px;
+  box-shadow: 0 4px 20px var(--shadow);
+  border: 2px solid var(--secondary-light);
+}
+
+.guided-step-label {
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--secondary);
+  margin-bottom: 12px;
+}
+
+.guided-step-text {
+  font-size: 16px;
+  line-height: 1.6;
+  margin-bottom: 16px;
+}
+
+.guided-options { display: grid; gap: 10px; }
+
+.guided-option {
+  background: var(--bg);
+  border: 2px solid var(--border);
+  border-radius: 12px;
+  padding: 14px 16px;
+  text-align: left;
+  font-family: 'Nunito', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.guided-option:hover:not(:disabled) {
+  border-color: var(--secondary);
+  background: var(--secondary-light);
+}
+
+.guided-option.correct {
+  border-color: var(--success);
+  background: var(--success-light);
+  color: #065F46;
+}
+
+.guided-option.wrong {
+  border-color: var(--error);
+  background: var(--error-light);
+  opacity: 0.6;
+}
+
 @media (max-width: 700px) {
   header { padding: 12px 16px; }
   main { padding: 24px 16px 80px; }
@@ -993,18 +1065,24 @@ const state = {
   errors: 0,
   selectedTagId: null,
   mappingTier: null,
-  lastMappingLevel: null
+  lastMappingLevel: null,
+  guidedId: null,
+  guidedStep: 0
 };
 
-const db = { tutorial: [], mapping: [], solo: [] };
+const db = { tutorial: [], mapping: [], solo: [], guided: [] };
 
 async function carregarDados() {
-  const arquivos = ['tutorial', 'mapping', 'solo'];
   try {
+    const arquivos = ['tutorial', 'mapping', 'solo'];
     const respostas = await Promise.all(arquivos.map(n => fetch(`data/${n}.json`)));
     for (const r of respostas) if (!r.ok) throw new Error(`Falha: ${r.url}`);
     const dados = await Promise.all(respostas.map(r => r.json()));
     db.tutorial = dados[0]; db.mapping = dados[1]; db.solo = dados[2];
+    try {
+      const g = await fetch('data/guided.json');
+      if (g.ok) db.guided = await g.json();
+    } catch (e) { db.guided = []; }
     return true;
   } catch (e) { console.error(e); return false; }
 }
@@ -1041,15 +1119,17 @@ function render() {
   c.innerHTML = '';
   const wrap = document.createElement('div');
   wrap.className = 'view-container fade-in';
-  
+
   if (state.currentView === 'home') wrap.appendChild(renderHome());
   else if (state.currentView === 'modeSelect') wrap.appendChild(renderLevelSelect());
   else if (state.currentView === 'tutorial') wrap.appendChild(renderTutorial());
+  else if (state.currentView === 'guidedSelect') wrap.appendChild(renderGuidedList());
+  else if (state.currentView === 'guided') wrap.appendChild(renderGuided());
   else if (state.currentView === 'gameplay') {
     if (state.activeMode === 'mapping') wrap.appendChild(renderMapping());
     else wrap.appendChild(renderSolo());
   }
-  
+
   c.appendChild(wrap);
 }
 
@@ -1057,14 +1137,26 @@ function renderHome() {
   const div = document.createElement('div');
   const totalMolecules = db.mapping.length;
   const progressPercent = Math.min(100, (state.xp / 500) * 100);
-  
+
+  const guidedCard = db.guided.length > 0 ? `
+      <div class="mode-card solo" onclick="setView('guidedSelect')">
+        <div class="mode-header">
+          <div class="mode-icon solo">🧭</div>
+          <div>
+            <div class="mode-title">Exemplos Guiados</div>
+            <div class="mode-desc">Acompanhe um raciocínio completo de elucidação, passo a passo, com perguntas no caminho</div>
+          </div>
+        </div>
+      </div>
+  ` : '';
+
   div.innerHTML = `
     <div class="home-hero">
       <div class="home-emoji">🔬</div>
       <h1 class="home-title">Domine a RMN brincando!</h1>
       <p class="home-sub">Aprenda a analisar espectros de Ressonância Magnética Nuclear com moléculas reais do mercado farmacêutico. Ganhe pontos e suba de nível!</p>
     </div>
-    
+
     <div class="progress-card">
       <div class="progress-header">
         <div class="progress-title">🎯 Seu progresso</div>
@@ -1074,7 +1166,7 @@ function renderHome() {
         <div class="progress-fill" style="width: ${progressPercent}%"></div>
       </div>
     </div>
-    
+
     <div class="modes-grid">
       <div class="mode-card tutorial" onclick="setView('tutorial', null, 1)">
         <div class="mode-header">
@@ -1085,7 +1177,9 @@ function renderHome() {
           </div>
         </div>
       </div>
-      
+
+      ${guidedCard}
+
       <div class="mode-card mapping">
         <div class="mode-header">
           <div class="mode-icon mapping">🧩</div>
@@ -1112,7 +1206,7 @@ function renderHome() {
           </button>
         </div>
       </div>
-      
+
       <div class="mode-card solo" onclick="setView('modeSelect', 'solo')">
         <div class="mode-header">
           <div class="mode-icon solo">🏆</div>
@@ -1130,13 +1224,13 @@ function renderHome() {
 function renderLevelSelect() {
   const div = document.createElement('div');
   const levels = db.solo;
-  
+
   div.innerHTML = `
     <div class="section-header">
       <button class="back-btn" onclick="setView('home')">←</button>
       <h2 class="section-title">🏆 Desafio Solo</h2>
     </div>
-    
+
     <div class="modes-grid">
       ${levels.map((l, i) => `
         <div class="mode-card solo" onclick="setView('gameplay', 'solo', ${l.level})">
@@ -1176,31 +1270,39 @@ function renderTutorial() {
   const next = state.currentLevel < db.tutorial.length
     ? `<button class="btn primary" onclick="setView('tutorial', null, ${state.currentLevel + 1})">Próximo →</button>`
     : `<button class="btn success" onclick="setView('home')">Concluir ✓</button>`;
-  
+
   div.innerHTML = `
     <div class="section-header">
       <button class="back-btn" onclick="setView('home')">←</button>
       <h2 class="section-title">📚 ${data.title}</h2>
     </div>
-    
+
     <div class="tutorial-card">
       <div class="tutorial-body">${data.content}</div>
     </div>
-    
+
     <div class="tutorial-nav">${prev}${next}</div>
   `;
   return div;
 }
 
-function renderSpectrumSVG(signals, maxPpm, is13C = false) {
+function renderSpectrumSVG(signals, maxPpm, is13C = false, highlight = []) {
   const width = 1000;
   const height = 140;
   const baseline = height - 10;
   const maxH = height - 20;
-  
+
   const sorted = [...signals].sort((a, b) => b.ppm - a.ppm);
+
+  let bands = '';
+  sorted.forEach(sig => {
+    if (highlight.includes(sig.id)) {
+      const x = ((maxPpm - sig.ppm) / maxPpm) * width;
+      bands += `<rect x="${x - 14}" y="0" width="28" height="${height}" fill="rgba(245, 158, 11, 0.18)"/>`;
+    }
+  });
+
   let path = `M 0 ${baseline}`;
-  
   sorted.forEach(sig => {
     const x = ((maxPpm - sig.ppm) / maxPpm) * width;
     const peakH = Math.min(Math.abs(sig.height) * 1.5, maxH);
@@ -1208,26 +1310,26 @@ function renderSpectrumSVG(signals, maxPpm, is13C = false) {
     const w = 8;
     path += ` L ${x - w} ${baseline} L ${x} ${peakY} L ${x + w} ${baseline}`;
   });
-  
   path += ` L ${width} ${baseline}`;
-  
+
   const step = is13C ? 20 : 1;
   let ticks = '';
   for (let i = 0; i <= maxPpm; i += step) {
     const x = ((maxPpm - i) / maxPpm) * width;
     ticks += `<line x1="${x}" y1="${baseline}" x2="${x}" y2="${baseline + 4}" stroke="var(--border)" stroke-width="2"/>`;
   }
-  
+
   let hits = '';
   sorted.forEach((sig, i) => {
     const x = ((maxPpm - sig.ppm) / maxPpm) * width;
     hits += `<rect class="spectrum-peak-hit" data-idx="${i}" x="${x - 12}" y="0" width="24" height="${height}"/>`;
   });
-  
+
   const color = is13C ? 'var(--primary)' : 'var(--info)';
-  
+
   return `
     <svg class="spectrum-svg" viewBox="0 0 ${width} ${height}" preserveAspectRatio="none">
+      ${bands}
       <line class="spectrum-baseline" x1="0" y1="${baseline}" x2="${width}" y2="${baseline}"/>
       ${ticks}
       <path class="spectrum-trace" d="${path}" style="stroke: ${color}"/>
@@ -1258,7 +1360,7 @@ function renderChainDiagram(chain, tagNumbers) {
   const nodes = chain.map(item => {
     const num = item.tagId ? tagNumbers[item.tagId] : null;
     const badge = num ? `<div class="chain-badge">${num}</div>` : '';
-    
+
     const branches = (item.branches || []).map(b => {
       const bNum = b.tagId ? tagNumbers[b.tagId] : null;
       const bBadge = bNum ? `<div class="chain-badge" style="top:-26px;width:22px;height:22px;font-size:11px;">${bNum}</div>` : '';
@@ -1270,7 +1372,7 @@ function renderChainDiagram(chain, tagNumbers) {
         </div>
       `;
     }).join('');
-    
+
     return `
       <div class="chain-node">
         ${branches ? `<div class="chain-node-branches">${branches}</div>` : ''}
@@ -1281,7 +1383,7 @@ function renderChainDiagram(chain, tagNumbers) {
       </div>
     `;
   }).join('<div class="chain-link"></div>');
-  
+
   return `<div class="chain-card"><div class="chain-inner">${nodes}</div></div>`;
 }
 
@@ -1291,15 +1393,15 @@ function renderMapping() {
   const tagNumbers = {};
   tags.forEach(t => tagNumbers[t.id] = t.label);
   q._derivedTags = tags;
-  
+
   const signals = aplicarRuido(q.signals);
   const shuffledSignals = [...signals].sort(() => Math.random() - 0.5);
   const shuffledTags = [...tags].sort(() => Math.random() - 0.5);
-  
+
   const tagsHtml = shuffledTags.map(t =>
     `<div class="select-tag" id="${t.id}" data-tagid="${t.id}">${t.label}</div>`
   ).join('');
-  
+
   const signalsHtml = shuffledSignals.map(sig => `
     <div class="signal-row" id="row-${sig.id}" data-signalid="${sig.id}">
       <div class="signal-ppm">${sig.ppm}<small>ppm</small></div>
@@ -1313,30 +1415,30 @@ function renderMapping() {
       </div>
     </div>
   `).join('');
-  
+
   const tierLabel = { facil: 'Nível 1 · Fácil', medio: 'Nível 2 · Médio', dificil: 'Nível 3 · Difícil' }[q.tier] || '';
-  
+
   const div = document.createElement('div');
   div.innerHTML = `
     <div class="section-header">
       <button class="back-btn" onclick="setView('home')">←</button>
       <h2 class="section-title">🧩 ${q.title}</h2>
     </div>
-    
+
     <div class="context-card">
       <div class="context-title">${q.title}</div>
       <div class="context-text">${q.context}</div>
     </div>
-    
+
     <div class="instruction">💡 Toque num número da estrutura e depois no sinal correspondente. Para reposicionar, toque na peça alocada e escolha nova zona.</div>
-    
+
     ${renderChainDiagram(q.chain, tagNumbers)}
-    
+
     <div class="tags-pool-card">
       <span class="tags-pool-label">Peças</span>
       <div class="tags-pool" id="tags-pool">${tagsHtml}</div>
     </div>
-    
+
     <div class="spectrum-card">
       <div class="spectrum-axis-labels">
         <span>← Desblindado</span>
@@ -1345,16 +1447,16 @@ function renderMapping() {
       ${renderSpectrumSVG(signals, q.maxPpm)}
       <div class="spectrum-tooltip" id="spectrum-tooltip"></div>
     </div>
-    
+
     <div class="signals-list">${signalsHtml}</div>
-    
+
     <div id="mapping-feedback"></div>
-    
+
     <button class="btn primary" id="btn-validate" onclick="validateMapping()" disabled style="margin-top: 24px; width: 100%;">Validar atribuição</button>
   `;
-  
+
   setTimeout(() => attachMappingEvents(q, signals), 0);
-  
+
   return div;
 }
 
@@ -1372,10 +1474,9 @@ function attachMappingEvents(q, signals) {
       state.selectedTagId = id;
     });
   });
-  
+
   document.querySelectorAll('.dropzone').forEach(dz => {
     dz.addEventListener('click', () => {
-      const sigId = dz.dataset.signalid;
       if (state.selectedTagId) {
         const tagEl = document.getElementById(state.selectedTagId);
         const origin = tagEl.parentElement;
@@ -1403,7 +1504,7 @@ function attachMappingEvents(q, signals) {
       }
     });
   });
-  
+
   document.getElementById('tags-pool').addEventListener('click', (e) => {
     const tagHit = e.target.closest('.select-tag');
     if (tagHit) {
@@ -1425,11 +1526,11 @@ function attachMappingEvents(q, signals) {
       checkMappingState();
     }
   });
-  
+
   const tooltip = document.getElementById('spectrum-tooltip');
   const wrap = document.querySelector('.spectrum-card');
   document.querySelectorAll('.spectrum-peak-hit').forEach(hit => {
-    hit.addEventListener('mouseenter', (e) => {
+    hit.addEventListener('mouseenter', () => {
       const idx = parseInt(hit.dataset.idx);
       const sig = signals[idx];
       tooltip.innerHTML = `<span class="tt-ppm">${sig.ppm} ppm</span>${sig.mult} · Int ${sig.int}${sig.J ? ` · J ${sig.J}Hz` : ''}`;
@@ -1455,7 +1556,7 @@ window.validateMapping = function() {
   const q = db.mapping.find(x => x.level === state.currentLevel);
   const tags = q._derivedTags;
   let allCorrect = true;
-  
+
   tags.forEach(t => {
     const dz = document.getElementById(`drop-${t.correctTarget}`);
     const tagEl = document.getElementById(t.id);
@@ -1471,16 +1572,16 @@ window.validateMapping = function() {
       }
     }
   });
-  
+
   const fb = document.getElementById('mapping-feedback');
   if (allCorrect) {
     const earned = Math.max(30, 150 - state.errors * 40);
     updateXP(earned);
-    
+
     const wrap = document.querySelector('.view-container');
     wrap.classList.add('celebrate');
     setTimeout(() => wrap.classList.remove('celebrate'), 600);
-    
+
     fb.innerHTML = `
       <div class="feedback success">
         <div class="feedback-title" style="color: var(--success);">🎉 Parabéns! +${earned} pontos</div>
@@ -1529,16 +1630,16 @@ window.handleSoloAnswer = function(optionId, btnEl) {
   const fb = document.getElementById('feedback-box');
   const btns = document.querySelectorAll('.option-btn');
   btns.forEach(b => b.disabled = true);
-  
+
   if (opt.correct) {
     btnEl.classList.add('correct');
     const earned = Math.max(20, 200 - state.errors * 70);
     updateXP(earned);
-    
+
     const wrap = document.querySelector('.view-container');
     wrap.classList.add('celebrate');
     setTimeout(() => wrap.classList.remove('celebrate'), 600);
-    
+
     fb.innerHTML = `
       <div class="feedback success">
         <div class="feedback-title" style="color: var(--success);">🎉 Excelente! +${earned} pontos</div>
@@ -1564,7 +1665,7 @@ window.handleSoloAnswer = function(optionId, btnEl) {
 function renderSolo() {
   const q = db.solo.find(x => x.level === state.currentLevel);
   const div = document.createElement('div');
-  
+
   const hasToggle = Object.keys(q.spectra).length > 1;
   const toggleHtml = hasToggle ? `
     <div class="solo-toggle">
@@ -1572,28 +1673,28 @@ function renderSolo() {
       <button class="${state.activeSpectrumType === '13C' ? 'active' : ''}" onclick="toggleSpectrum('13C')">¹³C RMN</button>
     </div>
   ` : '';
-  
+
   const is13C = state.activeSpectrumType === '13C';
   const specData = q.spectra[state.activeSpectrumType];
   const spectrumHtml = renderSpectrumSVG(specData.signals, specData.maxPpm, is13C);
-  
+
   const optionsHtml = q.options.map(o =>
     `<button class="option-btn" onclick="handleSoloAnswer('${o.id}', this)">${o.text}</button>`
   ).join('');
-  
+
   div.innerHTML = `
     <div class="section-header">
       <button class="back-btn" onclick="setView('modeSelect', 'solo')">←</button>
       <h2 class="section-title">🏆 ${q.title}</h2>
     </div>
-    
+
     <div class="context-card" style="background: linear-gradient(135deg, var(--secondary-light), var(--secondary));">
       <div class="context-title">${q.title}</div>
       <div class="context-text">${q.context}</div>
     </div>
-    
+
     ${toggleHtml}
-    
+
     <div class="spectrum-card">
       <div class="spectrum-axis-labels">
         <span>← Baixo campo</span>
@@ -1601,18 +1702,147 @@ function renderSolo() {
       </div>
       ${spectrumHtml}
     </div>
-    
+
     <div style="margin-top: 24px;">
       <div style="font-size: 13px; font-weight: 700; color: var(--text-light); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.05em;">Escolha a estrutura correta</div>
       <div class="solo-options">${optionsHtml}</div>
     </div>
-    
+
     <div id="feedback-box" style="margin-top: 24px;"></div>
   `;
-  
+
   return div;
 }
 
+// ——— MODO GUIADO ———
+function renderGuidedList() {
+  const div = document.createElement('div');
+  div.innerHTML = `
+    <div class="section-header">
+      <button class="back-btn" onclick="setView('home')">←</button>
+      <h2 class="section-title">🧭 Exemplos Guiados</h2>
+    </div>
+    <div class="modes-grid">
+      ${db.guided.map(g => `
+        <div class="mode-card solo" onclick="startGuided(${g.id})">
+          <div class="mode-header">
+            <div class="mode-icon solo">🧭</div>
+            <div>
+              <div class="mode-title">${g.title}</div>
+              <div class="mode-desc">${g.subtitle}</div>
+            </div>
+          </div>
+        </div>
+      `).join('')}
+    </div>
+  `;
+  return div;
+}
+
+window.startGuided = function(id) {
+  state.guidedId = id;
+  state.guidedStep = 0;
+  setView('guided');
+};
+
+window.guidedNext = function() {
+  const ex = db.guided.find(g => g.id === state.guidedId);
+  if (state.guidedStep < ex.steps.length - 1) {
+    state.guidedStep++;
+    render();
+  } else {
+    setView('guidedSelect');
+  }
+};
+
+window.guidedAnswer = function(idx, btnEl) {
+  const ex = db.guided.find(g => g.id === state.guidedId);
+  const step = ex.steps[state.guidedStep];
+  const opt = step.options[idx];
+  const fb = document.getElementById('guided-feedback');
+  if (opt.correct) {
+    btnEl.classList.add('correct');
+    document.querySelectorAll('.guided-option').forEach(b => b.disabled = true);
+    fb.innerHTML = `<div class="feedback success"><div class="feedback-title" style="color:var(--success);">✓ Exato!</div><div class="feedback-body">${opt.feedback}</div></div>`;
+    document.getElementById('guided-continue').style.display = 'block';
+  } else {
+    btnEl.classList.add('wrong');
+    btnEl.disabled = true;
+    fb.innerHTML = `<div class="feedback error"><div class="feedback-title" style="color:var(--error);">Ainda não…</div><div class="feedback-body">${opt.feedback}</div></div>`;
+  }
+};
+
+function renderGuided() {
+  const ex = db.guided.find(g => g.id === state.guidedId);
+  const step = ex.steps[state.guidedStep];
+  const tags = deriveTagsFromChain(ex.chain);
+  const tagNumbers = {};
+  tags.forEach(t => tagNumbers[t.id] = t.label);
+  const hl = step.highlight || [];
+
+  const signalsHtml = ex.signals.map(sig => `
+    <div class="signal-row ${hl.includes(sig.id) ? 'hl' : ''}">
+      <div class="signal-ppm">${sig.ppm}<small>ppm</small></div>
+      <div class="signal-meta">
+        <span>Mult: <b>${sig.mult}</b></span>
+        <span>Int: <b>${sig.int}</b></span>
+        ${sig.J ? `<span>J: <b>${sig.J}</b></span>` : ''}
+      </div>
+    </div>
+  `).join('');
+
+  const isLast = state.guidedStep === ex.steps.length - 1;
+  const nextLabel = isLast ? 'Concluir ✓' : 'Continuar →';
+
+  let stepHtml = '';
+  if (step.type === 'observe') {
+    stepHtml = `
+      <div class="guided-step-card">
+        <div class="guided-step-label">👀 Observe</div>
+        <div class="guided-step-text">${step.text}</div>
+        <button class="btn primary" onclick="guidedNext()">${nextLabel}</button>
+      </div>`;
+  } else {
+    stepHtml = `
+      <div class="guided-step-card">
+        <div class="guided-step-label">❓ Sua vez</div>
+        <div class="guided-step-text">${step.question}</div>
+        <div class="guided-options">
+          ${step.options.map((o, i) => `<button class="guided-option" onclick="guidedAnswer(${i}, this)">${o.text}</button>`).join('')}
+        </div>
+        <div id="guided-feedback"></div>
+        <div id="guided-continue" style="display:none; margin-top:16px;">
+          <button class="btn success" onclick="guidedNext()">${nextLabel}</button>
+        </div>
+      </div>`;
+  }
+
+  const div = document.createElement('div');
+  div.innerHTML = `
+    <div class="section-header">
+      <button class="back-btn" onclick="setView('guidedSelect')">←</button>
+      <h2 class="section-title">🧭 ${ex.title}</h2>
+    </div>
+    <div class="guided-progress">
+      <span>Passo ${state.guidedStep + 1} de ${ex.steps.length}</span>
+      <div class="progress-bar"><div class="progress-fill" style="width:${(state.guidedStep / ex.steps.length) * 100}%"></div></div>
+    </div>
+    <div class="context-card" style="background: linear-gradient(135deg, var(--secondary-light), var(--secondary));">
+      <div class="context-title">${ex.title} · ${ex.formula}</div>
+      <div class="context-text">${ex.subtitle}</div>
+    </div>
+    ${renderChainDiagram(ex.chain, tagNumbers)}
+    <div class="spectrum-card">
+      <div class="spectrum-axis-labels"><span>← Desblindado</span><span>Blindado →</span></div>
+      ${renderSpectrumSVG(ex.signals, ex.maxPpm, false, hl)}
+    </div>
+    <div class="signals-list">${signalsHtml}</div>
+    ${stepHtml}
+  `;
+  return div;
+}
+
+// ——— INIT ———
 async function iniciar() {
   const c = document.getElementById('app-container');
   c.innerHTML = `<div style="display:flex;align-items:center;justify-content:center;height:60vh;flex-direction:column;gap:16px;">
