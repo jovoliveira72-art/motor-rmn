@@ -6,14 +6,46 @@
     "context": "Espectro de ¹H RMN em CDCl₃. Observe a troca rápida do próton hidroxílico.",
     "maxPpm": 6,
     "chain": [
-      { "label": "CH₃", "tagId": "tag1", "correctTarget": "sig1" },
-      { "label": "CH₂", "tagId": "tag2", "correctTarget": "sig2" },
-      { "label": "OH", "tagId": "tag3", "correctTarget": "sig3" }
+      {
+        "label": "CH₃",
+        "tagId": "tag1",
+        "correctTarget": "sig1"
+      },
+      {
+        "label": "CH₂",
+        "tagId": "tag2",
+        "correctTarget": "sig2"
+      },
+      {
+        "label": "OH",
+        "tagId": "tag3",
+        "correctTarget": "sig3"
+      }
     ],
     "signals": [
-      { "id": "sig1", "ppm": 1.2, "int": 3, "mult": "t", "J": 7, "height": 60 },
-      { "id": "sig2", "ppm": 3.7, "int": 2, "mult": "q", "J": 7, "height": 40 },
-      { "id": "sig3", "ppm": 2.6, "int": 1, "mult": "s (largo)", "height": 20 }
+      {
+        "id": "sig1",
+        "ppm": 1.2,
+        "int": 3,
+        "mult": "t",
+        "J": 7,
+        "height": 60
+      },
+      {
+        "id": "sig2",
+        "ppm": 3.7,
+        "int": 2,
+        "mult": "q",
+        "J": 7,
+        "height": 40
+      },
+      {
+        "id": "sig3",
+        "ppm": 2.6,
+        "int": 1,
+        "mult": "s (largo)",
+        "height": 20
+      }
     ]
   },
   {
@@ -23,15 +55,51 @@
     "context": "Haleto de alquila. Note o forte efeito desblindante do bromo.",
     "maxPpm": 5,
     "chain": [
-      { "label": "CH₃", "tagId": "tag1", "correctTarget": "sig1" },
-      { "label": "CH₂", "tagId": "tag2", "correctTarget": "sig2" },
-      { "label": "CH₂", "tagId": "tag3", "correctTarget": "sig3" },
-      { "label": "Br", "fixed": true }
+      {
+        "label": "CH₃",
+        "tagId": "tag1",
+        "correctTarget": "sig1"
+      },
+      {
+        "label": "CH₂",
+        "tagId": "tag2",
+        "correctTarget": "sig2"
+      },
+      {
+        "label": "CH₂",
+        "tagId": "tag3",
+        "correctTarget": "sig3"
+      },
+      {
+        "label": "Br",
+        "fixed": true
+      }
     ],
     "signals": [
-      { "id": "sig1", "ppm": 1.0, "int": 3, "mult": "t", "J": 7, "height": 60 },
-      { "id": "sig2", "ppm": 1.9, "int": 2, "mult": "sext", "J": 7, "height": 40 },
-      { "id": "sig3", "ppm": 3.4, "int": 2, "mult": "t", "J": 7, "height": 40 }
+      {
+        "id": "sig1",
+        "ppm": 1.0,
+        "int": 3,
+        "mult": "t",
+        "J": 7,
+        "height": 60
+      },
+      {
+        "id": "sig2",
+        "ppm": 1.9,
+        "int": 2,
+        "mult": "sext",
+        "J": 7,
+        "height": 40
+      },
+      {
+        "id": "sig3",
+        "ppm": 3.4,
+        "int": 2,
+        "mult": "t",
+        "J": 7,
+        "height": 40
+      }
     ]
   },
   {
@@ -41,16 +109,58 @@
     "context": "Excipiente cosmético e farmacêutico comum. Observe o doublet do grupo metila e o efeito do próton hidroxílico.",
     "maxPpm": 5,
     "chain": [
-      { "label": "CH₃", "tagId": "tag1", "correctTarget": "sig1" },
-      { "label": "CH", "tagId": "tag2", "correctTarget": "sig2" },
-      { "label": "CH₂", "tagId": "tag3", "correctTarget": "sig3" },
-      { "label": "OH", "tagId": "tag4", "correctTarget": "sig4" }
+      {
+        "label": "CH₃",
+        "tagId": "tag1",
+        "correctTarget": "sig1"
+      },
+      {
+        "label": "CH",
+        "tagId": "tag2",
+        "correctTarget": "sig2"
+      },
+      {
+        "label": "CH₂",
+        "tagId": "tag3",
+        "correctTarget": "sig3"
+      },
+      {
+        "label": "OH",
+        "tagId": "tag4",
+        "correctTarget": "sig4"
+      }
     ],
     "signals": [
-      { "id": "sig1", "ppm": 1.1, "int": 3, "mult": "d", "J": 6, "height": 60 },
-      { "id": "sig2", "ppm": 3.8, "int": 1, "mult": "m", "height": 20 },
-      { "id": "sig3", "ppm": 3.5, "int": 2, "mult": "d", "J": 5, "height": 40 },
-      { "id": "sig4", "ppm": 2.2, "int": 1, "mult": "s (largo)", "height": 20 }
+      {
+        "id": "sig1",
+        "ppm": 1.1,
+        "int": 3,
+        "mult": "d",
+        "J": 6,
+        "height": 60
+      },
+      {
+        "id": "sig2",
+        "ppm": 3.8,
+        "int": 1,
+        "mult": "m",
+        "height": 20
+      },
+      {
+        "id": "sig3",
+        "ppm": 3.5,
+        "int": 2,
+        "mult": "d",
+        "J": 5,
+        "height": 40
+      },
+      {
+        "id": "sig4",
+        "ppm": 2.2,
+        "int": 2,
+        "mult": "s (largo)",
+        "height": 20
+      }
     ]
   },
   {
@@ -60,16 +170,54 @@
     "context": "Éster comum. Compare o deslocamento do CH₃ ligado ao C=O com o CH₂ ligado ao O.",
     "maxPpm": 5,
     "chain": [
-      { "label": "CH₃", "tagId": "tag1", "correctTarget": "sig1" },
-      { "label": "C=O", "fixed": true },
-      { "label": "O", "fixed": true },
-      { "label": "CH₂", "tagId": "tag2", "correctTarget": "sig2" },
-      { "label": "CH₃", "tagId": "tag3", "correctTarget": "sig3" }
+      {
+        "label": "CH₃",
+        "tagId": "tag1",
+        "correctTarget": "sig1"
+      },
+      {
+        "label": "C=O",
+        "fixed": true
+      },
+      {
+        "label": "O",
+        "fixed": true
+      },
+      {
+        "label": "CH₂",
+        "tagId": "tag2",
+        "correctTarget": "sig2"
+      },
+      {
+        "label": "CH₃",
+        "tagId": "tag3",
+        "correctTarget": "sig3"
+      }
     ],
     "signals": [
-      { "id": "sig1", "ppm": 2.0, "int": 3, "mult": "s", "height": 60 },
-      { "id": "sig2", "ppm": 4.1, "int": 2, "mult": "q", "J": 7, "height": 40 },
-      { "id": "sig3", "ppm": 1.2, "int": 3, "mult": "t", "J": 7, "height": 60 }
+      {
+        "id": "sig1",
+        "ppm": 2.0,
+        "int": 3,
+        "mult": "s",
+        "height": 60
+      },
+      {
+        "id": "sig2",
+        "ppm": 4.1,
+        "int": 2,
+        "mult": "q",
+        "J": 7,
+        "height": 40
+      },
+      {
+        "id": "sig3",
+        "ppm": 1.2,
+        "int": 3,
+        "mult": "t",
+        "J": 7,
+        "height": 60
+      }
     ]
   },
   {
@@ -79,17 +227,68 @@
     "context": "Cetona aromática. O anel benzênico monossubstituído aparece como um multipletto complexo.",
     "maxPpm": 8.5,
     "chain": [
-      { "label": "CH₃", "tagId": "tag1", "correctTarget": "sig1" },
-      { "label": "C=O", "fixed": true },
-      { "label": "Anel Fenila", "fixed": true, "branches": [
-        { "label": "H-Ar (o, m, p)", "tagId": "tag2", "correctTarget": "sig2" }
-      ]}
+      {
+        "label": "CH₃",
+        "tagId": "tag1",
+        "correctTarget": "sig1"
+      },
+      {
+        "label": "C=O",
+        "fixed": true
+      },
+      {
+        "label": "Anel Fenila",
+        "fixed": true,
+        "branches": [
+          {
+            "label": "H-Ar (orto)",
+            "tagId": "tag2",
+            "correctTarget": "sig4"
+          },
+          {
+            "label": "H-Ar (meta)",
+            "tagId": "tag3",
+            "correctTarget": "sig2"
+          },
+          {
+            "label": "H-Ar (para)",
+            "tagId": "tag4",
+            "correctTarget": "sig3"
+          }
+        ]
+      }
     ],
     "signals": [
-      { "id": "sig1", "ppm": 2.6, "int": 3, "mult": "s", "height": 60 },
-      { "id": "sig2", "ppm": 7.5, "int": 3, "mult": "m", "height": 60 },
-      { "id": "sig3", "ppm": 7.6, "int": 1, "mult": "t", "J": 7, "height": 20 },
-      { "id": "sig4", "ppm": 8.0, "int": 2, "mult": "d", "J": 7, "height": 40 }
+      {
+        "id": "sig1",
+        "ppm": 2.6,
+        "int": 3,
+        "mult": "s",
+        "height": 60
+      },
+      {
+        "id": "sig2",
+        "ppm": 7.5,
+        "int": 2,
+        "mult": "m",
+        "height": 60
+      },
+      {
+        "id": "sig3",
+        "ppm": 7.6,
+        "int": 1,
+        "mult": "t",
+        "J": 7,
+        "height": 20
+      },
+      {
+        "id": "sig4",
+        "ppm": 8.0,
+        "int": 2,
+        "mult": "d",
+        "J": 7,
+        "height": 40
+      }
     ]
   },
   {
@@ -99,16 +298,56 @@
     "context": "Estimulante do SNC. Note a ausência de acoplamento entre os grupos metila devido aos átomos de nitrogênio e a presença de um único próton aromático.",
     "maxPpm": 8.5,
     "chain": [
-      { "label": "N-CH₃", "tagId": "tag1", "correctTarget": "sig1" },
-      { "label": "N-CH₃", "tagId": "tag2", "correctTarget": "sig2" },
-      { "label": "N-CH₃", "tagId": "tag3", "correctTarget": "sig3" },
-      { "label": "C=H (Ar)", "tagId": "tag4", "correctTarget": "sig4" }
+      {
+        "label": "N-CH₃",
+        "tagId": "tag1",
+        "correctTarget": "sig1"
+      },
+      {
+        "label": "N-CH₃",
+        "tagId": "tag2",
+        "correctTarget": "sig2"
+      },
+      {
+        "label": "N-CH₃",
+        "tagId": "tag3",
+        "correctTarget": "sig3"
+      },
+      {
+        "label": "C=H (Ar)",
+        "tagId": "tag4",
+        "correctTarget": "sig4"
+      }
     ],
     "signals": [
-      { "id": "sig1", "ppm": 3.4, "int": 3, "mult": "s", "height": 60 },
-      { "id": "sig2", "ppm": 3.6, "int": 3, "mult": "s", "height": 60 },
-      { "id": "sig3", "ppm": 4.0, "int": 3, "mult": "s", "height": 60 },
-      { "id": "sig4", "ppm": 7.6, "int": 1, "mult": "s", "height": 20 }
+      {
+        "id": "sig1",
+        "ppm": 3.4,
+        "int": 3,
+        "mult": "s",
+        "height": 60
+      },
+      {
+        "id": "sig2",
+        "ppm": 3.6,
+        "int": 3,
+        "mult": "s",
+        "height": 60
+      },
+      {
+        "id": "sig3",
+        "ppm": 4.0,
+        "int": 3,
+        "mult": "s",
+        "height": 60
+      },
+      {
+        "id": "sig4",
+        "ppm": 7.6,
+        "int": 1,
+        "mult": "s",
+        "height": 20
+      }
     ]
   },
   {
@@ -118,21 +357,80 @@
     "context": "Fármaco analgésico. Substituição para no anel aromático gera dois doublets característicos. Prótons OH e NH aparecem como singletos largos.",
     "maxPpm": 10.5,
     "chain": [
-      { "label": "HO", "tagId": "tag1", "correctTarget": "sig1" },
-      { "label": "Anel", "fixed": true, "branches": [
-        { "label": "H-Ar (orto ao OH)", "tagId": "tag2", "correctTarget": "sig2" },
-        { "label": "H-Ar (orto ao NH)", "tagId": "tag3", "correctTarget": "sig3" }
-      ]},
-      { "label": "NH", "tagId": "tag4", "correctTarget": "sig4" },
-      { "label": "C=O", "fixed": true },
-      { "label": "CH₃", "tagId": "tag5", "correctTarget": "sig5" }
+      {
+        "label": "HO",
+        "tagId": "tag1",
+        "correctTarget": "sig1"
+      },
+      {
+        "label": "Anel",
+        "fixed": true,
+        "branches": [
+          {
+            "label": "H-Ar (orto ao OH)",
+            "tagId": "tag2",
+            "correctTarget": "sig2"
+          },
+          {
+            "label": "H-Ar (orto ao NH)",
+            "tagId": "tag3",
+            "correctTarget": "sig3"
+          }
+        ]
+      },
+      {
+        "label": "NH",
+        "tagId": "tag4",
+        "correctTarget": "sig4"
+      },
+      {
+        "label": "C=O",
+        "fixed": true
+      },
+      {
+        "label": "CH₃",
+        "tagId": "tag5",
+        "correctTarget": "sig5"
+      }
     ],
     "signals": [
-      { "id": "sig1", "ppm": 9.2, "int": 1, "mult": "s (largo)", "height": 20 },
-      { "id": "sig2", "ppm": 6.7, "int": 2, "mult": "d", "J": 9, "height": 45 },
-      { "id": "sig3", "ppm": 7.3, "int": 2, "mult": "d", "J": 9, "height": 45 },
-      { "id": "sig4", "ppm": 9.8, "int": 1, "mult": "s (largo)", "height": 20 },
-      { "id": "sig5", "ppm": 2.1, "int": 3, "mult": "s", "height": 60 }
+      {
+        "id": "sig1",
+        "ppm": 9.2,
+        "int": 1,
+        "mult": "s (largo)",
+        "height": 20
+      },
+      {
+        "id": "sig2",
+        "ppm": 6.7,
+        "int": 2,
+        "mult": "d",
+        "J": 9,
+        "height": 45
+      },
+      {
+        "id": "sig3",
+        "ppm": 7.3,
+        "int": 2,
+        "mult": "d",
+        "J": 9,
+        "height": 45
+      },
+      {
+        "id": "sig4",
+        "ppm": 9.8,
+        "int": 1,
+        "mult": "s (largo)",
+        "height": 20
+      },
+      {
+        "id": "sig5",
+        "ppm": 2.1,
+        "int": 3,
+        "mult": "s",
+        "height": 60
+      }
     ]
   },
   {
@@ -142,24 +440,98 @@
     "context": "Substituição orto no anel aromático quebra a simetria, gerando 4 sinais aromáticos distintos (dd, t, t, dd).",
     "maxPpm": 11.5,
     "chain": [
-      { "label": "COOH", "tagId": "tag1", "correctTarget": "sig1" },
-      { "label": "Anel", "fixed": true, "branches": [
-        { "label": "H-Ar (C3)", "tagId": "tag2", "correctTarget": "sig2" },
-        { "label": "H-Ar (C4)", "tagId": "tag3", "correctTarget": "sig3" },
-        { "label": "H-Ar (C5)", "tagId": "tag4", "correctTarget": "sig4" },
-        { "label": "H-Ar (C6)", "tagId": "tag5", "correctTarget": "sig5" }
-      ]},
-      { "label": "O", "fixed": true },
-      { "label": "C=O", "fixed": true },
-      { "label": "CH₃", "tagId": "tag6", "correctTarget": "sig6" }
+      {
+        "label": "COOH",
+        "tagId": "tag1",
+        "correctTarget": "sig1"
+      },
+      {
+        "label": "Anel",
+        "fixed": true,
+        "branches": [
+          {
+            "label": "H-Ar (C3)",
+            "tagId": "tag2",
+            "correctTarget": "sig2"
+          },
+          {
+            "label": "H-Ar (C4)",
+            "tagId": "tag3",
+            "correctTarget": "sig3"
+          },
+          {
+            "label": "H-Ar (C5)",
+            "tagId": "tag4",
+            "correctTarget": "sig4"
+          },
+          {
+            "label": "H-Ar (C6)",
+            "tagId": "tag5",
+            "correctTarget": "sig5"
+          }
+        ]
+      },
+      {
+        "label": "O",
+        "fixed": true
+      },
+      {
+        "label": "C=O",
+        "fixed": true
+      },
+      {
+        "label": "CH₃",
+        "tagId": "tag6",
+        "correctTarget": "sig6"
+      }
     ],
     "signals": [
-      { "id": "sig1", "ppm": 11.0, "int": 1, "mult": "s (largo)", "height": 20 },
-      { "id": "sig2", "ppm": 8.1, "int": 1, "mult": "dd", "J": 8, "height": 25 },
-      { "id": "sig3", "ppm": 7.6, "int": 1, "mult": "t", "J": 8, "height": 25 },
-      { "id": "sig4", "ppm": 7.4, "int": 1, "mult": "t", "J": 8, "height": 25 },
-      { "id": "sig5", "ppm": 7.1, "int": 1, "mult": "d", "J": 8, "height": 25 },
-      { "id": "sig6", "ppm": 2.3, "int": 3, "mult": "s", "height": 60 }
+      {
+        "id": "sig1",
+        "ppm": 11.0,
+        "int": 1,
+        "mult": "s (largo)",
+        "height": 20
+      },
+      {
+        "id": "sig2",
+        "ppm": 8.1,
+        "int": 1,
+        "mult": "dd",
+        "J": 8,
+        "height": 25
+      },
+      {
+        "id": "sig3",
+        "ppm": 7.6,
+        "int": 1,
+        "mult": "t",
+        "J": 8,
+        "height": 25
+      },
+      {
+        "id": "sig4",
+        "ppm": 7.4,
+        "int": 1,
+        "mult": "t",
+        "J": 8,
+        "height": 25
+      },
+      {
+        "id": "sig5",
+        "ppm": 7.1,
+        "int": 1,
+        "mult": "d",
+        "J": 8,
+        "height": 25
+      },
+      {
+        "id": "sig6",
+        "ppm": 2.3,
+        "int": 3,
+        "mult": "s",
+        "height": 60
+      }
     ]
   },
   {
@@ -169,24 +541,118 @@
     "context": "AINE clássico. O padrão do grupo isobutila (doublet 6H + multiplet 1H) é a chave para a elucidação, junto com o padrão para-substituído do anel.",
     "maxPpm": 12.5,
     "chain": [
-      { "label": "COOH", "tagId": "tag1", "correctTarget": "sig1" },
-      { "label": "CH", "tagId": "tag2", "correctTarget": "sig2" },
-      { "label": "CH₃", "tagId": "tag3", "correctTarget": "sig3" },
-      { "label": "CH₂", "tagId": "tag4", "correctTarget": "sig4" },
-      { "label": "Anel (Ar)", "fixed": true, "branches": [
-        { "label": "H-Ar (orto ao CH₂)", "tagId": "tag5", "correctTarget": "sig5" },
-        { "label": "H-Ar (orto ao CH)", "tagId": "tag6", "correctTarget": "sig6" }
-      ]},
-      { "label": "CH₃ (isobutila)", "tagId": "tag7", "correctTarget": "sig7" }
+      {
+        "label": "COOH",
+        "tagId": "tag1",
+        "correctTarget": "sig1"
+      },
+      {
+        "label": "CH",
+        "tagId": "tag2",
+        "correctTarget": "sig2",
+        "branches": [
+          {
+            "label": "CH₃",
+            "tagId": "tag8",
+            "correctTarget": "sig8"
+          }
+        ]
+      },
+      {
+        "label": "CH₂",
+        "tagId": "tag3",
+        "correctTarget": "sig3"
+      },
+      {
+        "label": "CH",
+        "tagId": "tag4",
+        "correctTarget": "sig4"
+      },
+      {
+        "label": "Anel (Ar)",
+        "fixed": true,
+        "branches": [
+          {
+            "label": "H-Ar (orto ao CH₂)",
+            "tagId": "tag5",
+            "correctTarget": "sig5"
+          },
+          {
+            "label": "H-Ar (orto ao CH)",
+            "tagId": "tag6",
+            "correctTarget": "sig6"
+          }
+        ]
+      },
+      {
+        "label": "CH₃ (isobutila)",
+        "tagId": "tag7",
+        "correctTarget": "sig7"
+      }
     ],
     "signals": [
-      { "id": "sig1", "ppm": 12.0, "int": 1, "mult": "s (largo)", "height": 20 },
-      { "id": "sig2", "ppm": 3.7, "int": 1, "mult": "q", "J": 7, "height": 20 },
-      { "id": "sig3", "ppm": 2.5, "int": 2, "mult": "d", "J": 7, "height": 40 },
-      { "id": "sig4", "ppm": 1.9, "int": 1, "mult": "m", "height": 20 },
-      { "id": "sig5", "ppm": 7.2, "int": 2, "mult": "d", "J": 8, "height": 40 },
-      { "id": "sig6", "ppm": 7.1, "int": 2, "mult": "d", "J": 8, "height": 40 },
-      { "id": "sig7", "ppm": 0.9, "int": 6, "mult": "d", "J": 7, "height": 120 }
+      {
+        "id": "sig1",
+        "ppm": 12.0,
+        "int": 1,
+        "mult": "s (largo)",
+        "height": 20
+      },
+      {
+        "id": "sig2",
+        "ppm": 3.7,
+        "int": 1,
+        "mult": "q",
+        "J": 7,
+        "height": 20
+      },
+      {
+        "id": "sig3",
+        "ppm": 2.5,
+        "int": 2,
+        "mult": "d",
+        "J": 7,
+        "height": 40
+      },
+      {
+        "id": "sig4",
+        "ppm": 1.9,
+        "int": 1,
+        "mult": "m",
+        "height": 20
+      },
+      {
+        "id": "sig5",
+        "ppm": 7.2,
+        "int": 2,
+        "mult": "d",
+        "J": 8,
+        "height": 40
+      },
+      {
+        "id": "sig6",
+        "ppm": 7.1,
+        "int": 2,
+        "mult": "d",
+        "J": 8,
+        "height": 40
+      },
+      {
+        "id": "sig7",
+        "ppm": 0.9,
+        "int": 6,
+        "mult": "d",
+        "J": 7,
+        "height": 120
+      },
+      {
+        "id": "sig8",
+        "ppm": 1.5,
+        "int": 3,
+        "mult": "d",
+        "J": 7,
+        "height": 70
+      }
     ]
   }
 ]
