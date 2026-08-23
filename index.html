@@ -1164,10 +1164,13 @@ async function carregarDados() {
 }
 
 function aplicarRuido(signals) {
+  // Ruído aplicado apenas a ppm (pequena variação, simula imprecisão real de
+  // instrumento) e altura visual (puramente estético, não aparece como texto).
+  // A integração NÃO recebe ruído: mostrar "2.7H" em vez de "3H" ensina o oposto
+  // do que a Doutrinação Base explica — integração se lê como proporção inteira.
   return signals.map(s => ({
     ...s,
     ppm: parseFloat((s.ppm + (Math.random() - 0.5) * 0.08).toFixed(2)),
-    int: parseFloat(Math.max(0.1, s.int + (Math.random() - 0.5) * s.int * 0.2).toFixed(1)),
     height: Math.round(s.height * (0.9 + Math.random() * 0.2))
   }));
 }
