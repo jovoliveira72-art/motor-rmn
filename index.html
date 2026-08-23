@@ -467,6 +467,28 @@ main {
   opacity: 0.95;
 }
 
+.structure-card {
+  background: white;
+  border-radius: 20px;
+  padding: 20px;
+  margin-bottom: 24px;
+  box-shadow: 0 4px 20px var(--shadow);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 120px;
+}
+
+.structure-card canvas {
+  max-width: 100%;
+}
+
+.structure-unavailable {
+  font-size: 13px;
+  color: var(--text-lighter);
+  font-style: italic;
+}
+
 .instruction {
   background: white;
   border-left: 4px solid var(--info);
@@ -642,6 +664,22 @@ main {
   box-shadow: 0 4px 20px var(--shadow);
   margin-bottom: 24px;
   position: relative;
+}
+
+.structure-card {
+  background: white;
+  border-radius: 20px;
+  padding: 20px;
+  box-shadow: 0 4px 20px var(--shadow);
+  margin-bottom: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.structure-card canvas {
+  max-width: 100%;
+  height: auto;
 }
 
 .spectrum-axis-labels {
@@ -1131,6 +1169,7 @@ main {
 
 </div>
 
+<script src="https://unpkg.com/smiles-drawer@2.1.7/dist/smiles-drawer.min.js"></script>
 <script>
 const state = {
   xp: 0,
@@ -1376,6 +1415,21 @@ function renderTutorial() {
     <div class="tutorial-nav">${prev}${next}</div>
   `;
   return div;
+}
+
+function renderMoleculeStructure(smiles, canvasId) {
+  // Desenha em cima de um <canvas> já presente no DOM (por isso é chamada via
+  // setTimeout(fn, 0) depois do innerHTML — mesmo padrão usado em attachMappingEvents).
+  if (!window.SmilesDrawer) {
+    console.error('SmilesDrawer não carregou.');
+    return;
+  }
+  const drawer = new SmilesDrawer.Drawer({ width: 320, height: 220 });
+  SmilesDrawer.parse(smiles, function(tree) {
+    drawer.draw(tree, canvasId, 'light', false);
+  }, function(err) {
+    console.error('Erro ao desenhar estrutura:', err);
+  });
 }
 
 function renderSpectrumSVG(signals, maxPpm, is13C = false, highlight = []) {
@@ -1732,15 +1786,23 @@ window.handleSoloAnswer = function(optionId, btnEl) {
     wrap.classList.add('celebrate');
     setTimeout(() => wrap.classList.remove('celebrate'), 600);
 
+    const structureHtml = q.smiles ? `
+      <div class="structure-card" style="margin-top: 16px;">
+        <canvas id="mol-solo-reveal" width="320" height="220"></canvas>
+      </div>
+    ` : '';
+
     fb.innerHTML = `
       <div class="feedback success">
         <div class="feedback-title" style="color: var(--success);">🎉 Excelente! +${earned} pontos</div>
         <div class="feedback-body">${opt.feedback}</div>
+        ${structureHtml}
         <div class="feedback-actions">
           <button class="btn success" onclick="setView('modeSelect', 'solo')">Próximo desafio</button>
         </div>
       </div>
     `;
+    if (q.smiles) setTimeout(() => renderMoleculeStructure(q.smiles, 'mol-solo-reveal'), 0);
   } else {
     state.errors++;
     btnEl.classList.add('wrong');
@@ -1924,6 +1986,7 @@ function renderGuided() {
       <div class="context-title">${ex.title} · ${ex.formula}</div>
       <div class="context-text">${ex.subtitle}</div>
     </div>
+    ${ex.smiles ? '<div class="structure-card"><canvas id="mol-guided" width="320" height="220"></canvas></div>' : ''}
     ${renderChainDiagram(ex.chain, tagNumbers)}
     <div class="spectrum-card">
       <div class="spectrum-axis-labels"><span>← Desblindado</span><span>Blindado →</span></div>
@@ -1932,6 +1995,7 @@ function renderGuided() {
     <div class="signals-list">${signalsHtml}</div>
     ${stepHtml}
   `;
+  if (ex.smiles) setTimeout(() => renderMoleculeStructure(ex.smiles, 'mol-guided'), 0);
   return div;
 }
 
