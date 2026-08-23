@@ -50,7 +50,8 @@
         "correct": false,
         "feedback": "O estireno possui alcenos. Veria acoplamentos vinílicos intensos (J cis/trans) entre 5 e 6 ppm."
       }
-    ]
+    ],
+    "smiles": "CCc1ccccc1"
   },
   {
     "level": 2,
@@ -145,7 +146,8 @@
         "correct": false,
         "feedback": "Um éster produziria um sinal de carbonila diferente (~170 ppm) e o padrão aromático seria mais complexo, sem o sinal isolado do aldeído."
       }
-    ]
+    ],
+    "smiles": "COc1ccc(C=O)cc1"
   },
   {
     "level": 3,
@@ -305,7 +307,8 @@
         "correct": false,
         "feedback": "O p-Aminofenol não tem o grupo acetila — não há carbonila nem o singleto de 3H em 1.99 ppm. A amina primária livre (N-H2) também produziria um padrão de troca e integração diferente do N-H amídico único observado aqui."
       }
-    ]
+    ],
+    "smiles": "CC(=O)Nc1ccc(O)cc1"
   },
   {
     "level": 5,
@@ -444,7 +447,8 @@
         "correct": false,
         "feedback": "O naproxeno tem um anel naftaleno (sistema aromático mais complexo, mais sinais e mais desblindado) e um grupo metoxila (O-CH3), que apareceria como singleto perto de 3.7-3.9 ppm — não há esse singleto no espectro, e não há grupo isobutilo no naproxeno."
       }
-    ]
+    ],
+    "smiles": "CC(C)Cc1ccc(cc1)C(C)C(=O)O"
   },
   {
     "level": 6,
@@ -569,6 +573,7 @@
         "correct": false,
         "feedback": "O salicilato de metilo é um éster metílico do ácido salicílico — teria um singleto de O-CH3 perto de 3.9 ppm em vez do -COOH largo em 11.95 ppm, e não teria o grupo acetato (nem o singleto de 2.30 ppm nem a segunda carbonila de éster)."
       }
-    ]
+    ],
+    "smiles": "CC(=O)Oc1ccccc1C(=O)O"
   }
 ]
