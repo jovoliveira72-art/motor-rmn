@@ -1420,22 +1420,20 @@ function renderMoleculeStructure(smiles, svgId, tags = []) {
     const offY = (rect.height - vb.height * scale) / 2;
 
     tags.forEach(t => {
-      if (!t.atoms || !t.atoms.length) return;
-      let sx = 0, sy = 0, n = 0;
-      t.atoms.forEach(i => {
-        const v = verts[i];
-        if (v && v.position) { sx += v.position.x; sy += v.position.y; n++; }
-      });
-      if (!n) return;
-      const px = (sx / n - vb.x) * scale + offX;
-      const py = (sy / n - vb.y) * scale + offY;
-      const badge = document.createElement('div');
-      badge.className = 'atom-badge';
-      badge.textContent = t.label;
-      badge.style.left = px + 'px';
-      badge.style.top = py + 'px';
-      wrap.appendChild(badge);
-    });
+  if (!t.atoms || !t.atoms.length) return;
+  t.atoms.forEach(i => {
+    const v = verts[i];
+    if (!v || !v.position) return;
+    const px = (v.position.x - vb.x) * scale + offX;
+    const py = (v.position.y - vb.y) * scale + offY;
+    const badge = document.createElement('div');
+    badge.className = 'atom-badge';
+    badge.textContent = t.label;
+    badge.style.left = px + 'px';
+    badge.style.top = py + 'px';
+    wrap.appendChild(badge);
+  });
+});
   }, function(err) {
     console.error('Erro ao desenhar estrutura:', err);
   });
