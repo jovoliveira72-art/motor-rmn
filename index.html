@@ -1383,9 +1383,15 @@ function renderTutorial() {
 // SvgWrapper do SmilesDrawer 2.1.7: o viewBox gerado é o bounding box dos
 // vértices (com padding) e os átomos ficam nas coordenadas cruas do grafo.
 function renderMoleculeStructure(smiles, svgId, tags = []) {
-  if (!window.SmilesDrawer) { console.error('SmilesDrawer não carregou.'); return; }
+  if (!window.SmilesDrawer) {
+    console.error('SmilesDrawer não carregou.');
+    return;
+  }
   const svg = document.getElementById(svgId);
-  if (!svg) { console.warn(`SVG com id "${svgId}" não encontrado no DOM.`); return; }
+  if (!svg) {
+    console.warn(`SVG com id "${svgId}" não encontrado no DOM.`);
+    return;
+  }
   const wrap = svg.parentElement;
   wrap.querySelectorAll('.atom-badge').forEach(b => b.remove());
 
@@ -1393,61 +1399,41 @@ function renderMoleculeStructure(smiles, svgId, tags = []) {
   SmilesDrawer.parse(smiles, function(tree) {
     drawer.draw(tree, svg, 'light');
 
+    if (!tags.length) return;
+
+    // No SvgDrawer 2.1.7 o grafo vive em drawer.preprocessor.graph
+    // (drawer.graph não existe nessa versão).
     const graph = (drawer.preprocessor && drawer.preprocessor.graph) || drawer.graph;
-    if (!graph || !graph.vertices) return;
-    const verts = graph.vertices;
-    if (!svg.viewBox || !svg.viewBox.baseVal) return;
-    const vb = svg.viewBox.baseVal;
-
-    // --- Molécula maior: ajusta o SVG ao espaço disponível no card ---
-    const card = wrap.closest('.structure-card');
-    if (card) {
-      const availW = Math.max(280, card.clientWidth - 40);
-      const aspect = vb.height / vb.width;
-      let w = Math.min(680, availW);
-      let h = w * aspect;
-      const maxH = 440;
-      if (h > maxH) { h = maxH; w = h / aspect; }
-      svg.style.width = Math.round(w) + 'px';
-      svg.style.height = Math.round(h) + 'px';
-      svg.style.maxWidth = '100%';
+    if (!graph || !graph.vertices) {
+      console.warn('Grafo do SmilesDrawer indisponível para posicionar badges.');
+      return;
     }
+    if (!svg.viewBox || !svg.viewBox.baseVal) return;
 
+    const verts = graph.vertices;
+    const vb = svg.viewBox.baseVal;
     const rect = svg.getBoundingClientRect();
     if (!vb.width || !vb.height || !rect.width || !rect.height) return;
+
     const scale = Math.min(rect.width / vb.width, rect.height / vb.height);
     const offX = (rect.width - vb.width * scale) / 2;
     const offY = (rect.height - vb.height * scale) / 2;
 
-    // Centro da molécula: referência para empurrar os badges para fora
-    let cx = 0, cy = 0, cn = 0;
-    verts.forEach(v => { if (v && v.position) { cx += v.position.x; cy += v.position.y; cn++; } });
-    if (cn) { cx /= cn; cy /= cn; }
-
-    const OFFSET = 20; // distância do badge ao átomo, em px de tela
-
     tags.forEach(t => {
-      if (!t.atoms || !t.atoms.length) return;
-      t.atoms.forEach(i => {
-        const v = verts[i];
-        if (!v || !v.position) return;
-        let dx = v.position.x - cx, dy = v.position.y - cy;
-        const len = Math.hypot(dx, dy);
-        if (len > 0.001) { dx /= len; dy /= len; } else { dx = 0; dy = -1; }
-        const px = (v.position.x - vb.x) * scale + offX + dx * OFFSET;
-        const py = (v.position.y - vb.y) * scale + offY + dy * OFFSET;
-        const badge = document.createElement('div');
-        badge.className = 'atom-badge';
-        badge.textContent = t.label;
-        badge.style.left = px + 'px';
-        badge.style.top = py + 'px';
-        wrap.appendChild(badge);
-      });
-    });
-  }, function(err) {
-    console.error('Erro ao desenhar estrutura:', err);
+  if (!t.atoms || !t.atoms.length) return;
+  t.atoms.forEach(i => {
+    const v = verts[i];
+    if (!v || !v.position) return;
+    const px = (v.position.x - vb.x) * scale + offX;
+    const py = (v.position.y - vb.y) * scale + offY;
+    const badge = document.createElement('div');
+    badge.className = 'atom-badge';
+    badge.textContent = t.label;
+    badge.style.left = px + 'px';
+    badge.style.top = py + 'px';
+    wrap.appendChild(badge);
   });
-}
+});
   }, function(err) {
     console.error('Erro ao desenhar estrutura:', err);
   });
