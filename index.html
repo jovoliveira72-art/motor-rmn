@@ -1390,13 +1390,46 @@ function renderSpectrumSVG(signals, maxPpm, is13C = false, highlight = []) {
     }
   });
 
+  // Triângulo de Pascal para multiplicidades 1-6
+  const pascal = {
+    1: [1],
+    2: [1, 1],
+    3: [1, 2, 1],
+    4: [1, 3, 3, 1],
+    5: [1, 4, 6, 4, 1],
+    6: [1, 5, 10, 10, 5, 1]
+  };
+
+  // Parse multiplicidade: "s"→1, "d"→2, "t"→3, "q"→4, "m"→5, número direto
+  function parseMultiplicity(mult) {
+    if (typeof mult === 'number') return Math.min(mult, 6);
+    const map = { 's': 1, 'd': 2, 't': 3, 'q': 4, 'm': 5, 'sext': 6 };
+    const first = mult.split(' ')[0].split('(')[0].toLowerCase();
+    return map[first] || 1;
+  }
+
   let path = `M 0 ${baseline}`;
   sorted.forEach(sig => {
     const x = ((maxPpm - sig.ppm) / maxPpm) * width;
     const peakH = Math.min(Math.abs(sig.height) * 1.5, maxH);
-    const peakY = sig.height < 0 ? baseline + peakH * 0.3 : baseline - peakH;
-    const w = 8;
-    path += ` L ${x - w} ${baseline} L ${x} ${peakY} L ${x + w} ${baseline}`;
+    
+    const mult = parseMultiplicity(sig.mult);
+    const splits = pascal[mult] || [1];
+    const maxSplit = Math.max(...splits);
+    
+    // Espaçamento entre picos do mesmo sinal (em pixels SVG)
+    const spacing = mult === 1 ? 0 : 8;
+    const startX = x - ((splits.length - 1) * spacing / 2);
+    
+    // Desenhar cada pico do multiplet
+    splits.forEach((relH, i) => {
+      const peakX = startX + (i * spacing);
+      const h = peakH * (relH / maxSplit);
+      const peakY = sig.height < 0 ? baseline + h * 0.3 : baseline - h;
+      const w = 3; // Largura da base do triângulo
+      
+      path += ` L ${peakX - w} ${baseline} L ${peakX} ${peakY} L ${peakX + w} ${baseline}`;
+    });
   });
   path += ` L ${width} ${baseline}`;
 
