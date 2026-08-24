@@ -1477,6 +1477,19 @@ function deriveTagsFromChain(chain) {
   return tags;
 }
 
+// Retorna o conjunto de dados ativo (¹H ou ¹³C) para um nível de Mapeamento.
+// ¹³C só fica disponível se o nível tiver chain13C — níveis sem esse campo
+// simplesmente não mostram o botão de alternância.
+function getActiveMappingData(q) {
+  const isCarbon = state.activeSpectrumType === '13C' && q.chain13C;
+  return {
+    isCarbon,
+    chain: isCarbon ? q.chain13C : q.chain,
+    signals: isCarbon ? q.signals13C : q.signals,
+    maxPpm: isCarbon ? (q.maxPpm13C || 220) : q.maxPpm
+  };
+}
+
 function renderChainDiagram(chain, tagNumbers) {
   const nodes = chain.map(item => {
     const num = item.tagId ? tagNumbers[item.tagId] : null;
@@ -1510,12 +1523,14 @@ function renderChainDiagram(chain, tagNumbers) {
 
 function renderMapping() {
   const q = db.mapping.find(x => x.level === state.currentLevel);
-  const tags = deriveTagsFromChain(q.chain);
+  const { isCarbon, chain, signals: rawSignals, maxPpm } = getActiveMappingData(q);
+
+  const tags = deriveTagsFromChain(chain);
   const tagNumbers = {};
   tags.forEach(t => tagNumbers[t.id] = t.label);
   q._derivedTags = tags;
 
-  const signals = aplicarRuido(q.signals);
+  const signals = aplicarRuido(rawSignals);
   const shuffledSignals = [...signals].sort(() => Math.random() - 0.5);
   const shuffledTags = [...tags].sort(() => Math.random() - 0.5);
 
@@ -1528,7 +1543,7 @@ function renderMapping() {
       <div class="signal-ppm">${sig.ppm}<small>ppm</small></div>
       <div class="signal-meta">
         <span>Mult: <b>${sig.mult}</b></span>
-        <span>Int: <b>${sig.int}</b></span>
+        ${sig.int != null ? `<span>Int: <b>${sig.int}</b></span>` : ''}
         ${sig.J ? `<span>J: <b>${sig.J}</b></span>` : ''}
       </div>
       <div class="dropzone" id="drop-${sig.id}" data-signalid="${sig.id}">
@@ -1539,9 +1554,19 @@ function renderMapping() {
 
   const tierLabel = { facil: 'Nível 1 · Fácil', medio: 'Nível 2 · Médio', dificil: 'Nível 3 · Difícil' }[q.tier] || '';
 
+  // A estrutura real (se houver SMILES) é sempre ILUSTRATIVA — some ao lado do
+  // diagrama de cadeia, nunca no lugar dele. O diagrama de cadeia é quem carrega
+  // os números clicáveis; a estrutura desenhada não tem alvo de toque nenhum.
   const structureHtml = q.smiles
-    ? '<div class="structure-card"><svg id="mol-mapping" width="320" height="220"></svg></div>'
-    : renderChainDiagram(q.chain, tagNumbers);
+    ? `<div class="structure-card"><svg id="mol-mapping" width="260" height="180"></svg></div>`
+    : '';
+
+  const toggleHtml = q.chain13C ? `
+    <div class="solo-toggle">
+      <button class="${!isCarbon ? 'active' : ''}" onclick="toggleMappingSpectrum('1H')">¹H RMN</button>
+      <button class="${isCarbon ? 'active' : ''}" onclick="toggleMappingSpectrum('13C')">¹³C RMN</button>
+    </div>
+  ` : '';
 
   const div = document.createElement('div');
   div.innerHTML = `
@@ -1555,9 +1580,13 @@ function renderMapping() {
       <div class="context-text">${q.context}</div>
     </div>
 
+    ${structureHtml}
+
+    ${toggleHtml}
+
     <div class="instruction">💡 Toque num número da estrutura e depois no sinal correspondente. Para reposicionar, toque na peça alocada e escolha nova zona.</div>
 
-    ${structureHtml}
+    ${renderChainDiagram(chain, tagNumbers)}
 
     <div class="tags-pool-card">
       <span class="tags-pool-label">Peças</span>
@@ -1569,7 +1598,7 @@ function renderMapping() {
         <span>← Desblindado</span>
         <span>Blindado →</span>
       </div>
-      ${renderSpectrumSVG(signals, q.maxPpm)}
+      ${renderSpectrumSVG(signals, maxPpm, isCarbon)}
       <div class="spectrum-tooltip" id="spectrum-tooltip"></div>
     </div>
 
@@ -1585,6 +1614,12 @@ function renderMapping() {
 
   return div;
 }
+
+window.toggleMappingSpectrum = function(type) {
+  state.activeSpectrumType = type;
+  state.selectedTagId = null;
+  render();
+};
 
 function attachMappingEvents(q, signals) {
   document.querySelectorAll('.select-tag').forEach(tag => {
