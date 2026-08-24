@@ -1378,10 +1378,10 @@ function renderTutorial() {
   return div;
 }
 
-// Desenha o SMILES no <svg> e, se receber tags com atomIndices, sobrepõe os
-// badges numerados exatamente sobre os átomos. A matemática replica o
-// SvgWrapper do SmilesDrawer 2.1.7: o viewBox gerado é o bounding box dos
-// vértices (com padding) e os átomos ficam nas coordenadas cruas do grafo.
+// Desenha o SMILES no <svg>, redimensiona para o espaço do card e sobrepõe os
+// badges numerados PERTO de cada átomo (deslocados radialmente para fora do
+// centro da molécula, sem cobrir vértices ou rótulos).
+// Compatível com SmilesDrawer 2.1.7: o grafo vive em drawer.preprocessor.graph.
 function renderMoleculeStructure(smiles, svgId, tags = []) {
   if (!window.SmilesDrawer) {
     console.error('SmilesDrawer não carregou.');
@@ -1399,41 +1399,58 @@ function renderMoleculeStructure(smiles, svgId, tags = []) {
   SmilesDrawer.parse(smiles, function(tree) {
     drawer.draw(tree, svg, 'light');
 
-    if (!tags.length) return;
-
-    // No SvgDrawer 2.1.7 o grafo vive em drawer.preprocessor.graph
-    // (drawer.graph não existe nessa versão).
     const graph = (drawer.preprocessor && drawer.preprocessor.graph) || drawer.graph;
-    if (!graph || !graph.vertices) {
-      console.warn('Grafo do SmilesDrawer indisponível para posicionar badges.');
-      return;
-    }
-    if (!svg.viewBox || !svg.viewBox.baseVal) return;
-
+    if (!graph || !graph.vertices) return;
     const verts = graph.vertices;
+    if (!svg.viewBox || !svg.viewBox.baseVal) return;
     const vb = svg.viewBox.baseVal;
+
+    // --- Molécula maior: ajusta o SVG ao espaço disponível no card ---
+    const card = wrap.closest('.structure-card');
+    if (card) {
+      const availW = Math.max(280, card.clientWidth - 40);
+      const aspect = vb.height / vb.width;
+      let w = Math.min(680, availW);
+      let h = w * aspect;
+      const maxH = 440;
+      if (h > maxH) { h = maxH; w = h / aspect; }
+      svg.style.width = Math.round(w) + 'px';
+      svg.style.height = Math.round(h) + 'px';
+      svg.style.maxWidth = '100%';
+    }
+
     const rect = svg.getBoundingClientRect();
     if (!vb.width || !vb.height || !rect.width || !rect.height) return;
-
     const scale = Math.min(rect.width / vb.width, rect.height / vb.height);
     const offX = (rect.width - vb.width * scale) / 2;
     const offY = (rect.height - vb.height * scale) / 2;
 
+    // Centro da molécula: referência para empurrar os badges para fora
+    let cx = 0, cy = 0, cn = 0;
+    verts.forEach(v => { if (v && v.position) { cx += v.position.x; cy += v.position.y; cn++; } });
+    if (cn) { cx /= cn; cy /= cn; }
+
+    const OFFSET = 20; // distância do badge ao átomo, em px de tela
+
+    // Um badge POR átomo do tag (pares equivalentes repetem o mesmo número)
     tags.forEach(t => {
-  if (!t.atoms || !t.atoms.length) return;
-  t.atoms.forEach(i => {
-    const v = verts[i];
-    if (!v || !v.position) return;
-    const px = (v.position.x - vb.x) * scale + offX;
-    const py = (v.position.y - vb.y) * scale + offY;
-    const badge = document.createElement('div');
-    badge.className = 'atom-badge';
-    badge.textContent = t.label;
-    badge.style.left = px + 'px';
-    badge.style.top = py + 'px';
-    wrap.appendChild(badge);
-  });
-});
+      if (!t.atoms || !t.atoms.length) return;
+      t.atoms.forEach(i => {
+        const v = verts[i];
+        if (!v || !v.position) return;
+        let dx = v.position.x - cx, dy = v.position.y - cy;
+        const len = Math.hypot(dx, dy);
+        if (len > 0.001) { dx /= len; dy /= len; } else { dx = 0; dy = -1; }
+        const px = (v.position.x - vb.x) * scale + offX + dx * OFFSET;
+        const py = (v.position.y - vb.y) * scale + offY + dy * OFFSET;
+        const badge = document.createElement('div');
+        badge.className = 'atom-badge';
+        badge.textContent = t.label;
+        badge.style.left = px + 'px';
+        badge.style.top = py + 'px';
+        wrap.appendChild(badge);
+      });
+    });
   }, function(err) {
     console.error('Erro ao desenhar estrutura:', err);
   });
@@ -1455,6 +1472,7 @@ function renderSpectrumSVG(signals, maxPpm, is13C = false, highlight = []) {
     }
   });
 
+  // Triângulo de Pascal para multiplicidades 1-6
   const pascal = {
     1: [1],
     2: [1, 1],
@@ -1538,6 +1556,7 @@ function deriveTagsFromChain(chain) {
   return tags;
 }
 
+// Retorna o conjunto de dados ativo (¹H ou ¹³C) para um nível de Mapeamento.
 function getActiveMappingData(q) {
   const isCarbon = state.activeSpectrumType === '13C' && q.chain13C;
   return {
@@ -1612,9 +1631,8 @@ function renderMapping() {
 
   const tierLabel = { facil: 'Nível 1 · Fácil', medio: 'Nível 2 · Médio', dificil: 'Nível 3 · Difícil' }[q.tier] || '';
 
-  // Com SMILES: a molécula desenhada CARREGA os números (badges sobrepostos)
-  // e o diagrama de caixas some — menos poluição, mesma informação.
-  // Sem SMILES: fallback antigo (só caixas, sem estrutura).
+  // Com SMILES: a molécula desenhada CARREGA os números e o diagrama de
+  // caixas some. Sem SMILES: fallback antigo (só caixas).
   const structureHtml = q.smiles
     ? '<div class="structure-card"><div class="mol-wrap"><svg id="mol-mapping" width="320" height="220"></svg></div></div>'
     : renderChainDiagram(chain, tagNumbers);
@@ -2057,7 +2075,7 @@ function renderGuided() {
       </div>`;
   }
 
-  // Com SMILES, a estrutura real substitui o diagrama de caixas (menos poluição).
+  // Com SMILES, a estrutura real substitui o diagrama de caixas.
   const structureHtml = ex.smiles
     ? '<div class="structure-card"><div class="mol-wrap"><svg id="mol-guided" width="320" height="220"></svg></div></div>'
     : renderChainDiagram(ex.chain, tagNumbers);
