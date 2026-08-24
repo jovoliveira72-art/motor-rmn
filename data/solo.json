@@ -1,579 +1,164 @@
 [
   {
     "level": 1,
-    "title": "Leitura de Esqueleto 1H",
-    "context": "Fórmula: C8H10. O clássico mono-aromático. Avalie ppm, proporção e acoplamento simultaneamente.",
+    "title": "Solvente comum",
+    "context": "Fórmula C₂H₆O. Grau de insaturação = 0. Espectro de ¹H RMN com 3 sinais: triplet (3H), quarteto (2H) e singleto largo (1H).",
     "spectra": {
       "1H": {
-        "maxPpm": 10,
+        "maxPpm": 6,
         "signals": [
-          {
-            "ppm": 1.2,
-            "mult": "Tripleto",
-            "int": "3H",
-            "height": 60,
-            "J": "7.5 Hz"
-          },
-          {
-            "ppm": 2.6,
-            "mult": "Quarteto",
-            "int": "2H",
-            "height": 40,
-            "J": "7.5 Hz"
-          },
-          {
-            "ppm": 7.2,
-            "mult": "Multipleto",
-            "int": "5H",
-            "height": 100,
-            "J": "Complexo"
-          }
+          { "id": "sig1", "ppm": 1.2, "int": 3, "mult": "t", "J": 7, "height": 60 },
+          { "id": "sig2", "ppm": 3.7, "int": 2, "mult": "q", "J": 7, "height": 40 },
+          { "id": "sig3", "ppm": 2.6, "int": 1, "mult": "s (largo)", "height": 20 }
         ]
       }
     },
     "options": [
       {
         "id": "a",
-        "text": "p-Xileno",
-        "correct": false,
-        "feedback": "A simetria do p-Xileno destruiria o multipleto de 5H, gerando um singleto de 4H no aromático. Além disso, os CH3 estariam isolados (sem tripleto/quarteto)."
+        "text": "Etanol",
+        "smiles": "CCO",
+        "correct": true,
+        "feedback": "Padrão etila (triplet + quarteto) + OH trocável como singleto largo."
       },
       {
         "id": "b",
-        "text": "Etilbenzeno",
-        "correct": true,
-        "feedback": "Exato. O multipleto em 7.2 ppm (5H) confirma o anel monossubstituído. O sistema tripleto-quarteto é a assinatura isolada do grupo Etil."
+        "text": "Dimetiléter",
+        "smiles": "COC",
+        "correct": false,
+        "feedback": "COC daria apenas 1 sinal (singleto de 6H), não 3 sinais distintos."
       },
       {
         "id": "c",
-        "text": "Estireno",
+        "text": "Metanol",
+        "smiles": "CO",
         "correct": false,
-        "feedback": "O estireno possui alcenos. Veria acoplamentos vinílicos intensos (J cis/trans) entre 5 e 6 ppm."
+        "feedback": "Metanol tem fórmula CH₄O e daria apenas 2 sinais, sem padrão etila."
       }
-    ],
-    "smiles": "CCc1ccccc1"
+    ]
   },
   {
     "level": 2,
-    "title": "Cruzamento de Dados 1H + 13C",
-    "context": "Fórmula: C8H8O2. Alterne os separadores do espetro. Precisa de ambos para validar a estrutura.",
+    "title": "Éster de cadeia curta",
+    "context": "Fórmula C₄H₈O₂. Grau de insaturação = 1. ¹H RMN com 3 sinais: singleto (3H), quarteto (2H) e triplet (3H).",
     "spectra": {
       "1H": {
-        "maxPpm": 12,
+        "maxPpm": 5,
         "signals": [
-          {
-            "ppm": 3.8,
-            "mult": "Singleto",
-            "int": "3H",
-            "height": 90,
-            "J": "-"
-          },
-          {
-            "ppm": 7,
-            "mult": "Dubleto Aparente",
-            "int": "2H",
-            "height": 50,
-            "J": "8.5 Hz"
-          },
-          {
-            "ppm": 7.8,
-            "mult": "Dubleto Aparente",
-            "int": "2H",
-            "height": 50,
-            "J": "8.5 Hz"
-          },
-          {
-            "ppm": 9.9,
-            "mult": "Singleto",
-            "int": "1H",
-            "height": 20,
-            "J": "-"
-          }
-        ]
-      },
-      "13C": {
-        "maxPpm": 220,
-        "signals": [
-          {
-            "ppm": 55,
-            "mult": "CH3",
-            "height": 80
-          },
-          {
-            "ppm": 114,
-            "mult": "CH",
-            "height": 60
-          },
-          {
-            "ppm": 130,
-            "mult": "C Quaternário",
-            "height": 30
-          },
-          {
-            "ppm": 132,
-            "mult": "CH",
-            "height": 60
-          },
-          {
-            "ppm": 164,
-            "mult": "C Quaternário",
-            "height": 30
-          },
-          {
-            "ppm": 191,
-            "mult": "CH (Carbonila)",
-            "height": 40
-          }
+          { "id": "sig1", "ppm": 2.0, "int": 3, "mult": "s", "height": 60 },
+          { "id": "sig2", "ppm": 4.1, "int": 2, "mult": "q", "J": 7, "height": 40 },
+          { "id": "sig3", "ppm": 1.2, "int": 3, "mult": "t", "J": 7, "height": 60 }
         ]
       }
     },
     "options": [
       {
         "id": "a",
-        "text": "Ácido 4-Metilbenzoico",
-        "correct": false,
-        "feedback": "A carbonila de ácido no 13C ressoa perto de 170 ppm, não 191 ppm. Além disso, o grupo CH3 em 3.8 ppm no 1H indica estar ligado a Oxigénio (O-CH3)."
+        "text": "Acetato de etila",
+        "smiles": "CC(=O)OCC",
+        "correct": true,
+        "feedback": "CH₃−C=O (singleto 2.0 ppm), −O−CH₂− (quarteto 4.1 ppm), CH₃−CH₂ (triplet 1.2 ppm)."
       },
       {
         "id": "b",
-        "text": "4-Metoxibenzaldeído",
-        "correct": true,
-        "feedback": "Precisão absoluta. Aldeído provado pelo 1H (9.9 ppm) e 13C (191 ppm). Sistema AA'BB' (7.0/7.8) prova para-substituição, e o O-CH3 bate perfeitamente (3.8 e 55 ppm)."
+        "text": "Propanoato de metila",
+        "smiles": "CCC(=O)OC",
+        "correct": false,
+        "feedback": "O grupo O−CH₃ apareceria em ~3.7 ppm como singleto, não em 4.1 ppm como quarteto."
       },
       {
         "id": "c",
-        "text": "Acetato de Fenilo",
+        "text": "Ácido butírico",
+        "smiles": "CCCC(=O)O",
         "correct": false,
-        "feedback": "Um éster produziria um sinal de carbonila diferente (~170 ppm) e o padrão aromático seria mais complexo, sem o sinal isolado do aldeído."
+        "feedback": "Ácido carboxílico tem singleto largo em 10–12 ppm (COOH) que não aparece aqui."
       }
-    ],
-    "smiles": "COc1ccc(C=O)cc1"
+    ]
   },
   {
     "level": 3,
-    "title": "O Veredito Final (DEPT-135)",
-    "context": "Fragmento isolado de uma estrutura quiral maior. Analise o sinal abaixo no 1H e valide a conectividade no 13C DEPT-135.",
+    "title": "Analgésico aromático",
+    "context": "Fórmula C₈H₉NO₂. GI = 5. ¹H RMN: 2 singleto largos (9–10 ppm), 2 dupletos (6.7 e 7.3 ppm, 2H cada) e 1 singleto (2.1 ppm, 3H).",
     "spectra": {
       "1H": {
-        "maxPpm": 12,
+        "maxPpm": 10.5,
         "signals": [
-          {
-            "ppm": 1.45,
-            "mult": "Multipleto Caótico",
-            "int": "1H",
-            "height": 40,
-            "J": "J geminal ~ -14 Hz"
-          },
-          {
-            "ppm": 1.6,
-            "mult": "Multipleto Caótico",
-            "int": "1H",
-            "height": 40,
-            "J": "J geminal ~ -14 Hz"
-          }
-        ]
-      },
-      "13C": {
-        "maxPpm": 220,
-        "signals": [
-          {
-            "ppm": 32,
-            "mult": "DEPT-135 Negativo",
-            "height": -70,
-            "label": "Fase Invertida"
-          }
+          { "id": "sig1", "ppm": 9.8, "int": 1, "mult": "s (largo)", "height": 20 },
+          { "id": "sig2", "ppm": 9.2, "int": 1, "mult": "s (largo)", "height": 20 },
+          { "id": "sig3", "ppm": 7.3, "int": 2, "mult": "d", "J": 9, "height": 45 },
+          { "id": "sig4", "ppm": 6.7, "int": 2, "mult": "d", "J": 9, "height": 45 },
+          { "id": "sig5", "ppm": 2.1, "int": 3, "mult": "s", "height": 60 }
         ]
       }
     },
     "options": [
       {
         "id": "a",
-        "text": "Dois grupos CH separados na molécula",
-        "correct": false,
-        "feedback": "Ignorou o DEPT-135. Se fossem grupos CH isolados, o sinal estaria POSITIVO (para cima). A fase negativa atesta que isto é um CH2 único."
+        "text": "Paracetamol",
+        "smiles": "CC(=O)Nc1ccc(O)cc1",
+        "correct": true,
+        "feedback": "Anel para-dissubstituído (2 dupletos de 2H), OH fenólico, NH amida e CH₃ da N-acetila."
       },
       {
         "id": "b",
-        "text": "Prótons Diastereotópicos (-CH2-)",
-        "correct": true,
-        "feedback": "Mestria técnica. O DEPT confirma que é um único carbono CH2. A cisão no 1H em sinais separados com forte acoplamento geminal (-14Hz) prova que a assimetria quiral vizinha quebrou a equivalência dos prótons."
+        "text": "Aspirina",
+        "smiles": "CC(=O)Oc1ccccc1C(=O)O",
+        "correct": false,
+        "feedback": "Aspirina é substituição orto (4 sinais aromáticos distintos) e tem COOH em ~11 ppm."
       },
       {
         "id": "c",
-        "text": "Sistema Alceno Terminal (=CH2)",
+        "text": "Ibuprofeno",
+        "smiles": "CC(C)Cc1ccc(cc1)C(C)C(=O)O",
         "correct": false,
-        "feedback": "Falta lógica de primeira ordem. Deslocamento de 1.45 ppm é alifático saturado. Alcenos aparecem muito mais desblindados (4.5 - 6.5 ppm)."
+        "feedback": "Ibuprofeno tem C₁₃H₁₈O₂ (18H), padrão de isobutila e anel para-substituído, sem N nem NH."
+      },
+      {
+        "id": "d",
+        "text": "Acetanilida",
+        "smiles": "CC(=O)Nc1ccccc1",
+        "correct": false,
+        "feedback": "Acetanilida tem apenas 1 singleto largo (NH) e anel monossubstituído, não dois singleto largos."
       }
     ]
   },
   {
     "level": 4,
-    "title": "Farmacologia Aromática: Amida vs Fenol",
-    "context": "Fórmula: C8H9NO2. Anel para-dissubstituído com um grupo amida e um grupo fenol. Avalie os protões lábeis (N-H, O-H) junto com a proporção aromático/alifático.",
-    "fonte_nota": "Valores conferidos por consistência cruzada com literatura consolidada de RMN de paracetamol (fármaco de referência amplamente documentado); não há citação primária única rastreável associada a esta entrada.",
+    "title": "Estimulante nitrogenado",
+    "context": "Fórmula C₈H₁₀N₄O₂. GI = 6. ¹H RMN: 4 singleto, sendo 3 deles integrando 3H em região 3.4–4.0 ppm.",
     "spectra": {
       "1H": {
-        "maxPpm": 10,
+        "maxPpm": 8.5,
         "signals": [
-          {
-            "ppm": 9.66,
-            "mult": "Singleto largo",
-            "int": "1H",
-            "height": 20,
-            "J": "-"
-          },
-          {
-            "ppm": 9.14,
-            "mult": "Singleto largo",
-            "int": "1H",
-            "height": 20,
-            "J": "-"
-          },
-          {
-            "ppm": 7.35,
-            "mult": "Dubleto",
-            "int": "2H",
-            "height": 60,
-            "J": "8.3 Hz"
-          },
-          {
-            "ppm": 6.69,
-            "mult": "Dubleto",
-            "int": "2H",
-            "height": 60,
-            "J": "8.3 Hz"
-          },
-          {
-            "ppm": 1.99,
-            "mult": "Singleto",
-            "int": "3H",
-            "height": 80,
-            "J": "-"
-          }
-        ]
-      },
-      "13C": {
-        "maxPpm": 220,
-        "signals": [
-          {
-            "ppm": 168.6,
-            "mult": "C Quaternário (Carbonila)",
-            "height": 40
-          },
-          {
-            "ppm": 153.1,
-            "mult": "C Quaternário",
-            "height": 25
-          },
-          {
-            "ppm": 131.0,
-            "mult": "C Quaternário",
-            "height": 25
-          },
-          {
-            "ppm": 120.9,
-            "mult": "CH",
-            "height": 55
-          },
-          {
-            "ppm": 115.0,
-            "mult": "CH",
-            "height": 55
-          },
-          {
-            "ppm": 23.9,
-            "mult": "CH3",
-            "height": 70
-          }
+          { "id": "sig1", "ppm": 3.4, "int": 3, "mult": "s", "height": 60 },
+          { "id": "sig2", "ppm": 3.6, "int": 3, "mult": "s", "height": 60 },
+          { "id": "sig3", "ppm": 4.0, "int": 3, "mult": "s", "height": 60 },
+          { "id": "sig4", "ppm": 7.6, "int": 1, "mult": "s", "height": 20 }
         ]
       }
     },
     "options": [
       {
         "id": "a",
-        "text": "Fenacetina",
-        "correct": false,
-        "feedback": "A fenacetina troca o fenol por um éter etílico (O-CH2-CH3). Isso eliminaria o singleto largo em 9.14 ppm (não há mais O-H) e introduziria um quarteto e um tripleto na região alifática, em vez do singleto isolado de 1.99 ppm."
+        "text": "Cafeína",
+        "smiles": "Cn1cnc2c1c(=O)n(C)c(=O)n2C",
+        "correct": true,
+        "feedback": "Três N−CH₃ em ambientes distintos (singleto em 3.4, 3.6 e 4.0 ppm) e um único H aromático (7.6 ppm)."
       },
       {
         "id": "b",
-        "text": "Paracetamol (Acetaminofeno)",
-        "correct": true,
-        "feedback": "Correto. Os dois singletos largos e lábeis (9.66 e 9.14 ppm) identificam N-H amídico e O-H fenólico coexistindo na mesma molécula. O sistema AA'BB' aromático (7.35/6.69) confirma a para-substituição, e o singleto isolado de 3H em 1.99 ppm é a assinatura do grupo acetila ligado a nitrogénio, não a oxigénio — o que também explica por que o carbono da carbonila em 168.6 ppm está na faixa de amida, não de éster."
+        "text": "Teobromina",
+        "smiles": "Cn1cnc2c1c(=O)[nH]c(=O)n2C",
+        "correct": false,
+        "feedback": "Teobromina tem apenas 2 N−CH₃ e um NH (singleto largo), não 3 N−CH₃."
       },
       {
         "id": "c",
-        "text": "p-Aminofenol",
+        "text": "Teofilina",
+        "smiles": "Cn1cnc2c1c(=O)[nH]c(=O)n2C",
         "correct": false,
-        "feedback": "O p-Aminofenol não tem o grupo acetila — não há carbonila nem o singleto de 3H em 1.99 ppm. A amina primária livre (N-H2) também produziria um padrão de troca e integração diferente do N-H amídico único observado aqui."
+        "feedback": "Teofilina também tem apenas 2 N−CH₃ e um NH, padrão incompatível com 3 singleto de 3H."
       }
-    ],
-    "smiles": "CC(=O)Nc1ccc(O)cc1"
-  },
-  {
-    "level": 5,
-    "title": "AINE Ramificado: Rede de Acoplamentos",
-    "context": "Fórmula: C13H18O2. Anel para-dissubstituído ligado a uma cadeia alifática ramificada de um lado e a um ácido propiónico do outro. Preste atenção às multiplicidades incomuns.",
-    "fonte_nota": "Valores conferidos por consistência cruzada com literatura consolidada de RMN de ibuprofeno; não há citação primária única rastreável associada a esta entrada.",
-    "spectra": {
-      "1H": {
-        "maxPpm": 13,
-        "signals": [
-          {
-            "ppm": 11.5,
-            "mult": "Singleto largo",
-            "int": "1H",
-            "height": 15,
-            "J": "-"
-          },
-          {
-            "ppm": 7.22,
-            "mult": "Dubleto",
-            "int": "2H",
-            "height": 55,
-            "J": "8.0 Hz"
-          },
-          {
-            "ppm": 7.1,
-            "mult": "Dubleto",
-            "int": "2H",
-            "height": 55,
-            "J": "8.0 Hz"
-          },
-          {
-            "ppm": 3.72,
-            "mult": "Quarteto",
-            "int": "1H",
-            "height": 45,
-            "J": "7.2 Hz"
-          },
-          {
-            "ppm": 2.45,
-            "mult": "Dubleto",
-            "int": "2H",
-            "height": 50,
-            "J": "7.0 Hz"
-          },
-          {
-            "ppm": 1.85,
-            "mult": "Noneto",
-            "int": "1H",
-            "height": 40,
-            "J": "6.6 Hz"
-          },
-          {
-            "ppm": 1.5,
-            "mult": "Dubleto",
-            "int": "3H",
-            "height": 65,
-            "J": "7.2 Hz"
-          },
-          {
-            "ppm": 0.9,
-            "mult": "Dubleto",
-            "int": "6H",
-            "height": 90,
-            "J": "6.6 Hz"
-          }
-        ]
-      },
-      "13C": {
-        "maxPpm": 220,
-        "signals": [
-          {
-            "ppm": 180.8,
-            "mult": "C Quaternário (Carbonila)",
-            "height": 35
-          },
-          {
-            "ppm": 140.8,
-            "mult": "C Quaternário",
-            "height": 25
-          },
-          {
-            "ppm": 137.0,
-            "mult": "C Quaternário",
-            "height": 25
-          },
-          {
-            "ppm": 129.4,
-            "mult": "CH",
-            "height": 50
-          },
-          {
-            "ppm": 127.3,
-            "mult": "CH",
-            "height": 50
-          },
-          {
-            "ppm": 45.2,
-            "mult": "CH / CH2",
-            "height": 45
-          },
-          {
-            "ppm": 30.2,
-            "mult": "CH",
-            "height": 40
-          },
-          {
-            "ppm": 22.4,
-            "mult": "CH3",
-            "height": 60
-          },
-          {
-            "ppm": 18.1,
-            "mult": "CH3",
-            "height": 55
-          }
-        ]
-      }
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "Ácido 2-Fenilpropanoico",
-        "correct": false,
-        "feedback": "Sem o grupo isobutilo, o anel seria monossubstituído — geraria um multipleto de 5H entre 7.2-7.4 ppm (como no etilbenzeno), não o sistema AA'BB' de 4H visto aqui. Também faltariam os sinais característicos em 0.90 (dubleto 6H) e 1.85 (noneto)."
-      },
-      {
-        "id": "b",
-        "text": "Ibuprofeno",
-        "correct": true,
-        "feedback": "Correto. O noneto em 1.85 ppm é a assinatura clássica do CH central do grupo isobutilo, acoplando simultaneamente com o CH2 vizinho e as duas metilas equivalentes (regra n+1 com 8 vizinhos). O par quarteto (3.72 ppm) + dubleto (1.50 ppm) identifica o CH do ácido propiónico ligado a uma metila — a combinação dos dois sistemas de acoplamento independentes no mesmo anel para-dissubstituído é característica do ibuprofeno."
-      },
-      {
-        "id": "c",
-        "text": "Naproxeno",
-        "correct": false,
-        "feedback": "O naproxeno tem um anel naftaleno (sistema aromático mais complexo, mais sinais e mais desblindado) e um grupo metoxila (O-CH3), que apareceria como singleto perto de 3.7-3.9 ppm — não há esse singleto no espectro, e não há grupo isobutilo no naproxeno."
-      }
-    ],
-    "smiles": "CC(C)Cc1ccc(cc1)C(C)C(=O)O"
-  },
-  {
-    "level": 6,
-    "title": "Substituição Orto: Sistema Complexo",
-    "context": "Fórmula: C9H8O4. Anel orto-dissubstituído com um éster de acetato e um ácido carboxílico. Os quatro protões aromáticos não são equivalentes entre si.",
-    "fonte_nota": "Valores conferidos por consistência cruzada com literatura consolidada de RMN de ácido acetilsalicílico; não há citação primária única rastreável associada a esta entrada.",
-    "spectra": {
-      "1H": {
-        "maxPpm": 13,
-        "signals": [
-          {
-            "ppm": 11.95,
-            "mult": "Singleto largo",
-            "int": "1H",
-            "height": 15,
-            "J": "-"
-          },
-          {
-            "ppm": 8.12,
-            "mult": "Dubleto de dupletos",
-            "int": "1H",
-            "height": 40,
-            "J": "8.0, 1.1 Hz"
-          },
-          {
-            "ppm": 7.62,
-            "mult": "Multipleto (ddd)",
-            "int": "1H",
-            "height": 35,
-            "J": "8.5, 7.1, 1.1 Hz"
-          },
-          {
-            "ppm": 7.35,
-            "mult": "Multipleto (ddd)",
-            "int": "1H",
-            "height": 35,
-            "J": "8.5, 7.1, 1.7 Hz"
-          },
-          {
-            "ppm": 7.14,
-            "mult": "Dubleto de dupletos",
-            "int": "1H",
-            "height": 40,
-            "J": "8.0, 1.7 Hz"
-          },
-          {
-            "ppm": 2.3,
-            "mult": "Singleto",
-            "int": "3H",
-            "height": 80,
-            "J": "-"
-          }
-        ]
-      },
-      "13C": {
-        "maxPpm": 220,
-        "signals": [
-          {
-            "ppm": 170.0,
-            "mult": "C Quaternário (Carbonila ácido)",
-            "height": 35
-          },
-          {
-            "ppm": 169.7,
-            "mult": "C Quaternário (Carbonila éster)",
-            "height": 35
-          },
-          {
-            "ppm": 151.0,
-            "mult": "C Quaternário",
-            "height": 25
-          },
-          {
-            "ppm": 134.9,
-            "mult": "CH",
-            "height": 50
-          },
-          {
-            "ppm": 132.5,
-            "mult": "CH",
-            "height": 50
-          },
-          {
-            "ppm": 126.1,
-            "mult": "CH",
-            "height": 50
-          },
-          {
-            "ppm": 124.0,
-            "mult": "CH",
-            "height": 50
-          },
-          {
-            "ppm": 122.2,
-            "mult": "C Quaternário",
-            "height": 25
-          },
-          {
-            "ppm": 20.9,
-            "mult": "CH3",
-            "height": 70
-          }
-        ]
-      }
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "Ácido Salicílico",
-        "correct": false,
-        "feedback": "Sem o grupo acetato, faltaria o singleto de 3H em 2.30 ppm e a segunda carbonila em 169.7 ppm. O ácido salicílico livre tem um fenol que forma ponte de hidrogénio intramolecular forte com o ácido, deslocando o O-H para uma região ainda mais desblindada (~10.8-11 ppm) e distinta do padrão observado."
-      },
-      {
-        "id": "b",
-        "text": "Ácido Acetilsalicílico (Aspirina)",
-        "correct": true,
-        "feedback": "Correto. Quatro sinais aromáticos distintos com constantes de acoplamento orto (~8 Hz) e meta (~1.1-1.7 Hz) confirmam substituição orto (não para) no anel — cada protão tem um ambiente químico único. O singleto de 3H em 2.30 ppm junto com a segunda carbonila em 169.7 ppm (faixa de éster, distinta da carbonila de ácido em 170.0 ppm) identifica o grupo acetato característico da aspirina."
-      },
-      {
-        "id": "c",
-        "text": "Salicilato de Metilo",
-        "correct": false,
-        "feedback": "O salicilato de metilo é um éster metílico do ácido salicílico — teria um singleto de O-CH3 perto de 3.9 ppm em vez do -COOH largo em 11.95 ppm, e não teria o grupo acetato (nem o singleto de 2.30 ppm nem a segunda carbonila de éster)."
-      }
-    ],
-    "smiles": "CC(=O)Oc1ccccc1C(=O)O"
+    ]
   }
 ]
