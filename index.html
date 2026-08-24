@@ -438,6 +438,28 @@ main {
 
 .structure-card svg { max-width: 100%; height: auto; }
 
+/* Wrapper relativo para ancorar os badges numerados sobre a molécula */
+.mol-wrap { position: relative; display: inline-block; }
+
+.atom-badge {
+  position: absolute;
+  width: 26px;
+  height: 26px;
+  margin: -13px 0 0 -13px;
+  background: linear-gradient(135deg, var(--info), var(--info-light));
+  color: white;
+  border: 2px solid white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 800;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+  pointer-events: none;
+  z-index: 10;
+}
+
 .instruction {
   background: white;
   border-left: 4px solid var(--info);
@@ -1356,7 +1378,11 @@ function renderTutorial() {
   return div;
 }
 
-function renderMoleculeStructure(smiles, svgId) {
+// Desenha o SMILES no <svg> e, se receber tags com atomIndices, sobrepõe os
+// badges numerados exatamente sobre os átomos. A matemática replica o
+// SvgWrapper do SmilesDrawer 2.1.7: o viewBox gerado é o bounding box dos
+// vértices (com padding) e os átomos ficam nas coordenadas cruas do grafo.
+function renderMoleculeStructure(smiles, svgId, tags = []) {
   if (!window.SmilesDrawer) {
     console.error('SmilesDrawer não carregou.');
     return;
@@ -1366,9 +1392,38 @@ function renderMoleculeStructure(smiles, svgId) {
     console.warn(`SVG com id "${svgId}" não encontrado no DOM.`);
     return;
   }
+  const wrap = svg.parentElement;
+  wrap.querySelectorAll('.atom-badge').forEach(b => b.remove());
+
   const drawer = new SmilesDrawer.SvgDrawer({ width: 320, height: 220 });
   SmilesDrawer.parse(smiles, function(tree) {
     drawer.draw(tree, svg, 'light');
+
+    if (!tags.length) return;
+    const verts = drawer.graph.vertices;
+    const vb = svg.viewBox.baseVal;
+    const rect = svg.getBoundingClientRect();
+    const scale = Math.min(rect.width / vb.width, rect.height / vb.height);
+    const offX = (rect.width - vb.width * scale) / 2;
+    const offY = (rect.height - vb.height * scale) / 2;
+
+    tags.forEach(t => {
+      if (!t.atoms || !t.atoms.length) return;
+      let sx = 0, sy = 0, n = 0;
+      t.atoms.forEach(i => {
+        const v = verts[i];
+        if (v && v.position) { sx += v.position.x; sy += v.position.y; n++; }
+      });
+      if (!n) return;
+      const px = (sx / n - vb.x) * scale + offX;
+      const py = (sy / n - vb.y) * scale + offY;
+      const badge = document.createElement('div');
+      badge.className = 'atom-badge';
+      badge.textContent = t.label;
+      badge.style.left = px + 'px';
+      badge.style.top = py + 'px';
+      wrap.appendChild(badge);
+    });
   }, function(err) {
     console.error('Erro ao desenhar estrutura:', err);
   });
@@ -1390,7 +1445,6 @@ function renderSpectrumSVG(signals, maxPpm, is13C = false, highlight = []) {
     }
   });
 
-  // Triângulo de Pascal para multiplicidades 1-6
   const pascal = {
     1: [1],
     2: [1, 1],
@@ -1400,7 +1454,6 @@ function renderSpectrumSVG(signals, maxPpm, is13C = false, highlight = []) {
     6: [1, 5, 10, 10, 5, 1]
   };
 
-  // Parse multiplicidade: "s"→1, "d"→2, "t"→3, "q"→4, "m"→5, número direto
   function parseMultiplicity(mult) {
     if (typeof mult === 'number') return Math.min(mult, 6);
     const map = { 's': 1, 'd': 2, 't': 3, 'q': 4, 'm': 5, 'sext': 6 };
@@ -1412,22 +1465,19 @@ function renderSpectrumSVG(signals, maxPpm, is13C = false, highlight = []) {
   sorted.forEach(sig => {
     const x = ((maxPpm - sig.ppm) / maxPpm) * width;
     const peakH = Math.min(Math.abs(sig.height) * 1.5, maxH);
-    
+
     const mult = parseMultiplicity(sig.mult);
     const splits = pascal[mult] || [1];
     const maxSplit = Math.max(...splits);
-    
-    // Espaçamento entre picos do mesmo sinal (em pixels SVG)
+
     const spacing = mult === 1 ? 0 : 8;
     const startX = x - ((splits.length - 1) * spacing / 2);
-    
-    // Desenhar cada pico do multiplet
+
     splits.forEach((relH, i) => {
       const peakX = startX + (i * spacing);
       const h = peakH * (relH / maxSplit);
       const peakY = sig.height < 0 ? baseline + h * 0.3 : baseline - h;
-      const w = 3; // Largura da base do triângulo
-      
+      const w = 3;
       path += ` L ${peakX - w} ${baseline} L ${peakX} ${peakY} L ${peakX + w} ${baseline}`;
     });
   });
@@ -1459,17 +1509,18 @@ function renderSpectrumSVG(signals, maxPpm, is13C = false, highlight = []) {
   `;
 }
 
+// Carrega atomIndices junto, para os badges saberem em qual átomo ancorar.
 function deriveTagsFromChain(chain) {
   const tags = [];
   let c = 1;
   chain.forEach(item => {
     if (item.tagId) {
-      tags.push({ id: item.tagId, label: String(c), correctTarget: item.correctTarget });
+      tags.push({ id: item.tagId, label: String(c), correctTarget: item.correctTarget, atoms: item.atomIndices || null });
       c++;
     }
     (item.branches || []).forEach(b => {
       if (b.tagId) {
-        tags.push({ id: b.tagId, label: String(c), correctTarget: b.correctTarget });
+        tags.push({ id: b.tagId, label: String(c), correctTarget: b.correctTarget, atoms: b.atomIndices || null });
         c++;
       }
     });
@@ -1477,9 +1528,6 @@ function deriveTagsFromChain(chain) {
   return tags;
 }
 
-// Retorna o conjunto de dados ativo (¹H ou ¹³C) para um nível de Mapeamento.
-// ¹³C só fica disponível se o nível tiver chain13C — níveis sem esse campo
-// simplesmente não mostram o botão de alternância.
 function getActiveMappingData(q) {
   const isCarbon = state.activeSpectrumType === '13C' && q.chain13C;
   return {
@@ -1554,12 +1602,12 @@ function renderMapping() {
 
   const tierLabel = { facil: 'Nível 1 · Fácil', medio: 'Nível 2 · Médio', dificil: 'Nível 3 · Difícil' }[q.tier] || '';
 
-  // A estrutura real (se houver SMILES) é sempre ILUSTRATIVA — some ao lado do
-  // diagrama de cadeia, nunca no lugar dele. O diagrama de cadeia é quem carrega
-  // os números clicáveis; a estrutura desenhada não tem alvo de toque nenhum.
+  // Com SMILES: a molécula desenhada CARREGA os números (badges sobrepostos)
+  // e o diagrama de caixas some — menos poluição, mesma informação.
+  // Sem SMILES: fallback antigo (só caixas, sem estrutura).
   const structureHtml = q.smiles
-    ? `<div class="structure-card"><svg id="mol-mapping" width="260" height="180"></svg></div>`
-    : '';
+    ? '<div class="structure-card"><div class="mol-wrap"><svg id="mol-mapping" width="320" height="220"></svg></div></div>'
+    : renderChainDiagram(chain, tagNumbers);
 
   const toggleHtml = q.chain13C ? `
     <div class="solo-toggle">
@@ -1586,8 +1634,6 @@ function renderMapping() {
 
     <div class="instruction">💡 Toque num número da estrutura e depois no sinal correspondente. Para reposicionar, toque na peça alocada e escolha nova zona.</div>
 
-    ${renderChainDiagram(chain, tagNumbers)}
-
     <div class="tags-pool-card">
       <span class="tags-pool-label">Peças</span>
       <div class="tags-pool" id="tags-pool">${tagsHtml}</div>
@@ -1610,7 +1656,7 @@ function renderMapping() {
   `;
 
   setTimeout(() => attachMappingEvents(q, signals), 0);
-  if (q.smiles) setTimeout(() => renderMoleculeStructure(q.smiles, 'mol-mapping'), 0);
+  if (q.smiles) setTimeout(() => renderMoleculeStructure(q.smiles, 'mol-mapping', tags), 0);
 
   return div;
 }
@@ -1803,7 +1849,7 @@ window.handleSoloAnswer = function(optionId, btnEl) {
 
     const structureHtml = q.smiles ? `
       <div class="structure-card" style="margin-top: 16px;">
-        <svg id="mol-solo-reveal" width="320" height="220"></svg>
+        <div class="mol-wrap"><svg id="mol-solo-reveal" width="320" height="220"></svg></div>
       </div>
     ` : '';
 
@@ -1847,9 +1893,6 @@ function renderSolo() {
   const specData = q.spectra[state.activeSpectrumType];
   const spectrumHtml = renderSpectrumSVG(specData.signals, specData.maxPpm, is13C);
 
-  // Cada alternativa pode ter um SMILES. Se tiver, renderizamos a estrutura
-  // química dentro do card da opção, para comparação visual. O id inclui o
-  // level para evitar colisão em recarregamentos.
   const optionsHtml = q.options.map((o, i) => {
     const svgId = `opt-smiles-${q.level}-${i}`;
     const smilesBlock = o.smiles
@@ -1891,7 +1934,6 @@ function renderSolo() {
     <div id="feedback-box" style="margin-top: 24px;"></div>
   `;
 
-  // Desenha todos os SMILES das opções depois que o DOM existir
   setTimeout(() => {
     q.options.forEach((o, i) => {
       if (o.smiles) renderMoleculeStructure(o.smiles, `opt-smiles-${q.level}-${i}`);
@@ -2005,6 +2047,11 @@ function renderGuided() {
       </div>`;
   }
 
+  // Com SMILES, a estrutura real substitui o diagrama de caixas (menos poluição).
+  const structureHtml = ex.smiles
+    ? '<div class="structure-card"><div class="mol-wrap"><svg id="mol-guided" width="320" height="220"></svg></div></div>'
+    : renderChainDiagram(ex.chain, tagNumbers);
+
   const div = document.createElement('div');
   div.innerHTML = `
     <div class="section-header">
@@ -2019,8 +2066,7 @@ function renderGuided() {
       <div class="context-title">${ex.title} · ${ex.formula}</div>
       <div class="context-text">${ex.subtitle}</div>
     </div>
-    ${ex.smiles ? '<div class="structure-card"><svg id="mol-guided" width="320" height="220"></svg></div>' : ''}
-    ${renderChainDiagram(ex.chain, tagNumbers)}
+    ${structureHtml}
     <div class="spectrum-card">
       <div class="spectrum-axis-labels"><span>← Desblindado</span><span>Blindado →</span></div>
       ${renderSpectrumSVG(ex.signals, ex.maxPpm, false, hl)}
