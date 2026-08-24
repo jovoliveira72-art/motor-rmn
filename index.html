@@ -3,30 +3,33 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Motor RMN - Aprenda Brincando</title>
+<title>Motor RMN — Ensino Interativo</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg: #F8F9FF;
-  --bg-card: #FFFFFF;
-  --primary: #7C3AED;
-  --primary-light: #A78BFA;
-  --primary-dark: #5B21B6;
-  --secondary: #F59E0B;
-  --secondary-light: #FCD34D;
-  --success: #10B981;
-  --success-light: #6EE7B7;
-  --error: #EF4444;
-  --error-light: #FCA5A5;
-  --info: #3B82F6;
-  --info-light: #93C5FD;
-  --text: #1F2937;
-  --text-light: #6B7280;
-  --text-lighter: #9CA3AF;
-  --border: #E5E7EB;
-  --shadow: rgba(124, 58, 237, 0.1);
+  --bg: #f8fafc;
+  --bg-card: #ffffff;
+  --bg-subtle: #f1f5f9;
+  --primary: #6366f1;
+  --primary-light: #a5b4fc;
+  --primary-dark: #4f46e5;
+  --secondary: #f59e0b;
+  --secondary-light: #fcd34d;
+  --success: #10b981;
+  --success-light: #d1fae5;
+  --error: #ef4444;
+  --error-light: #fee2e2;
+  --info: #3b82f6;
+  --info-light: #dbeafe;
+  --text: #0f172a;
+  --text-light: #64748b;
+  --text-lighter: #94a3b8;
+  --border: #e2e8f0;
+  --border-strong: #cbd5e1;
+  --shadow: 0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-lg: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -34,7 +37,7 @@
 html, body {
   background: var(--bg);
   color: var(--text);
-  font-family: 'Nunito', sans-serif;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   font-size: 16px;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
@@ -45,7 +48,7 @@ html, body {
 
 ::-webkit-scrollbar { width: 8px; }
 ::-webkit-scrollbar-track { background: var(--bg); }
-::-webkit-scrollbar-thumb { background: var(--primary-light); border-radius: 4px; }
+::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 4px; }
 
 .app-shell {
   display: flex;
@@ -55,12 +58,12 @@ html, body {
 }
 
 header {
-  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-  padding: 16px 24px;
+  background: var(--primary);
+  padding: 14px 24px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  box-shadow: 0 4px 20px var(--shadow);
+  box-shadow: var(--shadow);
   flex-shrink: 0;
 }
 
@@ -72,31 +75,30 @@ header {
 }
 
 .brand-icon {
-  width: 44px;
-  height: 44px;
+  width: 40px;
+  height: 40px;
   background: white;
-  border-radius: 12px;
+  border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 24px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  color: var(--primary);
+  box-shadow: var(--shadow);
 }
 
 .brand-text {
   color: white;
-  font-family: 'Poppins', sans-serif;
-  font-weight: 800;
-  font-size: 22px;
-  letter-spacing: -0.02em;
+  font-weight: 600;
+  font-size: 20px;
+  letter-spacing: -0.01em;
 }
 
 .brand-text small {
   display: block;
   font-size: 11px;
-  font-weight: 500;
+  font-weight: 400;
   opacity: 0.85;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.02em;
 }
 
 .xp-badge {
@@ -105,25 +107,19 @@ header {
   gap: 10px;
   background: white;
   padding: 8px 16px;
-  border-radius: 50px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  border-radius: 8px;
+  box-shadow: var(--shadow);
 }
 
 .xp-icon {
-  width: 32px;
-  height: 32px;
-  background: linear-gradient(135deg, var(--secondary), var(--secondary-light));
-  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  background: var(--secondary);
+  border-radius: 6px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 18px;
-  animation: pulse 2s ease-in-out infinite;
-}
-
-@keyframes pulse {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.1); }
+  color: white;
 }
 
 .xp-info { display: flex; flex-direction: column; }
@@ -131,28 +127,17 @@ header {
 .xp-label {
   font-size: 10px;
   color: var(--text-light);
-  font-weight: 600;
+  font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
 
 .xp-value {
-  font-family: 'Poppins', sans-serif;
-  font-size: 20px;
-  font-weight: 800;
+  font-size: 18px;
+  font-weight: 600;
   color: var(--secondary);
   line-height: 1;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.xp-value.bounce {
-  animation: bounce 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-}
-
-@keyframes bounce {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.3); }
-  100% { transform: scale(1); }
+  transition: all 0.2s;
 }
 
 main {
@@ -163,114 +148,114 @@ main {
 
 .view-container { max-width: 900px; margin: 0 auto; }
 
-.fade-in { animation: fadeIn 0.4s ease-out; }
+.fade-in { animation: fadeIn 0.3s ease-out; }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
+  from { opacity: 0; transform: translateY(8px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes shake {
   0%, 100% { transform: translateX(0); }
-  25% { transform: translateX(-8px); }
-  75% { transform: translateX(8px); }
+  25% { transform: translateX(-6px); }
+  75% { transform: translateX(6px); }
 }
 
 .shake-err { animation: shake 0.4s ease-in-out; }
 
 @keyframes celebrate {
   0% { transform: scale(1); }
-  50% { transform: scale(1.05); box-shadow: 0 0 40px var(--success); }
+  50% { transform: scale(1.02); }
   100% { transform: scale(1); }
 }
 
-.celebrate { animation: celebrate 0.6s ease-out; }
+.celebrate { animation: celebrate 0.5s ease-out; }
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid var(--border);
+  border-top-color: var(--primary);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
 
 .home-hero {
   text-align: center;
-  padding: 40px 20px 48px;
-  background: linear-gradient(135deg, var(--primary-light) 0%, var(--primary) 100%);
-  border-radius: 24px;
+  padding: 48px 24px;
+  background: white;
+  border-radius: 12px;
   margin-bottom: 32px;
-  color: white;
-  box-shadow: 0 8px 32px var(--shadow);
-}
-
-.home-emoji {
-  font-size: 64px;
-  margin-bottom: 16px;
-  animation: float 3s ease-in-out infinite;
-}
-
-@keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
 }
 
 .home-title {
-  font-family: 'Poppins', sans-serif;
-  font-size: 36px;
-  font-weight: 800;
+  font-size: 32px;
+  font-weight: 600;
   margin-bottom: 12px;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.01em;
+  color: var(--text);
 }
 
 .home-sub {
   font-size: 16px;
-  opacity: 0.95;
+  color: var(--text-light);
   max-width: 500px;
   margin: 0 auto;
-  line-height: 1.5;
+  line-height: 1.6;
 }
 
 .progress-card {
   background: white;
-  border-radius: 20px;
-  padding: 24px;
+  border-radius: 12px;
+  padding: 20px;
   margin-bottom: 32px;
-  box-shadow: 0 4px 20px var(--shadow);
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
 }
 
 .progress-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 16px;
+  margin-bottom: 12px;
 }
 
-.progress-title { font-weight: 700; font-size: 18px; color: var(--text); }
-
-.progress-stats { font-size: 14px; color: var(--text-light); font-weight: 600; }
+.progress-title { font-weight: 600; font-size: 16px; color: var(--text); }
+.progress-stats { font-size: 14px; color: var(--text-light); font-weight: 500; }
 
 .progress-bar {
-  height: 12px;
-  background: var(--border);
-  border-radius: 10px;
+  height: 8px;
+  background: var(--bg-subtle);
+  border-radius: 4px;
   overflow: hidden;
 }
 
 .progress-fill {
   height: 100%;
-  background: linear-gradient(90deg, var(--success), var(--success-light));
-  border-radius: 10px;
-  transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  background: var(--success);
+  border-radius: 4px;
+  transition: width 0.5s;
 }
 
-.modes-grid { display: grid; gap: 16px; }
+.modes-grid { display: grid; gap: 20px; }
 
 .mode-card {
   background: white;
-  border-radius: 20px;
-  padding: 24px;
+  border-radius: 12px;
+  padding: 20px;
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 4px 20px var(--shadow);
-  border: 2px solid transparent;
+  transition: all 0.2s;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
 }
 
 .mode-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 32px var(--shadow);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--border-strong);
 }
 
 .mode-card.tutorial:hover { border-color: var(--success); }
@@ -281,30 +266,25 @@ main {
   display: flex;
   align-items: center;
   gap: 16px;
-  margin-bottom: 12px;
 }
 
-.mode-card .mode-header { margin-bottom: 0; }
-
 .mode-icon {
-  width: 56px;
-  height: 56px;
-  border-radius: 16px;
+  width: 48px;
+  height: 48px;
+  border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 28px;
   flex-shrink: 0;
 }
 
-.mode-icon.tutorial { background: linear-gradient(135deg, var(--success), var(--success-light)); }
-.mode-icon.mapping { background: linear-gradient(135deg, var(--info), var(--info-light)); }
-.mode-icon.solo { background: linear-gradient(135deg, var(--secondary), var(--secondary-light)); }
+.mode-icon.tutorial { background: var(--success-light); color: var(--success); }
+.mode-icon.mapping { background: var(--info-light); color: var(--info); }
+.mode-icon.solo { background: var(--bg-subtle); color: var(--secondary); }
 
 .mode-title {
-  font-family: 'Poppins', sans-serif;
-  font-size: 22px;
-  font-weight: 700;
+  font-size: 18px;
+  font-weight: 600;
   color: var(--text);
 }
 
@@ -322,24 +302,24 @@ main {
 }
 
 .submode-btn {
-  background: var(--bg);
-  border: 2px solid var(--border);
+  background: var(--bg-subtle);
+  border: 1px solid var(--border);
   padding: 16px;
-  border-radius: 16px;
+  border-radius: 8px;
   cursor: pointer;
   transition: all 0.2s;
   text-align: center;
+  font-family: inherit;
 }
 
 .submode-btn:hover {
   border-color: var(--info);
   background: var(--info-light);
-  transform: scale(1.02);
 }
 
 .submode-tier {
   font-size: 11px;
-  font-weight: 700;
+  font-weight: 600;
   color: var(--info);
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -347,9 +327,8 @@ main {
 }
 
 .submode-name {
-  font-family: 'Poppins', sans-serif;
   font-size: 16px;
-  font-weight: 700;
+  font-weight: 600;
   margin-bottom: 4px;
 }
 
@@ -364,42 +343,42 @@ main {
 
 .back-btn {
   background: white;
-  border: 2px solid var(--border);
-  width: 44px;
-  height: 44px;
-  border-radius: 12px;
+  border: 1px solid var(--border);
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  font-size: 20px;
+  font-size: 18px;
   transition: all 0.2s;
   flex-shrink: 0;
+  color: var(--text);
 }
 
 .back-btn:hover {
   border-color: var(--primary);
-  background: var(--primary-light);
-  color: white;
+  background: var(--bg-subtle);
 }
 
 .section-title {
-  font-family: 'Poppins', sans-serif;
-  font-size: 28px;
-  font-weight: 700;
+  font-size: 24px;
+  font-weight: 600;
   color: var(--text);
 }
 
 .tutorial-card {
   background: white;
-  border-radius: 20px;
-  padding: 32px;
-  box-shadow: 0 4px 20px var(--shadow);
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
   margin-bottom: 24px;
 }
 
-.tutorial-body { font-size: 17px; line-height: 1.7; color: var(--text); }
-.tutorial-body strong { color: var(--success); font-weight: 700; }
+.tutorial-body { font-size: 16px; line-height: 1.7; color: var(--text); }
+.tutorial-body strong { color: var(--success); font-weight: 600; }
 
 .tutorial-nav {
   display: flex;
@@ -408,28 +387,34 @@ main {
 }
 
 .context-card {
-  background: linear-gradient(135deg, var(--info-light), var(--info));
-  border-radius: 16px;
+  background: var(--info-light);
+  border-radius: 10px;
   padding: 20px;
   margin-bottom: 24px;
-  color: white;
+  border: 1px solid var(--info);
+}
+
+.context-card.warm {
+  background: var(--bg-subtle);
+  border: 1px solid var(--secondary);
 }
 
 .context-title {
-  font-family: 'Poppins', sans-serif;
-  font-size: 20px;
-  font-weight: 700;
+  font-size: 18px;
+  font-weight: 600;
   margin-bottom: 8px;
+  color: var(--text);
 }
 
-.context-text { font-size: 14px; line-height: 1.5; opacity: 0.95; }
+.context-text { font-size: 14px; line-height: 1.6; color: var(--text); }
 
 .structure-card {
   background: white;
-  border-radius: 20px;
+  border-radius: 12px;
   padding: 20px;
   margin-bottom: 24px;
-  box-shadow: 0 4px 20px var(--shadow);
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -439,10 +424,10 @@ main {
 .structure-card svg { max-width: 100%; height: auto; }
 
 .instruction {
-  background: white;
-  border-left: 4px solid var(--info);
+  background: var(--bg-subtle);
+  border-left: 3px solid var(--info);
   padding: 16px 20px;
-  border-radius: 12px;
+  border-radius: 8px;
   margin-bottom: 24px;
   font-size: 14px;
   color: var(--text-light);
@@ -450,9 +435,10 @@ main {
 
 .chain-card {
   background: white;
-  border-radius: 20px;
-  padding: 32px 24px;
-  box-shadow: 0 4px 20px var(--shadow);
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
   margin-bottom: 24px;
   overflow-x: auto;
 }
@@ -493,13 +479,13 @@ main {
 }
 
 .chain-branch-box {
-  background: var(--bg);
-  border: 2px solid var(--border);
+  background: var(--bg-subtle);
+  border: 1px solid var(--border);
   padding: 6px 12px;
   font-size: 13px;
-  font-weight: 600;
+  font-weight: 500;
   color: var(--text-light);
-  border-radius: 8px;
+  border-radius: 6px;
   position: relative;
 }
 
@@ -513,13 +499,13 @@ main {
 }
 
 .chain-box {
-  background: var(--bg);
-  border: 2px solid var(--border);
+  background: var(--bg-subtle);
+  border: 1px solid var(--border);
   padding: 10px 16px;
   font-size: 14px;
-  font-weight: 700;
+  font-weight: 600;
   color: var(--text);
-  border-radius: 10px;
+  border-radius: 6px;
   position: relative;
 }
 
@@ -530,28 +516,29 @@ main {
 
 .chain-badge {
   position: absolute;
-  top: -30px;
+  top: -28px;
   left: 50%;
   transform: translateX(-50%);
-  width: 26px;
-  height: 26px;
-  background: linear-gradient(135deg, var(--info), var(--info-light));
+  width: 24px;
+  height: 24px;
+  background: var(--info);
   color: white;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 13px;
-  font-weight: 800;
-  box-shadow: 0 4px 12px var(--shadow);
+  font-size: 12px;
+  font-weight: 600;
+  box-shadow: var(--shadow);
 }
 
 .tags-pool-card {
   background: white;
-  border-radius: 16px;
-  padding: 20px;
+  border-radius: 10px;
+  padding: 16px;
   margin-bottom: 24px;
-  box-shadow: 0 4px 20px var(--shadow);
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
   display: flex;
   align-items: center;
   gap: 16px;
@@ -559,7 +546,7 @@ main {
 
 .tags-pool-label {
   font-size: 12px;
-  font-weight: 700;
+  font-weight: 600;
   color: var(--text-light);
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -578,36 +565,33 @@ main {
   width: 40px;
   height: 40px;
   background: white;
-  border: 3px solid var(--info);
+  border: 2px solid var(--info);
   color: var(--info);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 15px;
-  font-weight: 800;
+  font-weight: 600;
   cursor: pointer;
   transition: all 0.2s;
   user-select: none;
 }
 
-.select-tag:hover {
-  background: var(--info-light);
-  transform: scale(1.1);
-}
+.select-tag:hover { background: var(--info-light); }
 
 .select-tag.is-selected {
   background: var(--info);
   color: white;
-  box-shadow: 0 0 0 4px var(--info-light);
-  transform: scale(1.15);
+  box-shadow: 0 0 0 3px var(--info-light);
 }
 
 .spectrum-card {
   background: white;
-  border-radius: 20px;
-  padding: 24px 20px 32px;
-  box-shadow: 0 4px 20px var(--shadow);
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
   margin-bottom: 24px;
   position: relative;
 }
@@ -616,7 +600,7 @@ main {
   display: flex;
   justify-content: space-between;
   font-size: 11px;
-  font-weight: 700;
+  font-weight: 500;
   color: var(--text-lighter);
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -624,12 +608,12 @@ main {
 }
 
 .spectrum-svg { width: 100%; height: 140px; display: block; }
-.spectrum-baseline { stroke: var(--border); stroke-width: 2; }
+.spectrum-baseline { stroke: var(--border-strong); stroke-width: 1.5; }
 
 .spectrum-trace {
   fill: none;
   stroke: var(--info);
-  stroke-width: 2.5;
+  stroke-width: 2;
   stroke-linejoin: round;
   stroke-linecap: round;
 }
@@ -639,34 +623,35 @@ main {
 .spectrum-tooltip {
   position: absolute;
   background: white;
-  border: 2px solid var(--info);
+  border: 1px solid var(--info);
   padding: 10px 14px;
   font-size: 13px;
-  font-weight: 600;
+  font-weight: 500;
   color: var(--text);
   pointer-events: none;
   opacity: 0;
   transition: opacity 0.15s;
   z-index: 20;
   white-space: nowrap;
-  border-radius: 10px;
-  box-shadow: 0 4px 20px var(--shadow);
+  border-radius: 8px;
+  box-shadow: var(--shadow-lg);
 }
 
 .spectrum-tooltip.visible { opacity: 1; }
 
 .spectrum-tooltip .tt-ppm {
   color: var(--info);
-  font-weight: 800;
+  font-weight: 600;
   display: block;
   margin-bottom: 2px;
 }
 
 .signals-list {
   background: white;
-  border-radius: 20px;
+  border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 4px 20px var(--shadow);
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
 }
 
 .signal-row {
@@ -674,34 +659,33 @@ main {
   grid-template-columns: 80px 1fr 60px;
   gap: 16px;
   align-items: center;
-  padding: 20px;
-  border-bottom: 2px solid var(--border);
+  padding: 16px;
+  border-bottom: 1px solid var(--border);
   transition: all 0.2s;
 }
 
 .signal-row:last-child { border-bottom: none; }
 
 .signal-row.correct {
-  background: linear-gradient(90deg, var(--success-light), transparent);
-  border-left: 4px solid var(--success);
+  background: var(--success-light);
+  border-left: 3px solid var(--success);
 }
 
 .signal-row.wrong {
-  background: linear-gradient(90deg, var(--error-light), transparent);
-  border-left: 4px solid var(--error);
+  background: var(--error-light);
+  border-left: 3px solid var(--error);
 }
 
 .signal-ppm {
-  font-family: 'Poppins', sans-serif;
-  font-size: 24px;
-  font-weight: 800;
+  font-size: 22px;
+  font-weight: 600;
   color: var(--text);
 }
 
 .signal-ppm small {
   font-size: 12px;
   color: var(--text-lighter);
-  font-weight: 600;
+  font-weight: 500;
   margin-left: 2px;
 }
 
@@ -710,22 +694,22 @@ main {
   gap: 12px;
   font-size: 13px;
   color: var(--text-light);
-  font-weight: 600;
+  font-weight: 500;
 }
 
-.signal-meta span b { color: var(--text); font-weight: 700; }
+.signal-meta span b { color: var(--text); font-weight: 600; }
 
 .dropzone {
   width: 48px;
   height: 48px;
-  border: 3px dashed var(--border);
+  border: 2px dashed var(--border-strong);
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   transition: all 0.2s;
   justify-self: end;
-  border-radius: 12px;
+  border-radius: 8px;
 }
 
 .dropzone:hover {
@@ -742,110 +726,111 @@ main {
 .dropzone .placeholder {
   font-size: 10px;
   color: var(--text-lighter);
-  font-weight: 700;
+  font-weight: 600;
   text-transform: uppercase;
 }
 
 .feedback {
   margin-top: 24px;
-  padding: 24px;
-  border-radius: 16px;
+  padding: 20px;
+  border-radius: 10px;
   background: white;
-  box-shadow: 0 4px 20px var(--shadow);
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
 }
 
 .feedback.success {
-  border-left: 4px solid var(--success);
-  background: linear-gradient(90deg, var(--success-light), white);
+  border-left: 3px solid var(--success);
+  background: var(--success-light);
 }
 
 .feedback.error {
-  border-left: 4px solid var(--error);
-  background: linear-gradient(90deg, var(--error-light), white);
+  border-left: 3px solid var(--error);
+  background: var(--error-light);
 }
 
 .feedback-title {
-  font-family: 'Poppins', sans-serif;
-  font-size: 20px;
-  font-weight: 700;
+  font-size: 18px;
+  font-weight: 600;
   margin-bottom: 8px;
 }
 
-.feedback-body { font-size: 14px; color: var(--text-light); line-height: 1.5; }
+.feedback-body { font-size: 14px; color: var(--text); line-height: 1.6; }
 
 .feedback-actions { display: flex; gap: 12px; margin-top: 20px; }
 
 .btn {
   background: white;
-  border: 2px solid var(--border);
+  border: 1px solid var(--border);
   color: var(--text);
-  padding: 14px 24px;
-  font-family: 'Nunito', sans-serif;
+  padding: 12px 20px;
+  font-family: inherit;
   font-size: 14px;
-  font-weight: 700;
+  font-weight: 500;
   cursor: pointer;
   transition: all 0.2s;
   flex: 1;
-  border-radius: 12px;
+  border-radius: 8px;
 }
 
 .btn:hover:not(:disabled) {
   border-color: var(--primary);
-  background: var(--primary-light);
-  color: white;
+  background: var(--bg-subtle);
 }
 
 .btn:disabled { opacity: 0.4; cursor: not-allowed; }
 
 .btn.primary {
-  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  background: var(--primary);
   border-color: var(--primary);
   color: white;
 }
 
 .btn.primary:hover:not(:disabled) {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px var(--shadow);
+  background: var(--primary-dark);
+  box-shadow: var(--shadow);
 }
 
 .btn.success {
-  background: linear-gradient(135deg, var(--success), #059669);
+  background: var(--success);
   border-color: var(--success);
   color: white;
 }
 
 .solo-toggle {
   display: inline-flex;
-  background: white;
-  border-radius: 12px;
+  background: var(--bg-subtle);
+  border-radius: 8px;
   padding: 4px;
   margin-bottom: 24px;
-  box-shadow: 0 4px 20px var(--shadow);
+  border: 1px solid var(--border);
 }
 
 .solo-toggle button {
   background: transparent;
   border: none;
   color: var(--text-light);
-  padding: 10px 20px;
-  font-family: 'Nunito', sans-serif;
+  padding: 8px 16px;
+  font-family: inherit;
   font-size: 13px;
-  font-weight: 700;
+  font-weight: 500;
   cursor: pointer;
   transition: all 0.2s;
-  border-radius: 8px;
+  border-radius: 6px;
 }
 
 .solo-toggle button.active {
-  background: linear-gradient(135deg, var(--secondary), var(--secondary-light));
-  color: white;
+  background: white;
+  color: var(--secondary);
+  box-shadow: var(--shadow);
 }
 
 .solo-options {
   background: white;
-  border-radius: 20px;
+  border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 4px 20px var(--shadow);
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
 }
 
 .option-btn {
@@ -854,28 +839,25 @@ main {
   text-align: left;
   background: white;
   border: none;
-  border-bottom: 2px solid var(--border);
+  border-bottom: 1px solid var(--border);
   color: var(--text);
-  padding: 20px;
-  font-family: 'Nunito', sans-serif;
-  font-size: 16px;
-  font-weight: 600;
+  padding: 16px;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 500;
   cursor: pointer;
   transition: all 0.2s;
-  line-height: 1.5;
+  line-height: 1.6;
 }
 
 .option-btn:last-child { border-bottom: none; }
 
-.option-btn:hover:not(:disabled) {
-  background: var(--secondary-light);
-  padding-left: 28px;
-}
+.option-btn:hover:not(:disabled) { background: var(--bg-subtle); }
 
 .option-btn.correct {
   background: var(--success-light);
   color: var(--success);
-  font-weight: 700;
+  font-weight: 600;
 }
 
 .option-btn.wrong {
@@ -884,7 +866,6 @@ main {
   opacity: 0.6;
 }
 
-/* Opções do Solo com SMILES visível */
 .option-btn.with-smiles {
   padding: 16px;
   display: flex;
@@ -893,11 +874,9 @@ main {
   align-items: stretch;
 }
 
-.option-btn.with-smiles:hover:not(:disabled) { padding-left: 16px; }
-
 .option-btn .opt-smiles {
-  background: var(--bg);
-  border-radius: 12px;
+  background: var(--bg-subtle);
+  border-radius: 8px;
   padding: 12px;
   display: flex;
   justify-content: center;
@@ -915,7 +894,7 @@ main {
 .option-btn .opt-text {
   font-size: 15px;
   text-align: center;
-  font-weight: 700;
+  font-weight: 600;
 }
 
 .option-btn:hover:not(:disabled) .opt-smiles {
@@ -940,29 +919,29 @@ main {
   gap: 16px;
   margin-bottom: 24px;
   font-size: 13px;
-  font-weight: 700;
+  font-weight: 500;
   color: var(--text-light);
 }
 
 .guided-progress .progress-bar { flex: 1; }
 
 .signal-row.hl {
-  background: linear-gradient(90deg, var(--secondary-light), transparent);
-  border-left: 4px solid var(--secondary);
+  background: var(--secondary-light);
+  border-left: 3px solid var(--secondary);
 }
 
 .guided-step-card {
   background: white;
-  border-radius: 20px;
-  padding: 24px;
+  border-radius: 12px;
+  padding: 20px;
   margin-top: 24px;
-  box-shadow: 0 4px 20px var(--shadow);
-  border: 2px solid var(--secondary-light);
+  box-shadow: var(--shadow);
+  border: 1px solid var(--secondary);
 }
 
 .guided-step-label {
   font-size: 12px;
-  font-weight: 800;
+  font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.05em;
   color: var(--secondary);
@@ -974,14 +953,14 @@ main {
 .guided-options { display: grid; gap: 10px; }
 
 .guided-option {
-  background: var(--bg);
-  border: 2px solid var(--border);
-  border-radius: 12px;
+  background: var(--bg-subtle);
+  border: 1px solid var(--border);
+  border-radius: 8px;
   padding: 14px 16px;
   text-align: left;
-  font-family: 'Nunito', sans-serif;
+  font-family: inherit;
   font-size: 15px;
-  font-weight: 600;
+  font-weight: 500;
   cursor: pointer;
   transition: all 0.2s;
 }
@@ -1005,15 +984,16 @@ main {
 
 .tutorial-index-card {
   background: white;
-  border-radius: 20px;
-  padding: 20px;
-  box-shadow: 0 4px 20px var(--shadow);
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
   margin-bottom: 24px;
 }
 
 .tutorial-index-label {
   font-size: 12px;
-  font-weight: 800;
+  font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.05em;
   color: var(--primary);
@@ -1030,20 +1010,19 @@ main {
   display: flex;
   align-items: center;
   gap: 10px;
-  background: var(--bg);
-  border: 2px solid var(--border);
-  border-radius: 12px;
+  background: var(--bg-subtle);
+  border: 1px solid var(--border);
+  border-radius: 8px;
   padding: 10px 12px;
   cursor: pointer;
   transition: all 0.2s;
   text-align: left;
-  font-family: 'Nunito', sans-serif;
+  font-family: inherit;
 }
 
 .tutorial-index-item:hover {
-  border-color: var(--primary-light);
+  border-color: var(--primary);
   background: var(--primary-light);
-  color: white;
 }
 
 .tutorial-index-item.active {
@@ -1053,8 +1032,7 @@ main {
 }
 
 .tii-num {
-  font-family: 'Poppins', sans-serif;
-  font-weight: 700;
+  font-weight: 600;
   font-size: 12px;
   width: 22px;
   height: 22px;
@@ -1073,17 +1051,17 @@ main {
   color: white;
 }
 
-.tii-title { font-size: 13px; font-weight: 600; line-height: 1.3; }
+.tii-title { font-size: 13px; font-weight: 500; line-height: 1.3; }
 
 @media (max-width: 700px) {
   header { padding: 12px 16px; }
   main { padding: 24px 16px 80px; }
   .home-title { font-size: 28px; }
-  .mode-title { font-size: 18px; }
-  .signal-row { grid-template-columns: 60px 1fr 50px; gap: 12px; padding: 16px; }
-  .signal-ppm { font-size: 20px; }
+  .mode-title { font-size: 16px; }
+  .signal-row { grid-template-columns: 60px 1fr 50px; gap: 12px; padding: 12px; }
+  .signal-ppm { font-size: 18px; }
   .xp-badge { padding: 6px 12px; }
-  .xp-value { font-size: 18px; }
+  .xp-value { font-size: 16px; }
   .option-btn .opt-smiles svg { max-width: 200px; }
 }
 </style>
@@ -1093,14 +1071,18 @@ main {
 
 <header>
   <div class="brand" onclick="setView('home')">
-    <div class="brand-icon">🧪</div>
+    <div class="brand-icon">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2v7.5L4.5 19a2 2 0 0 0 1.8 3h11.4a2 2 0 0 0 1.8-3L14 9.5V2"/><path d="M8.5 2h7"/><path d="M7 16h10"/></svg>
+    </div>
     <div class="brand-text">
       Motor RMN
-      <small>Aprenda brincando</small>
+      <small>Ensino interativo de RMN</small>
     </div>
   </div>
   <div class="xp-badge">
-    <div class="xp-icon">⚡</div>
+    <div class="xp-icon">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+    </div>
     <div class="xp-info">
       <span class="xp-label">Pontos</span>
       <span class="xp-value" id="xp-counter">0</span>
@@ -1157,8 +1139,8 @@ function updateXP(amount) {
   state.xp += amount;
   const el = document.getElementById('xp-counter');
   el.innerText = state.xp;
-  el.classList.add('bounce');
-  setTimeout(() => el.classList.remove('bounce'), 500);
+  el.classList.add('celebrate');
+  setTimeout(() => el.classList.remove('celebrate'), 500);
 }
 
 function setView(viewName, mode = null, level = 1) {
@@ -1191,6 +1173,13 @@ function render() {
   c.appendChild(wrap);
 }
 
+const ICONS = {
+  book: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>',
+  target: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>',
+  award: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg>',
+  compass: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>'
+};
+
 function renderHome() {
   const div = document.createElement('div');
   const totalMolecules = db.mapping.length;
@@ -1199,7 +1188,7 @@ function renderHome() {
   const guidedCard = db.guided.length > 0 ? `
       <div class="mode-card solo" onclick="setView('guidedSelect')">
         <div class="mode-header">
-          <div class="mode-icon solo">🧭</div>
+          <div class="mode-icon solo">${ICONS.compass}</div>
           <div>
             <div class="mode-title">Exemplos Guiados</div>
             <div class="mode-desc">Acompanhe um raciocínio completo de elucidação, passo a passo, com perguntas no caminho</div>
@@ -1210,14 +1199,13 @@ function renderHome() {
 
   div.innerHTML = `
     <div class="home-hero">
-      <div class="home-emoji">🔬</div>
-      <h1 class="home-title">Domine a RMN brincando!</h1>
-      <p class="home-sub">Aprenda a analisar espectros de Ressonância Magnética Nuclear com moléculas reais do mercado farmacêutico. Ganhe pontos e suba de nível!</p>
+      <h1 class="home-title">Domine a RMN analisando, não decorando</h1>
+      <p class="home-sub">Espectros de Ressonância Magnética Nuclear com moléculas reais do mercado farmacêutico. Pratique, ganhe pontos e construa o raciocínio de elucidação.</p>
     </div>
 
     <div class="progress-card">
       <div class="progress-header">
-        <div class="progress-title">🎯 Seu progresso</div>
+        <div class="progress-title">Seu progresso</div>
         <div class="progress-stats">${state.xp} / 500 pts</div>
       </div>
       <div class="progress-bar">
@@ -1228,10 +1216,10 @@ function renderHome() {
     <div class="modes-grid">
       <div class="mode-card tutorial" onclick="setView('tutorial', null, 1)">
         <div class="mode-header">
-          <div class="mode-icon tutorial">📚</div>
+          <div class="mode-icon tutorial">${ICONS.book}</div>
           <div>
             <div class="mode-title">Fundamentos</div>
-            <div class="mode-desc">Aprenda os conceitos básicos: ppm, Karplus, n+1 e filtros DEPT</div>
+            <div class="mode-desc">Conceitos essenciais: ppm, blindagem, regra n+1, integração e filtros DEPT</div>
           </div>
         </div>
       </div>
@@ -1240,10 +1228,10 @@ function renderHome() {
 
       <div class="mode-card mapping">
         <div class="mode-header">
-          <div class="mode-icon mapping">🧩</div>
+          <div class="mode-icon mapping">${ICONS.target}</div>
           <div>
             <div class="mode-title">Atribuição H/C</div>
-            <div class="mode-desc">Associe cada átomo ao sinal correto no espectro. ${totalMolecules} moléculas disponíveis!</div>
+            <div class="mode-desc">Associe cada átomo ao sinal correto no espectro. ${totalMolecules} moléculas disponíveis.</div>
           </div>
         </div>
         <div class="submodes">
@@ -1267,10 +1255,10 @@ function renderHome() {
 
       <div class="mode-card solo" onclick="setView('modeSelect', 'solo')">
         <div class="mode-header">
-          <div class="mode-icon solo">🏆</div>
+          <div class="mode-icon solo">${ICONS.award}</div>
           <div>
             <div class="mode-title">Desafio Solo</div>
-            <div class="mode-desc">Espectros puros, sem pistas. Identifique a estrutura e ganhe muitos pontos!</div>
+            <div class="mode-desc">Espectros puros, sem pistas. Identifique a estrutura e ganhe pontos.</div>
           </div>
         </div>
       </div>
@@ -1286,7 +1274,7 @@ function renderLevelSelect() {
   div.innerHTML = `
     <div class="section-header">
       <button class="back-btn" onclick="setView('home')">←</button>
-      <h2 class="section-title">🏆 Desafio Solo</h2>
+      <h2 class="section-title">Desafio Solo</h2>
     </div>
 
     <div class="modes-grid">
@@ -1327,7 +1315,7 @@ function renderTutorial() {
     : `<div></div>`;
   const next = state.currentLevel < db.tutorial.length
     ? `<button class="btn primary" onclick="setView('tutorial', null, ${state.currentLevel + 1})">Próximo →</button>`
-    : `<button class="btn success" onclick="setView('home')">Concluir ✓</button>`;
+    : `<button class="btn success" onclick="setView('home')">Concluir</button>`;
 
   const indexHtml = db.tutorial.map(t => `
     <button class="tutorial-index-item ${t.level === state.currentLevel ? 'active' : ''}" onclick="setView('tutorial', null, ${t.level})">
@@ -1339,11 +1327,11 @@ function renderTutorial() {
   div.innerHTML = `
     <div class="section-header">
       <button class="back-btn" onclick="setView('home')">←</button>
-      <h2 class="section-title">📚 ${data.title}</h2>
+      <h2 class="section-title">${data.title}</h2>
     </div>
 
     <div class="tutorial-index-card">
-      <div class="tutorial-index-label">📑 Índice de conceitos</div>
+      <div class="tutorial-index-label">Índice de conceitos</div>
       <div class="tutorial-index-grid">${indexHtml}</div>
     </div>
 
@@ -1390,7 +1378,6 @@ function renderSpectrumSVG(signals, maxPpm, is13C = false, highlight = []) {
     }
   });
 
-  // Triângulo de Pascal para multiplicidades 1-6
   const pascal = {
     1: [1],
     2: [1, 1],
@@ -1400,7 +1387,6 @@ function renderSpectrumSVG(signals, maxPpm, is13C = false, highlight = []) {
     6: [1, 5, 10, 10, 5, 1]
   };
 
-  // Parse multiplicidade: "s"→1, "d"→2, "t"→3, "q"→4, "m"→5, número direto
   function parseMultiplicity(mult) {
     if (typeof mult === 'number') return Math.min(mult, 6);
     const map = { 's': 1, 'd': 2, 't': 3, 'q': 4, 'm': 5, 'sext': 6 };
@@ -1412,22 +1398,19 @@ function renderSpectrumSVG(signals, maxPpm, is13C = false, highlight = []) {
   sorted.forEach(sig => {
     const x = ((maxPpm - sig.ppm) / maxPpm) * width;
     const peakH = Math.min(Math.abs(sig.height) * 1.5, maxH);
-    
+
     const mult = parseMultiplicity(sig.mult);
     const splits = pascal[mult] || [1];
     const maxSplit = Math.max(...splits);
-    
-    // Espaçamento entre picos do mesmo sinal (em pixels SVG)
+
     const spacing = mult === 1 ? 0 : 8;
     const startX = x - ((splits.length - 1) * spacing / 2);
-    
-    // Desenhar cada pico do multiplet
+
     splits.forEach((relH, i) => {
       const peakX = startX + (i * spacing);
       const h = peakH * (relH / maxSplit);
       const peakY = sig.height < 0 ? baseline + h * 0.3 : baseline - h;
-      const w = 3; // Largura da base do triângulo
-      
+      const w = 3;
       path += ` L ${peakX - w} ${baseline} L ${peakX} ${peakY} L ${peakX + w} ${baseline}`;
     });
   });
@@ -1437,7 +1420,7 @@ function renderSpectrumSVG(signals, maxPpm, is13C = false, highlight = []) {
   let ticks = '';
   for (let i = 0; i <= maxPpm; i += step) {
     const x = ((maxPpm - i) / maxPpm) * width;
-    ticks += `<line x1="${x}" y1="${baseline}" x2="${x}" y2="${baseline + 4}" stroke="var(--border)" stroke-width="2"/>`;
+    ticks += `<line x1="${x}" y1="${baseline}" x2="${x}" y2="${baseline + 4}" stroke="var(--border-strong)" stroke-width="2"/>`;
   }
 
   let hits = '';
@@ -1547,15 +1530,15 @@ function renderMapping() {
   div.innerHTML = `
     <div class="section-header">
       <button class="back-btn" onclick="setView('home')">←</button>
-      <h2 class="section-title">🧩 ${q.title}</h2>
+      <h2 class="section-title">${q.title}</h2>
     </div>
 
     <div class="context-card">
-      <div class="context-title">${q.title}</div>
+      <div class="context-title">${q.title} · ${tierLabel}</div>
       <div class="context-text">${q.context}</div>
     </div>
 
-    <div class="instruction">💡 Toque num número da estrutura e depois no sinal correspondente. Para reposicionar, toque na peça alocada e escolha nova zona.</div>
+    <div class="instruction">Toque num número da estrutura e depois no sinal correspondente. Para reposicionar, toque na peça alocada e escolha nova zona.</div>
 
     ${structureHtml}
 
@@ -1710,8 +1693,8 @@ window.validateMapping = function() {
 
     fb.innerHTML = `
       <div class="feedback success">
-        <div class="feedback-title" style="color: var(--success);">🎉 Parabéns! +${earned} pontos</div>
-        <div class="feedback-body">Você acertou todas as atribuições! Continue praticando para dominar a RMN.</div>
+        <div class="feedback-title" style="color: var(--success);">Atribuição validada · +${earned} pts</div>
+        <div class="feedback-body">Todos os deslocamentos, multipletos e integrações coerentes com a estrutura.</div>
         <div class="feedback-actions">
           <button class="btn success" onclick="iniciarMappingAleatorio('${state.mappingTier}')">Nova molécula</button>
           <button class="btn" onclick="setView('home')">Voltar ao início</button>
@@ -1723,8 +1706,8 @@ window.validateMapping = function() {
     state.errors++;
     fb.innerHTML = `
       <div class="feedback error">
-        <div class="feedback-title" style="color: var(--error);">❌ Quase lá!</div>
-        <div class="feedback-body">Algumas atribuições estão incorretas. Reavalie os efeitos eletrônicos e tente novamente!</div>
+        <div class="feedback-title" style="color: var(--error);">Atribuição incorreta</div>
+        <div class="feedback-body">Algumas peças não batem com os deslocamentos químicos. Reavalie os efeitos eletrônicos e tente novamente.</div>
       </div>
     `;
     setTimeout(() => {
@@ -1774,7 +1757,7 @@ window.handleSoloAnswer = function(optionId, btnEl) {
 
     fb.innerHTML = `
       <div class="feedback success">
-        <div class="feedback-title" style="color: var(--success);">🎉 Excelente! +${earned} pontos</div>
+        <div class="feedback-title" style="color: var(--success);">Diagnóstico exato · +${earned} pts</div>
         <div class="feedback-body">${opt.feedback}</div>
         ${structureHtml}
         <div class="feedback-actions">
@@ -1788,7 +1771,7 @@ window.handleSoloAnswer = function(optionId, btnEl) {
     btnEl.classList.add('wrong');
     fb.innerHTML = `
       <div class="feedback error">
-        <div class="feedback-title" style="color: var(--error);">❌ Não foi dessa vez!</div>
+        <div class="feedback-title" style="color: var(--error);">Não foi dessa vez</div>
         <div class="feedback-body">${opt.feedback}</div>
       </div>
     `;
@@ -1812,9 +1795,6 @@ function renderSolo() {
   const specData = q.spectra[state.activeSpectrumType];
   const spectrumHtml = renderSpectrumSVG(specData.signals, specData.maxPpm, is13C);
 
-  // Cada alternativa pode ter um SMILES. Se tiver, renderizamos a estrutura
-  // química dentro do card da opção, para comparação visual. O id inclui o
-  // level para evitar colisão em recarregamentos.
   const optionsHtml = q.options.map((o, i) => {
     const svgId = `opt-smiles-${q.level}-${i}`;
     const smilesBlock = o.smiles
@@ -1830,10 +1810,10 @@ function renderSolo() {
   div.innerHTML = `
     <div class="section-header">
       <button class="back-btn" onclick="setView('modeSelect', 'solo')">←</button>
-      <h2 class="section-title">🏆 ${q.title}</h2>
+      <h2 class="section-title">${q.title}</h2>
     </div>
 
-    <div class="context-card" style="background: linear-gradient(135deg, var(--secondary-light), var(--secondary));">
+    <div class="context-card warm">
       <div class="context-title">${q.title}</div>
       <div class="context-text">${q.context}</div>
     </div>
@@ -1849,14 +1829,13 @@ function renderSolo() {
     </div>
 
     <div style="margin-top: 24px;">
-      <div style="font-size: 13px; font-weight: 700; color: var(--text-light); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.05em;">Escolha a estrutura correta</div>
+      <div style="font-size: 13px; font-weight: 600; color: var(--text-light); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.05em;">Escolha a estrutura correta</div>
       <div class="solo-options">${optionsHtml}</div>
     </div>
 
     <div id="feedback-box" style="margin-top: 24px;"></div>
   `;
 
-  // Desenha todos os SMILES das opções depois que o DOM existir
   setTimeout(() => {
     q.options.forEach((o, i) => {
       if (o.smiles) renderMoleculeStructure(o.smiles, `opt-smiles-${q.level}-${i}`);
@@ -1872,13 +1851,13 @@ function renderGuidedList() {
   div.innerHTML = `
     <div class="section-header">
       <button class="back-btn" onclick="setView('home')">←</button>
-      <h2 class="section-title">🧭 Exemplos Guiados</h2>
+      <h2 class="section-title">Exemplos Guiados</h2>
     </div>
     <div class="modes-grid">
       ${db.guided.map(g => `
         <div class="mode-card solo" onclick="startGuided(${g.id})">
           <div class="mode-header">
-            <div class="mode-icon solo">🧭</div>
+            <div class="mode-icon solo">${ICONS.compass}</div>
             <div>
               <div class="mode-title">${g.title}</div>
               <div class="mode-desc">${g.subtitle}</div>
@@ -1916,7 +1895,7 @@ window.guidedAnswer = function(idx, btnEl) {
   if (opt.correct) {
     btnEl.classList.add('correct');
     document.querySelectorAll('.guided-option').forEach(b => b.disabled = true);
-    fb.innerHTML = `<div class="feedback success"><div class="feedback-title" style="color:var(--success);">✓ Exato!</div><div class="feedback-body">${opt.feedback}</div></div>`;
+    fb.innerHTML = `<div class="feedback success"><div class="feedback-title" style="color:var(--success);">Exato!</div><div class="feedback-body">${opt.feedback}</div></div>`;
     document.getElementById('guided-continue').style.display = 'block';
   } else {
     btnEl.classList.add('wrong');
@@ -1945,20 +1924,20 @@ function renderGuided() {
   `).join('');
 
   const isLast = state.guidedStep === ex.steps.length - 1;
-  const nextLabel = isLast ? 'Concluir ✓' : 'Continuar →';
+  const nextLabel = isLast ? 'Concluir' : 'Continuar →';
 
   let stepHtml = '';
   if (step.type === 'observe') {
     stepHtml = `
       <div class="guided-step-card">
-        <div class="guided-step-label">👀 Observe</div>
+        <div class="guided-step-label">Observe</div>
         <div class="guided-step-text">${step.text}</div>
         <button class="btn primary" onclick="guidedNext()">${nextLabel}</button>
       </div>`;
   } else {
     stepHtml = `
       <div class="guided-step-card">
-        <div class="guided-step-label">❓ Sua vez</div>
+        <div class="guided-step-label">Sua vez</div>
         <div class="guided-step-text">${step.question}</div>
         <div class="guided-options">
           ${step.options.map((o, i) => `<button class="guided-option" onclick="guidedAnswer(${i}, this)">${o.text}</button>`).join('')}
@@ -1974,13 +1953,13 @@ function renderGuided() {
   div.innerHTML = `
     <div class="section-header">
       <button class="back-btn" onclick="setView('guidedSelect')">←</button>
-      <h2 class="section-title">🧭 ${ex.title}</h2>
+      <h2 class="section-title">${ex.title}</h2>
     </div>
     <div class="guided-progress">
       <span>Passo ${state.guidedStep + 1} de ${ex.steps.length}</span>
       <div class="progress-bar"><div class="progress-fill" style="width:${(state.guidedStep / ex.steps.length) * 100}%"></div></div>
     </div>
-    <div class="context-card" style="background: linear-gradient(135deg, var(--secondary-light), var(--secondary));">
+    <div class="context-card warm">
       <div class="context-title">${ex.title} · ${ex.formula}</div>
       <div class="context-text">${ex.subtitle}</div>
     </div>
@@ -2001,15 +1980,14 @@ function renderGuided() {
 async function iniciar() {
   const c = document.getElementById('app-container');
   c.innerHTML = `<div style="display:flex;align-items:center;justify-content:center;height:60vh;flex-direction:column;gap:16px;">
-    <div style="font-size: 48px; animation: float 2s ease-in-out infinite;">🧪</div>
-    <div style="font-size: 14px; color: var(--text-light); font-weight: 600;">Carregando...</div>
+    <div class="spinner"></div>
+    <div style="font-size: 14px; color: var(--text-light); font-weight: 500;">Carregando dados…</div>
   </div>`;
   const ok = await carregarDados();
   if (!ok) {
     c.innerHTML = `<div style="display:flex;align-items:center;justify-content:center;height:60vh;flex-direction:column;gap:12px;color:var(--error);text-align:center;padding:20px;">
-      <div style="font-size: 48px;">⚠️</div>
-      <div style="font-size: 16px; font-weight: 700;">Ops! Não foi possível carregar os dados.</div>
-      <div style="color:var(--text-light);font-size:14px;">Confirme que os arquivos JSON estão na pasta data/</div>
+      <div style="font-size: 16px; font-weight: 600;">Não foi possível carregar os dados.</div>
+      <div style="color:var(--text-light);font-size:14px;">Confirme que os arquivos JSON estão na pasta data/.</div>
     </div>`;
     return;
   }
