@@ -46,6 +46,37 @@
         "mult": "s (largo)",
         "height": 20
       }
+    ],
+    "smiles": "CCO",
+    "chain13C": [
+      {
+        "label": "CH₃",
+        "tagId": "ctag1",
+        "correctTarget": "csig1"
+      },
+      {
+        "label": "CH₂",
+        "tagId": "ctag2",
+        "correctTarget": "csig2"
+      },
+      {
+        "label": "OH",
+        "fixed": true
+      }
+    ],
+    "signals13C": [
+      {
+        "id": "csig1",
+        "ppm": 18.3,
+        "mult": "CH₃",
+        "height": 60
+      },
+      {
+        "id": "csig2",
+        "ppm": 58.3,
+        "mult": "CH₂",
+        "height": 60
+      }
     ]
   },
   {
@@ -99,6 +130,48 @@
         "mult": "t",
         "J": 7,
         "height": 40
+      }
+    ],
+    "smiles": "CCCBr",
+    "chain13C": [
+      {
+        "label": "CH₃",
+        "tagId": "ctag1",
+        "correctTarget": "csig1"
+      },
+      {
+        "label": "CH₂",
+        "tagId": "ctag2",
+        "correctTarget": "csig2"
+      },
+      {
+        "label": "CH₂",
+        "tagId": "ctag3",
+        "correctTarget": "csig3"
+      },
+      {
+        "label": "Br",
+        "fixed": true
+      }
+    ],
+    "signals13C": [
+      {
+        "id": "csig1",
+        "ppm": 13.2,
+        "mult": "CH₃",
+        "height": 60
+      },
+      {
+        "id": "csig2",
+        "ppm": 26.2,
+        "mult": "CH₂",
+        "height": 60
+      },
+      {
+        "id": "csig3",
+        "ppm": 35.7,
+        "mult": "CH₂ (C-Br)",
+        "height": 50
       }
     ]
   },
@@ -161,6 +234,48 @@
         "mult": "s (largo)",
         "height": 20
       }
+    ],
+    "smiles": "CC(O)CO",
+    "chain13C": [
+      {
+        "label": "CH₃",
+        "tagId": "ctag1",
+        "correctTarget": "csig1"
+      },
+      {
+        "label": "CH",
+        "tagId": "ctag2",
+        "correctTarget": "csig2"
+      },
+      {
+        "label": "CH₂",
+        "tagId": "ctag3",
+        "correctTarget": "csig3"
+      },
+      {
+        "label": "OH",
+        "fixed": true
+      }
+    ],
+    "signals13C": [
+      {
+        "id": "csig1",
+        "ppm": 19.5,
+        "mult": "CH₃",
+        "height": 60
+      },
+      {
+        "id": "csig2",
+        "ppm": 68.9,
+        "mult": "CH (C-OH)",
+        "height": 40
+      },
+      {
+        "id": "csig3",
+        "ppm": 66.9,
+        "mult": "CH₂ (C-OH)",
+        "height": 50
+      }
     ]
   },
   {
@@ -216,6 +331,59 @@
         "int": 3,
         "mult": "t",
         "J": 7,
+        "height": 60
+      }
+    ],
+    "smiles": "CC(=O)OCC",
+    "chain13C": [
+      {
+        "label": "CH₃",
+        "tagId": "ctag1",
+        "correctTarget": "csig1"
+      },
+      {
+        "label": "C=O",
+        "tagId": "ctag2",
+        "correctTarget": "csigCO"
+      },
+      {
+        "label": "O",
+        "fixed": true
+      },
+      {
+        "label": "CH₂",
+        "tagId": "ctag3",
+        "correctTarget": "csig2"
+      },
+      {
+        "label": "CH₃",
+        "tagId": "ctag4",
+        "correctTarget": "csig3"
+      }
+    ],
+    "signals13C": [
+      {
+        "id": "csigCO",
+        "ppm": 171.1,
+        "mult": "C=O (quaternário)",
+        "height": 35
+      },
+      {
+        "id": "csig1",
+        "ppm": 21.0,
+        "mult": "CH₃ (acetila)",
+        "height": 60
+      },
+      {
+        "id": "csig2",
+        "ppm": 60.5,
+        "mult": "CH₂",
+        "height": 50
+      },
+      {
+        "id": "csig3",
+        "ppm": 14.2,
+        "mult": "CH₃",
         "height": 60
       }
     ]
@@ -289,6 +457,83 @@
         "J": 7,
         "height": 40
       }
+    ],
+    "smiles": "CC(=O)c1ccccc1",
+    "chain13C": [
+      {
+        "label": "CH₃",
+        "tagId": "ctag1",
+        "correctTarget": "csig1"
+      },
+      {
+        "label": "C=O",
+        "tagId": "ctag2",
+        "correctTarget": "csigCO"
+      },
+      {
+        "label": "Anel Fenila",
+        "fixed": true,
+        "branches": [
+          {
+            "label": "C-ipso",
+            "tagId": "ctag3",
+            "correctTarget": "csigIpso"
+          },
+          {
+            "label": "CH (orto)",
+            "tagId": "ctag4",
+            "correctTarget": "csigOrto"
+          },
+          {
+            "label": "CH (meta)",
+            "tagId": "ctag5",
+            "correctTarget": "csigMeta"
+          },
+          {
+            "label": "CH (para)",
+            "tagId": "ctag6",
+            "correctTarget": "csigPara"
+          }
+        ]
+      }
+    ],
+    "signals13C": [
+      {
+        "id": "csigCO",
+        "ppm": 198.1,
+        "mult": "C=O (quaternário)",
+        "height": 30
+      },
+      {
+        "id": "csigIpso",
+        "ppm": 137.1,
+        "mult": "C-ipso (quaternário)",
+        "height": 25
+      },
+      {
+        "id": "csigPara",
+        "ppm": 133.1,
+        "mult": "CH",
+        "height": 45
+      },
+      {
+        "id": "csigMeta",
+        "ppm": 128.6,
+        "mult": "CH",
+        "height": 50
+      },
+      {
+        "id": "csigOrto",
+        "ppm": 128.3,
+        "mult": "CH",
+        "height": 50
+      },
+      {
+        "id": "csig1",
+        "ppm": 26.6,
+        "mult": "CH₃",
+        "height": 60
+      }
     ]
   },
   {
@@ -347,6 +592,99 @@
         "int": 1,
         "mult": "s",
         "height": 20
+      }
+    ],
+    "smiles": "Cn1cnc2c1c(=O)n(C)c(=O)n2C",
+    "chain13C": [
+      {
+        "label": "N-CH₃",
+        "tagId": "ctag1",
+        "correctTarget": "csigN7"
+      },
+      {
+        "label": "N-CH₃",
+        "tagId": "ctag2",
+        "correctTarget": "csigN3"
+      },
+      {
+        "label": "N-CH₃",
+        "tagId": "ctag3",
+        "correctTarget": "csigN1"
+      },
+      {
+        "label": "C=O",
+        "tagId": "ctag4",
+        "correctTarget": "csigC2"
+      },
+      {
+        "label": "C=O",
+        "tagId": "ctag5",
+        "correctTarget": "csigC6"
+      },
+      {
+        "label": "C (fusão)",
+        "tagId": "ctag6",
+        "correctTarget": "csigC4"
+      },
+      {
+        "label": "C (fusão)",
+        "tagId": "ctag7",
+        "correctTarget": "csigC5"
+      },
+      {
+        "label": "C-H (Ar)",
+        "tagId": "ctag8",
+        "correctTarget": "csigC8"
+      }
+    ],
+    "signals13C": [
+      {
+        "id": "csigC2",
+        "ppm": 155.4,
+        "mult": "C=O (quaternário)",
+        "height": 30
+      },
+      {
+        "id": "csigC6",
+        "ppm": 151.7,
+        "mult": "C=O (quaternário)",
+        "height": 30
+      },
+      {
+        "id": "csigC4",
+        "ppm": 148.7,
+        "mult": "C quaternário",
+        "height": 25
+      },
+      {
+        "id": "csigC8",
+        "ppm": 141.6,
+        "mult": "CH",
+        "height": 45
+      },
+      {
+        "id": "csigC5",
+        "ppm": 107.5,
+        "mult": "C quaternário",
+        "height": 25
+      },
+      {
+        "id": "csigN7",
+        "ppm": 33.6,
+        "mult": "N-CH₃",
+        "height": 55
+      },
+      {
+        "id": "csigN3",
+        "ppm": 29.7,
+        "mult": "N-CH₃",
+        "height": 55
+      },
+      {
+        "id": "csigN1",
+        "ppm": 27.9,
+        "mult": "N-CH₃",
+        "height": 55
       }
     ]
   },
@@ -429,6 +767,91 @@
         "ppm": 2.1,
         "int": 3,
         "mult": "s",
+        "height": 60
+      }
+    ],
+    "smiles": "CC(=O)Nc1ccc(O)cc1",
+    "chain13C": [
+      {
+        "label": "HO",
+        "fixed": true
+      },
+      {
+        "label": "Anel",
+        "fixed": true,
+        "branches": [
+          {
+            "label": "C-ipso (OH)",
+            "tagId": "ctag1",
+            "correctTarget": "csigIpsoOH"
+          },
+          {
+            "label": "C-ipso (NH)",
+            "tagId": "ctag2",
+            "correctTarget": "csigIpsoNH"
+          },
+          {
+            "label": "CH (orto OH)",
+            "tagId": "ctag3",
+            "correctTarget": "csigOrtoOH"
+          },
+          {
+            "label": "CH (orto NH)",
+            "tagId": "ctag4",
+            "correctTarget": "csigOrtoNH"
+          }
+        ]
+      },
+      {
+        "label": "NH",
+        "fixed": true
+      },
+      {
+        "label": "C=O",
+        "tagId": "ctag5",
+        "correctTarget": "csigCO"
+      },
+      {
+        "label": "CH₃",
+        "tagId": "ctag6",
+        "correctTarget": "csig1"
+      }
+    ],
+    "signals13C": [
+      {
+        "id": "csigCO",
+        "ppm": 168.6,
+        "mult": "C=O (quaternário)",
+        "height": 30
+      },
+      {
+        "id": "csigIpsoOH",
+        "ppm": 153.1,
+        "mult": "C-ipso (quaternário)",
+        "height": 25
+      },
+      {
+        "id": "csigIpsoNH",
+        "ppm": 131.0,
+        "mult": "C-ipso (quaternário)",
+        "height": 25
+      },
+      {
+        "id": "csigOrtoNH",
+        "ppm": 120.9,
+        "mult": "CH",
+        "height": 45
+      },
+      {
+        "id": "csigOrtoOH",
+        "ppm": 115.0,
+        "mult": "CH",
+        "height": 45
+      },
+      {
+        "id": "csig1",
+        "ppm": 23.9,
+        "mult": "CH₃",
         "height": 60
       }
     ]
@@ -530,6 +953,120 @@
         "ppm": 2.3,
         "int": 3,
         "mult": "s",
+        "height": 60
+      }
+    ],
+    "smiles": "CC(=O)Oc1ccccc1C(=O)O",
+    "chain13C": [
+      {
+        "label": "COOH",
+        "tagId": "ctag1",
+        "correctTarget": "csigCOOH"
+      },
+      {
+        "label": "Anel",
+        "fixed": true,
+        "branches": [
+          {
+            "label": "C-ipso (COOH)",
+            "tagId": "ctag2",
+            "correctTarget": "csigIpsoCOOH"
+          },
+          {
+            "label": "CH (C3)",
+            "tagId": "ctag3",
+            "correctTarget": "csigC3"
+          },
+          {
+            "label": "CH (C4)",
+            "tagId": "ctag4",
+            "correctTarget": "csigC4"
+          },
+          {
+            "label": "CH (C5)",
+            "tagId": "ctag5",
+            "correctTarget": "csigC5"
+          },
+          {
+            "label": "CH (C6)",
+            "tagId": "ctag6",
+            "correctTarget": "csigC6"
+          },
+          {
+            "label": "C-ipso (O)",
+            "tagId": "ctag7",
+            "correctTarget": "csigIpsoO"
+          }
+        ]
+      },
+      {
+        "label": "O",
+        "fixed": true
+      },
+      {
+        "label": "C=O",
+        "tagId": "ctag8",
+        "correctTarget": "csigCOEster"
+      },
+      {
+        "label": "CH₃",
+        "tagId": "ctag9",
+        "correctTarget": "csig1"
+      }
+    ],
+    "signals13C": [
+      {
+        "id": "csigCOOH",
+        "ppm": 170.0,
+        "mult": "COOH (quaternário)",
+        "height": 30
+      },
+      {
+        "id": "csigCOEster",
+        "ppm": 169.7,
+        "mult": "C=O éster (quaternário)",
+        "height": 30
+      },
+      {
+        "id": "csigIpsoO",
+        "ppm": 151.0,
+        "mult": "C-ipso (quaternário)",
+        "height": 25
+      },
+      {
+        "id": "csigC4",
+        "ppm": 134.9,
+        "mult": "CH",
+        "height": 40
+      },
+      {
+        "id": "csigC6",
+        "ppm": 132.5,
+        "mult": "CH",
+        "height": 40
+      },
+      {
+        "id": "csigC5",
+        "ppm": 126.1,
+        "mult": "CH",
+        "height": 40
+      },
+      {
+        "id": "csigC3",
+        "ppm": 124.0,
+        "mult": "CH",
+        "height": 40
+      },
+      {
+        "id": "csigIpsoCOOH",
+        "ppm": 122.2,
+        "mult": "C-ipso (quaternário)",
+        "height": 25
+      },
+      {
+        "id": "csig1",
+        "ppm": 20.9,
+        "mult": "CH₃",
         "height": 60
       }
     ]
@@ -652,6 +1189,129 @@
         "mult": "d",
         "J": 7,
         "height": 70
+      }
+    ],
+    "smiles": "CC(C)Cc1ccc(cc1)C(C)C(=O)O",
+    "chain13C": [
+      {
+        "label": "COOH",
+        "tagId": "ctag1",
+        "correctTarget": "csigCOOH"
+      },
+      {
+        "label": "CH",
+        "tagId": "ctag2",
+        "correctTarget": "csigCHprop",
+        "branches": [
+          {
+            "label": "CH₃",
+            "tagId": "ctag3",
+            "correctTarget": "csigCH3prop"
+          }
+        ]
+      },
+      {
+        "label": "CH₂",
+        "tagId": "ctag4",
+        "correctTarget": "csigCH2"
+      },
+      {
+        "label": "CH",
+        "tagId": "ctag5",
+        "correctTarget": "csigCHiso"
+      },
+      {
+        "label": "Anel (Ar)",
+        "fixed": true,
+        "branches": [
+          {
+            "label": "C-ipso (CH₂)",
+            "tagId": "ctag6",
+            "correctTarget": "csigIpsoCH2"
+          },
+          {
+            "label": "C-ipso (CH)",
+            "tagId": "ctag7",
+            "correctTarget": "csigIpsoCH"
+          },
+          {
+            "label": "CH (orto CH₂)",
+            "tagId": "ctag8",
+            "correctTarget": "csigOrtoCH2"
+          },
+          {
+            "label": "CH (orto CH)",
+            "tagId": "ctag9",
+            "correctTarget": "csigOrtoCH"
+          }
+        ]
+      },
+      {
+        "label": "CH₃ (isobutila) ×2",
+        "tagId": "ctag10",
+        "correctTarget": "csigCH3iso"
+      }
+    ],
+    "signals13C": [
+      {
+        "id": "csigCOOH",
+        "ppm": 180.8,
+        "mult": "COOH (quaternário)",
+        "height": 30
+      },
+      {
+        "id": "csigIpsoCH2",
+        "ppm": 140.8,
+        "mult": "C-ipso (quaternário)",
+        "height": 25
+      },
+      {
+        "id": "csigIpsoCH",
+        "ppm": 137.0,
+        "mult": "C-ipso (quaternário)",
+        "height": 25
+      },
+      {
+        "id": "csigOrtoCH2",
+        "ppm": 129.4,
+        "mult": "CH",
+        "height": 45
+      },
+      {
+        "id": "csigOrtoCH",
+        "ppm": 127.3,
+        "mult": "CH",
+        "height": 45
+      },
+      {
+        "id": "csigCHprop",
+        "ppm": 45.3,
+        "mult": "CH",
+        "height": 35
+      },
+      {
+        "id": "csigCH2",
+        "ppm": 45.0,
+        "mult": "CH₂",
+        "height": 35
+      },
+      {
+        "id": "csigCHiso",
+        "ppm": 30.2,
+        "mult": "CH",
+        "height": 35
+      },
+      {
+        "id": "csigCH3iso",
+        "ppm": 22.4,
+        "mult": "CH₃ (×2 equivalentes)",
+        "height": 65
+      },
+      {
+        "id": "csigCH3prop",
+        "ppm": 18.1,
+        "mult": "CH₃",
+        "height": 55
       }
     ]
   }
