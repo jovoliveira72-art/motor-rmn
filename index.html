@@ -1400,9 +1400,21 @@ function renderMoleculeStructure(smiles, svgId, tags = []) {
     drawer.draw(tree, svg, 'light');
 
     if (!tags.length) return;
-    const verts = drawer.graph.vertices;
+
+    // No SvgDrawer 2.1.7 o grafo vive em drawer.preprocessor.graph
+    // (drawer.graph não existe nessa versão).
+    const graph = (drawer.preprocessor && drawer.preprocessor.graph) || drawer.graph;
+    if (!graph || !graph.vertices) {
+      console.warn('Grafo do SmilesDrawer indisponível para posicionar badges.');
+      return;
+    }
+    if (!svg.viewBox || !svg.viewBox.baseVal) return;
+
+    const verts = graph.vertices;
     const vb = svg.viewBox.baseVal;
     const rect = svg.getBoundingClientRect();
+    if (!vb.width || !vb.height || !rect.width || !rect.height) return;
+
     const scale = Math.min(rect.width / vb.width, rect.height / vb.height);
     const offX = (rect.width - vb.width * scale) / 2;
     const offY = (rect.height - vb.height * scale) / 2;
