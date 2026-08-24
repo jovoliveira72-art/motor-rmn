@@ -54,7 +54,6 @@ html, body {
   height: 100dvh;
 }
 
-/* Header */
 header {
   background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
   padding: 16px 24px;
@@ -100,7 +99,6 @@ header {
   letter-spacing: 0.05em;
 }
 
-/* XP Badge */
 .xp-badge {
   display: flex;
   align-items: center;
@@ -163,12 +161,8 @@ main {
   padding: 32px 24px 80px;
 }
 
-.view-container {
-  max-width: 900px;
-  margin: 0 auto;
-}
+.view-container { max-width: 900px; margin: 0 auto; }
 
-/* Animations */
 .fade-in { animation: fadeIn 0.4s ease-out; }
 
 @keyframes fadeIn {
@@ -192,7 +186,6 @@ main {
 
 .celebrate { animation: celebrate 0.6s ease-out; }
 
-/* HOME */
 .home-hero {
   text-align: center;
   padding: 40px 20px 48px;
@@ -230,7 +223,6 @@ main {
   line-height: 1.5;
 }
 
-/* Progress Card */
 .progress-card {
   background: white;
   border-radius: 20px;
@@ -246,17 +238,9 @@ main {
   margin-bottom: 16px;
 }
 
-.progress-title {
-  font-weight: 700;
-  font-size: 18px;
-  color: var(--text);
-}
+.progress-title { font-weight: 700; font-size: 18px; color: var(--text); }
 
-.progress-stats {
-  font-size: 14px;
-  color: var(--text-light);
-  font-weight: 600;
-}
+.progress-stats { font-size: 14px; color: var(--text-light); font-weight: 600; }
 
 .progress-bar {
   height: 12px;
@@ -272,11 +256,7 @@ main {
   transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Mode Cards */
-.modes-grid {
-  display: grid;
-  gap: 16px;
-}
+.modes-grid { display: grid; gap: 16px; }
 
 .mode-card {
   background: white;
@@ -328,13 +308,8 @@ main {
   color: var(--text);
 }
 
-.mode-desc {
-  font-size: 14px;
-  color: var(--text-light);
-  line-height: 1.5;
-}
+.mode-desc { font-size: 14px; color: var(--text-light); line-height: 1.5; }
 
-/* Submodes */
 .submodes {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -378,12 +353,8 @@ main {
   margin-bottom: 4px;
 }
 
-.submode-desc {
-  font-size: 12px;
-  color: var(--text-light);
-}
+.submode-desc { font-size: 12px; color: var(--text-light); }
 
-/* Sections */
 .section-header {
   display: flex;
   align-items: center;
@@ -419,7 +390,6 @@ main {
   color: var(--text);
 }
 
-/* Tutorial */
 .tutorial-card {
   background: white;
   border-radius: 20px;
@@ -428,16 +398,8 @@ main {
   margin-bottom: 24px;
 }
 
-.tutorial-body {
-  font-size: 17px;
-  line-height: 1.7;
-  color: var(--text);
-}
-
-.tutorial-body strong {
-  color: var(--success);
-  font-weight: 700;
-}
+.tutorial-body { font-size: 17px; line-height: 1.7; color: var(--text); }
+.tutorial-body strong { color: var(--success); font-weight: 700; }
 
 .tutorial-nav {
   display: flex;
@@ -445,7 +407,6 @@ main {
   gap: 12px;
 }
 
-/* Mapping */
 .context-card {
   background: linear-gradient(135deg, var(--info-light), var(--info));
   border-radius: 16px;
@@ -461,11 +422,7 @@ main {
   margin-bottom: 8px;
 }
 
-.context-text {
-  font-size: 14px;
-  line-height: 1.5;
-  opacity: 0.95;
-}
+.context-text { font-size: 14px; line-height: 1.5; opacity: 0.95; }
 
 .structure-card {
   background: white;
@@ -479,15 +436,7 @@ main {
   min-height: 120px;
 }
 
-.structure-card svg {
-  max-width: 100%;
-}
-
-.structure-unavailable {
-  font-size: 13px;
-  color: var(--text-lighter);
-  font-style: italic;
-}
+.structure-card svg { max-width: 100%; height: auto; }
 
 .instruction {
   background: white;
@@ -499,7 +448,6 @@ main {
   color: var(--text-light);
 }
 
-/* Chain diagram */
 .chain-card {
   background: white;
   border-radius: 20px;
@@ -598,7 +546,6 @@ main {
   box-shadow: 0 4px 12px var(--shadow);
 }
 
-/* Tags pool */
 .tags-pool-card {
   background: white;
   border-radius: 16px;
@@ -656,7 +603,6 @@ main {
   transform: scale(1.15);
 }
 
-/* Spectrum */
 .spectrum-card {
   background: white;
   border-radius: 20px;
@@ -664,22 +610,6 @@ main {
   box-shadow: 0 4px 20px var(--shadow);
   margin-bottom: 24px;
   position: relative;
-}
-
-.structure-card {
-  background: white;
-  border-radius: 20px;
-  padding: 20px;
-  box-shadow: 0 4px 20px var(--shadow);
-  margin-bottom: 24px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.structure-card svg {
-  max-width: 100%;
-  height: auto;
 }
 
 .spectrum-axis-labels {
@@ -693,16 +623,8 @@ main {
   margin-bottom: 12px;
 }
 
-.spectrum-svg {
-  width: 100%;
-  height: 140px;
-  display: block;
-}
-
-.spectrum-baseline {
-  stroke: var(--border);
-  stroke-width: 2;
-}
+.spectrum-svg { width: 100%; height: 140px; display: block; }
+.spectrum-baseline { stroke: var(--border); stroke-width: 2; }
 
 .spectrum-trace {
   fill: none;
@@ -712,10 +634,7 @@ main {
   stroke-linecap: round;
 }
 
-.spectrum-peak-hit {
-  fill: transparent;
-  cursor: pointer;
-}
+.spectrum-peak-hit { fill: transparent; cursor: pointer; }
 
 .spectrum-tooltip {
   position: absolute;
@@ -743,7 +662,6 @@ main {
   margin-bottom: 2px;
 }
 
-/* Signals list */
 .signals-list {
   background: white;
   border-radius: 20px;
@@ -795,10 +713,7 @@ main {
   font-weight: 600;
 }
 
-.signal-meta span b {
-  color: var(--text);
-  font-weight: 700;
-}
+.signal-meta span b { color: var(--text); font-weight: 700; }
 
 .dropzone {
   width: 48px;
@@ -831,7 +746,6 @@ main {
   text-transform: uppercase;
 }
 
-/* Feedback */
 .feedback {
   margin-top: 24px;
   padding: 24px;
@@ -857,19 +771,10 @@ main {
   margin-bottom: 8px;
 }
 
-.feedback-body {
-  font-size: 14px;
-  color: var(--text-light);
-  line-height: 1.5;
-}
+.feedback-body { font-size: 14px; color: var(--text-light); line-height: 1.5; }
 
-.feedback-actions {
-  display: flex;
-  gap: 12px;
-  margin-top: 20px;
-}
+.feedback-actions { display: flex; gap: 12px; margin-top: 20px; }
 
-/* Buttons */
 .btn {
   background: white;
   border: 2px solid var(--border);
@@ -890,10 +795,7 @@ main {
   color: white;
 }
 
-.btn:disabled {
-  opacity: 0.4;
-  cursor: not-allowed;
-}
+.btn:disabled { opacity: 0.4; cursor: not-allowed; }
 
 .btn.primary {
   background: linear-gradient(135deg, var(--primary), var(--primary-dark));
@@ -912,7 +814,6 @@ main {
   color: white;
 }
 
-/* Solo */
 .solo-toggle {
   display: inline-flex;
   background: white;
@@ -983,7 +884,56 @@ main {
   opacity: 0.6;
 }
 
-/* Modo guiado */
+/* Opções do Solo com SMILES visível */
+.option-btn.with-smiles {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: stretch;
+}
+
+.option-btn.with-smiles:hover:not(:disabled) { padding-left: 16px; }
+
+.option-btn .opt-smiles {
+  background: var(--bg);
+  border-radius: 12px;
+  padding: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid var(--border);
+  transition: all 0.2s;
+}
+
+.option-btn .opt-smiles svg {
+  max-width: 260px;
+  width: 100%;
+  height: auto;
+}
+
+.option-btn .opt-text {
+  font-size: 15px;
+  text-align: center;
+  font-weight: 700;
+}
+
+.option-btn:hover:not(:disabled) .opt-smiles {
+  background: var(--secondary-light);
+  border-color: var(--secondary);
+}
+
+.option-btn.correct .opt-smiles {
+  background: var(--success-light);
+  border-color: var(--success);
+}
+
+.option-btn.wrong .opt-smiles {
+  background: var(--error-light);
+  border-color: var(--error);
+  opacity: 0.7;
+}
+
 .guided-progress {
   display: flex;
   align-items: center;
@@ -1019,11 +969,7 @@ main {
   margin-bottom: 12px;
 }
 
-.guided-step-text {
-  font-size: 16px;
-  line-height: 1.6;
-  margin-bottom: 16px;
-}
+.guided-step-text { font-size: 16px; line-height: 1.6; margin-bottom: 16px; }
 
 .guided-options { display: grid; gap: 10px; }
 
@@ -1056,7 +1002,7 @@ main {
   background: var(--error-light);
   opacity: 0.6;
 }
-/* Índice do tutorial */
+
 .tutorial-index-card {
   background: white;
   border-radius: 20px;
@@ -1127,11 +1073,7 @@ main {
   color: white;
 }
 
-.tii-title {
-  font-size: 13px;
-  font-weight: 600;
-  line-height: 1.3;
-}
+.tii-title { font-size: 13px; font-weight: 600; line-height: 1.3; }
 
 @media (max-width: 700px) {
   header { padding: 12px 16px; }
@@ -1142,6 +1084,7 @@ main {
   .signal-ppm { font-size: 20px; }
   .xp-badge { padding: 6px 12px; }
   .xp-value { font-size: 18px; }
+  .option-btn .opt-smiles svg { max-width: 200px; }
 }
 </style>
 </head>
@@ -1203,10 +1146,6 @@ async function carregarDados() {
 }
 
 function aplicarRuido(signals) {
-  // Ruído aplicado apenas a ppm (pequena variação, simula imprecisão real de
-  // instrumento) e altura visual (puramente estético, não aparece como texto).
-  // A integração NÃO recebe ruído: mostrar "2.7H" em vez de "3H" ensina o oposto
-  // do que a Doutrinação Base explica — integração se lê como proporção inteira.
   return signals.map(s => ({
     ...s,
     ppm: parseFloat((s.ppm + (Math.random() - 0.5) * 0.08).toFixed(2)),
@@ -1567,8 +1506,6 @@ function renderMapping() {
 
   const tierLabel = { facil: 'Nível 1 · Fácil', medio: 'Nível 2 · Médio', dificil: 'Nível 3 · Difícil' }[q.tier] || '';
 
-  // Renderiza a estrutura química via SmilesDrawer se houver SMILES;
-  // senão, usa o diagrama de caixas antigo como fallback.
   const structureHtml = q.smiles
     ? '<div class="structure-card"><svg id="mol-mapping" width="320" height="220"></svg></div>'
     : renderChainDiagram(q.chain, tagNumbers);
@@ -1842,9 +1779,20 @@ function renderSolo() {
   const specData = q.spectra[state.activeSpectrumType];
   const spectrumHtml = renderSpectrumSVG(specData.signals, specData.maxPpm, is13C);
 
-  const optionsHtml = q.options.map(o =>
-    `<button class="option-btn" onclick="handleSoloAnswer('${o.id}', this)">${o.text}</button>`
-  ).join('');
+  // Cada alternativa pode ter um SMILES. Se tiver, renderizamos a estrutura
+  // química dentro do card da opção, para comparação visual. O id inclui o
+  // level para evitar colisão em recarregamentos.
+  const optionsHtml = q.options.map((o, i) => {
+    const svgId = `opt-smiles-${q.level}-${i}`;
+    const smilesBlock = o.smiles
+      ? `<div class="opt-smiles"><svg id="${svgId}" width="260" height="180"></svg></div>`
+      : '';
+    const extraClass = o.smiles ? 'with-smiles' : '';
+    return `<button class="option-btn ${extraClass}" onclick="handleSoloAnswer('${o.id}', this)">
+      ${smilesBlock}
+      <div class="opt-text">${o.text}</div>
+    </button>`;
+  }).join('');
 
   div.innerHTML = `
     <div class="section-header">
@@ -1874,6 +1822,13 @@ function renderSolo() {
 
     <div id="feedback-box" style="margin-top: 24px;"></div>
   `;
+
+  // Desenha todos os SMILES das opções depois que o DOM existir
+  setTimeout(() => {
+    q.options.forEach((o, i) => {
+      if (o.smiles) renderMoleculeStructure(o.smiles, `opt-smiles-${q.level}-${i}`);
+    });
+  }, 0);
 
   return div;
 }
