@@ -479,7 +479,7 @@ main {
   min-height: 120px;
 }
 
-.structure-card canvas {
+.structure-card svg {
   max-width: 100%;
 }
 
@@ -677,7 +677,7 @@ main {
   align-items: center;
 }
 
-.structure-card canvas {
+.structure-card svg {
   max-width: 100%;
   height: auto;
 }
@@ -1132,7 +1132,7 @@ main {
   font-weight: 600;
   line-height: 1.3;
 }
-  
+
 @media (max-width: 700px) {
   header { padding: 12px 16px; }
   main { padding: 24px 16px 80px; }
@@ -1417,21 +1417,19 @@ function renderTutorial() {
   return div;
 }
 
-function renderMoleculeStructure(smiles, canvasId) {
-  // Desenha em cima de um <canvas> já presente no DOM (por isso é chamada via
-  // setTimeout(fn, 0) depois do innerHTML — mesmo padrão usado em attachMappingEvents).
+function renderMoleculeStructure(smiles, svgId) {
   if (!window.SmilesDrawer) {
     console.error('SmilesDrawer não carregou.');
     return;
   }
-  const canvas = document.getElementById(canvasId);
-  if (!canvas) {
-    console.warn(`Canvas com id "${canvasId}" não encontrado no DOM.`);
+  const svg = document.getElementById(svgId);
+  if (!svg) {
+    console.warn(`SVG com id "${svgId}" não encontrado no DOM.`);
     return;
   }
-  const drawer = new SmilesDrawer.Drawer({ width: 320, height: 220 });
+  const drawer = new SmilesDrawer.SvgDrawer({ width: 320, height: 220 });
   SmilesDrawer.parse(smiles, function(tree) {
-    drawer.draw(tree, canvas, 'light', false);
+    drawer.draw(tree, svg, 'light');
   }, function(err) {
     console.error('Erro ao desenhar estrutura:', err);
   });
@@ -1572,7 +1570,7 @@ function renderMapping() {
   // Renderiza a estrutura química via SmilesDrawer se houver SMILES;
   // senão, usa o diagrama de caixas antigo como fallback.
   const structureHtml = q.smiles
-    ? '<div class="structure-card"><canvas id="mol-mapping" width="320" height="220"></canvas></div>'
+    ? '<div class="structure-card"><svg id="mol-mapping" width="320" height="220"></svg></div>'
     : renderChainDiagram(q.chain, tagNumbers);
 
   const div = document.createElement('div');
@@ -1800,7 +1798,7 @@ window.handleSoloAnswer = function(optionId, btnEl) {
 
     const structureHtml = q.smiles ? `
       <div class="structure-card" style="margin-top: 16px;">
-        <canvas id="mol-solo-reveal" width="320" height="220"></canvas>
+        <svg id="mol-solo-reveal" width="320" height="220"></svg>
       </div>
     ` : '';
 
@@ -1998,7 +1996,7 @@ function renderGuided() {
       <div class="context-title">${ex.title} · ${ex.formula}</div>
       <div class="context-text">${ex.subtitle}</div>
     </div>
-    ${ex.smiles ? '<div class="structure-card"><canvas id="mol-guided" width="320" height="220"></canvas></div>' : ''}
+    ${ex.smiles ? '<div class="structure-card"><svg id="mol-guided" width="320" height="220"></svg></div>' : ''}
     ${renderChainDiagram(ex.chain, tagNumbers)}
     <div class="spectrum-card">
       <div class="spectrum-axis-labels"><span>← Desblindado</span><span>Blindado →</span></div>
