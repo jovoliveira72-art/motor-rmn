@@ -7,9 +7,29 @@
       "1H": {
         "maxPpm": 6,
         "signals": [
-          { "id": "sig1", "ppm": 1.2, "int": 3, "mult": "t", "J": 7, "height": 60 },
-          { "id": "sig2", "ppm": 3.7, "int": 2, "mult": "q", "J": 7, "height": 40 },
-          { "id": "sig3", "ppm": 2.6, "int": 1, "mult": "s (largo)", "height": 20 }
+          {
+            "id": "sig1",
+            "ppm": 1.2,
+            "int": 3,
+            "mult": "t",
+            "J": 7,
+            "height": 60
+          },
+          {
+            "id": "sig2",
+            "ppm": 3.7,
+            "int": 2,
+            "mult": "q",
+            "J": 7,
+            "height": 40
+          },
+          {
+            "id": "sig3",
+            "ppm": 2.6,
+            "int": 1,
+            "mult": "s (largo)",
+            "height": 20
+          }
         ]
       }
     },
@@ -45,9 +65,29 @@
       "1H": {
         "maxPpm": 5,
         "signals": [
-          { "id": "sig1", "ppm": 2.0, "int": 3, "mult": "s", "height": 60 },
-          { "id": "sig2", "ppm": 4.1, "int": 2, "mult": "q", "J": 7, "height": 40 },
-          { "id": "sig3", "ppm": 1.2, "int": 3, "mult": "t", "J": 7, "height": 60 }
+          {
+            "id": "sig1",
+            "ppm": 2.0,
+            "int": 3,
+            "mult": "s",
+            "height": 60
+          },
+          {
+            "id": "sig2",
+            "ppm": 4.1,
+            "int": 2,
+            "mult": "q",
+            "J": 7,
+            "height": 40
+          },
+          {
+            "id": "sig3",
+            "ppm": 1.2,
+            "int": 3,
+            "mult": "t",
+            "J": 7,
+            "height": 60
+          }
         ]
       }
     },
@@ -83,11 +123,43 @@
       "1H": {
         "maxPpm": 10.5,
         "signals": [
-          { "id": "sig1", "ppm": 9.8, "int": 1, "mult": "s (largo)", "height": 20 },
-          { "id": "sig2", "ppm": 9.2, "int": 1, "mult": "s (largo)", "height": 20 },
-          { "id": "sig3", "ppm": 7.3, "int": 2, "mult": "d", "J": 9, "height": 45 },
-          { "id": "sig4", "ppm": 6.7, "int": 2, "mult": "d", "J": 9, "height": 45 },
-          { "id": "sig5", "ppm": 2.1, "int": 3, "mult": "s", "height": 60 }
+          {
+            "id": "sig1",
+            "ppm": 9.8,
+            "int": 1,
+            "mult": "s (largo)",
+            "height": 20
+          },
+          {
+            "id": "sig2",
+            "ppm": 9.2,
+            "int": 1,
+            "mult": "s (largo)",
+            "height": 20
+          },
+          {
+            "id": "sig3",
+            "ppm": 7.3,
+            "int": 2,
+            "mult": "d",
+            "J": 9,
+            "height": 45
+          },
+          {
+            "id": "sig4",
+            "ppm": 6.7,
+            "int": 2,
+            "mult": "d",
+            "J": 9,
+            "height": 45
+          },
+          {
+            "id": "sig5",
+            "ppm": 2.1,
+            "int": 3,
+            "mult": "s",
+            "height": 60
+          }
         ]
       }
     },
@@ -130,10 +202,34 @@
       "1H": {
         "maxPpm": 8.5,
         "signals": [
-          { "id": "sig1", "ppm": 3.4, "int": 3, "mult": "s", "height": 60 },
-          { "id": "sig2", "ppm": 3.6, "int": 3, "mult": "s", "height": 60 },
-          { "id": "sig3", "ppm": 4.0, "int": 3, "mult": "s", "height": 60 },
-          { "id": "sig4", "ppm": 7.6, "int": 1, "mult": "s", "height": 20 }
+          {
+            "id": "sig1",
+            "ppm": 3.4,
+            "int": 3,
+            "mult": "s",
+            "height": 60
+          },
+          {
+            "id": "sig2",
+            "ppm": 3.6,
+            "int": 3,
+            "mult": "s",
+            "height": 60
+          },
+          {
+            "id": "sig3",
+            "ppm": 4.0,
+            "int": 3,
+            "mult": "s",
+            "height": 60
+          },
+          {
+            "id": "sig4",
+            "ppm": 7.6,
+            "int": 1,
+            "mult": "s",
+            "height": 20
+          }
         ]
       }
     },
@@ -155,7 +251,7 @@
       {
         "id": "c",
         "text": "Teofilina",
-        "smiles": "Cn1cnc2c1c(=O)[nH]c(=O)n2C",
+        "smiles": "Cn1c(=O)c2[nH]cnc2n(C)c1=O",
         "correct": false,
         "feedback": "Teofilina também tem apenas 2 N−CH₃ e um NH, padrão incompatível com 3 singleto de 3H."
       }
