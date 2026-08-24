@@ -1,1318 +1,333 @@
 [
   {
-    "level": 101,
-    "tier": "facil",
-    "title": "Etanol",
+    "level": 101, "tier": "facil", "title": "Etanol",
     "context": "Espectro de ¹H RMN em CDCl₃. Observe a troca rápida do próton hidroxílico.",
-    "maxPpm": 6,
+    "maxPpm": 6, "smiles": "CCO",
     "chain": [
-      {
-        "label": "CH₃",
-        "tagId": "tag1",
-        "correctTarget": "sig1"
-      },
-      {
-        "label": "CH₂",
-        "tagId": "tag2",
-        "correctTarget": "sig2"
-      },
-      {
-        "label": "OH",
-        "tagId": "tag3",
-        "correctTarget": "sig3"
-      }
+      { "label": "CH₃", "tagId": "tag1", "correctTarget": "sig1", "atomIndices": [0] },
+      { "label": "CH₂", "tagId": "tag2", "correctTarget": "sig2", "atomIndices": [1] },
+      { "label": "OH", "tagId": "tag3", "correctTarget": "sig3", "atomIndices": [2] }
     ],
     "signals": [
-      {
-        "id": "sig1",
-        "ppm": 1.2,
-        "int": 3,
-        "mult": "t",
-        "J": 7,
-        "height": 60
-      },
-      {
-        "id": "sig2",
-        "ppm": 3.7,
-        "int": 2,
-        "mult": "q",
-        "J": 7,
-        "height": 40
-      },
-      {
-        "id": "sig3",
-        "ppm": 2.6,
-        "int": 1,
-        "mult": "s (largo)",
-        "height": 20
-      }
+      { "id": "sig1", "ppm": 1.2, "int": 3, "mult": "t", "J": 7, "height": 60 },
+      { "id": "sig2", "ppm": 3.7, "int": 2, "mult": "q", "J": 7, "height": 40 },
+      { "id": "sig3", "ppm": 2.6, "int": 1, "mult": "s (largo)", "height": 20 }
     ],
-    "smiles": "CCO",
     "chain13C": [
-      {
-        "label": "CH₃",
-        "tagId": "ctag1",
-        "correctTarget": "csig1"
-      },
-      {
-        "label": "CH₂",
-        "tagId": "ctag2",
-        "correctTarget": "csig2"
-      },
-      {
-        "label": "OH",
-        "fixed": true
-      }
+      { "label": "CH₃", "tagId": "ctag1", "correctTarget": "csig1", "atomIndices": [0] },
+      { "label": "CH₂", "tagId": "ctag2", "correctTarget": "csig2", "atomIndices": [1] },
+      { "label": "OH", "fixed": true }
     ],
     "signals13C": [
-      {
-        "id": "csig1",
-        "ppm": 18.3,
-        "mult": "CH₃",
-        "height": 60
-      },
-      {
-        "id": "csig2",
-        "ppm": 58.3,
-        "mult": "CH₂",
-        "height": 60
-      }
+      { "id": "csig1", "ppm": 18.3, "mult": "CH₃", "height": 60 },
+      { "id": "csig2", "ppm": 58.3, "mult": "CH₂", "height": 60 }
     ]
   },
   {
-    "level": 102,
-    "tier": "facil",
-    "title": "1-Bromopropano",
+    "level": 102, "tier": "facil", "title": "1-Bromopropano",
     "context": "Haleto de alquila. Note o forte efeito desblindante do bromo.",
-    "maxPpm": 5,
+    "maxPpm": 5, "smiles": "CCCBr",
     "chain": [
-      {
-        "label": "CH₃",
-        "tagId": "tag1",
-        "correctTarget": "sig1"
-      },
-      {
-        "label": "CH₂",
-        "tagId": "tag2",
-        "correctTarget": "sig2"
-      },
-      {
-        "label": "CH₂",
-        "tagId": "tag3",
-        "correctTarget": "sig3"
-      },
-      {
-        "label": "Br",
-        "fixed": true
-      }
+      { "label": "CH₃", "tagId": "tag1", "correctTarget": "sig1", "atomIndices": [0] },
+      { "label": "CH₂", "tagId": "tag2", "correctTarget": "sig2", "atomIndices": [1] },
+      { "label": "CH₂", "tagId": "tag3", "correctTarget": "sig3", "atomIndices": [2] },
+      { "label": "Br", "fixed": true }
     ],
     "signals": [
-      {
-        "id": "sig1",
-        "ppm": 1.0,
-        "int": 3,
-        "mult": "t",
-        "J": 7,
-        "height": 60
-      },
-      {
-        "id": "sig2",
-        "ppm": 1.9,
-        "int": 2,
-        "mult": "sext",
-        "J": 7,
-        "height": 40
-      },
-      {
-        "id": "sig3",
-        "ppm": 3.4,
-        "int": 2,
-        "mult": "t",
-        "J": 7,
-        "height": 40
-      }
+      { "id": "sig1", "ppm": 1.0, "int": 3, "mult": "t", "J": 7, "height": 60 },
+      { "id": "sig2", "ppm": 1.9, "int": 2, "mult": "sext", "J": 7, "height": 40 },
+      { "id": "sig3", "ppm": 3.4, "int": 2, "mult": "t", "J": 7, "height": 40 }
     ],
-    "smiles": "CCCBr",
     "chain13C": [
-      {
-        "label": "CH₃",
-        "tagId": "ctag1",
-        "correctTarget": "csig1"
-      },
-      {
-        "label": "CH₂",
-        "tagId": "ctag2",
-        "correctTarget": "csig2"
-      },
-      {
-        "label": "CH₂",
-        "tagId": "ctag3",
-        "correctTarget": "csig3"
-      },
-      {
-        "label": "Br",
-        "fixed": true
-      }
+      { "label": "CH₃", "tagId": "ctag1", "correctTarget": "csig1", "atomIndices": [0] },
+      { "label": "CH₂", "tagId": "ctag2", "correctTarget": "csig2", "atomIndices": [1] },
+      { "label": "CH₂", "tagId": "ctag3", "correctTarget": "csig3", "atomIndices": [2] },
+      { "label": "Br", "fixed": true }
     ],
     "signals13C": [
-      {
-        "id": "csig1",
-        "ppm": 13.2,
-        "mult": "CH₃",
-        "height": 60
-      },
-      {
-        "id": "csig2",
-        "ppm": 26.2,
-        "mult": "CH₂",
-        "height": 60
-      },
-      {
-        "id": "csig3",
-        "ppm": 35.7,
-        "mult": "CH₂ (C-Br)",
-        "height": 50
-      }
+      { "id": "csig1", "ppm": 13.2, "mult": "CH₃", "height": 60 },
+      { "id": "csig2", "ppm": 26.2, "mult": "CH₂", "height": 60 },
+      { "id": "csig3", "ppm": 35.7, "mult": "CH₂ (C-Br)", "height": 50 }
     ]
   },
   {
-    "level": 103,
-    "tier": "facil",
-    "title": "Propilenoglicol",
+    "level": 103, "tier": "facil", "title": "Propilenoglicol",
     "context": "Excipiente cosmético e farmacêutico comum. Observe o doublet do grupo metila e o efeito do próton hidroxílico.",
-    "maxPpm": 5,
+    "maxPpm": 5, "smiles": "CC(O)CO",
     "chain": [
-      {
-        "label": "CH₃",
-        "tagId": "tag1",
-        "correctTarget": "sig1"
-      },
-      {
-        "label": "CH",
-        "tagId": "tag2",
-        "correctTarget": "sig2"
-      },
-      {
-        "label": "CH₂",
-        "tagId": "tag3",
-        "correctTarget": "sig3"
-      },
-      {
-        "label": "OH",
-        "tagId": "tag4",
-        "correctTarget": "sig4"
-      }
+      { "label": "CH₃", "tagId": "tag1", "correctTarget": "sig1", "atomIndices": [0] },
+      { "label": "CH", "tagId": "tag2", "correctTarget": "sig2", "atomIndices": [1] },
+      { "label": "CH₂", "tagId": "tag3", "correctTarget": "sig3", "atomIndices": [3] },
+      { "label": "OH", "tagId": "tag4", "correctTarget": "sig4", "atomIndices": [2, 4] }
     ],
     "signals": [
-      {
-        "id": "sig1",
-        "ppm": 1.1,
-        "int": 3,
-        "mult": "d",
-        "J": 6,
-        "height": 60
-      },
-      {
-        "id": "sig2",
-        "ppm": 3.8,
-        "int": 1,
-        "mult": "m",
-        "height": 20
-      },
-      {
-        "id": "sig3",
-        "ppm": 3.5,
-        "int": 2,
-        "mult": "d",
-        "J": 5,
-        "height": 40
-      },
-      {
-        "id": "sig4",
-        "ppm": 2.2,
-        "int": 2,
-        "mult": "s (largo)",
-        "height": 20
-      }
+      { "id": "sig1", "ppm": 1.1, "int": 3, "mult": "d", "J": 6, "height": 60 },
+      { "id": "sig2", "ppm": 3.8, "int": 1, "mult": "m", "height": 20 },
+      { "id": "sig3", "ppm": 3.5, "int": 2, "mult": "d", "J": 5, "height": 40 },
+      { "id": "sig4", "ppm": 2.2, "int": 2, "mult": "s (largo)", "height": 20 }
     ],
-    "smiles": "CC(O)CO",
     "chain13C": [
-      {
-        "label": "CH₃",
-        "tagId": "ctag1",
-        "correctTarget": "csig1"
-      },
-      {
-        "label": "CH",
-        "tagId": "ctag2",
-        "correctTarget": "csig2"
-      },
-      {
-        "label": "CH₂",
-        "tagId": "ctag3",
-        "correctTarget": "csig3"
-      },
-      {
-        "label": "OH",
-        "fixed": true
-      }
+      { "label": "CH₃", "tagId": "ctag1", "correctTarget": "csig1", "atomIndices": [0] },
+      { "label": "CH", "tagId": "ctag2", "correctTarget": "csig2", "atomIndices": [1] },
+      { "label": "CH₂", "tagId": "ctag3", "correctTarget": "csig3", "atomIndices": [3] },
+      { "label": "OH", "fixed": true }
     ],
     "signals13C": [
-      {
-        "id": "csig1",
-        "ppm": 19.5,
-        "mult": "CH₃",
-        "height": 60
-      },
-      {
-        "id": "csig2",
-        "ppm": 68.9,
-        "mult": "CH (C-OH)",
-        "height": 40
-      },
-      {
-        "id": "csig3",
-        "ppm": 66.9,
-        "mult": "CH₂ (C-OH)",
-        "height": 50
-      }
+      { "id": "csig1", "ppm": 19.5, "mult": "CH₃", "height": 60 },
+      { "id": "csig2", "ppm": 68.9, "mult": "CH (C-OH)", "height": 40 },
+      { "id": "csig3", "ppm": 66.9, "mult": "CH₂ (C-OH)", "height": 50 }
     ]
   },
   {
-    "level": 201,
-    "tier": "medio",
-    "title": "Acetato de Etila",
+    "level": 201, "tier": "medio", "title": "Acetato de Etila",
     "context": "Éster comum. Compare o deslocamento do CH₃ ligado ao C=O com o CH₂ ligado ao O.",
-    "maxPpm": 5,
+    "maxPpm": 5, "smiles": "CC(=O)OCC",
     "chain": [
-      {
-        "label": "CH₃",
-        "tagId": "tag1",
-        "correctTarget": "sig1"
-      },
-      {
-        "label": "C=O",
-        "fixed": true
-      },
-      {
-        "label": "O",
-        "fixed": true
-      },
-      {
-        "label": "CH₂",
-        "tagId": "tag2",
-        "correctTarget": "sig2"
-      },
-      {
-        "label": "CH₃",
-        "tagId": "tag3",
-        "correctTarget": "sig3"
-      }
+      { "label": "CH₃", "tagId": "tag1", "correctTarget": "sig1", "atomIndices": [0] },
+      { "label": "C=O", "fixed": true },
+      { "label": "O", "fixed": true },
+      { "label": "CH₂", "tagId": "tag2", "correctTarget": "sig2", "atomIndices": [4] },
+      { "label": "CH₃", "tagId": "tag3", "correctTarget": "sig3", "atomIndices": [5] }
     ],
     "signals": [
-      {
-        "id": "sig1",
-        "ppm": 2.0,
-        "int": 3,
-        "mult": "s",
-        "height": 60
-      },
-      {
-        "id": "sig2",
-        "ppm": 4.1,
-        "int": 2,
-        "mult": "q",
-        "J": 7,
-        "height": 40
-      },
-      {
-        "id": "sig3",
-        "ppm": 1.2,
-        "int": 3,
-        "mult": "t",
-        "J": 7,
-        "height": 60
-      }
+      { "id": "sig1", "ppm": 2.0, "int": 3, "mult": "s", "height": 60 },
+      { "id": "sig2", "ppm": 4.1, "int": 2, "mult": "q", "J": 7, "height": 40 },
+      { "id": "sig3", "ppm": 1.2, "int": 3, "mult": "t", "J": 7, "height": 60 }
     ],
-    "smiles": "CC(=O)OCC",
     "chain13C": [
-      {
-        "label": "CH₃",
-        "tagId": "ctag1",
-        "correctTarget": "csig1"
-      },
-      {
-        "label": "C=O",
-        "tagId": "ctag2",
-        "correctTarget": "csigCO"
-      },
-      {
-        "label": "O",
-        "fixed": true
-      },
-      {
-        "label": "CH₂",
-        "tagId": "ctag3",
-        "correctTarget": "csig2"
-      },
-      {
-        "label": "CH₃",
-        "tagId": "ctag4",
-        "correctTarget": "csig3"
-      }
+      { "label": "CH₃", "tagId": "ctag1", "correctTarget": "csig1", "atomIndices": [0] },
+      { "label": "C=O", "tagId": "ctag2", "correctTarget": "csigCO", "atomIndices": [1] },
+      { "label": "O", "fixed": true },
+      { "label": "CH₂", "tagId": "ctag3", "correctTarget": "csig2", "atomIndices": [4] },
+      { "label": "CH₃", "tagId": "ctag4", "correctTarget": "csig3", "atomIndices": [5] }
     ],
     "signals13C": [
-      {
-        "id": "csigCO",
-        "ppm": 171.1,
-        "mult": "C=O (quaternário)",
-        "height": 35
-      },
-      {
-        "id": "csig1",
-        "ppm": 21.0,
-        "mult": "CH₃ (acetila)",
-        "height": 60
-      },
-      {
-        "id": "csig2",
-        "ppm": 60.5,
-        "mult": "CH₂",
-        "height": 50
-      },
-      {
-        "id": "csig3",
-        "ppm": 14.2,
-        "mult": "CH₃",
-        "height": 60
-      }
+      { "id": "csigCO", "ppm": 171.1, "mult": "C=O (quaternário)", "height": 35 },
+      { "id": "csig1", "ppm": 21.0, "mult": "CH₃ (acetila)", "height": 60 },
+      { "id": "csig2", "ppm": 60.5, "mult": "CH₂", "height": 50 },
+      { "id": "csig3", "ppm": 14.2, "mult": "CH₃", "height": 60 }
     ]
   },
   {
-    "level": 202,
-    "tier": "medio",
-    "title": "Acetofenona",
-    "context": "Cetona aromática. O anel benzênico monossubstituído aparece como um multipletto complexo.",
-    "maxPpm": 8.5,
+    "level": 202, "tier": "medio", "title": "Acetofenona",
+    "context": "Cetona aromática. Anel monossubstituído: 2H orto (d), 2H meta (t), 1H para (t).",
+    "maxPpm": 8.5, "smiles": "CC(=O)c1ccccc1",
     "chain": [
-      {
-        "label": "CH₃",
-        "tagId": "tag1",
-        "correctTarget": "sig1"
-      },
-      {
-        "label": "C=O",
-        "fixed": true
-      },
-      {
-        "label": "Anel Fenila",
-        "fixed": true,
-        "branches": [
-          {
-            "label": "H-Ar (orto)",
-            "tagId": "tag2",
-            "correctTarget": "sig4"
-          },
-          {
-            "label": "H-Ar (meta)",
-            "tagId": "tag3",
-            "correctTarget": "sig2"
-          },
-          {
-            "label": "H-Ar (para)",
-            "tagId": "tag4",
-            "correctTarget": "sig3"
-          }
-        ]
-      }
+      { "label": "CH₃", "tagId": "tag1", "correctTarget": "sig1", "atomIndices": [0] },
+      { "label": "C=O", "fixed": true },
+      { "label": "Anel Fenila", "fixed": true, "branches": [
+        { "label": "H-Ar (orto)", "tagId": "tag2", "correctTarget": "sig4", "atomIndices": [4, 8] },
+        { "label": "H-Ar (meta)", "tagId": "tag3", "correctTarget": "sig2", "atomIndices": [5, 7] },
+        { "label": "H-Ar (para)", "tagId": "tag4", "correctTarget": "sig3", "atomIndices": [6] }
+      ] }
     ],
     "signals": [
-      {
-        "id": "sig1",
-        "ppm": 2.6,
-        "int": 3,
-        "mult": "s",
-        "height": 60
-      },
-      {
-        "id": "sig2",
-        "ppm": 7.5,
-        "int": 2,
-        "mult": "m",
-        "height": 60
-      },
-      {
-        "id": "sig3",
-        "ppm": 7.6,
-        "int": 1,
-        "mult": "t",
-        "J": 7,
-        "height": 20
-      },
-      {
-        "id": "sig4",
-        "ppm": 8.0,
-        "int": 2,
-        "mult": "d",
-        "J": 7,
-        "height": 40
-      }
+      { "id": "sig1", "ppm": 2.6, "int": 3, "mult": "s", "height": 60 },
+      { "id": "sig2", "ppm": 7.5, "int": 2, "mult": "t", "J": 7, "height": 40 },
+      { "id": "sig3", "ppm": 7.6, "int": 1, "mult": "t", "J": 7, "height": 20 },
+      { "id": "sig4", "ppm": 8.0, "int": 2, "mult": "d", "J": 7, "height": 40 }
     ],
-    "smiles": "CC(=O)c1ccccc1",
     "chain13C": [
-      {
-        "label": "CH₃",
-        "tagId": "ctag1",
-        "correctTarget": "csig1"
-      },
-      {
-        "label": "C=O",
-        "tagId": "ctag2",
-        "correctTarget": "csigCO"
-      },
-      {
-        "label": "Anel Fenila",
-        "fixed": true,
-        "branches": [
-          {
-            "label": "C-ipso",
-            "tagId": "ctag3",
-            "correctTarget": "csigIpso"
-          },
-          {
-            "label": "CH (orto)",
-            "tagId": "ctag4",
-            "correctTarget": "csigOrto"
-          },
-          {
-            "label": "CH (meta)",
-            "tagId": "ctag5",
-            "correctTarget": "csigMeta"
-          },
-          {
-            "label": "CH (para)",
-            "tagId": "ctag6",
-            "correctTarget": "csigPara"
-          }
-        ]
-      }
+      { "label": "CH₃", "tagId": "ctag1", "correctTarget": "csig1", "atomIndices": [0] },
+      { "label": "C=O", "tagId": "ctag2", "correctTarget": "csigCO", "atomIndices": [1] },
+      { "label": "Anel Fenila", "fixed": true, "branches": [
+        { "label": "C-ipso", "tagId": "ctag3", "correctTarget": "csigIpso", "atomIndices": [3] },
+        { "label": "CH (orto)", "tagId": "ctag4", "correctTarget": "csigOrto", "atomIndices": [4, 8] },
+        { "label": "CH (meta)", "tagId": "ctag5", "correctTarget": "csigMeta", "atomIndices": [5, 7] },
+        { "label": "CH (para)", "tagId": "ctag6", "correctTarget": "csigPara", "atomIndices": [6] }
+      ] }
     ],
     "signals13C": [
-      {
-        "id": "csigCO",
-        "ppm": 198.1,
-        "mult": "C=O (quaternário)",
-        "height": 30
-      },
-      {
-        "id": "csigIpso",
-        "ppm": 137.1,
-        "mult": "C-ipso (quaternário)",
-        "height": 25
-      },
-      {
-        "id": "csigPara",
-        "ppm": 133.1,
-        "mult": "CH",
-        "height": 45
-      },
-      {
-        "id": "csigMeta",
-        "ppm": 128.6,
-        "mult": "CH",
-        "height": 50
-      },
-      {
-        "id": "csigOrto",
-        "ppm": 128.3,
-        "mult": "CH",
-        "height": 50
-      },
-      {
-        "id": "csig1",
-        "ppm": 26.6,
-        "mult": "CH₃",
-        "height": 60
-      }
+      { "id": "csigCO", "ppm": 198.1, "mult": "C=O (quaternário)", "height": 30 },
+      { "id": "csigIpso", "ppm": 137.1, "mult": "C-ipso (quaternário)", "height": 25 },
+      { "id": "csigPara", "ppm": 133.1, "mult": "CH", "height": 45 },
+      { "id": "csigMeta", "ppm": 128.6, "mult": "CH", "height": 50 },
+      { "id": "csigOrto", "ppm": 128.3, "mult": "CH", "height": 50 },
+      { "id": "csig1", "ppm": 26.6, "mult": "CH₃", "height": 60 }
     ]
   },
   {
-    "level": 203,
-    "tier": "medio",
-    "title": "Cafeína",
+    "level": 203, "tier": "medio", "title": "Cafeína",
     "context": "Estimulante do SNC. Note a ausência de acoplamento entre os grupos metila devido aos átomos de nitrogênio e a presença de um único próton aromático.",
-    "maxPpm": 8.5,
+    "maxPpm": 8.5, "smiles": "Cn1cnc2c1c(=O)n(C)c(=O)n2C",
     "chain": [
-      {
-        "label": "N-CH₃",
-        "tagId": "tag1",
-        "correctTarget": "sig1"
-      },
-      {
-        "label": "N-CH₃",
-        "tagId": "tag2",
-        "correctTarget": "sig2"
-      },
-      {
-        "label": "N-CH₃",
-        "tagId": "tag3",
-        "correctTarget": "sig3"
-      },
-      {
-        "label": "C=H (Ar)",
-        "tagId": "tag4",
-        "correctTarget": "sig4"
-      }
+      { "label": "N-CH₃", "tagId": "tag1", "correctTarget": "sig1", "atomIndices": [0] },
+      { "label": "N-CH₃", "tagId": "tag2", "correctTarget": "sig2", "atomIndices": [9] },
+      { "label": "N-CH₃", "tagId": "tag3", "correctTarget": "sig3", "atomIndices": [13] },
+      { "label": "C=H (Ar)", "tagId": "tag4", "correctTarget": "sig4", "atomIndices": [2] }
     ],
     "signals": [
-      {
-        "id": "sig1",
-        "ppm": 3.4,
-        "int": 3,
-        "mult": "s",
-        "height": 60
-      },
-      {
-        "id": "sig2",
-        "ppm": 3.6,
-        "int": 3,
-        "mult": "s",
-        "height": 60
-      },
-      {
-        "id": "sig3",
-        "ppm": 4.0,
-        "int": 3,
-        "mult": "s",
-        "height": 60
-      },
-      {
-        "id": "sig4",
-        "ppm": 7.6,
-        "int": 1,
-        "mult": "s",
-        "height": 20
-      }
+      { "id": "sig1", "ppm": 3.4, "int": 3, "mult": "s", "height": 60 },
+      { "id": "sig2", "ppm": 3.6, "int": 3, "mult": "s", "height": 60 },
+      { "id": "sig3", "ppm": 4.0, "int": 3, "mult": "s", "height": 60 },
+      { "id": "sig4", "ppm": 7.6, "int": 1, "mult": "s", "height": 20 }
     ],
-    "smiles": "Cn1cnc2c1c(=O)n(C)c(=O)n2C",
     "chain13C": [
-      {
-        "label": "N-CH₃",
-        "tagId": "ctag1",
-        "correctTarget": "csigN7"
-      },
-      {
-        "label": "N-CH₃",
-        "tagId": "ctag2",
-        "correctTarget": "csigN3"
-      },
-      {
-        "label": "N-CH₃",
-        "tagId": "ctag3",
-        "correctTarget": "csigN1"
-      },
-      {
-        "label": "C=O",
-        "tagId": "ctag4",
-        "correctTarget": "csigC2"
-      },
-      {
-        "label": "C=O",
-        "tagId": "ctag5",
-        "correctTarget": "csigC6"
-      },
-      {
-        "label": "C (fusão)",
-        "tagId": "ctag6",
-        "correctTarget": "csigC4"
-      },
-      {
-        "label": "C (fusão)",
-        "tagId": "ctag7",
-        "correctTarget": "csigC5"
-      },
-      {
-        "label": "C-H (Ar)",
-        "tagId": "ctag8",
-        "correctTarget": "csigC8"
-      }
+      { "label": "N-CH₃", "tagId": "ctag1", "correctTarget": "csigN7", "atomIndices": [0] },
+      { "label": "N-CH₃", "tagId": "ctag2", "correctTarget": "csigN3", "atomIndices": [9] },
+      { "label": "N-CH₃", "tagId": "ctag3", "correctTarget": "csigN1", "atomIndices": [13] },
+      { "label": "C=O", "tagId": "ctag4", "correctTarget": "csigC2", "atomIndices": [10] },
+      { "label": "C=O", "tagId": "ctag5", "correctTarget": "csigC6", "atomIndices": [6] },
+      { "label": "C (fusão)", "tagId": "ctag6", "correctTarget": "csigC4", "atomIndices": [4] },
+      { "label": "C (fusão)", "tagId": "ctag7", "correctTarget": "csigC5", "atomIndices": [5] },
+      { "label": "C-H (Ar)", "tagId": "ctag8", "correctTarget": "csigC8", "atomIndices": [2] }
     ],
     "signals13C": [
-      {
-        "id": "csigC2",
-        "ppm": 155.4,
-        "mult": "C=O (quaternário)",
-        "height": 30
-      },
-      {
-        "id": "csigC6",
-        "ppm": 151.7,
-        "mult": "C=O (quaternário)",
-        "height": 30
-      },
-      {
-        "id": "csigC4",
-        "ppm": 148.7,
-        "mult": "C quaternário",
-        "height": 25
-      },
-      {
-        "id": "csigC8",
-        "ppm": 141.6,
-        "mult": "CH",
-        "height": 45
-      },
-      {
-        "id": "csigC5",
-        "ppm": 107.5,
-        "mult": "C quaternário",
-        "height": 25
-      },
-      {
-        "id": "csigN7",
-        "ppm": 33.6,
-        "mult": "N-CH₃",
-        "height": 55
-      },
-      {
-        "id": "csigN3",
-        "ppm": 29.7,
-        "mult": "N-CH₃",
-        "height": 55
-      },
-      {
-        "id": "csigN1",
-        "ppm": 27.9,
-        "mult": "N-CH₃",
-        "height": 55
-      }
+      { "id": "csigC2", "ppm": 155.4, "mult": "C=O (quaternário)", "height": 30 },
+      { "id": "csigC6", "ppm": 151.7, "mult": "C=O (quaternário)", "height": 30 },
+      { "id": "csigC4", "ppm": 148.7, "mult": "C quaternário", "height": 25 },
+      { "id": "csigC8", "ppm": 141.6, "mult": "CH", "height": 45 },
+      { "id": "csigC5", "ppm": 107.5, "mult": "C quaternário", "height": 25 },
+      { "id": "csigN7", "ppm": 33.6, "mult": "N-CH₃", "height": 55 },
+      { "id": "csigN3", "ppm": 29.7, "mult": "N-CH₃", "height": 55 },
+      { "id": "csigN1", "ppm": 27.9, "mult": "N-CH₃", "height": 55 }
     ]
   },
   {
-    "level": 301,
-    "tier": "dificil",
-    "title": "Paracetamol",
+    "level": 301, "tier": "dificil", "title": "Paracetamol",
     "context": "Fármaco analgésico. Substituição para no anel aromático gera dois doublets característicos. Prótons OH e NH aparecem como singletos largos.",
-    "maxPpm": 10.5,
+    "maxPpm": 10.5, "smiles": "CC(=O)Nc1ccc(O)cc1",
     "chain": [
-      {
-        "label": "HO",
-        "tagId": "tag1",
-        "correctTarget": "sig1"
-      },
-      {
-        "label": "Anel",
-        "fixed": true,
-        "branches": [
-          {
-            "label": "H-Ar (orto ao OH)",
-            "tagId": "tag2",
-            "correctTarget": "sig2"
-          },
-          {
-            "label": "H-Ar (orto ao NH)",
-            "tagId": "tag3",
-            "correctTarget": "sig3"
-          }
-        ]
-      },
-      {
-        "label": "NH",
-        "tagId": "tag4",
-        "correctTarget": "sig4"
-      },
-      {
-        "label": "C=O",
-        "fixed": true
-      },
-      {
-        "label": "CH₃",
-        "tagId": "tag5",
-        "correctTarget": "sig5"
-      }
+      { "label": "HO", "tagId": "tag1", "correctTarget": "sig1", "atomIndices": [8] },
+      { "label": "Anel", "fixed": true, "branches": [
+        { "label": "H-Ar (orto ao OH)", "tagId": "tag2", "correctTarget": "sig2", "atomIndices": [6, 9] },
+        { "label": "H-Ar (orto ao NH)", "tagId": "tag3", "correctTarget": "sig3", "atomIndices": [5, 10] }
+      ] },
+      { "label": "NH", "tagId": "tag4", "correctTarget": "sig4", "atomIndices": [3] },
+      { "label": "C=O", "fixed": true },
+      { "label": "CH₃", "tagId": "tag5", "correctTarget": "sig5", "atomIndices": [0] }
     ],
     "signals": [
-      {
-        "id": "sig1",
-        "ppm": 9.2,
-        "int": 1,
-        "mult": "s (largo)",
-        "height": 20
-      },
-      {
-        "id": "sig2",
-        "ppm": 6.7,
-        "int": 2,
-        "mult": "d",
-        "J": 9,
-        "height": 45
-      },
-      {
-        "id": "sig3",
-        "ppm": 7.3,
-        "int": 2,
-        "mult": "d",
-        "J": 9,
-        "height": 45
-      },
-      {
-        "id": "sig4",
-        "ppm": 9.8,
-        "int": 1,
-        "mult": "s (largo)",
-        "height": 20
-      },
-      {
-        "id": "sig5",
-        "ppm": 2.1,
-        "int": 3,
-        "mult": "s",
-        "height": 60
-      }
+      { "id": "sig1", "ppm": 9.2, "int": 1, "mult": "s (largo)", "height": 20 },
+      { "id": "sig2", "ppm": 6.7, "int": 2, "mult": "d", "J": 9, "height": 45 },
+      { "id": "sig3", "ppm": 7.3, "int": 2, "mult": "d", "J": 9, "height": 45 },
+      { "id": "sig4", "ppm": 9.8, "int": 1, "mult": "s (largo)", "height": 20 },
+      { "id": "sig5", "ppm": 2.1, "int": 3, "mult": "s", "height": 60 }
     ],
-    "smiles": "CC(=O)Nc1ccc(O)cc1",
     "chain13C": [
-      {
-        "label": "HO",
-        "fixed": true
-      },
-      {
-        "label": "Anel",
-        "fixed": true,
-        "branches": [
-          {
-            "label": "C-ipso (OH)",
-            "tagId": "ctag1",
-            "correctTarget": "csigIpsoOH"
-          },
-          {
-            "label": "C-ipso (NH)",
-            "tagId": "ctag2",
-            "correctTarget": "csigIpsoNH"
-          },
-          {
-            "label": "CH (orto OH)",
-            "tagId": "ctag3",
-            "correctTarget": "csigOrtoOH"
-          },
-          {
-            "label": "CH (orto NH)",
-            "tagId": "ctag4",
-            "correctTarget": "csigOrtoNH"
-          }
-        ]
-      },
-      {
-        "label": "NH",
-        "fixed": true
-      },
-      {
-        "label": "C=O",
-        "tagId": "ctag5",
-        "correctTarget": "csigCO"
-      },
-      {
-        "label": "CH₃",
-        "tagId": "ctag6",
-        "correctTarget": "csig1"
-      }
+      { "label": "HO", "fixed": true },
+      { "label": "Anel", "fixed": true, "branches": [
+        { "label": "C-ipso (OH)", "tagId": "ctag1", "correctTarget": "csigIpsoOH", "atomIndices": [7] },
+        { "label": "C-ipso (NH)", "tagId": "ctag2", "correctTarget": "csigIpsoNH", "atomIndices": [4] },
+        { "label": "CH (orto OH)", "tagId": "ctag3", "correctTarget": "csigOrtoOH", "atomIndices": [6, 9] },
+        { "label": "CH (orto NH)", "tagId": "ctag4", "correctTarget": "csigOrtoNH", "atomIndices": [5, 10] }
+      ] },
+      { "label": "NH", "fixed": true },
+      { "label": "C=O", "tagId": "ctag5", "correctTarget": "csigCO", "atomIndices": [1] },
+      { "label": "CH₃", "tagId": "ctag6", "correctTarget": "csig1", "atomIndices": [0] }
     ],
     "signals13C": [
-      {
-        "id": "csigCO",
-        "ppm": 168.6,
-        "mult": "C=O (quaternário)",
-        "height": 30
-      },
-      {
-        "id": "csigIpsoOH",
-        "ppm": 153.1,
-        "mult": "C-ipso (quaternário)",
-        "height": 25
-      },
-      {
-        "id": "csigIpsoNH",
-        "ppm": 131.0,
-        "mult": "C-ipso (quaternário)",
-        "height": 25
-      },
-      {
-        "id": "csigOrtoNH",
-        "ppm": 120.9,
-        "mult": "CH",
-        "height": 45
-      },
-      {
-        "id": "csigOrtoOH",
-        "ppm": 115.0,
-        "mult": "CH",
-        "height": 45
-      },
-      {
-        "id": "csig1",
-        "ppm": 23.9,
-        "mult": "CH₃",
-        "height": 60
-      }
+      { "id": "csigCO", "ppm": 168.6, "mult": "C=O (quaternário)", "height": 30 },
+      { "id": "csigIpsoOH", "ppm": 153.1, "mult": "C-ipso (quaternário)", "height": 25 },
+      { "id": "csigIpsoNH", "ppm": 131.0, "mult": "C-ipso (quaternário)", "height": 25 },
+      { "id": "csigOrtoNH", "ppm": 120.9, "mult": "CH", "height": 45 },
+      { "id": "csigOrtoOH", "ppm": 115.0, "mult": "CH", "height": 45 },
+      { "id": "csig1", "ppm": 23.9, "mult": "CH₃", "height": 60 }
     ]
   },
   {
-    "level": 302,
-    "tier": "dificil",
-    "title": "Ácido Acetilsalicílico",
+    "level": 302, "tier": "dificil", "title": "Ácido Acetilsalicílico",
     "context": "Substituição orto no anel aromático quebra a simetria, gerando 4 sinais aromáticos distintos (dd, t, t, dd).",
-    "maxPpm": 11.5,
+    "maxPpm": 11.5, "smiles": "CC(=O)Oc1ccccc1C(=O)O",
     "chain": [
-      {
-        "label": "COOH",
-        "tagId": "tag1",
-        "correctTarget": "sig1"
-      },
-      {
-        "label": "Anel",
-        "fixed": true,
-        "branches": [
-          {
-            "label": "H-Ar (C3)",
-            "tagId": "tag2",
-            "correctTarget": "sig2"
-          },
-          {
-            "label": "H-Ar (C4)",
-            "tagId": "tag3",
-            "correctTarget": "sig3"
-          },
-          {
-            "label": "H-Ar (C5)",
-            "tagId": "tag4",
-            "correctTarget": "sig4"
-          },
-          {
-            "label": "H-Ar (C6)",
-            "tagId": "tag5",
-            "correctTarget": "sig5"
-          }
-        ]
-      },
-      {
-        "label": "O",
-        "fixed": true
-      },
-      {
-        "label": "C=O",
-        "fixed": true
-      },
-      {
-        "label": "CH₃",
-        "tagId": "tag6",
-        "correctTarget": "sig6"
-      }
+      { "label": "COOH", "tagId": "tag1", "correctTarget": "sig1", "atomIndices": [11] },
+      { "label": "Anel", "fixed": true, "branches": [
+        { "label": "H-Ar (C3)", "tagId": "tag2", "correctTarget": "sig2", "atomIndices": [9] },
+        { "label": "H-Ar (C4)", "tagId": "tag3", "correctTarget": "sig3", "atomIndices": [8] },
+        { "label": "H-Ar (C5)", "tagId": "tag4", "correctTarget": "sig4", "atomIndices": [7] },
+        { "label": "H-Ar (C6)", "tagId": "tag5", "correctTarget": "sig5", "atomIndices": [5] }
+      ] },
+      { "label": "O", "fixed": true },
+      { "label": "C=O", "fixed": true },
+      { "label": "CH₃", "tagId": "tag6", "correctTarget": "sig6", "atomIndices": [0] }
     ],
     "signals": [
-      {
-        "id": "sig1",
-        "ppm": 11.0,
-        "int": 1,
-        "mult": "s (largo)",
-        "height": 20
-      },
-      {
-        "id": "sig2",
-        "ppm": 8.1,
-        "int": 1,
-        "mult": "dd",
-        "J": 8,
-        "height": 25
-      },
-      {
-        "id": "sig3",
-        "ppm": 7.6,
-        "int": 1,
-        "mult": "t",
-        "J": 8,
-        "height": 25
-      },
-      {
-        "id": "sig4",
-        "ppm": 7.4,
-        "int": 1,
-        "mult": "t",
-        "J": 8,
-        "height": 25
-      },
-      {
-        "id": "sig5",
-        "ppm": 7.1,
-        "int": 1,
-        "mult": "d",
-        "J": 8,
-        "height": 25
-      },
-      {
-        "id": "sig6",
-        "ppm": 2.3,
-        "int": 3,
-        "mult": "s",
-        "height": 60
-      }
+      { "id": "sig1", "ppm": 11.0, "int": 1, "mult": "s (largo)", "height": 20 },
+      { "id": "sig2", "ppm": 8.1, "int": 1, "mult": "dd", "J": 8, "height": 25 },
+      { "id": "sig3", "ppm": 7.6, "int": 1, "mult": "t", "J": 8, "height": 25 },
+      { "id": "sig4", "ppm": 7.4, "int": 1, "mult": "t", "J": 8, "height": 25 },
+      { "id": "sig5", "ppm": 7.1, "int": 1, "mult": "d", "J": 8, "height": 25 },
+      { "id": "sig6", "ppm": 2.3, "int": 3, "mult": "s", "height": 60 }
     ],
-    "smiles": "CC(=O)Oc1ccccc1C(=O)O",
     "chain13C": [
-      {
-        "label": "COOH",
-        "tagId": "ctag1",
-        "correctTarget": "csigCOOH"
-      },
-      {
-        "label": "Anel",
-        "fixed": true,
-        "branches": [
-          {
-            "label": "C-ipso (COOH)",
-            "tagId": "ctag2",
-            "correctTarget": "csigIpsoCOOH"
-          },
-          {
-            "label": "CH (C3)",
-            "tagId": "ctag3",
-            "correctTarget": "csigC3"
-          },
-          {
-            "label": "CH (C4)",
-            "tagId": "ctag4",
-            "correctTarget": "csigC4"
-          },
-          {
-            "label": "CH (C5)",
-            "tagId": "ctag5",
-            "correctTarget": "csigC5"
-          },
-          {
-            "label": "CH (C6)",
-            "tagId": "ctag6",
-            "correctTarget": "csigC6"
-          },
-          {
-            "label": "C-ipso (O)",
-            "tagId": "ctag7",
-            "correctTarget": "csigIpsoO"
-          }
-        ]
-      },
-      {
-        "label": "O",
-        "fixed": true
-      },
-      {
-        "label": "C=O",
-        "tagId": "ctag8",
-        "correctTarget": "csigCOEster"
-      },
-      {
-        "label": "CH₃",
-        "tagId": "ctag9",
-        "correctTarget": "csig1"
-      }
+      { "label": "COOH", "tagId": "ctag1", "correctTarget": "csigCOOH", "atomIndices": [11] },
+      { "label": "Anel", "fixed": true, "branches": [
+        { "label": "C-ipso (COOH)", "tagId": "ctag2", "correctTarget": "csigIpsoCOOH", "atomIndices": [10] },
+        { "label": "CH (C3)", "tagId": "ctag3", "correctTarget": "csigC3", "atomIndices": [9] },
+        { "label": "CH (C4)", "tagId": "ctag4", "correctTarget": "csigC4", "atomIndices": [8] },
+        { "label": "CH (C5)", "tagId": "ctag5", "correctTarget": "csigC5", "atomIndices": [7] },
+        { "label": "CH (C6)", "tagId": "ctag6", "correctTarget": "csigC6", "atomIndices": [5] },
+        { "label": "C-ipso (O)", "tagId": "ctag7", "correctTarget": "csigIpsoO", "atomIndices": [4] }
+      ] },
+      { "label": "O", "fixed": true },
+      { "label": "C=O", "tagId": "ctag8", "correctTarget": "csigCOEster", "atomIndices": [1] },
+      { "label": "CH₃", "tagId": "ctag9", "correctTarget": "csig1", "atomIndices": [0] }
     ],
     "signals13C": [
-      {
-        "id": "csigCOOH",
-        "ppm": 170.0,
-        "mult": "COOH (quaternário)",
-        "height": 30
-      },
-      {
-        "id": "csigCOEster",
-        "ppm": 169.7,
-        "mult": "C=O éster (quaternário)",
-        "height": 30
-      },
-      {
-        "id": "csigIpsoO",
-        "ppm": 151.0,
-        "mult": "C-ipso (quaternário)",
-        "height": 25
-      },
-      {
-        "id": "csigC4",
-        "ppm": 134.9,
-        "mult": "CH",
-        "height": 40
-      },
-      {
-        "id": "csigC6",
-        "ppm": 132.5,
-        "mult": "CH",
-        "height": 40
-      },
-      {
-        "id": "csigC5",
-        "ppm": 126.1,
-        "mult": "CH",
-        "height": 40
-      },
-      {
-        "id": "csigC3",
-        "ppm": 124.0,
-        "mult": "CH",
-        "height": 40
-      },
-      {
-        "id": "csigIpsoCOOH",
-        "ppm": 122.2,
-        "mult": "C-ipso (quaternário)",
-        "height": 25
-      },
-      {
-        "id": "csig1",
-        "ppm": 20.9,
-        "mult": "CH₃",
-        "height": 60
-      }
+      { "id": "csigCOOH", "ppm": 170.0, "mult": "COOH (quaternário)", "height": 30 },
+      { "id": "csigCOEster", "ppm": 169.7, "mult": "C=O éster (quaternário)", "height": 30 },
+      { "id": "csigIpsoO", "ppm": 151.0, "mult": "C-ipso (quaternário)", "height": 25 },
+      { "id": "csigC4", "ppm": 134.9, "mult": "CH", "height": 40 },
+      { "id": "csigC6", "ppm": 132.5, "mult": "CH", "height": 40 },
+      { "id": "csigC5", "ppm": 126.1, "mult": "CH", "height": 40 },
+      { "id": "csigC3", "ppm": 124.0, "mult": "CH", "height": 40 },
+      { "id": "csigIpsoCOOH", "ppm": 122.2, "mult": "C-ipso (quaternário)", "height": 25 },
+      { "id": "csig1", "ppm": 20.9, "mult": "CH₃", "height": 60 }
     ]
   },
   {
-    "level": 303,
-    "tier": "dificil",
-    "title": "Ibuprofeno",
+    "level": 303, "tier": "dificil", "title": "Ibuprofeno",
     "context": "AINE clássico. O padrão do grupo isobutila (doublet 6H + multiplet 1H) é a chave para a elucidação, junto com o padrão para-substituído do anel.",
-    "maxPpm": 12.5,
+    "maxPpm": 12.5, "smiles": "CC(C)Cc1ccc(cc1)C(C)C(=O)O",
     "chain": [
-      {
-        "label": "COOH",
-        "tagId": "tag1",
-        "correctTarget": "sig1"
-      },
-      {
-        "label": "CH",
-        "tagId": "tag2",
-        "correctTarget": "sig2",
-        "branches": [
-          {
-            "label": "CH₃",
-            "tagId": "tag8",
-            "correctTarget": "sig8"
-          }
-        ]
-      },
-      {
-        "label": "CH₂",
-        "tagId": "tag3",
-        "correctTarget": "sig3"
-      },
-      {
-        "label": "CH",
-        "tagId": "tag4",
-        "correctTarget": "sig4"
-      },
-      {
-        "label": "Anel (Ar)",
-        "fixed": true,
-        "branches": [
-          {
-            "label": "H-Ar (orto ao CH₂)",
-            "tagId": "tag5",
-            "correctTarget": "sig5"
-          },
-          {
-            "label": "H-Ar (orto ao CH)",
-            "tagId": "tag6",
-            "correctTarget": "sig6"
-          }
-        ]
-      },
-      {
-        "label": "CH₃ (isobutila)",
-        "tagId": "tag7",
-        "correctTarget": "sig7"
-      }
+      { "label": "COOH", "tagId": "tag1", "correctTarget": "sig1", "atomIndices": [12] },
+      { "label": "CH", "tagId": "tag2", "correctTarget": "sig2", "atomIndices": [10], "branches": [
+        { "label": "CH₃", "tagId": "tag8", "correctTarget": "sig8", "atomIndices": [11] }
+      ] },
+      { "label": "CH₂", "tagId": "tag3", "correctTarget": "sig3", "atomIndices": [3] },
+      { "label": "CH", "tagId": "tag4", "correctTarget": "sig4", "atomIndices": [1] },
+      { "label": "Anel (Ar)", "fixed": true, "branches": [
+        { "label": "H-Ar (orto ao CH₂)", "tagId": "tag5", "correctTarget": "sig5", "atomIndices": [5, 9] },
+        { "label": "H-Ar (orto ao CH)", "tagId": "tag6", "correctTarget": "sig6", "atomIndices": [6, 8] }
+      ] },
+      { "label": "CH₃ (isobutila)", "tagId": "tag7", "correctTarget": "sig7", "atomIndices": [0, 2] }
     ],
     "signals": [
-      {
-        "id": "sig1",
-        "ppm": 12.0,
-        "int": 1,
-        "mult": "s (largo)",
-        "height": 20
-      },
-      {
-        "id": "sig2",
-        "ppm": 3.7,
-        "int": 1,
-        "mult": "q",
-        "J": 7,
-        "height": 20
-      },
-      {
-        "id": "sig3",
-        "ppm": 2.5,
-        "int": 2,
-        "mult": "d",
-        "J": 7,
-        "height": 40
-      },
-      {
-        "id": "sig4",
-        "ppm": 1.9,
-        "int": 1,
-        "mult": "m",
-        "height": 20
-      },
-      {
-        "id": "sig5",
-        "ppm": 7.2,
-        "int": 2,
-        "mult": "d",
-        "J": 8,
-        "height": 40
-      },
-      {
-        "id": "sig6",
-        "ppm": 7.1,
-        "int": 2,
-        "mult": "d",
-        "J": 8,
-        "height": 40
-      },
-      {
-        "id": "sig7",
-        "ppm": 0.9,
-        "int": 6,
-        "mult": "d",
-        "J": 7,
-        "height": 120
-      },
-      {
-        "id": "sig8",
-        "ppm": 1.5,
-        "int": 3,
-        "mult": "d",
-        "J": 7,
-        "height": 70
-      }
+      { "id": "sig1", "ppm": 12.0, "int": 1, "mult": "s (largo)", "height": 20 },
+      { "id": "sig2", "ppm": 3.7, "int": 1, "mult": "q", "J": 7, "height": 20 },
+      { "id": "sig3", "ppm": 2.5, "int": 2, "mult": "d", "J": 7, "height": 40 },
+      { "id": "sig4", "ppm": 1.9, "int": 1, "mult": "m", "height": 20 },
+      { "id": "sig5", "ppm": 7.2, "int": 2, "mult": "d", "J": 8, "height": 40 },
+      { "id": "sig6", "ppm": 7.1, "int": 2, "mult": "d", "J": 8, "height": 40 },
+      { "id": "sig7", "ppm": 0.9, "int": 6, "mult": "d", "J": 7, "height": 120 },
+      { "id": "sig8", "ppm": 1.5, "int": 3, "mult": "d", "J": 7, "height": 70 }
     ],
-    "smiles": "CC(C)Cc1ccc(cc1)C(C)C(=O)O",
     "chain13C": [
-      {
-        "label": "COOH",
-        "tagId": "ctag1",
-        "correctTarget": "csigCOOH"
-      },
-      {
-        "label": "CH",
-        "tagId": "ctag2",
-        "correctTarget": "csigCHprop",
-        "branches": [
-          {
-            "label": "CH₃",
-            "tagId": "ctag3",
-            "correctTarget": "csigCH3prop"
-          }
-        ]
-      },
-      {
-        "label": "CH₂",
-        "tagId": "ctag4",
-        "correctTarget": "csigCH2"
-      },
-      {
-        "label": "CH",
-        "tagId": "ctag5",
-        "correctTarget": "csigCHiso"
-      },
-      {
-        "label": "Anel (Ar)",
-        "fixed": true,
-        "branches": [
-          {
-            "label": "C-ipso (CH₂)",
-            "tagId": "ctag6",
-            "correctTarget": "csigIpsoCH2"
-          },
-          {
-            "label": "C-ipso (CH)",
-            "tagId": "ctag7",
-            "correctTarget": "csigIpsoCH"
-          },
-          {
-            "label": "CH (orto CH₂)",
-            "tagId": "ctag8",
-            "correctTarget": "csigOrtoCH2"
-          },
-          {
-            "label": "CH (orto CH)",
-            "tagId": "ctag9",
-            "correctTarget": "csigOrtoCH"
-          }
-        ]
-      },
-      {
-        "label": "CH₃ (isobutila) ×2",
-        "tagId": "ctag10",
-        "correctTarget": "csigCH3iso"
-      }
+      { "label": "COOH", "tagId": "ctag1", "correctTarget": "csigCOOH", "atomIndices": [12] },
+      { "label": "CH", "tagId": "ctag2", "correctTarget": "csigCHprop", "atomIndices": [10], "branches": [
+        { "label": "CH₃", "tagId": "ctag3", "correctTarget": "csigCH3prop", "atomIndices": [11] }
+      ] },
+      { "label": "CH₂", "tagId": "ctag4", "correctTarget": "csigCH2", "atomIndices": [3] },
+      { "label": "CH", "tagId": "ctag5", "correctTarget": "csigCHiso", "atomIndices": [1] },
+      { "label": "Anel (Ar)", "fixed": true, "branches": [
+        { "label": "C-ipso (CH₂)", "tagId": "ctag6", "correctTarget": "csigIpsoCH2", "atomIndices": [4] },
+        { "label": "C-ipso (CH)", "tagId": "ctag7", "correctTarget": "csigIpsoCH", "atomIndices": [7] },
+        { "label": "CH (orto CH₂)", "tagId": "ctag8", "correctTarget": "csigOrtoCH2", "atomIndices": [5, 9] },
+        { "label": "CH (orto CH)", "tagId": "ctag9", "correctTarget": "csigOrtoCH", "atomIndices": [6, 8] }
+      ] },
+      { "label": "CH₃ (isobutila) ×2", "tagId": "ctag10", "correctTarget": "csigCH3iso", "atomIndices": [0, 2] }
     ],
     "signals13C": [
-      {
-        "id": "csigCOOH",
-        "ppm": 180.8,
-        "mult": "COOH (quaternário)",
-        "height": 30
-      },
-      {
-        "id": "csigIpsoCH2",
-        "ppm": 140.8,
-        "mult": "C-ipso (quaternário)",
-        "height": 25
-      },
-      {
-        "id": "csigIpsoCH",
-        "ppm": 137.0,
-        "mult": "C-ipso (quaternário)",
-        "height": 25
-      },
-      {
-        "id": "csigOrtoCH2",
-        "ppm": 129.4,
-        "mult": "CH",
-        "height": 45
-      },
-      {
-        "id": "csigOrtoCH",
-        "ppm": 127.3,
-        "mult": "CH",
-        "height": 45
-      },
-      {
-        "id": "csigCHprop",
-        "ppm": 45.3,
-        "mult": "CH",
-        "height": 35
-      },
-      {
-        "id": "csigCH2",
-        "ppm": 45.0,
-        "mult": "CH₂",
-        "height": 35
-      },
-      {
-        "id": "csigCHiso",
-        "ppm": 30.2,
-        "mult": "CH",
-        "height": 35
-      },
-      {
-        "id": "csigCH3iso",
-        "ppm": 22.4,
-        "mult": "CH₃ (×2 equivalentes)",
-        "height": 65
-      },
-      {
-        "id": "csigCH3prop",
-        "ppm": 18.1,
-        "mult": "CH₃",
-        "height": 55
-      }
+      { "id": "csigCOOH", "ppm": 180.8, "mult": "COOH (quaternário)", "height": 30 },
+      { "id": "csigIpsoCH2", "ppm": 140.8, "mult": "C-ipso (quaternário)", "height": 25 },
+      { "id": "csigIpsoCH", "ppm": 137.0, "mult": "C-ipso (quaternário)", "height": 25 },
+      { "id": "csigOrtoCH2", "ppm": 129.4, "mult": "CH", "height": 45 },
+      { "id": "csigOrtoCH", "ppm": 127.3, "mult": "CH", "height": 45 },
+      { "id": "csigCHprop", "ppm": 45.3, "mult": "CH", "height": 35 },
+      { "id": "csigCH2", "ppm": 45.0, "mult": "CH₂", "height": 35 },
+      { "id": "csigCHiso", "ppm": 30.2, "mult": "CH", "height": 35 },
+      { "id": "csigCH3iso", "ppm": 22.4, "mult": "CH₃ (×2 equivalentes)", "height": 65 },
+      { "id": "csigCH3prop", "ppm": 18.1, "mult": "CH₃", "height": 55 }
     ]
   }
 ]
