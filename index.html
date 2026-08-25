@@ -26,7 +26,33 @@
   --text-light: #6B7280;
   --text-lighter: #9CA3AF;
   --border: #E5E7EB;
+  --border-strong: #CBD5E1;
   --shadow: rgba(124, 58, 237, 0.1);
+}
+
+/* ---------- MODO ESCURO (segue o sistema) ---------- */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0f172a;
+    --bg-card: #1e293b;
+    --primary: #8b5cf6;
+    --primary-light: #a78bfa;
+    --primary-dark: #6d28d9;
+    --secondary: #f59e0b;
+    --secondary-light: #b45309;
+    --success: #10b981;
+    --success-light: #065f46;
+    --error: #ef4444;
+    --error-light: #7f1d1d;
+    --info: #3b82f6;
+    --info-light: #1e40af;
+    --text: #e2e8f0;
+    --text-light: #94a3b8;
+    --text-lighter: #64748b;
+    --border: #334155;
+    --border-strong: #475569;
+    --shadow: rgba(0, 0, 0, 0.5);
+  }
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -74,7 +100,7 @@ header {
 .brand-icon {
   width: 44px;
   height: 44px;
-  background: white;
+  background: var(--bg-card);
   border-radius: 12px;
   display: flex;
   align-items: center;
@@ -103,7 +129,7 @@ header {
   display: flex;
   align-items: center;
   gap: 10px;
-  background: white;
+  background: var(--bg-card);
   padding: 8px 16px;
   border-radius: 50px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
@@ -224,7 +250,7 @@ main {
 }
 
 .progress-card {
-  background: white;
+  background: var(--bg-card);
   border-radius: 20px;
   padding: 24px;
   margin-bottom: 32px;
@@ -259,7 +285,7 @@ main {
 .modes-grid { display: grid; gap: 16px; }
 
 .mode-card {
-  background: white;
+  background: var(--bg-card);
   border-radius: 20px;
   padding: 24px;
   cursor: pointer;
@@ -329,6 +355,7 @@ main {
   cursor: pointer;
   transition: all 0.2s;
   text-align: center;
+  color: var(--text);
 }
 
 .submode-btn:hover {
@@ -363,7 +390,7 @@ main {
 }
 
 .back-btn {
-  background: white;
+  background: var(--bg-card);
   border: 2px solid var(--border);
   width: 44px;
   height: 44px;
@@ -375,6 +402,7 @@ main {
   font-size: 20px;
   transition: all 0.2s;
   flex-shrink: 0;
+  color: var(--text);
 }
 
 .back-btn:hover {
@@ -391,7 +419,7 @@ main {
 }
 
 .tutorial-card {
-  background: white;
+  background: var(--bg-card);
   border-radius: 20px;
   padding: 32px;
   box-shadow: 0 4px 20px var(--shadow);
@@ -425,7 +453,7 @@ main {
 .context-text { font-size: 14px; line-height: 1.5; opacity: 0.95; }
 
 .structure-card {
-  background: white;
+  background: var(--bg-card);
   border-radius: 20px;
   padding: 20px;
   margin-bottom: 24px;
@@ -461,7 +489,7 @@ main {
 }
 
 .instruction {
-  background: white;
+  background: var(--bg-card);
   border-left: 4px solid var(--info);
   padding: 16px 20px;
   border-radius: 12px;
@@ -471,7 +499,7 @@ main {
 }
 
 .chain-card {
-  background: white;
+  background: var(--bg-card);
   border-radius: 20px;
   padding: 32px 24px;
   box-shadow: 0 4px 20px var(--shadow);
@@ -511,7 +539,7 @@ main {
 .chain-branch-line {
   width: 2px;
   height: 12px;
-  background: var(--border);
+  background: var(--border-strong);
 }
 
 .chain-branch-box {
@@ -528,7 +556,7 @@ main {
 .chain-link {
   width: 24px;
   height: 2px;
-  background: var(--border);
+  background: var(--border-strong);
   align-self: center;
   flex-shrink: 0;
   margin: 0 4px;
@@ -569,7 +597,7 @@ main {
 }
 
 .tags-pool-card {
-  background: white;
+  background: var(--bg-card);
   border-radius: 16px;
   padding: 20px;
   margin-bottom: 24px;
@@ -599,7 +627,7 @@ main {
 .select-tag {
   width: 40px;
   height: 40px;
-  background: white;
+  background: var(--bg-card);
   border: 3px solid var(--info);
   color: var(--info);
   border-radius: 50%;
@@ -626,7 +654,7 @@ main {
 }
 
 .spectrum-card {
-  background: white;
+  background: var(--bg-card);
   border-radius: 20px;
   padding: 24px 20px 32px;
   box-shadow: 0 4px 20px var(--shadow);
@@ -646,7 +674,7 @@ main {
 }
 
 .spectrum-svg { width: 100%; height: 140px; display: block; }
-.spectrum-baseline { stroke: var(--border); stroke-width: 2; }
+.spectrum-baseline { stroke: var(--border-strong); stroke-width: 2; }
 
 .spectrum-trace {
   fill: none;
@@ -660,7 +688,7 @@ main {
 
 .spectrum-tooltip {
   position: absolute;
-  background: white;
+  background: var(--bg-card);
   border: 2px solid var(--info);
   padding: 10px 14px;
   font-size: 13px;
@@ -685,7 +713,7 @@ main {
 }
 
 .signals-list {
-  background: white;
+  background: var(--bg-card);
   border-radius: 20px;
   overflow: hidden;
   box-shadow: 0 4px 20px var(--shadow);
@@ -740,7 +768,7 @@ main {
 .dropzone {
   width: 48px;
   height: 48px;
-  border: 3px dashed var(--border);
+  border: 3px dashed var(--border-strong);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -772,18 +800,18 @@ main {
   margin-top: 24px;
   padding: 24px;
   border-radius: 16px;
-  background: white;
+  background: var(--bg-card);
   box-shadow: 0 4px 20px var(--shadow);
 }
 
 .feedback.success {
   border-left: 4px solid var(--success);
-  background: linear-gradient(90deg, var(--success-light), white);
+  background: linear-gradient(90deg, var(--success-light), var(--bg-card));
 }
 
 .feedback.error {
   border-left: 4px solid var(--error);
-  background: linear-gradient(90deg, var(--error-light), white);
+  background: linear-gradient(90deg, var(--error-light), var(--bg-card));
 }
 
 .feedback-title {
@@ -798,7 +826,7 @@ main {
 .feedback-actions { display: flex; gap: 12px; margin-top: 20px; }
 
 .btn {
-  background: white;
+  background: var(--bg-card);
   border: 2px solid var(--border);
   color: var(--text);
   padding: 14px 24px;
@@ -838,7 +866,7 @@ main {
 
 .solo-toggle {
   display: inline-flex;
-  background: white;
+  background: var(--bg-card);
   border-radius: 12px;
   padding: 4px;
   margin-bottom: 24px;
@@ -864,7 +892,7 @@ main {
 }
 
 .solo-options {
-  background: white;
+  background: var(--bg-card);
   border-radius: 20px;
   overflow: hidden;
   box-shadow: 0 4px 20px var(--shadow);
@@ -874,7 +902,7 @@ main {
   display: block;
   width: 100%;
   text-align: left;
-  background: white;
+  background: var(--bg-card);
   border: none;
   border-bottom: 2px solid var(--border);
   color: var(--text);
@@ -974,7 +1002,7 @@ main {
 }
 
 .guided-step-card {
-  background: white;
+  background: var(--bg-card);
   border-radius: 20px;
   padding: 24px;
   margin-top: 24px;
@@ -991,7 +1019,7 @@ main {
   margin-bottom: 12px;
 }
 
-.guided-step-text { font-size: 16px; line-height: 1.6; margin-bottom: 16px; }
+.guided-step-text { font-size: 16px; line-height: 1.6; margin-bottom: 16px; color: var(--text); }
 
 .guided-options { display: grid; gap: 10px; }
 
@@ -1004,6 +1032,7 @@ main {
   font-family: 'Nunito', sans-serif;
   font-size: 15px;
   font-weight: 600;
+  color: var(--text);
   cursor: pointer;
   transition: all 0.2s;
 }
@@ -1016,7 +1045,7 @@ main {
 .guided-option.correct {
   border-color: var(--success);
   background: var(--success-light);
-  color: #065F46;
+  color: var(--success);
 }
 
 .guided-option.wrong {
@@ -1027,7 +1056,7 @@ main {
 
 /* Índice de conceitos em lista suspensa (<details>) */
 .tutorial-index-card {
-  background: white;
+  background: var(--bg-card);
   border-radius: 20px;
   padding: 20px;
   box-shadow: 0 4px 20px var(--shadow);
@@ -1080,6 +1109,7 @@ main {
   transition: all 0.2s;
   text-align: left;
   font-family: 'Nunito', sans-serif;
+  color: var(--text);
 }
 
 .tutorial-index-item:hover {
@@ -1167,7 +1197,7 @@ main {
 
 </div>
 
-<div class="app-version">v3.1.2</div>
+<div class="app-version">v3.2.0</div>
 
 <script src="https://unpkg.com/smiles-drawer@2.1.7/dist/smiles-drawer.min.js"></script>
 <script>
@@ -1186,6 +1216,11 @@ const state = {
 };
 
 const db = { tutorial: [], mapping: [], solo: [], guided: [] };
+
+// Detecta o modo escuro do sistema (celular ou computador)
+function isDarkTheme() {
+  return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+}
 
 async function carregarDados() {
   try {
@@ -1416,9 +1451,9 @@ function renderTutorial() {
   return div;
 }
 
-// Desenha o SMILES no <svg>, redimensiona para o espaço do card e sobrepõe os
-// badges numerados PERTO de cada átomo (deslocados radialmente para fora do
-// centro da molécula, sem cobrir vértices ou rótulos).
+// Desenha o SMILES no <svg> (tema claro ou escuro conforme o sistema),
+// redimensiona para o espaço do card e sobrepõe os badges numerados
+// PERTO de cada átomo (deslocados radialmente para fora do centro).
 // Compatível com SmilesDrawer 2.1.7: o grafo vive em drawer.preprocessor.graph.
 function renderMoleculeStructure(smiles, svgId, tags = []) {
   if (!window.SmilesDrawer) {
@@ -1435,7 +1470,7 @@ function renderMoleculeStructure(smiles, svgId, tags = []) {
 
   const drawer = new SmilesDrawer.SvgDrawer({ width: 320, height: 220 });
   SmilesDrawer.parse(smiles, function(tree) {
-    drawer.draw(tree, svg, 'light');
+    drawer.draw(tree, svg, isDarkTheme() ? 'dark' : 'light');
 
     const graph = (drawer.preprocessor && drawer.preprocessor.graph) || drawer.graph;
     if (!graph || !graph.vertices) return;
@@ -1553,7 +1588,7 @@ function renderSpectrumSVG(signals, maxPpm, is13C = false, highlight = []) {
   let ticks = '';
   for (let i = 0; i <= maxPpm; i += step) {
     const x = ((maxPpm - i) / maxPpm) * width;
-    ticks += `<line x1="${x}" y1="${baseline}" x2="${x}" y2="${baseline + 4}" stroke="var(--border)" stroke-width="2"/>`;
+    ticks += `<line x1="${x}" y1="${baseline}" x2="${x}" y2="${baseline + 4}" stroke="var(--border-strong)" stroke-width="2"/>`;
   }
 
   let hits = '';
@@ -2161,6 +2196,15 @@ async function iniciar() {
     return;
   }
   render();
+}
+
+// Re-renderiza automaticamente se o usuário alternar o tema do sistema
+// com o app aberto (as moléculas são redesenhadas no tema certo).
+if (window.matchMedia) {
+  const mq = window.matchMedia('(prefers-color-scheme: dark)');
+  const onThemeChange = () => render();
+  if (mq.addEventListener) mq.addEventListener('change', onThemeChange);
+  else if (mq.addListener) mq.addListener(onThemeChange);
 }
 
 iniciar();
