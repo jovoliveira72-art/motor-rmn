@@ -1,260 +1,93 @@
-[
+,
   {
-    "level": 1,
-    "title": "Solvente comum",
-    "context": "Fórmula C₂H₆O. Grau de insaturação = 0. Espectro de ¹H RMN com 3 sinais: triplet (3H), quarteto (2H) e singleto largo (1H).",
-    "spectra": {
-      "1H": {
-        "maxPpm": 6,
-        "signals": [
-          {
-            "id": "sig1",
-            "ppm": 1.2,
-            "int": 3,
-            "mult": "t",
-            "J": 7,
-            "height": 60
-          },
-          {
-            "id": "sig2",
-            "ppm": 3.7,
-            "int": 2,
-            "mult": "q",
-            "J": 7,
-            "height": 40
-          },
-          {
-            "id": "sig3",
-            "ppm": 2.6,
-            "int": 1,
-            "mult": "s (largo)",
-            "height": 20
-          }
-        ]
-      }
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "Etanol",
-        "smiles": "CCO",
-        "correct": true,
-        "feedback": "Padrão etila (triplet + quarteto) + OH trocável como singleto largo."
-      },
-      {
-        "id": "b",
-        "text": "Dimetiléter",
-        "smiles": "COC",
-        "correct": false,
-        "feedback": "COC daria apenas 1 sinal (singleto de 6H), não 3 sinais distintos."
-      },
-      {
-        "id": "c",
-        "text": "Metanol",
-        "smiles": "CO",
-        "correct": false,
-        "feedback": "Metanol tem fórmula CH₄O e daria apenas 2 sinais, sem padrão etila."
-      }
-    ]
-  },
-  {
-    "level": 2,
-    "title": "Éster de cadeia curta",
-    "context": "Fórmula C₄H₈O₂. Grau de insaturação = 1. ¹H RMN com 3 sinais: singleto (3H), quarteto (2H) e triplet (3H).",
+    "level": 5,
+    "title": "Haleto simples",
+    "context": "Fórmula C₃H₇Br. GI = 0. Três sinais: 1.0 (t, 3H), 1.9 (sexteto, 2H), 3.4 (t, 2H).",
     "spectra": {
       "1H": {
         "maxPpm": 5,
         "signals": [
-          {
-            "id": "sig1",
-            "ppm": 2.0,
-            "int": 3,
-            "mult": "s",
-            "height": 60
-          },
-          {
-            "id": "sig2",
-            "ppm": 4.1,
-            "int": 2,
-            "mult": "q",
-            "J": 7,
-            "height": 40
-          },
-          {
-            "id": "sig3",
-            "ppm": 1.2,
-            "int": 3,
-            "mult": "t",
-            "J": 7,
-            "height": 60
-          }
+          { "id": "sig1", "ppm": 1.0, "int": 3, "mult": "t", "J": 7, "height": 60 },
+          { "id": "sig2", "ppm": 1.9, "int": 2, "mult": "sext", "J": 7, "height": 40 },
+          { "id": "sig3", "ppm": 3.4, "int": 2, "mult": "t", "J": 7, "height": 40 }
         ]
       }
     },
     "options": [
-      {
-        "id": "a",
-        "text": "Acetato de etila",
-        "smiles": "CC(=O)OCC",
-        "correct": true,
-        "feedback": "CH₃−C=O (singleto 2.0 ppm), −O−CH₂− (quarteto 4.1 ppm), CH₃−CH₂ (triplet 1.2 ppm)."
-      },
-      {
-        "id": "b",
-        "text": "Propanoato de metila",
-        "smiles": "CCC(=O)OC",
-        "correct": false,
-        "feedback": "O grupo O−CH₃ apareceria em ~3.7 ppm como singleto, não em 4.1 ppm como quarteto."
-      },
-      {
-        "id": "c",
-        "text": "Ácido butírico",
-        "smiles": "CCCC(=O)O",
-        "correct": false,
-        "feedback": "Ácido carboxílico tem singleto largo em 10–12 ppm (COOH) que não aparece aqui."
-      }
+      { "id": "a", "text": "1-Bromopropano", "smiles": "CCCBr", "correct": true, "feedback": "Tripleto 3H + sexteto 2H + tripleto 2H desblindado: cadeia propil com Br na ponta." },
+      { "id": "b", "text": "2-Bromopropano", "smiles": "CC(C)Br", "correct": false, "feedback": "Daria dupleto 6H (~1.7) + septeto 1H (~4.3): padrão isopropil, não propil." },
+      { "id": "c", "text": "Propan-1-ol", "smiles": "CCCO", "correct": false, "feedback": "Teria 4 sinais incluindo OH trocável; aqui são 3 sinais sem singleto largo." }
     ]
   },
   {
-    "level": 3,
-    "title": "Analgésico aromático",
-    "context": "Fórmula C₈H₉NO₂. GI = 5. ¹H RMN: 2 singleto largos (9–10 ppm), 2 dupletos (6.7 e 7.3 ppm, 2H cada) e 1 singleto (2.1 ppm, 3H).",
-    "spectra": {
-      "1H": {
-        "maxPpm": 10.5,
-        "signals": [
-          {
-            "id": "sig1",
-            "ppm": 9.8,
-            "int": 1,
-            "mult": "s (largo)",
-            "height": 20
-          },
-          {
-            "id": "sig2",
-            "ppm": 9.2,
-            "int": 1,
-            "mult": "s (largo)",
-            "height": 20
-          },
-          {
-            "id": "sig3",
-            "ppm": 7.3,
-            "int": 2,
-            "mult": "d",
-            "J": 9,
-            "height": 45
-          },
-          {
-            "id": "sig4",
-            "ppm": 6.7,
-            "int": 2,
-            "mult": "d",
-            "J": 9,
-            "height": 45
-          },
-          {
-            "id": "sig5",
-            "ppm": 2.1,
-            "int": 3,
-            "mult": "s",
-            "height": 60
-          }
-        ]
-      }
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "Paracetamol",
-        "smiles": "CC(=O)Nc1ccc(O)cc1",
-        "correct": true,
-        "feedback": "Anel para-dissubstituído (2 dupletos de 2H), OH fenólico, NH amida e CH₃ da N-acetila."
-      },
-      {
-        "id": "b",
-        "text": "Aspirina",
-        "smiles": "CC(=O)Oc1ccccc1C(=O)O",
-        "correct": false,
-        "feedback": "Aspirina é substituição orto (4 sinais aromáticos distintos) e tem COOH em ~11 ppm."
-      },
-      {
-        "id": "c",
-        "text": "Ibuprofeno",
-        "smiles": "CC(C)Cc1ccc(cc1)C(C)C(=O)O",
-        "correct": false,
-        "feedback": "Ibuprofeno tem C₁₃H₁₈O₂ (18H), padrão de isobutila e anel para-substituído, sem N nem NH."
-      },
-      {
-        "id": "d",
-        "text": "Acetanilida",
-        "smiles": "CC(=O)Nc1ccccc1",
-        "correct": false,
-        "feedback": "Acetanilida tem apenas 1 singleto largo (NH) e anel monossubstituído, não dois singleto largos."
-      }
-    ]
-  },
-  {
-    "level": 4,
-    "title": "Estimulante nitrogenado",
-    "context": "Fórmula C₈H₁₀N₄O₂. GI = 6. ¹H RMN: 4 singleto, sendo 3 deles integrando 3H em região 3.4–4.0 ppm.",
+    "level": 6,
+    "title": "Cetona aromática",
+    "context": "Fórmula C₈H₈O. GI = 5. Singleto 3H em 2.6 e aromáticos entre 7.5–8.0.",
     "spectra": {
       "1H": {
         "maxPpm": 8.5,
         "signals": [
-          {
-            "id": "sig1",
-            "ppm": 3.4,
-            "int": 3,
-            "mult": "s",
-            "height": 60
-          },
-          {
-            "id": "sig2",
-            "ppm": 3.6,
-            "int": 3,
-            "mult": "s",
-            "height": 60
-          },
-          {
-            "id": "sig3",
-            "ppm": 4.0,
-            "int": 3,
-            "mult": "s",
-            "height": 60
-          },
-          {
-            "id": "sig4",
-            "ppm": 7.6,
-            "int": 1,
-            "mult": "s",
-            "height": 20
-          }
+          { "id": "sig1", "ppm": 2.6, "int": 3, "mult": "s", "height": 60 },
+          { "id": "sig2", "ppm": 7.5, "int": 2, "mult": "t", "J": 7, "height": 40 },
+          { "id": "sig3", "ppm": 7.6, "int": 1, "mult": "t", "J": 7, "height": 20 },
+          { "id": "sig4", "ppm": 8.0, "int": 2, "mult": "d", "J": 7, "height": 40 }
         ]
       }
     },
     "options": [
-      {
-        "id": "a",
-        "text": "Cafeína",
-        "smiles": "Cn1cnc2c1c(=O)n(C)c(=O)n2C",
-        "correct": true,
-        "feedback": "Três N−CH₃ em ambientes distintos (singleto em 3.4, 3.6 e 4.0 ppm) e um único H aromático (7.6 ppm)."
-      },
-      {
-        "id": "b",
-        "text": "Teobromina",
-        "smiles": "Cn1cnc2c1c(=O)[nH]c(=O)n2C",
-        "correct": false,
-        "feedback": "Teobromina tem apenas 2 N−CH₃ e um NH (singleto largo), não 3 N−CH₃."
-      },
-      {
-        "id": "c",
-        "text": "Teofilina",
-        "smiles": "Cn1c(=O)c2[nH]cnc2n(C)c1=O",
-        "correct": false,
-        "feedback": "Teofilina também tem apenas 2 N−CH₃ e um NH, padrão incompatível com 3 singleto de 3H."
+      { "id": "a", "text": "Acetofenona", "smiles": "CC(=O)c1ccccc1", "correct": true, "feedback": "CH₃−C=O (2.6, s) + anel monossubstituído com ortos desblindados (8.0): cetona aromática." },
+      { "id": "b", "text": "Benzaldeído", "smiles": "O=Cc1ccccc1", "correct": false, "feedback": "Teria singleto de CHO em ~10 ppm e nenhum CH₃ em 2.6." },
+      { "id": "c", "text": "Tolueno", "smiles": "Cc1ccccc1", "correct": false, "feedback": "Só 2 sinais (2.3 s, 3H + 5H aromáticos); faltaria o dupleto em 8.0." },
+      { "id": "d", "text": "Anisol", "smiles": "COc1ccccc1", "correct": false, "feedback": "OCH₃ apareceria em ~3.8 (s, 3H) e o anel não chegaria a 8.0." }
+    ]
+  },
+  {
+    "level": 7,
+    "title": "AINE para-substituído",
+    "context": "Fórmula C₁₃H₁₈O₂. GI = 5. Singleto largo em 12.0, dois dupletos 2H (7.2/7.1) e dupleto 6H em 0.9.",
+    "spectra": {
+      "1H": {
+        "maxPpm": 12.5,
+        "signals": [
+          { "id": "sig1", "ppm": 12.0, "int": 1, "mult": "s (largo)", "height": 20 },
+          { "id": "sig2", "ppm": 7.2, "int": 2, "mult": "d", "J": 8, "height": 40 },
+          { "id": "sig3", "ppm": 7.1, "int": 2, "mult": "d", "J": 8, "height": 40 },
+          { "id": "sig4", "ppm": 3.7, "int": 1, "mult": "q", "J": 7, "height": 20 },
+          { "id": "sig5", "ppm": 2.5, "int": 2, "mult": "d", "J": 7, "height": 40 },
+          { "id": "sig6", "ppm": 1.9, "int": 1, "mult": "m", "height": 20 },
+          { "id": "sig7", "ppm": 1.5, "int": 3, "mult": "d", "J": 7, "height": 70 },
+          { "id": "sig8", "ppm": 0.9, "int": 6, "mult": "d", "J": 7, "height": 120 }
+        ]
       }
+    },
+    "options": [
+      { "id": "a", "text": "Ibuprofeno", "smiles": "CC(C)Cc1ccc(cc1)C(C)C(=O)O", "correct": true, "feedback": "COOH (12), anel para (2d 2H), CH q + CH₃ d e isobutila (d 2H, m 1H, d 6H)." },
+      { "id": "b", "text": "Paracetamol", "smiles": "CC(=O)Nc1ccc(O)cc1", "correct": false, "feedback": "Teria dois singletos largos (OH/NH) e singleto 3H em 2.1; sem dupleto 6H." },
+      { "id": "c", "text": "Aspirina", "smiles": "CC(=O)Oc1ccccc1C(=O)O", "correct": false, "feedback": "Anel orto: 4 sinais aromáticos distintos; sem isobutila." },
+      { "id": "d", "text": "Naproxeno", "smiles": "COc1ccc2cc(C(C)C(=O)O)ccc2c1", "correct": false, "feedback": "Teria OCH₃ (s, ~3.9) e padrão de naftaleno (mais sinais aromáticos)." }
+    ]
+  },
+  {
+    "level": 8,
+    "title": "Anel orto assimétrico",
+    "context": "Fórmula C₉H₈O₄. GI = 6. Singleto largo 11.0, quatro aromáticos (8.1–7.1) e singleto 3H em 2.3.",
+    "spectra": {
+      "1H": {
+        "maxPpm": 11.5,
+        "signals": [
+          { "id": "sig1", "ppm": 11.0, "int": 1, "mult": "s (largo)", "height": 20 },
+          { "id": "sig2", "ppm": 8.1, "int": 1, "mult": "dd", "J": 8, "height": 25 },
+          { "id": "sig3", "ppm": 7.6, "int": 1, "mult": "t", "J": 8, "height": 25 },
+          { "id": "sig4", "ppm": 7.4, "int": 1, "mult": "t", "J": 8, "height": 25 },
+          { "id": "sig5", "ppm": 7.1, "int": 1, "mult": "d", "J": 8, "height": 25 },
+          { "id": "sig6", "ppm": 2.3, "int": 3, "mult": "s", "height": 60 }
+        ]
+      }
+    },
+    "options": [
+      { "id": "a", "text": "Aspirina", "smiles": "CC(=O)Oc1ccccc1C(=O)O", "correct": true, "feedback": "COOH (11), anel orto (dd, t, t, d) e CH₃ da acetila (2.3, s)." },
+      { "id": "b", "text": "Ácido salicílico", "smiles": "OC(=O)c1ccccc1O", "correct": false, "feedback": "Sem CH₃ em 2.3; teria OH fenólico em ~10." },
+      { "id": "c", "text": "Paracetamol", "smiles": "CC(=O)Nc1ccc(O)cc1", "correct": false, "feedback": "Anel para (2 dupletos 2H), não orto (4 sinais 1H)." },
+      { "id": "d", "text": "Ibuprofeno", "smiles": "CC(C)Cc1ccc(cc1)C(C)C(=O)O", "correct": false, "feedback": "Teria dupleto 6H (0.9) e anel para (2d 2H), não 4 sinais 1H." }
     ]
   }
-]
