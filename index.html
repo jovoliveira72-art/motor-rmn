@@ -466,7 +466,6 @@ main {
 
 .structure-card svg { max-width: 100%; height: auto; }
 
-/* Wrapper relativo para ancorar os badges numerados sobre a molécula */
 .mol-wrap { position: relative; display: inline-block; }
 
 .atom-badge {
@@ -934,7 +933,6 @@ main {
   opacity: 0.6;
 }
 
-/* Opções do Solo com SMILES visível */
 .option-btn.with-smiles {
   padding: 16px;
   display: flex;
@@ -1054,7 +1052,6 @@ main {
   opacity: 0.6;
 }
 
-/* Índice de conceitos em lista suspensa (<details>) */
 .tutorial-index-card {
   background: var(--bg-card);
   border-radius: 20px;
@@ -1147,7 +1144,6 @@ main {
 
 .tii-title { font-size: 13px; font-weight: 600; line-height: 1.3; }
 
-/* Tag de versão (discreta, canto inferior direito) */
 .app-version {
   position: fixed;
   bottom: 6px;
@@ -1197,7 +1193,7 @@ main {
 
 </div>
 
-<div class="app-version">v3.2.0</div>
+<div class="app-version">v3.3.0</div>
 
 <script src="https://unpkg.com/smiles-drawer@2.1.7/dist/smiles-drawer.min.js"></script>
 <script>
@@ -1217,7 +1213,6 @@ const state = {
 
 const db = { tutorial: [], mapping: [], solo: [], guided: [] };
 
-// Detecta o modo escuro do sistema (celular ou computador)
 function isDarkTheme() {
   return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
 }
@@ -1451,10 +1446,6 @@ function renderTutorial() {
   return div;
 }
 
-// Desenha o SMILES no <svg> (tema claro ou escuro conforme o sistema),
-// redimensiona para o espaço do card e sobrepõe os badges numerados
-// PERTO de cada átomo (deslocados radialmente para fora do centro).
-// Compatível com SmilesDrawer 2.1.7: o grafo vive em drawer.preprocessor.graph.
 function renderMoleculeStructure(smiles, svgId, tags = []) {
   if (!window.SmilesDrawer) {
     console.error('SmilesDrawer não carregou.');
@@ -1478,7 +1469,6 @@ function renderMoleculeStructure(smiles, svgId, tags = []) {
     if (!svg.viewBox || !svg.viewBox.baseVal) return;
     const vb = svg.viewBox.baseVal;
 
-    // --- Molécula maior: ajusta o SVG ao espaço disponível no card ---
     const card = wrap.closest('.structure-card');
     if (card) {
       const availW = Math.max(280, card.clientWidth - 40);
@@ -1498,14 +1488,12 @@ function renderMoleculeStructure(smiles, svgId, tags = []) {
     const offX = (rect.width - vb.width * scale) / 2;
     const offY = (rect.height - vb.height * scale) / 2;
 
-    // Centro da molécula: referência para empurrar os badges para fora
     let cx = 0, cy = 0, cn = 0;
     verts.forEach(v => { if (v && v.position) { cx += v.position.x; cy += v.position.y; cn++; } });
     if (cn) { cx /= cn; cy /= cn; }
 
-    const OFFSET = 20; // distância do badge ao átomo, em px de tela
+    const OFFSET = 20;
 
-    // Um badge POR átomo do tag (pares equivalentes repetem o mesmo número)
     tags.forEach(t => {
       if (!t.atoms || !t.atoms.length) return;
       t.atoms.forEach(i => {
@@ -1545,7 +1533,6 @@ function renderSpectrumSVG(signals, maxPpm, is13C = false, highlight = []) {
     }
   });
 
-  // Triângulo de Pascal para multiplicidades 1-6
   const pascal = {
     1: [1],
     2: [1, 1],
@@ -1610,7 +1597,46 @@ function renderSpectrumSVG(signals, maxPpm, is13C = false, highlight = []) {
   `;
 }
 
-// Carrega atomIndices junto, para os badges saberem em qual átomo ancorar.
+// Monta o HTML do tooltip de um sinal (tolera sinais sem int, como ¹³C).
+function tooltipHtml(sig) {
+  const parts = [sig.mult];
+  if (sig.int != null) parts.push(`Int ${sig.int}`);
+  if (sig.J) parts.push(`J ${sig.J}Hz`);
+  return `<span class="tt-ppm">${sig.ppm} ppm</span>` + parts.join(' · ');
+}
+
+// Liga o tooltip do espectro por hover (desktop) E por toque/clique (mobile).
+function attachSpectrumTooltips(signals, cardEl) {
+  if (!cardEl) return;
+  const tooltip = cardEl.querySelector('.spectrum-tooltip');
+  if (!tooltip) return;
+
+  const showAt = (sig, x, y) => {
+    tooltip.innerHTML = tooltipHtml(sig);
+    tooltip.classList.add('visible');
+    const rect = cardEl.getBoundingClientRect();
+    tooltip.style.left = (x - rect.left + 12) + 'px';
+    tooltip.style.top = (y - rect.top - 40) + 'px';
+  };
+  const hide = () => tooltip.classList.remove('visible');
+
+  cardEl.querySelectorAll('.spectrum-peak-hit').forEach(hit => {
+    const sig = signals[parseInt(hit.dataset.idx)];
+    if (!sig) return;
+
+    hit.addEventListener('mouseenter', (e) => showAt(sig, e.clientX, e.clientY));
+    hit.addEventListener('mousemove', (e) => showAt(sig, e.clientX, e.clientY));
+    hit.addEventListener('mouseleave', hide);
+
+    // Toque/clique: ancora o tooltip sobre o próprio pico.
+    hit.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const pr = hit.getBoundingClientRect();
+      showAt(sig, pr.left + pr.width / 2, pr.top + 30);
+    });
+  });
+}
+
 function deriveTagsFromChain(chain) {
   const tags = [];
   let c = 1;
@@ -1629,7 +1655,6 @@ function deriveTagsFromChain(chain) {
   return tags;
 }
 
-// Retorna o conjunto de dados ativo (¹H ou ¹³C) para um nível de Mapeamento.
 function getActiveMappingData(q) {
   const isCarbon = state.activeSpectrumType === '13C' && q.chain13C;
   return {
@@ -1704,8 +1729,6 @@ function renderMapping() {
 
   const tierLabel = { facil: 'Nível 1 · Fácil', medio: 'Nível 2 · Médio', dificil: 'Nível 3 · Difícil' }[q.tier] || '';
 
-  // Com SMILES: a molécula desenhada CARREGA os números e o diagrama de
-  // caixas some. Sem SMILES: fallback antigo (só caixas).
   const structureHtml = q.smiles
     ? '<div class="structure-card"><div class="mol-wrap"><svg id="mol-mapping" width="320" height="220"></svg></div></div>'
     : renderChainDiagram(chain, tagNumbers);
@@ -1733,7 +1756,7 @@ function renderMapping() {
 
     ${toggleHtml}
 
-    <div class="instruction">💡 Toque num número da estrutura e depois no sinal correspondente. Para reposicionar, toque na peça alocada e escolha nova zona.</div>
+    <div class="instruction">💡 Toque num número da estrutura e depois no sinal correspondente. Para reposicionar, toque na peça alocada e escolha nova zona. Toque nos picos do espectro para ver os dados.</div>
 
     <div class="tags-pool-card">
       <span class="tags-pool-label">Peças</span>
@@ -1835,22 +1858,7 @@ function attachMappingEvents(q, signals) {
     }
   });
 
-  const tooltip = document.getElementById('spectrum-tooltip');
-  const wrap = document.querySelector('.spectrum-card');
-  document.querySelectorAll('.spectrum-peak-hit').forEach(hit => {
-    hit.addEventListener('mouseenter', () => {
-      const idx = parseInt(hit.dataset.idx);
-      const sig = signals[idx];
-      tooltip.innerHTML = `<span class="tt-ppm">${sig.ppm} ppm</span>${sig.mult} · Int ${sig.int}${sig.J ? ` · J ${sig.J}Hz` : ''}`;
-      tooltip.classList.add('visible');
-    });
-    hit.addEventListener('mousemove', (e) => {
-      const rect = wrap.getBoundingClientRect();
-      tooltip.style.left = (e.clientX - rect.left + 12) + 'px';
-      tooltip.style.top = (e.clientY - rect.top - 40) + 'px';
-    });
-    hit.addEventListener('mouseleave', () => tooltip.classList.remove('visible'));
-  });
+  attachSpectrumTooltips(signals, document.querySelector('.spectrum-card'));
 }
 
 function checkMappingState() {
@@ -2006,6 +2014,8 @@ function renderSolo() {
     </button>`;
   }).join('');
 
+  const cardEl = div.querySelector ? null : null; // placeholder (não usado)
+
   div.innerHTML = `
     <div class="section-header">
       <button class="back-btn" onclick="setView('modeSelect', 'solo')">←</button>
@@ -2025,17 +2035,20 @@ function renderSolo() {
         <span>Alto campo →</span>
       </div>
       ${spectrumHtml}
+      <div class="spectrum-tooltip"></div>
     </div>
 
     <div style="margin-top: 24px;">
-      <div style="font-size: 13px; font-weight: 700; color: var(--text-light); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.05em;">Escolha a estrutura correta</div>
+      <div style="font-size: 13px; font-weight: 700; color: var(--text-light); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.05em;">Escolha a estrutura correta · toque nos picos para ver os dados</div>
       <div class="solo-options">${optionsHtml}</div>
     </div>
 
     <div id="feedback-box" style="margin-top: 24px;"></div>
   `;
 
+  const spectrumCard = div.querySelector('.spectrum-card');
   setTimeout(() => {
+    attachSpectrumTooltips(specData.signals, spectrumCard);
     q.options.forEach((o, i) => {
       if (o.smiles) renderMoleculeStructure(o.smiles, `opt-smiles-${q.level}-${i}`);
     });
@@ -2148,7 +2161,6 @@ function renderGuided() {
       </div>`;
   }
 
-  // Com SMILES, a estrutura real substitui o diagrama de caixas.
   const structureHtml = ex.smiles
     ? '<div class="structure-card"><div class="mol-wrap"><svg id="mol-guided" width="320" height="220"></svg></div></div>'
     : renderChainDiagram(ex.chain, tagNumbers);
@@ -2198,8 +2210,13 @@ async function iniciar() {
   render();
 }
 
-// Re-renderiza automaticamente se o usuário alternar o tema do sistema
-// com o app aberto (as moléculas são redesenhadas no tema certo).
+// Tocar fora de um pico esconde o tooltip (essencial no mobile).
+document.addEventListener('click', (e) => {
+  if (!(e.target.closest && e.target.closest('.spectrum-peak-hit'))) {
+    document.querySelectorAll('.spectrum-tooltip.visible').forEach(t => t.classList.remove('visible'));
+  }
+});
+
 if (window.matchMedia) {
   const mq = window.matchMedia('(prefers-color-scheme: dark)');
   const onThemeChange = () => render();
