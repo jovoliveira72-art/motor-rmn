@@ -30,7 +30,6 @@
   --shadow: rgba(124, 58, 237, 0.1);
 }
 
-/* ---------- MODO ESCURO (segue o sistema) ---------- */
 @media (prefers-color-scheme: dark) {
   :root {
     --bg: #0f172a;
@@ -196,6 +195,38 @@ main {
   to { opacity: 1; transform: translateY(0); }
 }
 
+/* Page flip animation para o tutorial */
+.tutorial-flip {
+  perspective: 1000px;
+  transform-style: preserve-3d;
+}
+
+.tutorial-page {
+  transform-style: preserve-3d;
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-origin: left center;
+}
+
+.tutorial-page.flip-next {
+  animation: flipNext 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.tutorial-page.flip-prev {
+  animation: flipPrev 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes flipNext {
+  0% { transform: rotateY(0deg); }
+  50% { transform: rotateY(-15deg); }
+  100% { transform: rotateY(0deg); }
+}
+
+@keyframes flipPrev {
+  0% { transform: rotateY(0deg); }
+  50% { transform: rotateY(15deg); }
+  100% { transform: rotateY(0deg); }
+}
+
 @keyframes shake {
   0%, 100% { transform: translateX(0); }
   25% { transform: translateX(-8px); }
@@ -292,6 +323,7 @@ main {
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   box-shadow: 0 4px 20px var(--shadow);
   border: 2px solid transparent;
+  position: relative;
 }
 
 .mode-card:hover {
@@ -302,6 +334,30 @@ main {
 .mode-card.tutorial:hover { border-color: var(--success); }
 .mode-card.mapping:hover { border-color: var(--info); }
 .mode-card.solo:hover { border-color: var(--secondary); }
+
+/* Check de progresso nos cards */
+.mode-progress-check {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 28px;
+  height: 28px;
+  background: var(--success);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 16px;
+  opacity: 0;
+  transform: scale(0);
+  transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.mode-progress-check.visible {
+  opacity: 1;
+  transform: scale(1);
+}
 
 .mode-header {
   display: flex;
@@ -356,12 +412,30 @@ main {
   transition: all 0.2s;
   text-align: center;
   color: var(--text);
+  position: relative;
 }
 
 .submode-btn:hover {
   border-color: var(--info);
   background: var(--info-light);
   transform: scale(1.02);
+}
+
+.submode-btn.completed::after {
+  content: '✓';
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 20px;
+  height: 20px;
+  background: var(--success);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
 }
 
 .submode-tier {
@@ -1193,7 +1267,7 @@ main {
 
 </div>
 
-<div class="app-version">v3.3.0</div>
+<div class="app-version">v3.4.0</div>
 
 <script src="https://unpkg.com/smiles-drawer@2.1.7/dist/smiles-drawer.min.js"></script>
 <script>
@@ -1208,10 +1282,51 @@ const state = {
   mappingTier: null,
   lastMappingLevel: null,
   guidedId: null,
-  guidedStep: 0
+  guidedStep: 0,
+  completed: { mapping: [], solo: [], guided: [] }
 };
 
 const db = { tutorial: [], mapping: [], solo: [], guided: [] };
+
+// ========== PERSISTÊNCIA LOCALSTORAGE ==========
+function loadProgress() {
+  try {
+    const saved = localStorage.getItem('motorRMN_progress');
+    if (saved) {
+      const data = JSON.parse(saved);
+      state.xp = data.xp || 0;
+      state.completed = data.completed || { mapping: [], solo: [], guided: [] };
+      updateXPDisplay();
+    }
+  } catch (e) {
+    console.warn('Erro ao carregar progresso:', e);
+  }
+}
+
+function saveProgress() {
+  try {
+    const data = { xp: state.xp, completed: state.completed };
+    localStorage.setItem('motorRMN_progress', JSON.stringify(data));
+  } catch (e) {
+    console.warn('Erro ao salvar progresso:', e);
+  }
+}
+
+function updateXPDisplay() {
+  const el = document.getElementById('xp-counter');
+  if (el) el.innerText = state.xp;
+}
+
+function markCompleted(mode, level) {
+  if (!state.completed[mode].includes(level)) {
+    state.completed[mode].push(level);
+    saveProgress();
+  }
+}
+
+function isCompleted(mode, level) {
+  return state.completed[mode].includes(level);
+}
 
 function isDarkTheme() {
   return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
@@ -1242,10 +1357,13 @@ function aplicarRuido(signals) {
 
 function updateXP(amount) {
   state.xp += amount;
+  updateXPDisplay();
   const el = document.getElementById('xp-counter');
-  el.innerText = state.xp;
-  el.classList.add('bounce');
-  setTimeout(() => el.classList.remove('bounce'), 500);
+  if (el) {
+    el.classList.add('bounce');
+    setTimeout(() => el.classList.remove('bounce'), 500);
+  }
+  saveProgress();
 }
 
 function setView(viewName, mode = null, level = 1) {
@@ -1285,6 +1403,7 @@ function renderHome() {
 
   const guidedCard = db.guided.length > 0 ? `
       <div class="mode-card solo" onclick="setView('guidedSelect')">
+        <div class="mode-progress-check ${state.completed.guided.length > 0 ? 'visible' : ''}">✓</div>
         <div class="mode-header">
           <div class="mode-icon solo">🧭</div>
           <div>
@@ -1314,6 +1433,7 @@ function renderHome() {
 
     <div class="modes-grid">
       <div class="mode-card tutorial" onclick="setView('tutorial', null, 1)">
+        <div class="mode-progress-check ${state.completed.tutorial?.length > 0 ? 'visible' : ''}">✓</div>
         <div class="mode-header">
           <div class="mode-icon tutorial">📚</div>
           <div>
@@ -1326,6 +1446,7 @@ function renderHome() {
       ${guidedCard}
 
       <div class="mode-card mapping">
+        <div class="mode-progress-check ${state.completed.mapping.length > 0 ? 'visible' : ''}">✓</div>
         <div class="mode-header">
           <div class="mode-icon mapping">🧩</div>
           <div>
@@ -1334,17 +1455,17 @@ function renderHome() {
           </div>
         </div>
         <div class="submodes">
-          <button class="submode-btn" onclick="event.stopPropagation(); iniciarMappingAleatorio('facil')">
+          <button class="submode-btn ${isCompleted('mapping', 'facil') ? 'completed' : ''}" onclick="event.stopPropagation(); iniciarMappingAleatorio('facil')">
             <div class="submode-tier">Nível 1</div>
             <div class="submode-name">Fácil</div>
             <div class="submode-desc">3 atribuições</div>
           </button>
-          <button class="submode-btn" onclick="event.stopPropagation(); iniciarMappingAleatorio('medio')">
+          <button class="submode-btn ${isCompleted('mapping', 'medio') ? 'completed' : ''}" onclick="event.stopPropagation(); iniciarMappingAleatorio('medio')">
             <div class="submode-tier">Nível 2</div>
             <div class="submode-name">Médio</div>
             <div class="submode-desc">5 atribuições</div>
           </button>
-          <button class="submode-btn" onclick="event.stopPropagation(); iniciarMappingAleatorio('dificil')">
+          <button class="submode-btn ${isCompleted('mapping', 'dificil') ? 'completed' : ''}" onclick="event.stopPropagation(); iniciarMappingAleatorio('dificil')">
             <div class="submode-tier">Nível 3</div>
             <div class="submode-name">Difícil</div>
             <div class="submode-desc">6+ atribuições</div>
@@ -1353,6 +1474,7 @@ function renderHome() {
       </div>
 
       <div class="mode-card solo" onclick="setView('modeSelect', 'solo')">
+        <div class="mode-progress-check ${state.completed.solo.length > 0 ? 'visible' : ''}">✓</div>
         <div class="mode-header">
           <div class="mode-icon solo">🏆</div>
           <div>
@@ -1373,12 +1495,13 @@ function renderLevelSelect() {
   div.innerHTML = `
     <div class="section-header">
       <button class="back-btn" onclick="setView('home')">←</button>
-      <h2 class="section-title">🏆 Desafio Solo</h2>
+      <h2 class="section-title"> Desafio Solo</h2>
     </div>
 
     <div class="modes-grid">
       ${levels.map((l, i) => `
         <div class="mode-card solo" onclick="setView('gameplay', 'solo', ${l.level})">
+          <div class="mode-progress-check ${isCompleted('solo', l.level) ? 'visible' : ''}">✓</div>
           <div class="mode-header">
             <div class="mode-icon solo">${i + 1}</div>
             <div>
@@ -1410,11 +1533,11 @@ function renderTutorial() {
   const data = db.tutorial.find(t => t.level === state.currentLevel);
   const div = document.createElement('div');
   const prev = state.currentLevel > 1
-    ? `<button class="btn" onclick="setView('tutorial', null, ${state.currentLevel - 1})">← Anterior</button>`
+    ? `<button class="btn" onclick="handleTutorialNav(-1)">← Anterior</button>`
     : `<div></div>`;
   const next = state.currentLevel < db.tutorial.length
-    ? `<button class="btn primary" onclick="setView('tutorial', null, ${state.currentLevel + 1})">Próximo →</button>`
-    : `<button class="btn success" onclick="setView('home')">Concluir ✓</button>`;
+    ? `<button class="btn primary" onclick="handleTutorialNav(1)">Próximo →</button>`
+    : `<button class="btn success" onclick="completeTutorial()">Concluir ✓</button>`;
 
   const indexHtml = db.tutorial.map(t => `
     <button class="tutorial-index-item ${t.level === state.currentLevel ? 'active' : ''}" onclick="setView('tutorial', null, ${t.level})">
@@ -1431,19 +1554,40 @@ function renderTutorial() {
 
     <details class="tutorial-index-card">
       <summary>
-        <span class="tutorial-index-label">📑 Índice de conceitos</span>
+        <span class="tutorial-index-label"> Índice de conceitos</span>
         <span class="index-chevron">▼</span>
       </summary>
       <div class="tutorial-index-grid">${indexHtml}</div>
     </details>
 
-    <div class="tutorial-card">
-      <div class="tutorial-body">${data.content}</div>
+    <div class="tutorial-card tutorial-flip">
+      <div class="tutorial-page" id="tutorial-page">
+        <div class="tutorial-body">${data.content}</div>
+      </div>
     </div>
 
     <div class="tutorial-nav">${prev}${next}</div>
   `;
   return div;
+}
+
+function handleTutorialNav(direction) {
+  const page = document.getElementById('tutorial-page');
+  if (!page) return;
+  
+  page.classList.add(direction > 0 ? 'flip-next' : 'flip-prev');
+  
+  setTimeout(() => {
+    state.currentLevel += direction;
+    page.classList.remove('flip-next', 'flip-prev');
+    render();
+    markCompleted('tutorial', state.currentLevel);
+  }, 300);
+}
+
+function completeTutorial() {
+  markCompleted('tutorial', state.currentLevel);
+  setView('home');
 }
 
 function renderMoleculeStructure(smiles, svgId, tags = []) {
@@ -1597,7 +1741,6 @@ function renderSpectrumSVG(signals, maxPpm, is13C = false, highlight = []) {
   `;
 }
 
-// Monta o HTML do tooltip de um sinal (tolera sinais sem int, como ¹³C).
 function tooltipHtml(sig) {
   const parts = [sig.mult];
   if (sig.int != null) parts.push(`Int ${sig.int}`);
@@ -1605,7 +1748,6 @@ function tooltipHtml(sig) {
   return `<span class="tt-ppm">${sig.ppm} ppm</span>` + parts.join(' · ');
 }
 
-// Liga o tooltip do espectro por hover (desktop) E por toque/clique (mobile).
 function attachSpectrumTooltips(signals, cardEl) {
   if (!cardEl) return;
   const tooltip = cardEl.querySelector('.spectrum-tooltip');
@@ -1628,7 +1770,6 @@ function attachSpectrumTooltips(signals, cardEl) {
     hit.addEventListener('mousemove', (e) => showAt(sig, e.clientX, e.clientY));
     hit.addEventListener('mouseleave', hide);
 
-    // Toque/clique: ancora o tooltip sobre o próprio pico.
     hit.addEventListener('click', (e) => {
       e.stopPropagation();
       const pr = hit.getBoundingClientRect();
@@ -1893,6 +2034,7 @@ window.validateMapping = function() {
   if (allCorrect) {
     const earned = Math.max(30, 150 - state.errors * 40);
     updateXP(earned);
+    markCompleted('mapping', state.mappingTier);
 
     const wrap = document.querySelector('.view-container');
     wrap.classList.add('celebrate');
@@ -1913,7 +2055,7 @@ window.validateMapping = function() {
     state.errors++;
     fb.innerHTML = `
       <div class="feedback error">
-        <div class="feedback-title" style="color: var(--error);">❌ Quase lá!</div>
+        <div class="feedback-title" style="color: var(--error);"> Quase lá!</div>
         <div class="feedback-body">Algumas atribuições estão incorretas. Reavalie os efeitos eletrônicos e tente novamente!</div>
       </div>
     `;
@@ -1951,6 +2093,7 @@ window.handleSoloAnswer = function(optionId, btnEl) {
     btnEl.classList.add('correct');
     const earned = Math.max(20, 200 - state.errors * 70);
     updateXP(earned);
+    markCompleted('solo', q.level);
 
     const wrap = document.querySelector('.view-container');
     wrap.classList.add('celebrate');
@@ -2014,12 +2157,10 @@ function renderSolo() {
     </button>`;
   }).join('');
 
-  const cardEl = div.querySelector ? null : null; // placeholder (não usado)
-
   div.innerHTML = `
     <div class="section-header">
       <button class="back-btn" onclick="setView('modeSelect', 'solo')">←</button>
-      <h2 class="section-title">🏆 ${q.title}</h2>
+      <h2 class="section-title"> ${q.title}</h2>
     </div>
 
     <div class="context-card" style="background: linear-gradient(135deg, var(--secondary-light), var(--secondary));">
@@ -2057,7 +2198,6 @@ function renderSolo() {
   return div;
 }
 
-// ——— MODO GUIADO ———
 function renderGuidedList() {
   const div = document.createElement('div');
   div.innerHTML = `
@@ -2068,6 +2208,7 @@ function renderGuidedList() {
     <div class="modes-grid">
       ${db.guided.map(g => `
         <div class="mode-card solo" onclick="startGuided(${g.id})">
+          <div class="mode-progress-check ${isCompleted('guided', g.id) ? 'visible' : ''}">✓</div>
           <div class="mode-header">
             <div class="mode-icon solo">🧭</div>
             <div>
@@ -2095,6 +2236,7 @@ window.guidedNext = function() {
     render();
     document.getElementById('app-container').scrollTop = 0;
   } else {
+    markCompleted('guided', ex.id);
     setView('guidedSelect');
   }
 };
@@ -2191,8 +2333,42 @@ function renderGuided() {
   return div;
 }
 
-// ——— INIT ———
+// ========== ATALHOS DE TECLADO ==========
+document.addEventListener('keydown', (e) => {
+  // Tutorial: setas navegam entre níveis
+  if (state.currentView === 'tutorial') {
+    if (e.key === 'ArrowLeft' && state.currentLevel > 1) {
+      handleTutorialNav(-1);
+    } else if (e.key === 'ArrowRight' && state.currentLevel < db.tutorial.length) {
+      handleTutorialNav(1);
+    }
+  }
+  
+  // Solo/Guiado: teclas 1,2,3 selecionam opções
+  if (state.currentView === 'gameplay' || state.currentView === 'guided') {
+    if (['1', '2', '3', '4', '5', '6', '7', '8', '9'].includes(e.key)) {
+      const idx = parseInt(e.key) - 1;
+      const btn = document.querySelectorAll('.option-btn, .guided-option')[idx];
+      if (btn && !btn.disabled) btn.click();
+    }
+  }
+  
+  // Mapping: Enter valida
+  if (state.currentView === 'gameplay' && state.activeMode === 'mapping') {
+    if (e.key === 'Enter') {
+      const btn = document.getElementById('btn-validate');
+      if (btn && !btn.disabled) btn.click();
+    }
+  }
+  
+  // Home: ESC volta
+  if (e.key === 'Escape' && state.currentView !== 'home') {
+    setView('home');
+  }
+});
+
 async function iniciar() {
+  loadProgress();
   const c = document.getElementById('app-container');
   c.innerHTML = `<div style="display:flex;align-items:center;justify-content:center;height:60vh;flex-direction:column;gap:16px;">
     <div style="font-size: 48px; animation: float 2s ease-in-out infinite;">🧪</div>
@@ -2210,7 +2386,6 @@ async function iniciar() {
   render();
 }
 
-// Tocar fora de um pico esconde o tooltip (essencial no mobile).
 document.addEventListener('click', (e) => {
   if (!(e.target.closest && e.target.closest('.spectrum-peak-hit'))) {
     document.querySelectorAll('.spectrum-tooltip.visible').forEach(t => t.classList.remove('visible'));
