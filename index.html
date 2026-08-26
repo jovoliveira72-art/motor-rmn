@@ -186,45 +186,13 @@ main {
   padding: 32px 24px 80px;
 }
 
-.view-container { max-width: 900px; margin: 0 auto; }
+.view-container { max-width: 1200px; margin: 0 auto; }
 
 .fade-in { animation: fadeIn 0.4s ease-out; }
 
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
-}
-
-/* Page flip animation para o tutorial */
-.tutorial-flip {
-  perspective: 1000px;
-  transform-style: preserve-3d;
-}
-
-.tutorial-page {
-  transform-style: preserve-3d;
-  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-  transform-origin: left center;
-}
-
-.tutorial-page.flip-next {
-  animation: flipNext 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.tutorial-page.flip-prev {
-  animation: flipPrev 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-@keyframes flipNext {
-  0% { transform: rotateY(0deg); }
-  50% { transform: rotateY(-15deg); }
-  100% { transform: rotateY(0deg); }
-}
-
-@keyframes flipPrev {
-  0% { transform: rotateY(0deg); }
-  50% { transform: rotateY(15deg); }
-  100% { transform: rotateY(0deg); }
 }
 
 @keyframes shake {
@@ -335,7 +303,6 @@ main {
 .mode-card.mapping:hover { border-color: var(--info); }
 .mode-card.solo:hover { border-color: var(--secondary); }
 
-/* Check de progresso nos cards */
 .mode-progress-check {
   position: absolute;
   top: 20px;
@@ -492,28 +459,36 @@ main {
   color: var(--text);
 }
 
-.tutorial-card {
-  background: var(--bg-card);
-  border-radius: 20px;
-  padding: 32px;
-  box-shadow: 0 4px 20px var(--shadow);
-  margin-bottom: 24px;
+/* ========== NOVO LAYOUT MAPPING ========== */
+.mapping-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  align-items: start;
 }
 
-.tutorial-body { font-size: 17px; line-height: 1.7; color: var(--text); }
-.tutorial-body strong { color: var(--success); font-weight: 700; }
+@media (max-width: 900px) {
+  .mapping-layout {
+    grid-template-columns: 1fr;
+  }
+}
 
-.tutorial-nav {
+.mapping-left {
   display: flex;
-  justify-content: space-between;
-  gap: 12px;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.mapping-right {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
 .context-card {
   background: linear-gradient(135deg, var(--info-light), var(--info));
   border-radius: 16px;
   padding: 20px;
-  margin-bottom: 24px;
   color: white;
 }
 
@@ -530,12 +505,11 @@ main {
   background: var(--bg-card);
   border-radius: 20px;
   padding: 20px;
-  margin-bottom: 24px;
   box-shadow: 0 4px 20px var(--shadow);
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 120px;
+  min-height: 200px;
 }
 
 .structure-card svg { max-width: 100%; height: auto; }
@@ -544,9 +518,9 @@ main {
 
 .atom-badge {
   position: absolute;
-  width: 26px;
-  height: 26px;
-  margin: -13px 0 0 -13px;
+  width: 28px;
+  height: 28px;
+  margin: -14px 0 0 -14px;
   background: linear-gradient(135deg, var(--info), var(--info-light));
   color: white;
   border: 2px solid white;
@@ -554,176 +528,18 @@ main {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 800;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
   pointer-events: none;
   z-index: 10;
+  transition: all 0.3s;
 }
 
-.instruction {
-  background: var(--bg-card);
-  border-left: 4px solid var(--info);
-  padding: 16px 20px;
-  border-radius: 12px;
-  margin-bottom: 24px;
-  font-size: 14px;
-  color: var(--text-light);
-}
-
-.chain-card {
-  background: var(--bg-card);
-  border-radius: 20px;
-  padding: 32px 24px;
-  box-shadow: 0 4px 20px var(--shadow);
-  margin-bottom: 24px;
-  overflow-x: auto;
-}
-
-.chain-inner {
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
-  gap: 0;
-  min-width: max-content;
-}
-
-.chain-node {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  flex-shrink: 0;
-}
-
-.chain-node-branches {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-bottom: 8px;
-  gap: 4px;
-}
-
-.chain-branch {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.chain-branch-line {
-  width: 2px;
-  height: 12px;
-  background: var(--border-strong);
-}
-
-.chain-branch-box {
-  background: var(--bg);
-  border: 2px solid var(--border);
-  padding: 6px 12px;
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--text-light);
-  border-radius: 8px;
-  position: relative;
-}
-
-.chain-link {
-  width: 24px;
-  height: 2px;
-  background: var(--border-strong);
-  align-self: center;
-  flex-shrink: 0;
-  margin: 0 4px;
-}
-
-.chain-box {
-  background: var(--bg);
-  border: 2px solid var(--border);
-  padding: 10px 16px;
-  font-size: 14px;
-  font-weight: 700;
-  color: var(--text);
-  border-radius: 10px;
-  position: relative;
-}
-
-.chain-box.fixed {
-  color: var(--text-lighter);
-  border-style: dashed;
-}
-
-.chain-badge {
-  position: absolute;
-  top: -30px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 26px;
-  height: 26px;
-  background: linear-gradient(135deg, var(--info), var(--info-light));
-  color: white;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 13px;
-  font-weight: 800;
-  box-shadow: 0 4px 12px var(--shadow);
-}
-
-.tags-pool-card {
-  background: var(--bg-card);
-  border-radius: 16px;
-  padding: 20px;
-  margin-bottom: 24px;
-  box-shadow: 0 4px 20px var(--shadow);
-  display: flex;
-  align-items: center;
-  gap: 16px;
-}
-
-.tags-pool-label {
-  font-size: 12px;
-  font-weight: 700;
-  color: var(--text-light);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
-.tags-pool {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  flex: 1;
-  min-height: 40px;
-  align-items: center;
-}
-
-.select-tag {
-  width: 40px;
-  height: 40px;
-  background: var(--bg-card);
-  border: 3px solid var(--info);
-  color: var(--info);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 15px;
-  font-weight: 800;
-  cursor: pointer;
-  transition: all 0.2s;
-  user-select: none;
-}
-
-.select-tag:hover {
-  background: var(--info-light);
+.atom-badge.assigned {
+  background: linear-gradient(135deg, var(--success), var(--success-light));
+  border-color: var(--success);
   transform: scale(1.1);
-}
-
-.select-tag.is-selected {
-  background: var(--info);
-  color: white;
-  box-shadow: 0 0 0 4px var(--info-light);
-  transform: scale(1.15);
 }
 
 .spectrum-card {
@@ -731,7 +547,6 @@ main {
   border-radius: 20px;
   padding: 24px 20px 32px;
   box-shadow: 0 4px 20px var(--shadow);
-  margin-bottom: 24px;
   position: relative;
 }
 
@@ -785,6 +600,7 @@ main {
   margin-bottom: 2px;
 }
 
+/* NOVO: Lista de sinais com dropdown */
 .signals-list {
   background: var(--bg-card);
   border-radius: 20px;
@@ -794,10 +610,10 @@ main {
 
 .signal-row {
   display: grid;
-  grid-template-columns: 80px 1fr 60px;
+  grid-template-columns: 80px 1fr 100px;
   gap: 16px;
   align-items: center;
-  padding: 20px;
+  padding: 16px 20px;
   border-bottom: 2px solid var(--border);
   transition: all 0.2s;
 }
@@ -816,13 +632,13 @@ main {
 
 .signal-ppm {
   font-family: 'Poppins', sans-serif;
-  font-size: 24px;
+  font-size: 22px;
   font-weight: 800;
   color: var(--text);
 }
 
 .signal-ppm small {
-  font-size: 12px;
+  font-size: 11px;
   color: var(--text-lighter);
   font-weight: 600;
   margin-left: 2px;
@@ -838,35 +654,52 @@ main {
 
 .signal-meta span b { color: var(--text); font-weight: 700; }
 
-.dropzone {
-  width: 48px;
-  height: 48px;
-  border: 3px dashed var(--border-strong);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+/* NOVO: Dropdown de atribuição */
+.signal-select {
+  width: 100%;
+  padding: 10px 12px;
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Nunito', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
   cursor: pointer;
   transition: all 0.2s;
-  justify-self: end;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236B7280' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding-right: 36px;
+}
+
+.signal-select:hover {
+  border-color: var(--info);
+}
+
+.signal-select:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px var(--info-light);
+}
+
+.signal-select.assigned {
+  border-color: var(--success);
+  background-color: var(--success-light);
+}
+
+.signal-select option {
+  padding: 8px;
+}
+
+.instruction {
+  background: var(--bg-card);
+  border-left: 4px solid var(--info);
+  padding: 16px 20px;
   border-radius: 12px;
-}
-
-.dropzone:hover {
-  border-color: var(--info);
-  background: var(--info-light);
-}
-
-.dropzone.zone-filled {
-  border-style: solid;
-  border-color: var(--info);
-  background: var(--info-light);
-}
-
-.dropzone .placeholder {
-  font-size: 10px;
-  color: var(--text-lighter);
-  font-weight: 700;
-  text-transform: uppercase;
+  font-size: 14px;
+  color: var(--text-light);
 }
 
 .feedback {
@@ -1235,8 +1068,8 @@ main {
   main { padding: 24px 16px 80px; }
   .home-title { font-size: 28px; }
   .mode-title { font-size: 18px; }
-  .signal-row { grid-template-columns: 60px 1fr 50px; gap: 12px; padding: 16px; }
-  .signal-ppm { font-size: 20px; }
+  .signal-row { grid-template-columns: 70px 1fr 90px; gap: 12px; padding: 12px 16px; }
+  .signal-ppm { font-size: 18px; }
   .xp-badge { padding: 6px 12px; }
   .xp-value { font-size: 18px; }
   .option-btn .opt-smiles svg { max-width: 200px; }
@@ -1267,7 +1100,7 @@ main {
 
 </div>
 
-<div class="app-version">v3.4.0</div>
+<div class="app-version">v3.5.0</div>
 
 <script src="https://unpkg.com/smiles-drawer@2.1.7/dist/smiles-drawer.min.js"></script>
 <script>
@@ -1278,24 +1111,23 @@ const state = {
   currentLevel: 1,
   activeSpectrumType: '1H',
   errors: 0,
-  selectedTagId: null,
   mappingTier: null,
   lastMappingLevel: null,
   guidedId: null,
   guidedStep: 0,
-  completed: { mapping: [], solo: [], guided: [] }
+  completed: { mapping: [], solo: [], guided: [], tutorial: [] },
+  assignments: {}
 };
 
 const db = { tutorial: [], mapping: [], solo: [], guided: [] };
 
-// ========== PERSISTÊNCIA LOCALSTORAGE ==========
 function loadProgress() {
   try {
     const saved = localStorage.getItem('motorRMN_progress');
     if (saved) {
       const data = JSON.parse(saved);
       state.xp = data.xp || 0;
-      state.completed = data.completed || { mapping: [], solo: [], guided: [] };
+      state.completed = data.completed || { mapping: [], solo: [], guided: [], tutorial: [] };
       updateXPDisplay();
     }
   } catch (e) {
@@ -1372,7 +1204,7 @@ function setView(viewName, mode = null, level = 1) {
   if (level) state.currentLevel = level;
   state.errors = 0;
   state.activeSpectrumType = '1H';
-  state.selectedTagId = null;
+  state.assignments = {};
   render();
   document.getElementById('app-container').scrollTop = 0;
 }
@@ -1416,7 +1248,7 @@ function renderHome() {
 
   div.innerHTML = `
     <div class="home-hero">
-      <div class="home-emoji">🔬</div>
+      <div class="home-emoji"></div>
       <h1 class="home-title">Domine a RMN!</h1>
       <p class="home-sub">Aprenda a analisar espectros de Ressonância Magnética Nuclear com moléculas reais do mercado farmacêutico. Ganhe pontos e suba de nível!</p>
     </div>
@@ -1495,7 +1327,7 @@ function renderLevelSelect() {
   div.innerHTML = `
     <div class="section-header">
       <button class="back-btn" onclick="setView('home')">←</button>
-      <h2 class="section-title"> Desafio Solo</h2>
+      <h2 class="section-title">🏆 Desafio Solo</h2>
     </div>
 
     <div class="modes-grid">
@@ -1560,10 +1392,8 @@ function renderTutorial() {
       <div class="tutorial-index-grid">${indexHtml}</div>
     </details>
 
-    <div class="tutorial-card tutorial-flip">
-      <div class="tutorial-page" id="tutorial-page">
-        <div class="tutorial-body">${data.content}</div>
-      </div>
+    <div class="tutorial-card">
+      <div class="tutorial-body">${data.content}</div>
     </div>
 
     <div class="tutorial-nav">${prev}${next}</div>
@@ -1572,17 +1402,9 @@ function renderTutorial() {
 }
 
 function handleTutorialNav(direction) {
-  const page = document.getElementById('tutorial-page');
-  if (!page) return;
-  
-  page.classList.add(direction > 0 ? 'flip-next' : 'flip-prev');
-  
-  setTimeout(() => {
-    state.currentLevel += direction;
-    page.classList.remove('flip-next', 'flip-prev');
-    render();
-    markCompleted('tutorial', state.currentLevel);
-  }, 300);
+  state.currentLevel += direction;
+  render();
+  markCompleted('tutorial', state.currentLevel);
 }
 
 function completeTutorial() {
@@ -1650,6 +1472,7 @@ function renderMoleculeStructure(smiles, svgId, tags = []) {
         const py = (v.position.y - vb.y) * scale + offY + dy * OFFSET;
         const badge = document.createElement('div');
         badge.className = 'atom-badge';
+        badge.id = `badge-${t.id}`;
         badge.textContent = t.label;
         badge.style.left = px + 'px';
         badge.style.top = py + 'px';
@@ -1806,37 +1629,6 @@ function getActiveMappingData(q) {
   };
 }
 
-function renderChainDiagram(chain, tagNumbers) {
-  const nodes = chain.map(item => {
-    const num = item.tagId ? tagNumbers[item.tagId] : null;
-    const badge = num ? `<div class="chain-badge">${num}</div>` : '';
-
-    const branches = (item.branches || []).map(b => {
-      const bNum = b.tagId ? tagNumbers[b.tagId] : null;
-      const bBadge = bNum ? `<div class="chain-badge" style="top:-26px;width:22px;height:22px;font-size:11px;">${bNum}</div>` : '';
-      return `
-        <div class="chain-branch">
-          ${bBadge}
-          <div class="chain-branch-box" style="position:relative;">${b.label}</div>
-          <div class="chain-branch-line"></div>
-        </div>
-      `;
-    }).join('');
-
-    return `
-      <div class="chain-node">
-        ${branches ? `<div class="chain-node-branches">${branches}</div>` : ''}
-        <div class="chain-box ${item.fixed ? 'fixed' : ''}" style="position:relative;">
-          ${badge}
-          ${item.label}
-        </div>
-      </div>
-    `;
-  }).join('<div class="chain-link"></div>');
-
-  return `<div class="chain-card"><div class="chain-inner">${nodes}</div></div>`;
-}
-
 function renderMapping() {
   const q = db.mapping.find(x => x.level === state.currentLevel);
   const { isCarbon, chain, signals: rawSignals, maxPpm } = getActiveMappingData(q);
@@ -1848,31 +1640,10 @@ function renderMapping() {
 
   const signals = aplicarRuido(rawSignals);
   const shuffledSignals = [...signals].sort(() => Math.random() - 0.5);
-  const shuffledTags = [...tags].sort(() => Math.random() - 0.5);
-
-  const tagsHtml = shuffledTags.map(t =>
-    `<div class="select-tag" id="${t.id}" data-tagid="${t.id}">${t.label}</div>`
-  ).join('');
-
-  const signalsHtml = shuffledSignals.map(sig => `
-    <div class="signal-row" id="row-${sig.id}" data-signalid="${sig.id}">
-      <div class="signal-ppm">${sig.ppm}<small>ppm</small></div>
-      <div class="signal-meta">
-        <span>Mult: <b>${sig.mult}</b></span>
-        ${sig.int != null ? `<span>Int: <b>${sig.int}</b></span>` : ''}
-        ${sig.J ? `<span>J: <b>${sig.J}</b></span>` : ''}
-      </div>
-      <div class="dropzone" id="drop-${sig.id}" data-signalid="${sig.id}">
-        <span class="placeholder">—</span>
-      </div>
-    </div>
-  `).join('');
-
-  const tierLabel = { facil: 'Nível 1 · Fácil', medio: 'Nível 2 · Médio', dificil: 'Nível 3 · Difícil' }[q.tier] || '';
 
   const structureHtml = q.smiles
     ? '<div class="structure-card"><div class="mol-wrap"><svg id="mol-mapping" width="320" height="220"></svg></div></div>'
-    : renderChainDiagram(chain, tagNumbers);
+    : '<div class="structure-card"><p style="color: var(--text-light);">Estrutura não disponível</p></div>';
 
   const toggleHtml = q.chain13C ? `
     <div class="solo-toggle">
@@ -1880,6 +1651,27 @@ function renderMapping() {
       <button class="${isCarbon ? 'active' : ''}" onclick="toggleMappingSpectrum('13C')">¹³C RMN</button>
     </div>
   ` : '';
+
+  // NOVO: Dropdowns em vez de dropzones
+  const signalsHtml = shuffledSignals.map(sig => {
+    const assignedTag = Object.entries(state.assignments).find(([tagId, sigId]) => sigId === sig.id);
+    const assignedLabel = assignedTag ? tags.find(t => t.id === assignedTag[0])?.label : '';
+    
+    return `
+      <div class="signal-row" id="row-${sig.id}" data-signalid="${sig.id}">
+        <div class="signal-ppm">${sig.ppm}<small>ppm</small></div>
+        <div class="signal-meta">
+          <span>Mult: <b>${sig.mult}</b></span>
+          ${sig.int != null ? `<span>Int: <b>${sig.int}</b></span>` : ''}
+          ${sig.J ? `<span>J: <b>${sig.J}</b></span>` : ''}
+        </div>
+        <select class="signal-select ${assignedLabel ? 'assigned' : ''}" data-signalid="${sig.id}" onchange="handleAssignment('${sig.id}', this.value)">
+          <option value="">—</option>
+          ${tags.map(t => `<option value="${t.id}" ${state.assignments[t.id] === sig.id ? 'selected' : ''}>${t.label}</option>`).join('')}
+        </select>
+      </div>
+    `;
+  }).join('');
 
   const div = document.createElement('div');
   div.innerHTML = `
@@ -1893,120 +1685,87 @@ function renderMapping() {
       <div class="context-text">${q.context}</div>
     </div>
 
-    ${structureHtml}
-
-    ${toggleHtml}
-
-    <div class="instruction">💡 Toque num número da estrutura e depois no sinal correspondente. Para reposicionar, toque na peça alocada e escolha nova zona. Toque nos picos do espectro para ver os dados.</div>
-
-    <div class="tags-pool-card">
-      <span class="tags-pool-label">Peças</span>
-      <div class="tags-pool" id="tags-pool">${tagsHtml}</div>
-    </div>
-
-    <div class="spectrum-card">
-      <div class="spectrum-axis-labels">
-        <span>← Desblindado</span>
-        <span>Blindado →</span>
+    <div class="mapping-layout">
+      <div class="mapping-left">
+        ${structureHtml}
+        ${toggleHtml}
       </div>
-      ${renderSpectrumSVG(signals, maxPpm, isCarbon)}
-      <div class="spectrum-tooltip" id="spectrum-tooltip"></div>
+      <div class="mapping-right">
+        <div class="spectrum-card">
+          <div class="spectrum-axis-labels">
+            <span>← Desblindado</span>
+            <span>Blindado →</span>
+          </div>
+          ${renderSpectrumSVG(signals, maxPpm, isCarbon)}
+          <div class="spectrum-tooltip" id="spectrum-tooltip"></div>
+        </div>
+
+        <div class="instruction">💡 Selecione o número correspondente a cada sinal no dropdown. Os números atribuídos ficarão destacados na molécula.</div>
+
+        <div class="signals-list">${signalsHtml}</div>
+
+        <div id="mapping-feedback"></div>
+
+        <button class="btn primary" id="btn-validate" onclick="validateMapping()" style="margin-top: 24px; width: 100%;">Validar atribuição</button>
+      </div>
     </div>
-
-    <div class="signals-list">${signalsHtml}</div>
-
-    <div id="mapping-feedback"></div>
-
-    <button class="btn primary" id="btn-validate" onclick="validateMapping()" disabled style="margin-top: 24px; width: 100%;">Validar atribuição</button>
   `;
 
-  setTimeout(() => attachMappingEvents(q, signals), 0);
-  if (q.smiles) setTimeout(() => renderMoleculeStructure(q.smiles, 'mol-mapping', tags), 0);
+  setTimeout(() => {
+    attachSpectrumTooltips(signals, div.querySelector('.spectrum-card'));
+    if (q.smiles) renderMoleculeStructure(q.smiles, 'mol-mapping', tags);
+  }, 0);
 
   return div;
 }
 
+// NOVO: Handler de atribuição via dropdown
+window.handleAssignment = function(sigId, tagId) {
+  // Remove atribuição anterior deste tag
+  if (state.assignments[tagId]) {
+    delete state.assignments[tagId];
+  }
+  
+  // Remove atribuição anterior deste sinal
+  Object.keys(state.assignments).forEach(key => {
+    if (state.assignments[key] === sigId) {
+      delete state.assignments[key];
+    }
+  });
+  
+  // Adiciona nova atribuição
+  if (tagId) {
+    state.assignments[tagId] = sigId;
+  }
+  
+  // Atualiza UI
+  render();
+  updateBadges();
+};
+
+function updateBadges() {
+  document.querySelectorAll('.atom-badge').forEach(badge => {
+    const tagId = badge.id.replace('badge-', '');
+    if (state.assignments[tagId]) {
+      badge.classList.add('assigned');
+    } else {
+      badge.classList.remove('assigned');
+    }
+  });
+}
+
 window.toggleMappingSpectrum = function(type) {
   state.activeSpectrumType = type;
-  state.selectedTagId = null;
+  state.assignments = {};
   render();
 };
 
-function attachMappingEvents(q, signals) {
-  document.querySelectorAll('.select-tag').forEach(tag => {
-    tag.addEventListener('click', () => {
-      const id = tag.dataset.tagid;
-      if (state.selectedTagId === id) {
-        tag.classList.remove('is-selected');
-        state.selectedTagId = null;
-        return;
-      }
-      document.querySelectorAll('.select-tag').forEach(t => t.classList.remove('is-selected'));
-      tag.classList.add('is-selected');
-      state.selectedTagId = id;
-    });
-  });
-
-  document.querySelectorAll('.dropzone').forEach(dz => {
-    dz.addEventListener('click', () => {
-      if (state.selectedTagId) {
-        const tagEl = document.getElementById(state.selectedTagId);
-        const origin = tagEl.parentElement;
-        const existing = dz.querySelector('.select-tag');
-        if (existing && existing.id !== tagEl.id) {
-          document.getElementById('tags-pool').appendChild(existing);
-        }
-        dz.innerHTML = '';
-        dz.appendChild(tagEl);
-        dz.classList.add('zone-filled');
-        tagEl.classList.remove('is-selected');
-        state.selectedTagId = null;
-        if (origin && origin.classList.contains('dropzone') && origin !== dz) {
-          origin.innerHTML = '<span class="placeholder">—</span>';
-          origin.classList.remove('zone-filled');
-        }
-        checkMappingState();
-      } else {
-        const placed = dz.querySelector('.select-tag');
-        if (placed) {
-          document.querySelectorAll('.select-tag').forEach(t => t.classList.remove('is-selected'));
-          placed.classList.add('is-selected');
-          state.selectedTagId = placed.id;
-        }
-      }
-    });
-  });
-
-  document.getElementById('tags-pool').addEventListener('click', (e) => {
-    const tagHit = e.target.closest('.select-tag');
-    if (tagHit) {
-      document.querySelectorAll('.select-tag').forEach(t => t.classList.remove('is-selected'));
-      tagHit.classList.add('is-selected');
-      state.selectedTagId = tagHit.id;
-      return;
-    }
-    if (state.selectedTagId) {
-      const tagEl = document.getElementById(state.selectedTagId);
-      const origin = tagEl.parentElement;
-      tagEl.classList.remove('is-selected');
-      document.getElementById('tags-pool').appendChild(tagEl);
-      state.selectedTagId = null;
-      if (origin && origin.classList.contains('dropzone') && origin.id !== 'tags-pool') {
-        origin.innerHTML = '<span class="placeholder">—</span>';
-        origin.classList.remove('zone-filled');
-      }
-      checkMappingState();
-    }
-  });
-
-  attachSpectrumTooltips(signals, document.querySelector('.spectrum-card'));
-}
-
 function checkMappingState() {
-  const pool = document.getElementById('tags-pool');
+  const q = db.mapping.find(x => x.level === state.currentLevel);
+  const tags = q._derivedTags;
+  const allAssigned = tags.every(t => state.assignments[t.id]);
   const btn = document.getElementById('btn-validate');
-  if (!pool || !btn) return;
-  btn.disabled = pool.children.length > 0;
+  if (btn) btn.disabled = !allAssigned;
 }
 
 window.validateMapping = function() {
@@ -2015,17 +1774,18 @@ window.validateMapping = function() {
   let allCorrect = true;
 
   tags.forEach(t => {
-    const dz = document.getElementById(`drop-${t.correctTarget}`);
-    const tagEl = document.getElementById(t.id);
-    const row = document.getElementById(`row-${t.correctTarget}`);
-    if (dz && dz.contains(tagEl)) {
-      row.classList.add('correct');
+    const assignedSig = state.assignments[t.id];
+    const row = document.getElementById(`row-${assignedSig}`);
+    
+    if (assignedSig === t.correctTarget) {
+      if (row) row.classList.add('correct');
+      const badge = document.getElementById(`badge-${t.id}`);
+      if (badge) badge.classList.add('assigned');
     } else {
       allCorrect = false;
-      const parent = tagEl.parentElement;
-      if (parent && parent.classList.contains('dropzone')) {
-        parent.closest('.signal-row').classList.add('wrong', 'shake-err');
-        setTimeout(() => parent.closest('.signal-row').classList.remove('shake-err'), 400);
+      if (row) {
+        row.classList.add('wrong', 'shake-err');
+        setTimeout(() => row.classList.remove('shake-err'), 400);
       }
     }
   });
@@ -2055,26 +1815,13 @@ window.validateMapping = function() {
     state.errors++;
     fb.innerHTML = `
       <div class="feedback error">
-        <div class="feedback-title" style="color: var(--error);"> Quase lá!</div>
+        <div class="feedback-title" style="color: var(--error);">❌ Quase lá!</div>
         <div class="feedback-body">Algumas atribuições estão incorretas. Reavalie os efeitos eletrônicos e tente novamente!</div>
       </div>
     `;
     setTimeout(() => {
-      tags.forEach(t => {
-        const dz = document.getElementById(`drop-${t.correctTarget}`);
-        const tagEl = document.getElementById(t.id);
-        if (!dz.contains(tagEl)) {
-          document.getElementById('tags-pool').appendChild(tagEl);
-          const row = tagEl.closest('.signal-row');
-          if (row) {
-            row.classList.remove('wrong');
-            const parentDz = row.querySelector('.dropzone');
-            parentDz.innerHTML = '<span class="placeholder">—</span>';
-            parentDz.classList.remove('zone-filled');
-          }
-        }
-      });
-      checkMappingState();
+      state.assignments = {};
+      render();
       fb.innerHTML = '';
     }, 2200);
   }
@@ -2121,7 +1868,7 @@ window.handleSoloAnswer = function(optionId, btnEl) {
     btnEl.classList.add('wrong');
     fb.innerHTML = `
       <div class="feedback error">
-        <div class="feedback-title" style="color: var(--error);">❌ Não foi dessa vez!</div>
+        <div class="feedback-title" style="color: var(--error);"> Não foi dessa vez!</div>
         <div class="feedback-body">${opt.feedback}</div>
       </div>
     `;
@@ -2160,7 +1907,7 @@ function renderSolo() {
   div.innerHTML = `
     <div class="section-header">
       <button class="back-btn" onclick="setView('modeSelect', 'solo')">←</button>
-      <h2 class="section-title"> ${q.title}</h2>
+      <h2 class="section-title">🏆 ${q.title}</h2>
     </div>
 
     <div class="context-card" style="background: linear-gradient(135deg, var(--secondary-light), var(--secondary));">
@@ -2305,7 +2052,7 @@ function renderGuided() {
 
   const structureHtml = ex.smiles
     ? '<div class="structure-card"><div class="mol-wrap"><svg id="mol-guided" width="320" height="220"></svg></div></div>'
-    : renderChainDiagram(ex.chain, tagNumbers);
+    : '<div class="structure-card"><p style="color: var(--text-light);">Estrutura não disponível</p></div>';
 
   const div = document.createElement('div');
   div.innerHTML = `
@@ -2333,9 +2080,7 @@ function renderGuided() {
   return div;
 }
 
-// ========== ATALHOS DE TECLADO ==========
 document.addEventListener('keydown', (e) => {
-  // Tutorial: setas navegam entre níveis
   if (state.currentView === 'tutorial') {
     if (e.key === 'ArrowLeft' && state.currentLevel > 1) {
       handleTutorialNav(-1);
@@ -2344,7 +2089,6 @@ document.addEventListener('keydown', (e) => {
     }
   }
   
-  // Solo/Guiado: teclas 1,2,3 selecionam opções
   if (state.currentView === 'gameplay' || state.currentView === 'guided') {
     if (['1', '2', '3', '4', '5', '6', '7', '8', '9'].includes(e.key)) {
       const idx = parseInt(e.key) - 1;
@@ -2353,7 +2097,6 @@ document.addEventListener('keydown', (e) => {
     }
   }
   
-  // Mapping: Enter valida
   if (state.currentView === 'gameplay' && state.activeMode === 'mapping') {
     if (e.key === 'Enter') {
       const btn = document.getElementById('btn-validate');
@@ -2361,7 +2104,6 @@ document.addEventListener('keydown', (e) => {
     }
   }
   
-  // Home: ESC volta
   if (e.key === 'Escape' && state.currentView !== 'home') {
     setView('home');
   }
