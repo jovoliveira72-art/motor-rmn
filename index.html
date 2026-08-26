@@ -143,12 +143,6 @@ header {
   align-items: center;
   justify-content: center;
   font-size: 18px;
-  animation: pulse 2s ease-in-out infinite;
-}
-
-@keyframes pulse {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.1); }
 }
 
 .xp-info { display: flex; flex-direction: column; }
@@ -224,12 +218,6 @@ main {
 .home-emoji {
   font-size: 64px;
   margin-bottom: 16px;
-  animation: float 3s ease-in-out infinite;
-}
-
-@keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
 }
 
 .home-title {
@@ -1097,7 +1085,7 @@ main {
 
 </div>
 
-<div class="app-version">v3.6.0</div>
+<div class="app-version">v3.7.0</div>
 
 <script src="https://unpkg.com/smiles-drawer@2.1.7/dist/smiles-drawer.min.js"></script>
 <script>
@@ -1113,7 +1101,8 @@ const state = {
   guidedId: null,
   guidedStep: 0,
   completed: { mapping: [], solo: [], guided: [], tutorial: [] },
-  assignments: {}
+  assignments: {},
+  shuffledSignals: null
 };
 
 const db = { tutorial: [], mapping: [], solo: [], guided: [] };
@@ -1194,6 +1183,7 @@ function setView(viewName, mode = null, level = 1) {
   state.errors = 0;
   state.activeSpectrumType = '1H';
   state.assignments = {};
+  state.shuffledSignals = null;
   render();
   document.getElementById('app-container').scrollTop = 0;
 }
@@ -1244,7 +1234,7 @@ function renderHome() {
 
     <div class="progress-card">
       <div class="progress-header">
-        <div class="progress-title"> Seu progresso</div>
+        <div class="progress-title">🎯 Seu progresso</div>
         <div class="progress-stats">${state.xp} / 500 pts</div>
       </div>
       <div class="progress-bar">
@@ -1370,12 +1360,12 @@ function renderTutorial() {
   div.innerHTML = `
     <div class="section-header">
       <button class="back-btn" onclick="setView('home')">←</button>
-      <h2 class="section-title">📚 ${data.title}</h2>
+      <h2 class="section-title"> ${data.title}</h2>
     </div>
 
     <details class="tutorial-index-card">
       <summary>
-        <span class="tutorial-index-label"> Índice de conceitos</span>
+        <span class="tutorial-index-label">📑 Índice de conceitos</span>
         <span class="index-chevron">▼</span>
       </summary>
       <div class="tutorial-index-grid">${indexHtml}</div>
@@ -1627,7 +1617,11 @@ function renderMapping() {
   tags.forEach(t => tagNumbers[t.id] = t.label);
   q._derivedTags = tags;
 
-  const shuffledSignals = [...signals].sort(() => Math.random() - 0.5);
+  // CORREÇÃO: Embaralhar apenas uma vez por molécula
+  if (!state.shuffledSignals) {
+    state.shuffledSignals = [...signals].sort(() => Math.random() - 0.5);
+  }
+  const shuffledSignals = state.shuffledSignals;
 
   const structureHtml = q.smiles
     ? '<div class="structure-card"><div class="mol-wrap"><svg id="mol-mapping" width="320" height="220"></svg></div></div>'
@@ -1739,6 +1733,7 @@ function updateBadges() {
 window.toggleMappingSpectrum = function(type) {
   state.activeSpectrumType = type;
   state.assignments = {};
+  state.shuffledSignals = null;
   render();
 };
 
@@ -1889,7 +1884,7 @@ function renderSolo() {
   div.innerHTML = `
     <div class="section-header">
       <button class="back-btn" onclick="setView('modeSelect', 'solo')">←</button>
-      <h2 class="section-title"> ${q.title}</h2>
+      <h2 class="section-title">🏆 ${q.title}</h2>
     </div>
 
     <div class="context-card" style="background: linear-gradient(135deg, var(--secondary-light), var(--secondary));">
@@ -2040,7 +2035,7 @@ function renderGuided() {
   div.innerHTML = `
     <div class="section-header">
       <button class="back-btn" onclick="setView('guidedSelect')">←</button>
-      <h2 class="section-title"> ${ex.title}</h2>
+      <h2 class="section-title">🧭 ${ex.title}</h2>
     </div>
     <div class="guided-progress">
       <span>Passo ${state.guidedStep + 1} de ${ex.steps.length}</span>
@@ -2095,7 +2090,7 @@ async function iniciar() {
   loadProgress();
   const c = document.getElementById('app-container');
   c.innerHTML = `<div style="display:flex;align-items:center;justify-content:center;height:60vh;flex-direction:column;gap:16px;">
-    <div style="font-size: 48px; animation: float 2s ease-in-out infinite;">🧪</div>
+    <div style="font-size: 48px;">🧪</div>
     <div style="font-size: 14px; color: var(--text-light); font-weight: 600;">Carregando...</div>
   </div>`;
   const ok = await carregarDados();
