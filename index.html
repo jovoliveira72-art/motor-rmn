@@ -459,7 +459,6 @@ main {
   color: var(--text);
 }
 
-/* ========== NOVO LAYOUT MAPPING ========== */
 .mapping-layout {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -600,7 +599,6 @@ main {
   margin-bottom: 2px;
 }
 
-/* NOVO: Lista de sinais com dropdown */
 .signals-list {
   background: var(--bg-card);
   border-radius: 20px;
@@ -654,7 +652,6 @@ main {
 
 .signal-meta span b { color: var(--text); font-weight: 700; }
 
-/* NOVO: Dropdown de atribuição */
 .signal-select {
   width: 100%;
   padding: 10px 12px;
@@ -1100,7 +1097,7 @@ main {
 
 </div>
 
-<div class="app-version">v3.5.0</div>
+<div class="app-version">v3.6.0</div>
 
 <script src="https://unpkg.com/smiles-drawer@2.1.7/dist/smiles-drawer.min.js"></script>
 <script>
@@ -1179,14 +1176,6 @@ async function carregarDados() {
   } catch (e) { console.error(e); return false; }
 }
 
-function aplicarRuido(signals) {
-  return signals.map(s => ({
-    ...s,
-    ppm: parseFloat((s.ppm + (Math.random() - 0.5) * 0.08).toFixed(2)),
-    height: Math.round(s.height * (0.9 + Math.random() * 0.2))
-  }));
-}
-
 function updateXP(amount) {
   state.xp += amount;
   updateXPDisplay();
@@ -1255,7 +1244,7 @@ function renderHome() {
 
     <div class="progress-card">
       <div class="progress-header">
-        <div class="progress-title">🎯 Seu progresso</div>
+        <div class="progress-title"> Seu progresso</div>
         <div class="progress-stats">${state.xp} / 500 pts</div>
       </div>
       <div class="progress-bar">
@@ -1631,14 +1620,13 @@ function getActiveMappingData(q) {
 
 function renderMapping() {
   const q = db.mapping.find(x => x.level === state.currentLevel);
-  const { isCarbon, chain, signals: rawSignals, maxPpm } = getActiveMappingData(q);
+  const { isCarbon, chain, signals, maxPpm } = getActiveMappingData(q);
 
   const tags = deriveTagsFromChain(chain);
   const tagNumbers = {};
   tags.forEach(t => tagNumbers[t.id] = t.label);
   q._derivedTags = tags;
 
-  const signals = aplicarRuido(rawSignals);
   const shuffledSignals = [...signals].sort(() => Math.random() - 0.5);
 
   const structureHtml = q.smiles
@@ -1652,7 +1640,6 @@ function renderMapping() {
     </div>
   ` : '';
 
-  // NOVO: Dropdowns em vez de dropzones
   const signalsHtml = shuffledSignals.map(sig => {
     const assignedTag = Object.entries(state.assignments).find(([tagId, sigId]) => sigId === sig.id);
     const assignedLabel = assignedTag ? tags.find(t => t.id === assignedTag[0])?.label : '';
@@ -1719,26 +1706,21 @@ function renderMapping() {
   return div;
 }
 
-// NOVO: Handler de atribuição via dropdown
 window.handleAssignment = function(sigId, tagId) {
-  // Remove atribuição anterior deste tag
   if (state.assignments[tagId]) {
     delete state.assignments[tagId];
   }
   
-  // Remove atribuição anterior deste sinal
   Object.keys(state.assignments).forEach(key => {
     if (state.assignments[key] === sigId) {
       delete state.assignments[key];
     }
   });
   
-  // Adiciona nova atribuição
   if (tagId) {
     state.assignments[tagId] = sigId;
   }
   
-  // Atualiza UI
   render();
   updateBadges();
 };
@@ -1868,7 +1850,7 @@ window.handleSoloAnswer = function(optionId, btnEl) {
     btnEl.classList.add('wrong');
     fb.innerHTML = `
       <div class="feedback error">
-        <div class="feedback-title" style="color: var(--error);"> Não foi dessa vez!</div>
+        <div class="feedback-title" style="color: var(--error);">❌ Não foi dessa vez!</div>
         <div class="feedback-body">${opt.feedback}</div>
       </div>
     `;
@@ -1907,7 +1889,7 @@ function renderSolo() {
   div.innerHTML = `
     <div class="section-header">
       <button class="back-btn" onclick="setView('modeSelect', 'solo')">←</button>
-      <h2 class="section-title">🏆 ${q.title}</h2>
+      <h2 class="section-title"> ${q.title}</h2>
     </div>
 
     <div class="context-card" style="background: linear-gradient(135deg, var(--secondary-light), var(--secondary));">
@@ -2058,7 +2040,7 @@ function renderGuided() {
   div.innerHTML = `
     <div class="section-header">
       <button class="back-btn" onclick="setView('guidedSelect')">←</button>
-      <h2 class="section-title">🧭 ${ex.title}</h2>
+      <h2 class="section-title"> ${ex.title}</h2>
     </div>
     <div class="guided-progress">
       <span>Passo ${state.guidedStep + 1} de ${ex.steps.length}</span>
