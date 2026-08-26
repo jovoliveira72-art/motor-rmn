@@ -269,6 +269,43 @@ main {
   transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+/* NOVO: Grid de estatísticas por modo */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin-top: 20px;
+}
+
+.stat-card {
+  background: var(--bg);
+  border-radius: 12px;
+  padding: 16px;
+  border: 1px solid var(--border);
+}
+
+.stat-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-light);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 8px;
+}
+
+.stat-value {
+  font-family: 'Poppins', sans-serif;
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+
+.stat-detail {
+  font-size: 12px;
+  color: var(--text-light);
+}
+
 .modes-grid { display: grid; gap: 16px; }
 
 .mode-card {
@@ -755,6 +792,17 @@ main {
   color: white;
 }
 
+.btn.danger {
+  background: var(--error);
+  border-color: var(--error);
+  color: white;
+}
+
+.btn.danger:hover:not(:disabled) {
+  background: var(--error-light);
+  border-color: var(--error-light);
+}
+
 .solo-toggle {
   display: inline-flex;
   background: var(--bg-card);
@@ -1085,7 +1133,7 @@ main {
 
 </div>
 
-<div class="app-version">v3.7.0</div>
+<div class="app-version">v3.8.0</div>
 
 <script src="https://unpkg.com/smiles-drawer@2.1.7/dist/smiles-drawer.min.js"></script>
 <script>
@@ -1107,6 +1155,14 @@ const state = {
 
 const db = { tutorial: [], mapping: [], solo: [], guided: [] };
 
+// NOVO: Totais de conteúdo por modo
+const TOTALS = {
+  tutorial: 12,
+  mapping: { facil: 3, medio: 3, dificil: 3 },
+  solo: 8,
+  guided: 4
+};
+
 function loadProgress() {
   try {
     const saved = localStorage.getItem('motorRMN_progress');
@@ -1127,6 +1183,17 @@ function saveProgress() {
     localStorage.setItem('motorRMN_progress', JSON.stringify(data));
   } catch (e) {
     console.warn('Erro ao salvar progresso:', e);
+  }
+}
+
+// NOVO: Resetar histórico
+function resetProgress() {
+  if (confirm('Tem certeza que deseja resetar todo o progresso? Esta ação não pode ser desfeita.')) {
+    state.xp = 0;
+    state.completed = { mapping: [], solo: [], guided: [], tutorial: [] };
+    localStorage.removeItem('motorRMN_progress');
+    updateXPDisplay();
+    render();
   }
 }
 
@@ -1225,6 +1292,15 @@ function renderHome() {
       </div>
   ` : '';
 
+  // NOVO: Calcular estatísticas por modo
+  const tutorialCount = state.completed.tutorial.length;
+  const mappingCount = state.completed.mapping.length;
+  const soloCount = state.completed.solo.length;
+  const guidedCount = state.completed.guided.length;
+  const totalItems = TOTALS.tutorial + Object.values(TOTALS.mapping).reduce((a, b) => a + b, 0) + TOTALS.solo + TOTALS.guided;
+  const completedItems = tutorialCount + mappingCount + soloCount + guidedCount;
+  const totalPercent = Math.round((completedItems / totalItems) * 100);
+
   div.innerHTML = `
     <div class="home-hero">
       <div class="home-emoji"></div>
@@ -1240,13 +1316,43 @@ function renderHome() {
       <div class="progress-bar">
         <div class="progress-fill" style="width: ${progressPercent}%"></div>
       </div>
+      
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-label">📚 Fundamentos</div>
+          <div class="stat-value">${tutorialCount}/${TOTALS.tutorial}</div>
+          <div class="stat-detail">${Math.round((tutorialCount / TOTALS.tutorial) * 100)}% completo</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">🧩 Atribuição H/C</div>
+          <div class="stat-value">${mappingCount}/${totalMolecules}</div>
+          <div class="stat-detail">${Math.round((mappingCount / totalMolecules) * 100)}% completo</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">🏆 Desafio Solo</div>
+          <div class="stat-value">${soloCount}/${TOTALS.solo}</div>
+          <div class="stat-detail">${Math.round((soloCount / TOTALS.solo) * 100)}% completo</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">🧭 Exemplos Guiados</div>
+          <div class="stat-value">${guidedCount}/${TOTALS.guided}</div>
+          <div class="stat-detail">${Math.round((guidedCount / TOTALS.guided) * 100)}% completo</div>
+        </div>
+      </div>
+      
+      <div style="margin-top: 20px; text-align: center;">
+        <div style="font-size: 14px; color: var(--text-light); margin-bottom: 8px;">Progresso total</div>
+        <div style="font-family: 'Poppins', sans-serif; font-size: 32px; font-weight: 800; color: var(--primary);">${totalPercent}%</div>
+      </div>
+      
+      <button class="btn danger" onclick="resetProgress()" style="margin-top: 20px; width: 100%;">️ Resetar Histórico</button>
     </div>
 
     <div class="modes-grid">
       <div class="mode-card tutorial" onclick="setView('tutorial', null, 1)">
-        <div class="mode-progress-check ${state.completed.tutorial?.length > 0 ? 'visible' : ''}">✓</div>
+        <div class="mode-progress-check ${tutorialCount > 0 ? 'visible' : ''}">✓</div>
         <div class="mode-header">
-          <div class="mode-icon tutorial">📚</div>
+          <div class="mode-icon tutorial"></div>
           <div>
             <div class="mode-title">Fundamentos</div>
             <div class="mode-desc">Aprenda os conceitos básicos: ppm, Karplus, n+1 e filtros DEPT</div>
@@ -1257,7 +1363,7 @@ function renderHome() {
       ${guidedCard}
 
       <div class="mode-card mapping">
-        <div class="mode-progress-check ${state.completed.mapping.length > 0 ? 'visible' : ''}">✓</div>
+        <div class="mode-progress-check ${mappingCount > 0 ? 'visible' : ''}">✓</div>
         <div class="mode-header">
           <div class="mode-icon mapping">🧩</div>
           <div>
@@ -1285,7 +1391,7 @@ function renderHome() {
       </div>
 
       <div class="mode-card solo" onclick="setView('modeSelect', 'solo')">
-        <div class="mode-progress-check ${state.completed.solo.length > 0 ? 'visible' : ''}">✓</div>
+        <div class="mode-progress-check ${soloCount > 0 ? 'visible' : ''}">✓</div>
         <div class="mode-header">
           <div class="mode-icon solo">🏆</div>
           <div>
@@ -1306,7 +1412,7 @@ function renderLevelSelect() {
   div.innerHTML = `
     <div class="section-header">
       <button class="back-btn" onclick="setView('home')">←</button>
-      <h2 class="section-title">🏆 Desafio Solo</h2>
+      <h2 class="section-title"> Desafio Solo</h2>
     </div>
 
     <div class="modes-grid">
@@ -1360,7 +1466,7 @@ function renderTutorial() {
   div.innerHTML = `
     <div class="section-header">
       <button class="back-btn" onclick="setView('home')">←</button>
-      <h2 class="section-title"> ${data.title}</h2>
+      <h2 class="section-title">📚 ${data.title}</h2>
     </div>
 
     <details class="tutorial-index-card">
@@ -1617,7 +1723,6 @@ function renderMapping() {
   tags.forEach(t => tagNumbers[t.id] = t.label);
   q._derivedTags = tags;
 
-  // CORREÇÃO: Embaralhar apenas uma vez por molécula
   if (!state.shuffledSignals) {
     state.shuffledSignals = [...signals].sort(() => Math.random() - 0.5);
   }
@@ -1884,7 +1989,7 @@ function renderSolo() {
   div.innerHTML = `
     <div class="section-header">
       <button class="back-btn" onclick="setView('modeSelect', 'solo')">←</button>
-      <h2 class="section-title">🏆 ${q.title}</h2>
+      <h2 class="section-title"> ${q.title}</h2>
     </div>
 
     <div class="context-card" style="background: linear-gradient(135deg, var(--secondary-light), var(--secondary));">
@@ -2090,7 +2195,7 @@ async function iniciar() {
   loadProgress();
   const c = document.getElementById('app-container');
   c.innerHTML = `<div style="display:flex;align-items:center;justify-content:center;height:60vh;flex-direction:column;gap:16px;">
-    <div style="font-size: 48px;">🧪</div>
+    <div style="font-size: 48px;"></div>
     <div style="font-size: 14px; color: var(--text-light); font-weight: 600;">Carregando...</div>
   </div>`;
   const ok = await carregarDados();
