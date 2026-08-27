@@ -680,60 +680,98 @@ main {
   padding: 6px;
 }
 
-/* ========== MODAL DE ACERTO (SOLO) ========== */
-.modal-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.6);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 100;
-  padding: 20px;
-  animation: fadeIn 0.3s ease-out;
+/* ========== LAYOUT SOLO: 2 COLUNAS ========== */
+.solo-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  align-items: start;
 }
 
-.modal-card {
+@media (max-width: 900px) {
+  .solo-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+.solo-left {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.solo-right {
+  position: sticky;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.result-panel {
   background: var(--bg-card);
   border-radius: 20px;
-  padding: 28px;
-  max-width: 520px;
-  width: 100%;
-  max-height: 90vh;
-  overflow-y: auto;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+  padding: 24px;
+  box-shadow: 0 4px 20px var(--shadow);
   text-align: center;
-  border: 2px solid var(--success);
+  min-height: 280px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid transparent;
+  transition: border-color 0.3s;
 }
 
-.modal-mascot {
+.result-panel.correct {
+  border-color: var(--success);
+}
+
+.result-panel.wrong {
+  border-color: var(--error);
+}
+
+.result-panel .result-mascot {
   width: 110px;
-  margin: 0 auto 12px;
   background: #f5f7fa;
   border-radius: 16px;
   padding: 8px;
-  display: block;
+  margin-bottom: 14px;
 }
 
-.modal-title {
+.result-panel .result-title {
   font-family: 'Poppins', sans-serif;
-  font-size: 22px;
+  font-size: 20px;
   font-weight: 800;
-  color: var(--success);
-  margin-bottom: 8px;
+  margin-bottom: 10px;
 }
 
-.modal-body {
+.result-panel .result-title.correct { color: var(--success); }
+.result-panel .result-title.wrong { color: var(--error); }
+
+.result-panel .result-body {
   font-size: 14px;
   color: var(--text-light);
   line-height: 1.6;
   margin-bottom: 16px;
-  text-align: left;
 }
 
-.modal-actions {
+.result-panel .result-structure {
+  width: 100%;
+  margin-top: 8px;
+}
+
+.result-panel .result-actions {
   display: flex;
-  gap: 12px;
+  gap: 10px;
+  margin-top: 16px;
+  width: 100%;
+}
+
+.result-placeholder {
+  color: var(--text-lighter);
+  font-size: 14px;
+  font-style: italic;
 }
 
 .mapping-layout {
@@ -1082,7 +1120,7 @@ main {
   color: white;
 }
 
-/* NOVO: Layout compacto para opções do Solo */
+/* NOVO: Opções compactas do Solo */
 .solo-options {
   background: var(--bg-card);
   border-radius: 20px;
@@ -1092,14 +1130,14 @@ main {
 
 .option-btn {
   display: grid;
-  grid-template-columns: 120px 1fr 40px;
-  gap: 16px;
+  grid-template-columns: 110px 1fr 40px;
+  gap: 14px;
   align-items: center;
   background: var(--bg-card);
   border: none;
   border-bottom: 2px solid var(--border);
   color: var(--text);
-  padding: 14px 18px;
+  padding: 12px 16px;
   font-family: 'Nunito', sans-serif;
   font-size: 14px;
   font-weight: 600;
@@ -1129,11 +1167,12 @@ main {
 .option-smiles-wrap {
   background: var(--bg);
   border-radius: 10px;
-  padding: 8px;
+  padding: 6px;
   display: flex;
   justify-content: center;
   align-items: center;
   border: 1px solid var(--border);
+  min-height: 60px;
 }
 
 .option-smiles-wrap svg {
@@ -1148,9 +1187,10 @@ main {
 }
 
 .option-check {
-  font-size: 18px;
+  font-size: 20px;
   opacity: 0;
   transition: opacity 0.2s;
+  text-align: center;
 }
 
 .option-btn.correct .option-check {
@@ -1160,7 +1200,7 @@ main {
 @media (max-width: 700px) {
   .option-btn {
     grid-template-columns: 80px 1fr 30px;
-    padding: 12px;
+    padding: 10px 12px;
     font-size: 13px;
   }
   .option-smiles-wrap svg {
@@ -1395,7 +1435,7 @@ main {
 
 </div>
 
-<div class="app-version">v4.1.0</div>
+<div class="app-version">v4.2.0</div>
 
 <script src="https://unpkg.com/smiles-drawer@2.1.7/dist/smiles-drawer.min.js"></script>
 <script>
@@ -1483,7 +1523,7 @@ window.setSplit = function(n) {
 function buildSplittingDiagram() {
   return `
     <div class="diagram-card">
-      <div class="diagram-title">️ Regra n+1: escolha o número de vizinhos</div>
+      <div class="diagram-title">✂️ Regra n+1: escolha o número de vizinhos</div>
       <div class="split-controls">
         ${[0, 1, 2, 3, 4, 5].map(n => `<button class="split-btn" data-n="${n}" onclick="setSplit(${n})">${n}</button>`).join('')}
       </div>
@@ -1708,14 +1748,14 @@ function renderHome() {
             <div class="stat-detail">${Math.round((soloCount / TOTALS.solo) * 100)}% completo</div>
           </div>
           <div class="stat-card">
-            <div class="stat-label">🧭 Exemplos Guiados</div>
+            <div class="stat-label"> Exemplos Guiados</div>
             <div class="stat-value">${guidedCount}/${TOTALS.guided}</div>
             <div class="stat-detail">${Math.round((guidedCount / TOTALS.guided) * 100)}% completo</div>
           </div>
         </div>
       </details>
       
-      <button class="btn danger" onclick="resetProgress()" style="margin-top: 16px; width: 100%;">🗑️ Resetar Histórico</button>
+      <button class="btn danger" onclick="resetProgress()" style="margin-top: 16px; width: 100%;">️ Resetar Histórico</button>
     </div>
 
     <div class="modes-grid">
@@ -2166,7 +2206,7 @@ function renderMapping() {
           <div class="spectrum-tooltip" id="spectrum-tooltip"></div>
         </div>
 
-        <div class="instruction">💡 Selecione o número correspondente a cada sinal no dropdown. Os números atribuídos ficarão destacados na molécula.</div>
+        <div class="instruction"> Selecione o número correspondente a cada sinal no dropdown. Os números atribuídos ficarão destacados na molécula.</div>
 
         <div class="signals-list">${signalsHtml}</div>
 
@@ -2257,7 +2297,7 @@ window.validateMapping = function() {
     fb.innerHTML = `
       <div class="feedback success">
         <img class="feedback-mascot" src="${MASCOT_POSES.festa}" alt="" onerror="this.remove()">
-        <div class="feedback-title" style="color: var(--success);"> Parabéns! +${earned} pontos</div>
+        <div class="feedback-title" style="color: var(--success);">🎉 Parabéns! +${earned} pontos</div>
         <div class="feedback-body">Você acertou todas as atribuições! Continue praticando para dominar a RMN.</div>
         <div class="feedback-actions">
           <button class="btn success" onclick="iniciarMappingAleatorio('${state.mappingTier}')">Nova molécula</button>
@@ -2288,9 +2328,11 @@ window.toggleSpectrum = type => { state.activeSpectrumType = type; render(); };
 window.handleSoloAnswer = function(optionId, btnEl) {
   const q = db.solo.find(x => x.level === state.currentLevel);
   const opt = q.options.find(o => o.id === optionId);
-  const fb = document.getElementById('feedback-box');
   const btns = document.querySelectorAll('.option-btn');
   btns.forEach(b => b.disabled = true);
+
+  const resultPanel = document.getElementById('result-panel');
+  if (!resultPanel) return;
 
   if (opt.correct) {
     btnEl.classList.add('correct');
@@ -2298,46 +2340,43 @@ window.handleSoloAnswer = function(optionId, btnEl) {
     updateXP(earned);
     markCompleted('solo', q.level);
 
-    // Some com as opções e o rótulo; o acerto vira modal
-    const optionsWrap = document.querySelector('.solo-options');
-    if (optionsWrap) optionsWrap.parentElement.style.display = 'none';
-    if (fb) fb.innerHTML = '';
+    const wrap = document.querySelector('.view-container');
+    wrap.classList.add('celebrate');
+    setTimeout(() => wrap.classList.remove('celebrate'), 600);
 
-    const overlay = document.createElement('div');
-    overlay.className = 'modal-overlay';
-    overlay.innerHTML = `
-      <div class="modal-card">
-        <img class="modal-mascot" src="${MASCOT_POSES.festa}" alt="" onerror="this.remove()">
-        <div class="modal-title">🎉 Excelente! +${earned} pontos</div>
-        <div class="modal-body">${opt.feedback}</div>
-        ${q.smiles ? `
-          <div class="structure-card" style="min-height:160px;margin-bottom:16px;">
-            <div class="mol-wrap"><svg id="mol-solo-reveal" width="320" height="220"></svg></div>
-          </div>` : ''}
-        <div class="modal-actions">
-          <button class="btn success" onclick="closeSoloModal(); setView('modeSelect', 'solo')">Próximo desafio</button>
-          <button class="btn" onclick="closeSoloModal()">Rever espectro</button>
+    resultPanel.className = 'result-panel correct';
+    resultPanel.innerHTML = `
+      <img class="result-mascot" src="${MASCOT_POSES.festa}" alt="" onerror="this.remove()">
+      <div class="result-title correct">🎉 Excelente! +${earned} pontos</div>
+      <div class="result-body">${opt.feedback}</div>
+      ${q.smiles ? `
+        <div class="structure-card result-structure">
+          <div class="mol-wrap"><svg id="mol-solo-result" width="320" height="220"></svg></div>
         </div>
+      ` : ''}
+      <div class="result-actions">
+        <button class="btn success" onclick="setView('modeSelect', 'solo')">Próximo desafio</button>
       </div>
     `;
-    document.body.appendChild(overlay);
-    if (q.smiles) setTimeout(() => renderMoleculeStructure(q.smiles, 'mol-solo-reveal'), 0);
+    if (q.smiles) setTimeout(() => renderMoleculeStructure(q.smiles, 'mol-solo-result'), 0);
   } else {
     state.errors++;
     btnEl.classList.add('wrong');
-    fb.innerHTML = `
-      <div class="feedback error">
-        <img class="feedback-mascot" src="${MASCOT_POSES.pensando}" alt="" onerror="this.remove()">
-        <div class="feedback-title" style="color: var(--error);">❌ Não foi dessa vez!</div>
-        <div class="feedback-body">${opt.feedback}</div>
+    resultPanel.className = 'result-panel wrong';
+    resultPanel.innerHTML = `
+      <img class="result-mascot" src="${MASCOT_POSES.pensando}" alt="" onerror="this.remove()">
+      <div class="result-title wrong">❌ Não foi dessa vez!</div>
+      <div class="result-body">${opt.feedback}</div>
+      <div class="result-actions">
+        <button class="btn" onclick="retrySolo()">Tentar novamente</button>
       </div>
     `;
     setTimeout(() => btns.forEach(b => { if (!b.classList.contains('wrong')) b.disabled = false; }), 900);
   }
 };
 
-window.closeSoloModal = function() {
-  document.querySelectorAll('.modal-overlay').forEach(o => o.remove());
+window.retrySolo = function() {
+  render();
 };
 
 function renderSolo() {
@@ -2356,7 +2395,6 @@ function renderSolo() {
   const specData = q.spectra[state.activeSpectrumType];
   const spectrumHtml = renderSpectrumSVG(specData.signals, specData.maxPpm, is13C);
 
-  // NOVO: Layout compacto com grid
   const optionsHtml = q.options.map((o, i) => {
     const svgId = `opt-smiles-${q.level}-${i}`;
     return `
@@ -2376,28 +2414,39 @@ function renderSolo() {
       <h2 class="section-title">🏆 ${q.title}</h2>
     </div>
 
-    <div class="context-card" style="background: linear-gradient(135deg, var(--secondary-light), var(--secondary));">
-      <div class="context-title">${q.title}</div>
-      <div class="context-text">${q.context}</div>
-    </div>
+    <div class="solo-layout">
+      <div class="solo-left">
+        <div class="context-card" style="background: linear-gradient(135deg, var(--secondary-light), var(--secondary));">
+          <div class="context-title">${q.title}</div>
+          <div class="context-text">${q.context}</div>
+        </div>
 
-    ${toggleHtml}
+        ${toggleHtml}
 
-    <div class="spectrum-card">
-      <div class="spectrum-axis-labels">
-        <span>← Baixo campo</span>
-        <span>Alto campo →</span>
+        <div class="spectrum-card">
+          <div class="spectrum-axis-labels">
+            <span>← Baixo campo</span>
+            <span>Alto campo →</span>
+          </div>
+          ${spectrumHtml}
+          <div class="spectrum-tooltip"></div>
+        </div>
+
+        <div>
+          <div style="font-size: 13px; font-weight: 700; color: var(--text-light); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.05em;">Escolha a estrutura correta</div>
+          <div class="solo-options">${optionsHtml}</div>
+        </div>
       </div>
-      ${spectrumHtml}
-      <div class="spectrum-tooltip"></div>
-    </div>
 
-    <div style="margin-top: 24px;">
-      <div style="font-size: 13px; font-weight: 700; color: var(--text-light); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.05em;">Escolha a estrutura correta</div>
-      <div class="solo-options">${optionsHtml}</div>
+      <div class="solo-right">
+        <div class="result-panel" id="result-panel">
+          <div class="result-placeholder">
+            <div style="font-size: 48px; margin-bottom: 12px;">🧪</div>
+            <div>Selecione uma opção para ver o resultado</div>
+          </div>
+        </div>
+      </div>
     </div>
-
-    <div id="feedback-box" style="margin-top: 24px;"></div>
   `;
 
   const spectrumCard = div.querySelector('.spectrum-card');
@@ -2416,7 +2465,7 @@ function renderGuidedList() {
   div.innerHTML = `
     <div class="section-header">
       <button class="back-btn" onclick="setView('home')">←</button>
-      <h2 class="section-title"> Exemplos Guiados</h2>
+      <h2 class="section-title">🧭 Exemplos Guiados</h2>
     </div>
     <div class="modes-grid">
       ${db.guided.map(g => `
@@ -2497,7 +2546,7 @@ function renderGuided() {
   if (step.type === 'observe') {
     stepHtml = `
       <div class="guided-step-card">
-        <div class="guided-step-label"> Observe</div>
+        <div class="guided-step-label">👀 Observe</div>
         <div class="guided-step-text">${step.text}</div>
         <button class="btn primary" onclick="guidedNext()">${nextLabel}</button>
       </div>`;
