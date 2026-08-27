@@ -269,7 +269,6 @@ main {
   transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* NOVO: Menu suspenso de estatísticas */
 .stats-details {
   margin-top: 20px;
   background: var(--bg);
@@ -512,6 +511,173 @@ main {
   font-size: 28px;
   font-weight: 700;
   color: var(--text);
+}
+
+/* ========== MASCOTE & BLOCOS DIDÁTICOS ========== */
+.mascot-block {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  margin: 20px 0;
+}
+
+.mascot-sticker {
+  flex-shrink: 0;
+  width: 110px;
+  background: #f5f7fa;
+  border-radius: 16px;
+  padding: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.mascot-sticker img { width: 100%; display: block; border-radius: 10px; }
+
+.mascot-bubble {
+  position: relative;
+  flex: 1;
+  background: var(--bg-card);
+  border: 2px solid var(--info-light);
+  border-radius: 14px;
+  padding: 14px 18px;
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--text);
+}
+
+.mascot-bubble::before {
+  content: '';
+  position: absolute;
+  left: -9px;
+  top: 26px;
+  width: 14px;
+  height: 14px;
+  background: var(--bg-card);
+  border-left: 2px solid var(--info-light);
+  border-bottom: 2px solid var(--info-light);
+  transform: rotate(45deg);
+}
+
+.mascot-bubble.mood-tip { border-color: var(--secondary); }
+.mascot-bubble.mood-tip::before { border-color: var(--secondary); }
+.mascot-bubble.mood-alert { border-color: var(--error); }
+.mascot-bubble.mood-alert::before { border-color: var(--error); }
+.mascot-bubble.mood-success { border-color: var(--success); }
+.mascot-bubble.mood-success::before { border-color: var(--success); }
+
+@media (max-width: 700px) {
+  .mascot-sticker { width: 80px; }
+  .mascot-bubble { font-size: 14px; }
+}
+
+.diagram-card {
+  background: var(--bg-card);
+  border-radius: 16px;
+  padding: 20px;
+  margin: 20px 0;
+  box-shadow: 0 4px 20px var(--shadow);
+}
+
+.diagram-title {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  margin-bottom: 14px;
+  color: var(--text);
+}
+
+.diagram-caption {
+  margin-top: 12px;
+  font-size: 13px;
+  color: var(--text-light);
+  line-height: 1.5;
+}
+
+.ppm-zones { display: flex; gap: 6px; }
+
+.ppm-zone {
+  border: 2px solid transparent;
+  border-radius: 10px;
+  padding: 10px 4px;
+  text-align: center;
+  cursor: pointer;
+  color: white;
+  font-size: 11px;
+  font-weight: 700;
+  transition: all 0.2s;
+  opacity: 0.85;
+}
+
+.ppm-zone:hover { opacity: 1; transform: translateY(-2px); }
+.ppm-zone.active { border-color: var(--text); opacity: 1; }
+
+.ppm-zone .pz-range { display: block; font-family: 'Poppins', sans-serif; font-size: 13px; }
+
+.ppm-info {
+  margin-top: 14px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px 16px;
+  font-size: 14px;
+  color: var(--text);
+  line-height: 1.6;
+}
+
+.split-controls { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+
+.split-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  border: 2px solid var(--border);
+  background: var(--bg);
+  color: var(--text);
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.split-btn.active {
+  border-color: var(--info);
+  background: var(--info);
+  color: white;
+}
+
+.split-readout {
+  font-size: 15px;
+  color: var(--text);
+  margin-bottom: 12px;
+}
+
+.split-readout b { color: var(--info); }
+
+.split-bars {
+  display: flex;
+  gap: 10px;
+  align-items: flex-end;
+  height: 90px;
+  padding: 0 8px;
+  border-bottom: 2px solid var(--border-strong);
+}
+
+.split-bar {
+  width: 26px;
+  background: linear-gradient(180deg, var(--info-light), var(--info));
+  border-radius: 4px 4px 0 0;
+  transition: height 0.3s;
+}
+
+.ref-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+.ref-table th, .ref-table td { padding: 8px 12px; border-bottom: 1px solid var(--border); text-align: left; }
+.ref-table th { color: var(--text-light); font-weight: 700; text-transform: uppercase; font-size: 11px; letter-spacing: 0.05em; }
+.ref-table td { color: var(--text); }
+
+.feedback-mascot {
+  width: 90px;
+  border-radius: 12px;
+  margin-bottom: 12px;
+  background: #f5f7fa;
+  padding: 6px;
 }
 
 .mapping-layout {
@@ -1022,6 +1188,23 @@ main {
   opacity: 0.6;
 }
 
+.tutorial-card {
+  background: var(--bg-card);
+  border-radius: 20px;
+  padding: 32px;
+  box-shadow: 0 4px 20px var(--shadow);
+  margin-bottom: 24px;
+}
+
+.tutorial-body { font-size: 17px; line-height: 1.7; color: var(--text); }
+.tutorial-body strong { color: var(--success); font-weight: 700; }
+
+.tutorial-nav {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+
 .tutorial-index-card {
   background: var(--bg-card);
   border-radius: 20px;
@@ -1163,7 +1346,7 @@ main {
 
 </div>
 
-<div class="app-version">v3.9.0</div>
+<div class="app-version">v4.0.0</div>
 
 <script src="https://unpkg.com/smiles-drawer@2.1.7/dist/smiles-drawer.min.js"></script>
 <script>
@@ -1191,6 +1374,119 @@ const TOTALS = {
   solo: 8,
   guided: 4
 };
+
+// ========== MASCOTE ==========
+const MASCOT_POSES = {
+  lousa: 'assets/mascot/lousa.png',
+  livro: 'assets/mascot/livro.png',
+  caderno: 'assets/mascot/caderno.png',
+  pipeta: 'assets/mascot/pipeta.png',
+  microscopio: 'assets/mascot/microscopio.png',
+  regua: 'assets/mascot/regua.png',
+  reguaAlta: 'assets/mascot/regua-alta.png',
+  aponta: 'assets/mascot/aponta.png',
+  pensando: 'assets/mascot/pensando.png',
+  festa: 'assets/mascot/festa.png'
+};
+
+// ========== DIAGRAMAS INTERATIVOS ==========
+const PPM_ZONES = [
+  { id: 'z1', range: '0–2', label: 'Alifáticos', grow: 2, color: '#10b981', info: '<b>0–2 ppm:</b> CH₃, CH₂ e CH longe de heteroátomos. Ex.: CH₃ de etano ~0.9; CH₃−C=O ~2.0.' },
+  { id: 'z2', range: '2–5', label: 'Perto de O, N, X', grow: 3, color: '#3b82f6', info: '<b>2–5 ppm:</b> prótons em carbonos ligados a heteroátomo. Ex.: O−CH₃ ~3.7; CH₂−Br ~3.4; N−CH₃ ~2.5.' },
+  { id: 'z3', range: '5–6.5', label: 'Vinílicos', grow: 1.5, color: '#f59e0b', info: '<b>5–6.5 ppm:</b> H de alcenos (C=C−H), desblindados pela anisotropia do sistema π.' },
+  { id: 'z4', range: '6.5–8.5', label: 'Aromáticos', grow: 2, color: '#8b5cf6', info: '<b>6.5–8.5 ppm:</b> H de anel aromático. Benzeno: 7.26 ppm. A corrente de anel desblinda forte.' },
+  { id: 'z5', range: '9–12', label: 'CHO / COOH', grow: 3, color: '#ef4444', info: '<b>9–12 ppm:</b> aldeídos (9–10) e ácidos carboxílicos (10–12). Os mais desblindados do espectro.' }
+];
+
+window.showPpmZone = function(id) {
+  const z = PPM_ZONES.find(x => x.id === id);
+  if (!z) return;
+  document.querySelectorAll('.ppm-zone').forEach(el => el.classList.toggle('active', el.dataset.zone === id));
+  const info = document.getElementById('ppm-info');
+  if (info) info.innerHTML = z.info;
+};
+
+function buildPpmAxisDiagram() {
+  return `
+    <div class="diagram-card">
+      <div class="diagram-title">🗺️ Mapa do espectro: toque em cada região</div>
+      <div class="ppm-zones">
+        ${PPM_ZONES.map(z => `
+          <div class="ppm-zone" data-zone="${z.id}" style="flex-grow:${z.grow};background:${z.color};" onclick="showPpmZone('${z.id}')">
+            <span class="pz-range">${z.range}</span>${z.label}
+          </div>`).join('')}
+      </div>
+      <div class="ppm-info" id="ppm-info"></div>
+    </div>`;
+}
+
+const SPLIT_NAMES = ['singleto', 'dupleto', 'tripleto', 'quarteto', 'quinteto', 'sexteto'];
+const PASCAL = [[1], [1, 1], [1, 2, 1], [1, 3, 3, 1], [1, 4, 6, 4, 1], [1, 5, 10, 10, 5, 1]];
+
+window.setSplit = function(n) {
+  document.querySelectorAll('.split-btn').forEach(b => b.classList.toggle('active', parseInt(b.dataset.n) === n));
+  const ratios = PASCAL[n];
+  const max = Math.max(...ratios);
+  const readout = document.getElementById('split-readout');
+  if (readout) readout.innerHTML = `Com <b>${n} vizinho${n === 1 ? '' : 's'}</b> → <b>${n + 1} picos</b> (${SPLIT_NAMES[n]}), proporção ${ratios.join(':')}.`;
+  const bars = document.getElementById('split-bars');
+  if (bars) bars.innerHTML = ratios.map(r => `<div class="split-bar" style="height:${(r / max) * 100}%"></div>`).join('');
+};
+
+function buildSplittingDiagram() {
+  return `
+    <div class="diagram-card">
+      <div class="diagram-title">✂️ Regra n+1: escolha o número de vizinhos</div>
+      <div class="split-controls">
+        ${[0, 1, 2, 3, 4, 5].map(n => `<button class="split-btn" data-n="${n}" onclick="setSplit(${n})">${n}</button>`).join('')}
+      </div>
+      <div class="split-readout" id="split-readout"></div>
+      <div class="split-bars" id="split-bars"></div>
+    </div>`;
+}
+
+// ========== SISTEMA DE BLOCOS DO TUTORIAL ==========
+function renderBlocks(blocks, levelId) {
+  return blocks.map((b, i) => {
+    if (b.type === 'mascot') {
+      const src = MASCOT_POSES[b.pose] || MASCOT_POSES.lousa;
+      return `
+        <div class="mascot-block">
+          <div class="mascot-sticker"><img src="${src}" alt="Prof. Frasco" onerror="this.parentElement.style.display='none'"></div>
+          <div class="mascot-bubble ${b.mood ? 'mood-' + b.mood : ''}">${b.text}</div>
+        </div>`;
+    }
+    if (b.type === 'text') return `<div class="tutorial-body" style="margin:16px 0;">${b.html}</div>`;
+    if (b.type === 'diagram') {
+      if (b.kind === 'ppm-axis') return buildPpmAxisDiagram();
+      if (b.kind === 'splitting-tree') return buildSplittingDiagram();
+      return '';
+    }
+    if (b.type === 'example') {
+      const id = `ex-${levelId}-${i}`;
+      setTimeout(() => renderMoleculeStructure(b.smiles, id), 0);
+      return `
+        <div class="diagram-card">
+          ${b.title ? `<div class="diagram-title">${b.title}</div>` : ''}
+          <div class="structure-card" style="margin:0;min-height:160px;">
+            <div class="mol-wrap"><svg id="${id}" width="300" height="200"></svg></div>
+          </div>
+          ${b.caption ? `<div class="diagram-caption">${b.caption}</div>` : ''}
+        </div>`;
+    }
+    if (b.type === 'table') {
+      return `
+        <div class="diagram-card">
+          ${b.title ? `<div class="diagram-title">${b.title}</div>` : ''}
+          <table class="ref-table">
+            <thead><tr>${b.head.map(h => `<th>${h}</th>`).join('')}</tr></thead>
+            <tbody>${b.rows.map(r => `<tr>${r.map(c => `<td>${c}</td>`).join('')}</tr>`).join('')}</tbody>
+          </table>
+        </div>`;
+    }
+    return '';
+  }).join('');
+}
 
 function loadProgress() {
   try {
@@ -1337,7 +1633,7 @@ function renderHome() {
 
     <div class="progress-card">
       <div class="progress-header">
-        <div class="progress-title"> Seu progresso</div>
+        <div class="progress-title">🎯 Seu progresso</div>
         <div class="progress-stats">${state.xp} / 500 pts · ${totalPercent}% completo</div>
       </div>
       <div class="progress-bar">
@@ -1366,14 +1662,14 @@ function renderHome() {
             <div class="stat-detail">${Math.round((soloCount / TOTALS.solo) * 100)}% completo</div>
           </div>
           <div class="stat-card">
-            <div class="stat-label"> Exemplos Guiados</div>
+            <div class="stat-label">🧭 Exemplos Guiados</div>
             <div class="stat-value">${guidedCount}/${TOTALS.guided}</div>
             <div class="stat-detail">${Math.round((guidedCount / TOTALS.guided) * 100)}% completo</div>
           </div>
         </div>
       </details>
       
-      <button class="btn danger" onclick="resetProgress()" style="margin-top: 16px; width: 100%;">️ Resetar Histórico</button>
+      <button class="btn danger" onclick="resetProgress()" style="margin-top: 16px; width: 100%;">🗑️ Resetar Histórico</button>
     </div>
 
     <div class="modes-grid">
@@ -1491,6 +1787,12 @@ function renderTutorial() {
     </button>
   `).join('');
 
+  // Novo: se o nível tiver "blocks", usa o sistema rico (mascote + diagramas);
+  // senão, cai no conteúdo texto antigo. Migração gradual, nada quebra.
+  const bodyHtml = data.blocks
+    ? renderBlocks(data.blocks, data.level)
+    : `<div class="tutorial-body">${data.content}</div>`;
+
   div.innerHTML = `
     <div class="section-header">
       <button class="back-btn" onclick="setView('home')">←</button>
@@ -1506,11 +1808,17 @@ function renderTutorial() {
     </details>
 
     <div class="tutorial-card">
-      <div class="tutorial-body">${data.content}</div>
+      ${bodyHtml}
     </div>
 
     <div class="tutorial-nav">${prev}${next}</div>
   `;
+
+  setTimeout(() => {
+    if (document.getElementById('ppm-info')) window.showPpmZone('z1');
+    if (document.getElementById('split-bars')) window.setSplit(2);
+  }, 0);
+
   return div;
 }
 
@@ -1870,14 +2178,6 @@ window.toggleMappingSpectrum = function(type) {
   render();
 };
 
-function checkMappingState() {
-  const q = db.mapping.find(x => x.level === state.currentLevel);
-  const tags = q._derivedTags;
-  const allAssigned = tags.every(t => state.assignments[t.id]);
-  const btn = document.getElementById('btn-validate');
-  if (btn) btn.disabled = !allAssigned;
-}
-
 window.validateMapping = function() {
   const q = db.mapping.find(x => x.level === state.currentLevel);
   const tags = q._derivedTags;
@@ -1912,6 +2212,7 @@ window.validateMapping = function() {
 
     fb.innerHTML = `
       <div class="feedback success">
+        <img class="feedback-mascot" src="${MASCOT_POSES.festa}" alt="" onerror="this.remove()">
         <div class="feedback-title" style="color: var(--success);">🎉 Parabéns! +${earned} pontos</div>
         <div class="feedback-body">Você acertou todas as atribuições! Continue praticando para dominar a RMN.</div>
         <div class="feedback-actions">
@@ -1925,6 +2226,7 @@ window.validateMapping = function() {
     state.errors++;
     fb.innerHTML = `
       <div class="feedback error">
+        <img class="feedback-mascot" src="${MASCOT_POSES.pensando}" alt="" onerror="this.remove()">
         <div class="feedback-title" style="color: var(--error);">❌ Quase lá!</div>
         <div class="feedback-body">Algumas atribuições estão incorretas. Reavalie os efeitos eletrônicos e tente novamente!</div>
       </div>
@@ -1964,6 +2266,7 @@ window.handleSoloAnswer = function(optionId, btnEl) {
 
     fb.innerHTML = `
       <div class="feedback success">
+        <img class="feedback-mascot" src="${MASCOT_POSES.festa}" alt="" onerror="this.remove()">
         <div class="feedback-title" style="color: var(--success);">🎉 Excelente! +${earned} pontos</div>
         <div class="feedback-body">${opt.feedback}</div>
         ${structureHtml}
@@ -1978,6 +2281,7 @@ window.handleSoloAnswer = function(optionId, btnEl) {
     btnEl.classList.add('wrong');
     fb.innerHTML = `
       <div class="feedback error">
+        <img class="feedback-mascot" src="${MASCOT_POSES.pensando}" alt="" onerror="this.remove()">
         <div class="feedback-title" style="color: var(--error);">❌ Não foi dessa vez!</div>
         <div class="feedback-body">${opt.feedback}</div>
       </div>
