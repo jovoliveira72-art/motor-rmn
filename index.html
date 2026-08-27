@@ -680,6 +680,62 @@ main {
   padding: 6px;
 }
 
+/* ========== MODAL DE ACERTO (SOLO) ========== */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  padding: 20px;
+  animation: fadeIn 0.3s ease-out;
+}
+
+.modal-card {
+  background: var(--bg-card);
+  border-radius: 20px;
+  padding: 28px;
+  max-width: 520px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+  text-align: center;
+  border: 2px solid var(--success);
+}
+
+.modal-mascot {
+  width: 110px;
+  margin: 0 auto 12px;
+  background: #f5f7fa;
+  border-radius: 16px;
+  padding: 8px;
+  display: block;
+}
+
+.modal-title {
+  font-family: 'Poppins', sans-serif;
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--success);
+  margin-bottom: 8px;
+}
+
+.modal-body {
+  font-size: 14px;
+  color: var(--text-light);
+  line-height: 1.6;
+  margin-bottom: 16px;
+  text-align: left;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 12px;
+}
+
 .mapping-layout {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -1026,6 +1082,7 @@ main {
   color: white;
 }
 
+/* NOVO: Layout compacto para opções do Solo */
 .solo-options {
   background: var(--bg-card);
   border-radius: 20px;
@@ -1034,27 +1091,27 @@ main {
 }
 
 .option-btn {
-  display: block;
-  width: 100%;
-  text-align: left;
+  display: grid;
+  grid-template-columns: 120px 1fr 40px;
+  gap: 16px;
+  align-items: center;
   background: var(--bg-card);
   border: none;
   border-bottom: 2px solid var(--border);
   color: var(--text);
-  padding: 20px;
+  padding: 14px 18px;
   font-family: 'Nunito', sans-serif;
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s;
-  line-height: 1.5;
+  text-align: left;
 }
 
 .option-btn:last-child { border-bottom: none; }
 
 .option-btn:hover:not(:disabled) {
   background: var(--secondary-light);
-  padding-left: 28px;
 }
 
 .option-btn.correct {
@@ -1069,53 +1126,46 @@ main {
   opacity: 0.6;
 }
 
-.option-btn.with-smiles {
-  padding: 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  align-items: stretch;
-}
-
-.option-btn.with-smiles:hover:not(:disabled) { padding-left: 16px; }
-
-.option-btn .opt-smiles {
+.option-smiles-wrap {
   background: var(--bg);
-  border-radius: 12px;
-  padding: 12px;
+  border-radius: 10px;
+  padding: 8px;
   display: flex;
   justify-content: center;
   align-items: center;
   border: 1px solid var(--border);
-  transition: all 0.2s;
 }
 
-.option-btn .opt-smiles svg {
-  max-width: 260px;
+.option-smiles-wrap svg {
+  max-width: 100px;
   width: 100%;
   height: auto;
 }
 
-.option-btn .opt-text {
-  font-size: 15px;
-  text-align: center;
-  font-weight: 700;
+.option-text {
+  font-size: 14px;
+  line-height: 1.4;
 }
 
-.option-btn:hover:not(:disabled) .opt-smiles {
-  background: var(--secondary-light);
-  border-color: var(--secondary);
+.option-check {
+  font-size: 18px;
+  opacity: 0;
+  transition: opacity 0.2s;
 }
 
-.option-btn.correct .opt-smiles {
-  background: var(--success-light);
-  border-color: var(--success);
+.option-btn.correct .option-check {
+  opacity: 1;
 }
 
-.option-btn.wrong .opt-smiles {
-  background: var(--error-light);
-  border-color: var(--error);
-  opacity: 0.7;
+@media (max-width: 700px) {
+  .option-btn {
+    grid-template-columns: 80px 1fr 30px;
+    padding: 12px;
+    font-size: 13px;
+  }
+  .option-smiles-wrap svg {
+    max-width: 70px;
+  }
 }
 
 .guided-progress {
@@ -1318,7 +1368,6 @@ main {
   .signal-ppm { font-size: 18px; }
   .xp-badge { padding: 6px 12px; }
   .xp-value { font-size: 18px; }
-  .option-btn .opt-smiles svg { max-width: 200px; }
 }
 </style>
 </head>
@@ -1346,7 +1395,7 @@ main {
 
 </div>
 
-<div class="app-version">v4.0.0</div>
+<div class="app-version">v4.1.0</div>
 
 <script src="https://unpkg.com/smiles-drawer@2.1.7/dist/smiles-drawer.min.js"></script>
 <script>
@@ -1375,7 +1424,6 @@ const TOTALS = {
   guided: 4
 };
 
-// ========== MASCOTE ==========
 const MASCOT_POSES = {
   lousa: 'assets/mascot/lousa.png',
   livro: 'assets/mascot/livro.png',
@@ -1389,7 +1437,6 @@ const MASCOT_POSES = {
   festa: 'assets/mascot/festa.png'
 };
 
-// ========== DIAGRAMAS INTERATIVOS ==========
 const PPM_ZONES = [
   { id: 'z1', range: '0–2', label: 'Alifáticos', grow: 2, color: '#10b981', info: '<b>0–2 ppm:</b> CH₃, CH₂ e CH longe de heteroátomos. Ex.: CH₃ de etano ~0.9; CH₃−C=O ~2.0.' },
   { id: 'z2', range: '2–5', label: 'Perto de O, N, X', grow: 3, color: '#3b82f6', info: '<b>2–5 ppm:</b> prótons em carbonos ligados a heteroátomo. Ex.: O−CH₃ ~3.7; CH₂−Br ~3.4; N−CH₃ ~2.5.' },
@@ -1436,7 +1483,7 @@ window.setSplit = function(n) {
 function buildSplittingDiagram() {
   return `
     <div class="diagram-card">
-      <div class="diagram-title">✂️ Regra n+1: escolha o número de vizinhos</div>
+      <div class="diagram-title">️ Regra n+1: escolha o número de vizinhos</div>
       <div class="split-controls">
         ${[0, 1, 2, 3, 4, 5].map(n => `<button class="split-btn" data-n="${n}" onclick="setSplit(${n})">${n}</button>`).join('')}
       </div>
@@ -1445,7 +1492,6 @@ function buildSplittingDiagram() {
     </div>`;
 }
 
-// ========== SISTEMA DE BLOCOS DO TUTORIAL ==========
 function renderBlocks(blocks, levelId) {
   return blocks.map((b, i) => {
     if (b.type === 'mascot') {
@@ -1787,8 +1833,6 @@ function renderTutorial() {
     </button>
   `).join('');
 
-  // Novo: se o nível tiver "blocks", usa o sistema rico (mascote + diagramas);
-  // senão, cai no conteúdo texto antigo. Migração gradual, nada quebra.
   const bodyHtml = data.blocks
     ? renderBlocks(data.blocks, data.level)
     : `<div class="tutorial-body">${data.content}</div>`;
@@ -2213,7 +2257,7 @@ window.validateMapping = function() {
     fb.innerHTML = `
       <div class="feedback success">
         <img class="feedback-mascot" src="${MASCOT_POSES.festa}" alt="" onerror="this.remove()">
-        <div class="feedback-title" style="color: var(--success);">🎉 Parabéns! +${earned} pontos</div>
+        <div class="feedback-title" style="color: var(--success);"> Parabéns! +${earned} pontos</div>
         <div class="feedback-body">Você acertou todas as atribuições! Continue praticando para dominar a RMN.</div>
         <div class="feedback-actions">
           <button class="btn success" onclick="iniciarMappingAleatorio('${state.mappingTier}')">Nova molécula</button>
@@ -2254,27 +2298,29 @@ window.handleSoloAnswer = function(optionId, btnEl) {
     updateXP(earned);
     markCompleted('solo', q.level);
 
-    const wrap = document.querySelector('.view-container');
-    wrap.classList.add('celebrate');
-    setTimeout(() => wrap.classList.remove('celebrate'), 600);
+    // Some com as opções e o rótulo; o acerto vira modal
+    const optionsWrap = document.querySelector('.solo-options');
+    if (optionsWrap) optionsWrap.parentElement.style.display = 'none';
+    if (fb) fb.innerHTML = '';
 
-    const structureHtml = q.smiles ? `
-      <div class="structure-card" style="margin-top: 16px;">
-        <div class="mol-wrap"><svg id="mol-solo-reveal" width="320" height="220"></svg></div>
-      </div>
-    ` : '';
-
-    fb.innerHTML = `
-      <div class="feedback success">
-        <img class="feedback-mascot" src="${MASCOT_POSES.festa}" alt="" onerror="this.remove()">
-        <div class="feedback-title" style="color: var(--success);">🎉 Excelente! +${earned} pontos</div>
-        <div class="feedback-body">${opt.feedback}</div>
-        ${structureHtml}
-        <div class="feedback-actions">
-          <button class="btn success" onclick="setView('modeSelect', 'solo')">Próximo desafio</button>
+    const overlay = document.createElement('div');
+    overlay.className = 'modal-overlay';
+    overlay.innerHTML = `
+      <div class="modal-card">
+        <img class="modal-mascot" src="${MASCOT_POSES.festa}" alt="" onerror="this.remove()">
+        <div class="modal-title">🎉 Excelente! +${earned} pontos</div>
+        <div class="modal-body">${opt.feedback}</div>
+        ${q.smiles ? `
+          <div class="structure-card" style="min-height:160px;margin-bottom:16px;">
+            <div class="mol-wrap"><svg id="mol-solo-reveal" width="320" height="220"></svg></div>
+          </div>` : ''}
+        <div class="modal-actions">
+          <button class="btn success" onclick="closeSoloModal(); setView('modeSelect', 'solo')">Próximo desafio</button>
+          <button class="btn" onclick="closeSoloModal()">Rever espectro</button>
         </div>
       </div>
     `;
+    document.body.appendChild(overlay);
     if (q.smiles) setTimeout(() => renderMoleculeStructure(q.smiles, 'mol-solo-reveal'), 0);
   } else {
     state.errors++;
@@ -2288,6 +2334,10 @@ window.handleSoloAnswer = function(optionId, btnEl) {
     `;
     setTimeout(() => btns.forEach(b => { if (!b.classList.contains('wrong')) b.disabled = false; }), 900);
   }
+};
+
+window.closeSoloModal = function() {
+  document.querySelectorAll('.modal-overlay').forEach(o => o.remove());
 };
 
 function renderSolo() {
@@ -2306,16 +2356,18 @@ function renderSolo() {
   const specData = q.spectra[state.activeSpectrumType];
   const spectrumHtml = renderSpectrumSVG(specData.signals, specData.maxPpm, is13C);
 
+  // NOVO: Layout compacto com grid
   const optionsHtml = q.options.map((o, i) => {
     const svgId = `opt-smiles-${q.level}-${i}`;
-    const smilesBlock = o.smiles
-      ? `<div class="opt-smiles"><svg id="${svgId}" width="260" height="180"></svg></div>`
-      : '';
-    const extraClass = o.smiles ? 'with-smiles' : '';
-    return `<button class="option-btn ${extraClass}" onclick="handleSoloAnswer('${o.id}', this)">
-      ${smilesBlock}
-      <div class="opt-text">${o.text}</div>
-    </button>`;
+    return `
+      <button class="option-btn" onclick="handleSoloAnswer('${o.id}', this)">
+        <div class="option-smiles-wrap">
+          <svg id="${svgId}" width="100" height="70"></svg>
+        </div>
+        <div class="option-text">${o.text}</div>
+        <div class="option-check">✓</div>
+      </button>
+    `;
   }).join('');
 
   div.innerHTML = `
@@ -2341,7 +2393,7 @@ function renderSolo() {
     </div>
 
     <div style="margin-top: 24px;">
-      <div style="font-size: 13px; font-weight: 700; color: var(--text-light); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.05em;">Escolha a estrutura correta · toque nos picos para ver os dados</div>
+      <div style="font-size: 13px; font-weight: 700; color: var(--text-light); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.05em;">Escolha a estrutura correta</div>
       <div class="solo-options">${optionsHtml}</div>
     </div>
 
@@ -2364,7 +2416,7 @@ function renderGuidedList() {
   div.innerHTML = `
     <div class="section-header">
       <button class="back-btn" onclick="setView('home')">←</button>
-      <h2 class="section-title">🧭 Exemplos Guiados</h2>
+      <h2 class="section-title"> Exemplos Guiados</h2>
     </div>
     <div class="modes-grid">
       ${db.guided.map(g => `
@@ -2445,7 +2497,7 @@ function renderGuided() {
   if (step.type === 'observe') {
     stepHtml = `
       <div class="guided-step-card">
-        <div class="guided-step-label">👀 Observe</div>
+        <div class="guided-step-label"> Observe</div>
         <div class="guided-step-text">${step.text}</div>
         <button class="btn primary" onclick="guidedNext()">${nextLabel}</button>
       </div>`;
