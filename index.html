@@ -1114,6 +1114,57 @@ main {
 
 .tii-title { font-size: 13px; font-weight: 600; line-height: 1.3; }
 
+/* ========== MASCOTE (PROF. FRASCO) ========== */
+.mascot-block {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  margin: 0 0 16px;
+}
+
+.mascot-sticker {
+  flex-shrink: 0;
+  width: 110px;
+  background: #f5f7fa;
+  border-radius: 16px;
+  padding: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.mascot-sticker img { width: 100%; display: block; border-radius: 10px; }
+
+.mascot-bubble {
+  position: relative;
+  flex: 1;
+  background: var(--bg-card);
+  border: 2px solid var(--info-light);
+  border-radius: 14px;
+  padding: 14px 18px;
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--text);
+}
+
+.mascot-bubble::before {
+  content: '';
+  position: absolute;
+  left: -9px;
+  top: 26px;
+  width: 14px;
+  height: 14px;
+  background: var(--bg-card);
+  border-left: 2px solid var(--info-light);
+  border-bottom: 2px solid var(--info-light);
+  transform: rotate(45deg);
+}
+
+.mascot-bubble strong { color: var(--info); }
+
+@media (max-width: 700px) {
+  .mascot-sticker { width: 80px; }
+  .mascot-bubble { font-size: 14px; }
+}
+  
 /* ========== LOUSA BRANCA (FUNDAMENTOS) ========== */
 .board-frame {
   background: linear-gradient(145deg, #f3f4f6, #9ca3af);
@@ -1215,7 +1266,7 @@ main {
 
 </div>
 
-<div class="app-version">v3.9.1</div>
+<div class="app-version">v3.9.2</div>
 
 <script src="https://unpkg.com/smiles-drawer@2.1.7/dist/smiles-drawer.min.js"></script>
 <script>
@@ -1242,6 +1293,19 @@ const TOTALS = {
   mapping: { facil: 3, medio: 3, dificil: 3 },
   solo: 8,
   guided: 4
+};
+
+const MASCOT_POSES = {
+  lousa: 'assets/mascot/lousa.png',
+  livro: 'assets/mascot/livro.png',
+  caderno: 'assets/mascot/caderno.png',
+  pipeta: 'assets/mascot/pipeta.png',
+  microscopio: 'assets/mascot/microscopio.png',
+  regua: 'assets/mascot/regua.png',
+  reguaAlta: 'assets/mascot/regua-alta.png',
+  aponta: 'assets/mascot/aponta.png',
+  pensando: 'assets/mascot/pensando.png',
+  festa: 'assets/mascot/festa.png'
 };
 
 function loadProgress() {
@@ -1543,10 +1607,19 @@ function renderTutorial() {
     </button>
   `).join('');
 
+  // Mascote: fala e pose vêm do JSON se existirem; senão, defaults.
+  const pose = (data.mascotPose && MASCOT_POSES[data.mascotPose]) ? data.mascotPose : 'aponta';
+  const fala = data.mascot || `Olá! Sou o Prof. Frasco. Hoje vamos falar sobre <strong>${data.title}</strong>. Acompanhe na lousa!`;
+
   div.innerHTML = `
     <div class="section-header">
       <button class="back-btn" onclick="setView('home')">←</button>
       <h2 class="section-title">📚 ${data.title}</h2>
+    </div>
+
+    <div class="mascot-block">
+      <div class="mascot-sticker"><img src="${MASCOT_POSES[pose]}" alt="Prof. Frasco" onerror="this.parentElement.style.display='none'"></div>
+      <div class="mascot-bubble">${fala}</div>
     </div>
 
     <details class="tutorial-index-card">
