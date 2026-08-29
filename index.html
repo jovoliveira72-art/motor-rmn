@@ -1126,7 +1126,7 @@ main {
 .mascot-sticker img { width: 100%; display: block; }
 
 .board-intro .mascot-sticker img {
-  transform: scaleX(-1); /* vira o dedo para o texto/quadro */
+  transform: scaleX(-1);
   filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.2));
 }
 
@@ -1145,7 +1145,7 @@ main {
 .mascot-aside {
   position: relative;
   padding-left: 58px;
-  min-height: 52px; /* reserva a altura do mascote */
+  min-height: 52px;
   margin-bottom: 10px;
 }
 
@@ -1157,11 +1157,188 @@ main {
   filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.25));
 }
 
+.mini-mascot.static {
+  position: static;
+  width: 56px;
+  flex-shrink: 0;
+}
+
+/* ========== AULA EM BLOCOS ========== */
+.lesson-beat {
+  display: flex;
+  align-items: flex-end;
+  gap: 16px;
+  margin: 28px 0 18px;
+}
+
+.lesson-beat .mascot-sticker { width: 140px; }
+
+.lesson-beat .mascot-sticker img {
+  width: 100%;
+  display: block;
+  transform: scaleX(-1);
+  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.2));
+}
+
+.lesson-beat .board-hand { font-size: 24px; }
+
+.lesson-aside-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+  font-family: 'Caveat', cursive;
+  font-size: 22px;
+  font-weight: 600;
+  color: #1d4ed8;
+}
+
+.board-text { margin: 14px 0; }
+
+/* ========== DIAGRAMAS INTERATIVOS ========== */
+.diagram-card {
+  background: #ffffff;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 18px;
+  margin: 20px 0;
+}
+
+.diagram-title {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700;
+  font-size: 15px;
+  margin-bottom: 12px;
+  color: #1f2937;
+}
+
+.diagram-caption {
+  margin-top: 12px;
+  font-size: 13px;
+  color: #475569;
+  line-height: 1.5;
+}
+
+.ppm-zones { display: flex; gap: 6px; }
+
+.ppm-zone {
+  border: 2px solid transparent;
+  border-radius: 10px;
+  padding: 10px 4px;
+  text-align: center;
+  cursor: pointer;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  opacity: 0.85;
+  transition: all 0.2s;
+}
+
+.ppm-zone:hover { opacity: 1; transform: translateY(-2px); }
+.ppm-zone.active { border-color: #1f2937; opacity: 1; }
+
+.ppm-zone .pz-range { display: block; font-family: 'Poppins', sans-serif; font-size: 13px; }
+
+.ppm-info {
+  margin-top: 14px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 12px 16px;
+  font-size: 14px;
+  color: #1f2937;
+  line-height: 1.6;
+}
+
+.split-controls { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+
+.split-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  border: 2px solid #cbd5e1;
+  background: #f8fafc;
+  color: #1f2937;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.split-btn.active { border-color: #3b82f6; background: #3b82f6; color: #fff; }
+
+.split-readout { font-size: 15px; color: #1f2937; margin-bottom: 12px; }
+.split-readout b { color: #1d4ed8; }
+
+.split-bars {
+  display: flex;
+  gap: 10px;
+  align-items: flex-end;
+  height: 90px;
+  padding: 0 8px;
+  border-bottom: 2px solid #94a3b8;
+}
+
+.split-bar {
+  width: 26px;
+  background: linear-gradient(180deg, #93c5fd, #3b82f6);
+  border-radius: 4px 4px 0 0;
+  transition: height 0.3s;
+}
+
+.ref-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+.ref-table th, .ref-table td { padding: 8px 12px; border-bottom: 1px solid #e2e8f0; text-align: left; }
+.ref-table th { color: #64748b; font-weight: 700; text-transform: uppercase; font-size: 11px; letter-spacing: 0.05em; }
+.ref-table td { color: #1f2937; }
+
+/* ========== QUIZ NA LOUSA ========== */
+.quiz-card {
+  background: #f8fafc;
+  border: 2px dashed #94a3b8;
+  border-radius: 12px;
+  padding: 16px;
+  margin: 22px 0;
+}
+
+.quiz-options { display: grid; gap: 8px; }
+
+.quiz-option {
+  text-align: left;
+  background: #fff;
+  border: 2px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-family: 'Nunito', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: #1f2937;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.quiz-option:hover:not(:disabled) { border-color: #3b82f6; }
+.quiz-option.correct { border-color: #10b981; background: #d1fae5; }
+.quiz-option.wrong { border-color: #ef4444; background: #fee2e2; opacity: 0.6; }
+
+.quiz-feedback {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  margin-top: 12px;
+  font-size: 14px;
+  color: #1f2937;
+  line-height: 1.5;
+}
+
+.quiz-feedback:empty { display: none; }
+
+.quiz-feedback .mini-mascot { width: 52px; }
+
 @media (max-width: 700px) {
   .board-intro .mascot-sticker { width: 76px; }
   .board-hand { font-size: 22px; }
   .mascot-aside { padding-left: 44px; min-height: 40px; }
   .mini-mascot { width: 36px; }
+  .lesson-beat .mascot-sticker { width: 100px; }
+  .lesson-beat .board-hand { font-size: 20px; }
 }
 
 /* ========== LOUSA BRANCA (FUNDAMENTOS) ========== */
@@ -1265,7 +1442,7 @@ main {
 
 </div>
 
-<div class="app-version">v3.14.0</div>
+<div class="app-version">v3.15.0</div>
 
 <script src="https://unpkg.com/smiles-drawer@2.1.7/dist/smiles-drawer.min.js"></script>
 <script>
@@ -1285,7 +1462,7 @@ const state = {
   shuffledSignals: null
 };
 
-const db = { tutorial: [], mapping: [], solo: [], guided: [] };
+const db = { tutorial: [], mapping: [], solo: [], guided: [], blocks: null };
 
 const TOTALS = {
   tutorial: 12,
@@ -1371,6 +1548,10 @@ async function carregarDados() {
       const g = await fetch('data/guided.json');
       if (g.ok) db.guided = await g.json();
     } catch (e) { db.guided = []; }
+    try {
+      const b = await fetch('data/blocks.json');
+      if (b.ok) db.blocks = await b.json();
+    } catch (e) { db.blocks = null; }
     return true;
   } catch (e) { console.error(e); return false; }
 }
@@ -1589,7 +1770,6 @@ window.iniciarMappingAleatorio = function(tier) {
   setView('gameplay', 'mapping', escolhido.level);
 };
 
-// Espalha mini-mascotes pela lousa nos momentos-chave da aula.
 function decorateContent(html) {
   return html.split('</p>').map(chunk => {
     if (!chunk.includes('<p>')) return chunk;
@@ -1604,6 +1784,138 @@ function decorateContent(html) {
     return chunk;
   }).join('</p>');
 }
+
+/* ========== DIAGRAMAS INTERATIVOS ========== */
+const PPM_ZONES = [
+  { id: 'z1', range: '0–2', label: 'Alifáticos', grow: 2, color: '#10b981', info: '<b>0–2 ppm:</b> CH₃, CH₂ e CH longe de heteroátomos. Ex.: CH₃ de etano ~0.9; CH₃−C=O ~2.0.' },
+  { id: 'z2', range: '2–5', label: 'Perto de O, N, X', grow: 3, color: '#3b82f6', info: '<b>2–5 ppm:</b> prótons em carbonos ligados a heteroátomo. Ex.: O−CH₃ ~3.7; CH₂−Br ~3.4; N−CH₃ ~2.5.' },
+  { id: 'z3', range: '5–6.5', label: 'Vinílicos', grow: 1.5, color: '#f59e0b', info: '<b>5–6.5 ppm:</b> H de alcenos (C=C−H), desblindados pela anisotropia do sistema π.' },
+  { id: 'z4', range: '6.5–8.5', label: 'Aromáticos', grow: 2, color: '#8b5cf6', info: '<b>6.5–8.5 ppm:</b> H de anel aromático. Benzeno: 7.26 ppm. A corrente de anel desblinda forte.' },
+  { id: 'z5', range: '9–12', label: 'CHO / COOH', grow: 3, color: '#ef4444', info: '<b>9–12 ppm:</b> aldeídos (9–10) e ácidos carboxílicos (10–12). Os mais desblindados do espectro.' }
+];
+
+window.showPpmZone = function(id) {
+  const z = PPM_ZONES.find(x => x.id === id);
+  if (!z) return;
+  document.querySelectorAll('.ppm-zone').forEach(el => el.classList.toggle('active', el.dataset.zone === id));
+  const info = document.getElementById('ppm-info');
+  if (info) info.innerHTML = z.info;
+};
+
+function buildPpmAxisDiagram() {
+  return `
+    <div class="ppm-zones">
+      ${PPM_ZONES.map(z => `
+        <div class="ppm-zone" data-zone="${z.id}" style="flex-grow:${z.grow};background:${z.color};" onclick="showPpmZone('${z.id}')">
+          <span class="pz-range">${z.range}</span>${z.label}
+        </div>`).join('')}
+    </div>
+    <div class="ppm-info" id="ppm-info"></div>`;
+}
+
+const SPLIT_NAMES = ['singleto', 'dupleto', 'tripleto', 'quarteto', 'quinteto', 'sexteto'];
+const PASCAL_SPLIT = [[1], [1, 1], [1, 2, 1], [1, 3, 3, 1], [1, 4, 6, 4, 1], [1, 5, 10, 10, 5, 1]];
+
+window.setSplit = function(n) {
+  document.querySelectorAll('.split-btn').forEach(b => b.classList.toggle('active', parseInt(b.dataset.n) === n));
+  const ratios = PASCAL_SPLIT[n];
+  const max = Math.max(...ratios);
+  const readout = document.getElementById('split-readout');
+  if (readout) readout.innerHTML = `Com <b>${n} vizinho${n === 1 ? '' : 's'}</b> → <b>${n + 1} picos</b> (${SPLIT_NAMES[n]}), proporção ${ratios.join(':')}.`;
+  const bars = document.getElementById('split-bars');
+  if (bars) bars.innerHTML = ratios.map(r => `<div class="split-bar" style="height:${(r / max) * 100}%"></div>`).join('');
+};
+
+function buildSplittingDiagram() {
+  return `
+    <div class="split-controls">
+      ${[0, 1, 2, 3, 4, 5].map(n => `<button class="split-btn" data-n="${n}" onclick="setSplit(${n})">${n}</button>`).join('')}
+    </div>
+    <div class="split-readout" id="split-readout"></div>
+    <div class="split-bars" id="split-bars"></div>`;
+}
+
+/* ========== AULA EM BLOCOS ========== */
+const QUIZ_DATA = {};
+
+function wrapDiagram(inner, hint) {
+  return `
+    <div class="diagram-card">
+      ${hint ? `<div class="lesson-aside-head"><img class="mini-mascot static" src="${MASCOT_POSES.aponta}" alt="">${hint}</div>` : ''}
+      ${inner}
+    </div>`;
+}
+
+function renderBlocks(blocks, levelId) {
+  return blocks.map((b, i) => {
+    if (b.type === 'fala') {
+      return `
+        <div class="lesson-beat">
+          <div class="mascot-sticker"><img src="${MASCOT_POSES[b.pose] || MASCOT_POSES.lousa}" alt="" onerror="this.parentElement.style.display='none'"></div>
+          <div class="board-hand">${b.text}</div>
+        </div>`;
+    }
+    if (b.type === 'texto') return `<div class="board-text tutorial-body">${b.html}</div>`;
+    if (b.type === 'diagrama') {
+      if (b.kind === 'ppm-axis') return wrapDiagram(buildPpmAxisDiagram(), b.hint);
+      if (b.kind === 'splitting-tree') return wrapDiagram(buildSplittingDiagram(), b.hint);
+      return '';
+    }
+    if (b.type === 'exemplo') {
+      const id = `ex-${levelId}-${i}`;
+      setTimeout(() => renderMoleculeStructure(b.smiles, id, b.badges || []), 0);
+      return `
+        <div class="diagram-card">
+          ${b.title ? `<div class="lesson-aside-head"><img class="mini-mascot static" src="${MASCOT_POSES.caderno}" alt="">${b.title}</div>` : ''}
+          <div class="structure-card" style="margin:0;min-height:160px;">
+            <div class="mol-wrap"><svg id="${id}" width="300" height="200"></svg></div>
+          </div>
+          ${b.caption ? `<div class="diagram-caption">${b.caption}</div>` : ''}
+        </div>`;
+    }
+    if (b.type === 'tabela') {
+      return `
+        <div class="diagram-card">
+          ${b.title ? `<div class="diagram-title">${b.title}</div>` : ''}
+          <table class="ref-table">
+            <thead><tr>${b.head.map(h => `<th>${h}</th>`).join('')}</tr></thead>
+            <tbody>${b.rows.map(r => `<tr>${r.map(c => `<td>${c}</td>`).join('')}</tr>`).join('')}</tbody>
+          </table>
+        </div>`;
+    }
+    if (b.type === 'quiz') {
+      const qid = `q-${levelId}-${i}`;
+      QUIZ_DATA[qid] = b;
+      return `
+        <div class="quiz-card">
+          <div class="lesson-aside-head"><img class="mini-mascot static" src="${MASCOT_POSES.pensando}" alt="">${b.question}</div>
+          <div class="quiz-options">
+            ${b.options.map((o, k) => `<button class="quiz-option" onclick="answerQuiz('${qid}', ${k}, this)">${o.text}</button>`).join('')}
+          </div>
+          <div class="quiz-feedback"></div>
+        </div>`;
+    }
+    return '';
+  }).join('');
+}
+
+window.answerQuiz = function(qid, idx, btn) {
+  const q = QUIZ_DATA[qid];
+  if (!q) return;
+  const opt = q.options[idx];
+  const card = btn.closest('.quiz-card');
+  const fb = card.querySelector('.quiz-feedback');
+  const btns = card.querySelectorAll('.quiz-option');
+  if (opt.correct) {
+    btn.classList.add('correct');
+    btns.forEach(x => x.disabled = true);
+    fb.innerHTML = `<img class="mini-mascot static" src="${MASCOT_POSES.festa}" alt=""><div><strong style="color:#047857">Exato!</strong> ${opt.feedback}</div>`;
+  } else {
+    btn.classList.add('wrong');
+    btn.disabled = true;
+    fb.innerHTML = `<img class="mini-mascot static" src="${MASCOT_POSES.pensando}" alt=""><div><strong style="color:#b91c1c">Ainda não.</strong> ${opt.feedback}</div>`;
+  }
+};
 
 function renderTutorial() {
   const data = db.tutorial.find(t => t.level === state.currentLevel);
@@ -1622,8 +1934,14 @@ function renderTutorial() {
     </button>
   `).join('');
 
-  const pose = (data.mascotPose && MASCOT_POSES[data.mascotPose]) ? data.mascotPose : 'aponta';
-  const hand = data.mascot || `Hoje no quadro: <strong>${data.title}</strong>`;
+  const blocks = db.blocks ? db.blocks[data.level] : null;
+
+  const boardContent = blocks ? renderBlocks(blocks, data.level) : `
+    <div class="board-intro">
+      <div class="mascot-sticker"><img src="${MASCOT_POSES[(data.mascotPose && MASCOT_POSES[data.mascotPose]) ? data.mascotPose : 'aponta']}" alt="" onerror="this.parentElement.style.display='none'"></div>
+      <div class="board-hand">${data.mascot || `Hoje no quadro: <strong>${data.title}</strong>`}</div>
+    </div>
+    <div class="tutorial-body">${decorateContent(data.content)}</div>`;
 
   div.innerHTML = `
     <div class="section-header">
@@ -1641,11 +1959,7 @@ function renderTutorial() {
 
     <div class="board-frame">
       <div class="board-card">
-        <div class="board-intro">
-          <div class="mascot-sticker"><img src="${MASCOT_POSES[pose]}" alt="" onerror="this.parentElement.style.display='none'"></div>
-          <div class="board-hand">${hand}</div>
-        </div>
-        <div class="tutorial-body">${decorateContent(data.content)}</div>
+        ${boardContent}
       </div>
       <div class="board-tray">
         <div class="board-marker black"></div>
@@ -1658,6 +1972,12 @@ function renderTutorial() {
 
     <div class="tutorial-nav">${prev}${next}</div>
   `;
+
+  setTimeout(() => {
+    if (document.getElementById('ppm-info')) window.showPpmZone('z1');
+    if (document.getElementById('split-bars')) window.setSplit(2);
+  }, 0);
+
   return div;
 }
 
@@ -1732,7 +2052,7 @@ function renderMoleculeStructure(smiles, svgId, tags = []) {
         const py = (v.position.y - vb.y) * scale + offY + dy * OFFSET;
         const badge = document.createElement('div');
         badge.className = 'atom-badge';
-        badge.id = `badge-${t.id}`;
+        badge.id = `badge-${t.id || Math.random()}`;
         badge.textContent = t.label;
         badge.style.left = px + 'px';
         badge.style.top = py + 'px';
