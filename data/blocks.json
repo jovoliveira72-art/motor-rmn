@@ -74,10 +74,17 @@
     { "type": "quiz", "question": "Um carbono em 55 ppm aparece SÓ no DEPT-90. Quem é ele?", "options": [ { "text": "CH", "correct": true, "feedback": "O DEPT-90 é o retrato falado do CH: só ele aparece." }, { "text": "CH₂", "correct": false, "feedback": "CH₂ some no 90 e inverte no 135." }, { "text": "C quaternário", "correct": false, "feedback": "Quaternário some em todos os DEPT — ele só vive no ¹³C normal." } ] }
   ],
   "12": [
-    { "type": "fala", "pose": "lousa", "text": "Elucidação é quebra-cabeça: <strong>fórmula → GI → ¹H → ¹³C/DEPT → fragmentos → estrutura</strong>." },
-    { "type": "texto", "html": "<p>1) GI indica anel/C=O. 2) Integração e multiplicidade montam fragmentos (etila, anel para, CH₃ isolado). 3) ¹³C/DEPT confirma o esqueleto. 4) Some os fragmentos e confira com a fórmula.</p>" },
+    { "type": "fala", "pose": "lousa", "text": "Elucidação é método, não adivinhação: siga a checklist e o espectro se entrega." },
+    { "type": "checklist", "title": "Checklist de elucidação", "items": [
+      "Fórmula molecular → calcule o GI (anel? carbonila?)",
+      "¹H: conte sinais, integração e multiplicidade",
+      "Monte os fragmentos: etila, anel para/mono, CH₃ isolado, O–H/N–H",
+      "¹³C + DEPT: confirme C=O, aromáticos, CH₂/CH₃ e quaternários",
+      "Some os fragmentos e confira cada átomo com a fórmula",
+      "Devolva o resultado: todo pico precisa ter dono"
+    ] },
     { "type": "exemplo", "title": "Caso fechado: paracetamol", "smiles": "CC(=O)Nc1ccc(O)cc1", "caption": "2 dupletos 2H (anel para) + 2 singletos largos (NH, OH) + singleto 3H (acetila) + 168 ppm (C=O de amida). Cada pico tem dono." },
-    { "type": "quiz", "question": "GI = 4 em uma molécula orgânica comum sugere fortemente…", "options": [ { "text": "Um anel benzênico", "correct": true, "feedback": "3 C=C + 1 anel = 4 insaturações: a assinatura do benzeno." }, { "text": "Quatro carbonilas", "correct": false, "feedback": "Possível, mas raro; anel aromático é a aposta que o padrão de 6.5–8.5 confirma." }, { "text": "Dois anéis e duas carbonilas", "correct": false, "feedback": "Também soma 4 — mas os sinais aromáticos de 6.5–8.5 é que fecham o diagnóstico de anel." } ] },
-    { "type": "fala", "pose": "festa", "text": "Se cada pico tiver dono, a estrutura está fechada. Bom trabalho — a lousa é toda sua!" }
+    { "type": "quiz", "question": "GI = 4 em uma molécula orgânica comum sugere fortemente…", "options": [ { "text": "Um anel benzênico", "correct": true, "feedback": "3 C=C + 1 anel = 4 insaturações: a assinatura do benzeno." }, { "text": "Quatro carbonilas", "correct": false, "feedback": "Possível, mas raro; o padrão aromático de 6.5–8.5 é que confirma o anel." }, { "text": "Dois anéis e duas carbonilas", "correct": false, "feedback": "Também soma 4 — mas os sinais aromáticos é que fecham o diagnóstico." } ] },
+    { "type": "fala", "pose": "festa", "text": "Checklist completa, estrutura fechada. A lousa agora é sua: bons espectros!" }
   ]
 }
