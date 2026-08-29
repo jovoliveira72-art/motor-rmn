@@ -6,7 +6,7 @@
 <title>Motor RMN</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Poppins:wght@400;500;600;700;800&family=Caveat:wght@500;600;700&display=swap" rel="stylesheet">
 <style>
 :root {
   --bg: #F8F9FF;
@@ -1114,57 +1114,47 @@ main {
 
 .tii-title { font-size: 13px; font-weight: 600; line-height: 1.3; }
 
-/* ========== MASCOTE (DENTRO DA LOUSA) ========== */
-.mascot-block {
+/* ========== MASCOTE (PARTE DA AULA) ========== */
+.board-intro {
   display: flex;
+  align-items: flex-end;
   gap: 16px;
-  align-items: center;
-  margin: 0 0 18px;
-  padding-bottom: 16px;
-  border-bottom: 2px dashed #e5e7eb;
+  margin: 0 0 22px;
 }
 
-.mascot-sticker {
-  flex-shrink: 0;
-  width: 110px;
+.board-intro .mascot-sticker { width: 95px; }
+
+.mascot-sticker img { width: 100%; display: block; }
+
+.board-hand {
+  font-family: 'Caveat', cursive;
+  font-size: 27px;
+  font-weight: 600;
+  color: #1d4ed8;
+  line-height: 1.15;
+  transform: rotate(-1.5deg);
+  padding-bottom: 4px;
 }
 
-.mascot-sticker img {
-  width: 100%;
-  display: block;
-}
+.board-hand strong { color: #047857; }
 
-.mascot-bubble {
+.mascot-aside {
   position: relative;
-  flex: 1;
-  background: #ffffff;
-  border: 2px solid #3b82f6;
-  border-radius: 14px;
-  padding: 12px 16px;
-  font-size: 15px;
-  line-height: 1.6;
-  color: #1f2937;
+  padding-left: 58px;
 }
 
-.mascot-bubble::before {
-  content: '';
+.mini-mascot {
   position: absolute;
-  left: -9px;
-  top: 50%;
-  margin-top: -7px;
-  width: 14px;
-  height: 14px;
-  background: #ffffff;
-  border-left: 2px solid #3b82f6;
-  border-bottom: 2px solid #3b82f6;
-  transform: rotate(45deg);
+  left: 0;
+  top: 0;
+  width: 48px;
 }
-
-.mascot-bubble strong { color: #047857; }
 
 @media (max-width: 700px) {
-  .mascot-sticker { width: 80px; }
-  .mascot-bubble { font-size: 14px; }
+  .board-intro .mascot-sticker { width: 76px; }
+  .board-hand { font-size: 22px; }
+  .mascot-aside { padding-left: 44px; }
+  .mini-mascot { width: 36px; }
 }
 /* ========== LOUSA BRANCA (FUNDAMENTOS) ========== */
 .board-frame {
@@ -1591,6 +1581,22 @@ window.iniciarMappingAleatorio = function(tier) {
   setView('gameplay', 'mapping', escolhido.level);
 };
 
+// Espalha mini-mascotes pela lousa nos momentos-chave da aula.
+function decorateContent(html) {
+  return html.split('</p>').map(chunk => {
+    if (!chunk.includes('<p>')) return chunk;
+    let pose = null;
+    if (/Ponto-chave|Ponto de atenção|Dica prática/i.test(chunk)) pose = 'pipeta';
+    else if (/Exemplo/i.test(chunk)) pose = 'caderno';
+    else if (/Atenção/i.test(chunk)) pose = 'pensando';
+    else if (/Erros comuns/i.test(chunk)) pose = 'pensando';
+    if (pose) {
+      chunk = chunk.replace('<p>', `<p class="mascot-aside"><img class="mini-mascot" src="${MASCOT_POSES[pose]}" alt="" onerror="this.style.display='none'">`);
+    }
+    return chunk;
+  }).join('</p>');
+}
+  
 function renderTutorial() {
   const data = db.tutorial.find(t => t.level === state.currentLevel);
   const div = document.createElement('div');
@@ -1608,6 +1614,45 @@ function renderTutorial() {
     </button>
   `).join('');
 
+  // Vinhete de abertura: mascote + chamada escrita a marcador, sem balão.
+  const pose = (data.mascotPose && MASCOT_POSES[data.mascotPose]) ? data.mascotPose : 'aponta';
+  const hand = data.mascot || `Hoje no quadro: <strong>${data.title}</strong>`;
+
+  div.innerHTML = `
+    <div class="section-header">
+      <button class="back-btn" onclick="setView('home')">←</button>
+      <h2 class="section-title">📚 ${data.title}</h2>
+    </div>
+
+    <details class="tutorial-index-card">
+      <summary>
+        <span class="tutorial-index-label">📑 Índice de conceitos</span>
+        <span class="index-chevron">▼</span>
+      </summary>
+      <div class="tutorial-index-grid">${indexHtml}</div>
+    </details>
+
+    <div class="board-frame">
+      <div class="board-card">
+        <div class="board-intro">
+          <div class="mascot-sticker"><img src="${MASCOT_POSES[pose]}" alt="" onerror="this.parentElement.style.display='none'"></div>
+          <div class="board-hand">${hand}</div>
+        </div>
+        <div class="tutorial-body">${decorateContent(data.content)}</div>
+      </div>
+      <div class="board-tray">
+        <div class="board-marker black"></div>
+        <div class="board-marker red"></div>
+        <div class="board-marker blue"></div>
+        <div class="board-marker green"></div>
+        <div class="board-eraser"></div>
+      </div>
+    </div>
+
+    <div class="tutorial-nav">${prev}${next}</div>
+  `;
+  return div;
+}
   // Mascote dentro da lousa, sem se apresentar: só introduz o tópico.
   const pose = (data.mascotPose && MASCOT_POSES[data.mascotPose]) ? data.mascotPose : 'aponta';
   const fala = data.mascot || `Hoje vamos falar sobre <strong>${data.title}</strong>. Acompanhe!`;
