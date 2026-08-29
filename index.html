@@ -1125,6 +1125,11 @@ main {
 
 .mascot-sticker img { width: 100%; display: block; }
 
+.board-intro .mascot-sticker img {
+  transform: scaleX(-1); /* vira o dedo para o texto/quadro */
+  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.2));
+}
+
 .board-hand {
   font-family: 'Caveat', cursive;
   font-size: 27px;
@@ -1140,6 +1145,8 @@ main {
 .mascot-aside {
   position: relative;
   padding-left: 58px;
+  min-height: 52px; /* reserva a altura do mascote */
+  margin-bottom: 10px;
 }
 
 .mini-mascot {
@@ -1147,12 +1154,13 @@ main {
   left: 0;
   top: 0;
   width: 48px;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.25));
 }
 
 @media (max-width: 700px) {
   .board-intro .mascot-sticker { width: 76px; }
   .board-hand { font-size: 22px; }
-  .mascot-aside { padding-left: 44px; }
+  .mascot-aside { padding-left: 44px; min-height: 40px; }
   .mini-mascot { width: 36px; }
 }
 
@@ -1207,7 +1215,7 @@ main {
   margin-left: auto;
   box-shadow: 0 1px 2px rgba(0,0,0,0.3);
 }
-  
+
 .app-version {
   position: fixed;
   bottom: 6px;
@@ -1257,7 +1265,7 @@ main {
 
 </div>
 
-<div class="app-version">v3.13.1</div>
+<div class="app-version">v3.14.0</div>
 
 <script src="https://unpkg.com/smiles-drawer@2.1.7/dist/smiles-drawer.min.js"></script>
 <script>
@@ -1581,13 +1589,14 @@ window.iniciarMappingAleatorio = function(tier) {
   setView('gameplay', 'mapping', escolhido.level);
 };
 
+// Espalha mini-mascotes pela lousa nos momentos-chave da aula.
 function decorateContent(html) {
   return html.split('</p>').map(chunk => {
     if (!chunk.includes('<p>')) return chunk;
     let pose = null;
     if (/Ponto-chave|Ponto de atenção|Dica prática/i.test(chunk)) pose = 'pipeta';
-    else if (/Exemplo/i.test(chunk)) pose = 'caderno';
-    else if (/Atenção/i.test(chunk)) pose = 'pensando';
+    else if (/Exemplos? clássicos|Exemplo prático|Exemplo:|Exemplo —/i.test(chunk)) pose = 'caderno';
+    else if (/Atenção:/i.test(chunk)) pose = 'pensando';
     else if (/Erros comuns/i.test(chunk)) pose = 'pensando';
     if (pose) {
       chunk = chunk.replace('<p>', `<p class="mascot-aside"><img class="mini-mascot" src="${MASCOT_POSES[pose]}" alt="" onerror="this.style.display='none'">`);
@@ -1595,7 +1604,7 @@ function decorateContent(html) {
     return chunk;
   }).join('</p>');
 }
-  
+
 function renderTutorial() {
   const data = db.tutorial.find(t => t.level === state.currentLevel);
   const div = document.createElement('div');
