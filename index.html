@@ -269,7 +269,6 @@ main {
   transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* NOVO: Menu suspenso de estatísticas */
 .stats-details {
   margin-top: 20px;
   background: var(--bg);
@@ -1156,6 +1155,7 @@ main {
   .mascot-aside { padding-left: 44px; }
   .mini-mascot { width: 36px; }
 }
+
 /* ========== LOUSA BRANCA (FUNDAMENTOS) ========== */
 .board-frame {
   background: linear-gradient(145deg, #f3f4f6, #9ca3af);
@@ -1257,7 +1257,7 @@ main {
 
 </div>
 
-<div class="app-version">v3.9.2</div>
+<div class="app-version">v3.13.1</div>
 
 <script src="https://unpkg.com/smiles-drawer@2.1.7/dist/smiles-drawer.min.js"></script>
 <script>
@@ -1581,7 +1581,6 @@ window.iniciarMappingAleatorio = function(tier) {
   setView('gameplay', 'mapping', escolhido.level);
 };
 
-// Espalha mini-mascotes pela lousa nos momentos-chave da aula.
 function decorateContent(html) {
   return html.split('</p>').map(chunk => {
     if (!chunk.includes('<p>')) return chunk;
@@ -1614,7 +1613,6 @@ function renderTutorial() {
     </button>
   `).join('');
 
-  // Vinhete de abertura: mascote + chamada escrita a marcador, sem balão.
   const pose = (data.mascotPose && MASCOT_POSES[data.mascotPose]) ? data.mascotPose : 'aponta';
   const hand = data.mascot || `Hoje no quadro: <strong>${data.title}</strong>`;
 
@@ -1639,45 +1637,6 @@ function renderTutorial() {
           <div class="board-hand">${hand}</div>
         </div>
         <div class="tutorial-body">${decorateContent(data.content)}</div>
-      </div>
-      <div class="board-tray">
-        <div class="board-marker black"></div>
-        <div class="board-marker red"></div>
-        <div class="board-marker blue"></div>
-        <div class="board-marker green"></div>
-        <div class="board-eraser"></div>
-      </div>
-    </div>
-
-    <div class="tutorial-nav">${prev}${next}</div>
-  `;
-  return div;
-}
-  // Mascote dentro da lousa, sem se apresentar: só introduz o tópico.
-  const pose = (data.mascotPose && MASCOT_POSES[data.mascotPose]) ? data.mascotPose : 'aponta';
-  const fala = data.mascot || `Hoje vamos falar sobre <strong>${data.title}</strong>. Acompanhe!`;
-
-  div.innerHTML = `
-    <div class="section-header">
-      <button class="back-btn" onclick="setView('home')">←</button>
-      <h2 class="section-title">📚 ${data.title}</h2>
-    </div>
-
-    <details class="tutorial-index-card">
-      <summary>
-        <span class="tutorial-index-label">📑 Índice de conceitos</span>
-        <span class="index-chevron">▼</span>
-      </summary>
-      <div class="tutorial-index-grid">${indexHtml}</div>
-    </details>
-
-    <div class="board-frame">
-      <div class="board-card">
-        <div class="mascot-block">
-          <div class="mascot-sticker"><img src="${MASCOT_POSES[pose]}" alt="" onerror="this.parentElement.style.display='none'"></div>
-          <div class="mascot-bubble">${fala}</div>
-        </div>
-        <div class="tutorial-body">${data.content}</div>
       </div>
       <div class="board-tray">
         <div class="board-marker black"></div>
