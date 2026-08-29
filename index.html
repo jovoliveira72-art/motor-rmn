@@ -1284,6 +1284,21 @@ main {
   transition: height 0.3s;
 }
 
+/* ========== D₂O E DEPT ========== */
+.d2o-peaks { position: relative; height: 100px; border-bottom: 2px solid #94a3b8; margin: 24px 0 8px; }
+.d2o-peak { position: absolute; bottom: 0; width: 10px; height: 70%; background: #3b82f6; border-radius: 3px 3px 0 0; transition: opacity 0.3s; }
+.d2o-peak.wide { width: 22px; height: 45%; }
+.d2o-peak span { position: absolute; top: -20px; left: 50%; transform: translateX(-50%); font-size: 11px; font-weight: 700; color: #475569; white-space: nowrap; }
+
+.dept-stage { position: relative; height: 130px; display: flex; gap: 18px; justify-content: center; margin-bottom: 26px; }
+.dept-stage::before { content: ''; position: absolute; left: 0; right: 0; top: 50%; border-top: 2px solid #94a3b8; }
+.dept-col { position: relative; width: 56px; height: 100%; }
+.dept-bar { position: absolute; left: 10px; right: 10px; top: 50%; height: 46px; background: linear-gradient(180deg, #93c5fd, #3b82f6); border-radius: 4px; transition: all 0.3s; }
+.dept-bar.up { transform: translateY(-100%); }
+.dept-bar.down { transform: translateY(0); background: linear-gradient(180deg, #fca5a5, #ef4444); }
+.dept-bar.hide { opacity: 0; transform: translateY(-50%) scale(0.4); }
+.dept-col span { position: absolute; bottom: -22px; width: 100%; text-align: center; font-size: 12px; font-weight: 700; color: #475569; }
+  
 .ref-table { width: 100%; border-collapse: collapse; font-size: 14px; }
 .ref-table th, .ref-table td { padding: 8px 12px; border-bottom: 1px solid #e2e8f0; text-align: left; }
 .ref-table th { color: #64748b; font-weight: 700; text-transform: uppercase; font-size: 11px; letter-spacing: 0.05em; }
@@ -1839,6 +1854,94 @@ function buildSplittingDiagram() {
     </div>
     <div class="split-readout" id="split-readout"></div>
     <div class="split-bars" id="split-bars"></div>`;
+  /* ========== EIXO ¹³C ========== */
+const C13_ZONES = [
+  { id: 'c1', range: '0–50', label: 'sp³', grow: 2, color: '#10b981', info: '<b>0–50 ppm:</b> carbonos sp³. CH₃ ~8–30; quanto mais ligado a heteroátomo, mais para o fim da faixa.' },
+  { id: 'c2', range: '50–100', label: 'C–O / C–N', grow: 2, color: '#3b82f6', info: '<b>50–100 ppm:</b> C sp³ ligado a O/N (O−CH₃ ~55) e carbonos de alcino.' },
+  { id: 'c3', range: '100–150', label: 'Aromáticos / C=C', grow: 2, color: '#8b5cf6', info: '<b>100–150 ppm:</b> carbonos de anel aromático e alcenos.' },
+  { id: 'c4', range: '150–220', label: 'C=O', grow: 2, color: '#ef4444', info: '<b>150–220 ppm:</b> éster/ácido/amida (160–185); aldeído (~190–205); cetona (~195–220).' }
+];
+
+window.showC13Zone = function(id) {
+  const z = C13_ZONES.find(x => x.id === id);
+  if (!z) return;
+  document.querySelectorAll('.c13-zone').forEach(el => el.classList.toggle('active', el.dataset.zone === id));
+  const info = document.getElementById('c13-info');
+  if (info) info.innerHTML = z.info;
+};
+
+function buildC13AxisDiagram() {
+  return `
+    <div class="ppm-zones">
+      ${C13_ZONES.map(z => `
+        <div class="ppm-zone c13-zone" data-zone="${z.id}" style="flex-grow:${z.grow};background:${z.color};" onclick="showC13Zone('${z.id}')">
+          <span class="pz-range">${z.range}</span>${z.label}
+        </div>`).join('')}
+    </div>
+    <div class="ppm-info" id="c13-info"></div>`;
+}
+
+/* ========== TROCA COM D₂O ========== */
+window.toggleD2O = function(on, btn) {
+  document.querySelectorAll('.d2o-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.d2o-labile').forEach(el => el.style.opacity = on ? '0.15' : '1');
+  const note = document.getElementById('d2o-note');
+  if (note) note.innerHTML = on
+    ? '<b>Depois do D₂O:</b> O–H e N–H trocam por D e somem do espectro de ¹H.'
+    : '<b>Antes:</b> O–H e N–H aparecem como singletos largos, em posição variável.';
+};
+
+function buildD2ODiagram() {
+  return `
+    <div class="split-controls">
+      <button class="d2o-btn split-btn active" style="width:auto;padding:0 14px;" onclick="toggleD2O(false, this)">Antes do D₂O</button>
+      <button class="d2o-btn split-btn" style="width:auto;padding:0 14px;" onclick="toggleD2O(true, this)">Depois do D₂O</button>
+    </div>
+    <div class="d2o-peaks">
+      <div class="d2o-peak wide d2o-labile" style="left:18%"><span>O–H / N–H</span></div>
+      <div class="d2o-peak" style="left:38%;height:60%"><span>7.3</span></div>
+      <div class="d2o-peak" style="left:44%;height:60%"><span>6.7</span></div>
+      <div class="d2o-peak" style="left:80%;height:80%"><span>2.1</span></div>
+    </div>
+    <div class="ppm-info" id="d2o-note"><b>Antes:</b> O–H e N–H aparecem como singletos largos, em posição variável.</div>`;
+}
+
+/* ========== FILTRO DEPT ========== */
+window.setDept = function(mode) {
+  document.querySelectorAll('.dept-btn').forEach(b => b.classList.toggle('active', b.dataset.mode === mode));
+  const rows = {
+    bb:  { ch3: 'up', ch2: 'up', ch: 'up', q: 'up' },
+    90:  { ch3: 'hide', ch2: 'hide', ch: 'up', q: 'hide' },
+    135: { ch3: 'up', ch2: 'down', ch: 'up', q: 'hide' }
+  }[mode];
+  Object.keys(rows).forEach(k => {
+    const el = document.getElementById('dept-' + k);
+    if (el) el.className = 'dept-bar ' + rows[k];
+  });
+  const note = document.getElementById('dept-note');
+  if (note) note.innerHTML = {
+    bb: '<b>¹³C normal (decoplado):</b> todo carbono aparece, todo como singleto.',
+    90: '<b>DEPT-90:</b> só CH aparece.',
+    135: '<b>DEPT-135:</b> CH₃ e CH para cima, CH₂ para baixo, quaternário some.'
+  }[mode];
+};
+
+function buildDeptDiagram() {
+  return `
+    <div class="split-controls">
+      <button class="dept-btn split-btn active" style="width:auto;padding:0 14px;" data-mode="bb" onclick="setDept('bb')">¹³C normal</button>
+      <button class="dept-btn split-btn" style="width:auto;padding:0 14px;" data-mode="90" onclick="setDept('90')">DEPT-90</button>
+      <button class="dept-btn split-btn" style="width:auto;padding:0 14px;" data-mode="135" onclick="setDept('135')">DEPT-135</button>
+    </div>
+    <div class="dept-stage">
+      <div class="dept-col"><div class="dept-bar up" id="dept-ch3"></div><span>CH₃</span></div>
+      <div class="dept-col"><div class="dept-bar up" id="dept-ch2"></div><span>CH₂</span></div>
+      <div class="dept-col"><div class="dept-bar up" id="dept-ch"></div><span>CH</span></div>
+      <div class="dept-col"><div class="dept-bar up" id="dept-q"></div><span>Cq</span></div>
+    </div>
+    <div class="ppm-info" id="dept-note"><b>¹³C normal (decoplado):</b> todo carbono aparece, todo como singleto.</div>`;
+}
 }
 
 /* ========== AULA EM BLOCOS ========== */
@@ -1865,6 +1968,9 @@ function renderBlocks(blocks, levelId) {
     if (b.type === 'diagrama') {
       if (b.kind === 'ppm-axis') return wrapDiagram(buildPpmAxisDiagram(), b.hint);
       if (b.kind === 'splitting-tree') return wrapDiagram(buildSplittingDiagram(), b.hint);
+      if (b.kind === 'c13-axis') return wrapDiagram(buildC13AxisDiagram(), b.hint);
+      if (b.kind === 'd2o') return wrapDiagram(buildD2ODiagram(), b.hint);
+      if (b.kind === 'dept') return wrapDiagram(buildDeptDiagram(), b.hint);
       return '';
     }
     if (b.type === 'exemplo') {
@@ -1982,6 +2088,7 @@ function renderTutorial() {
   setTimeout(() => {
     if (document.getElementById('ppm-info')) window.showPpmZone('z1');
     if (document.getElementById('split-bars')) window.setSplit(2);
+    if (document.getElementById('c13-info')) window.showC13Zone('c1');
   }, 0);
 
   return div;
