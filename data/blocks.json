@@ -1,0 +1,18 @@
+{
+  "2": [
+    { "type": "fala", "pose": "lousa", "text": "Todo pico tem um endereço: o <strong>deslocamento químico (δ)</strong> diz onde o próton mora no espectro." },
+    { "type": "texto", "html": "<p><strong>δ (ppm)</strong> é a posição do sinal em relação ao TMS (δ = 0). Usamos ppm para o valor ser o mesmo em qualquer aparelho: 300, 500 ou 600 MHz.</p>" },
+    { "type": "diagrama", "kind": "ppm-axis", "hint": "Clique nas regiões e veja quem mora em cada faixa." },
+    { "type": "exemplo", "title": "Exemplo no quadro: etanol", "smiles": "CCO", "badges": [ { "label": "1.2", "atoms": [0] }, { "label": "3.7", "atoms": [1] }, { "label": "OH", "atoms": [2] } ], "caption": "O CH₂ colado no oxigênio mora em 3.7 ppm; o CH₃, longe dele, em 1.2 ppm. Vizinho eletronegativo empurra o endereço para a esquerda." },
+    { "type": "quiz", "question": "O CH₂ do 1-bromopropano (CH₃–CH₂–Br) mora em qual faixa?", "options": [ { "text": "~0.9 ppm, longe de tudo", "correct": false, "feedback": "Esse é o endereço de CH₃ sem vizinhos eletronegativos. O Br puxa o CH₂ para bem mais à esquerda." }, { "text": "~3.4 ppm, desblindado pelo Br", "correct": true, "feedback": "O bromo retira densidade eletrônica dos prótons vizinhos: CH₂–Br aparece em ~3.4 ppm." }, { "text": "~7.2 ppm, região aromática", "correct": false, "feedback": "7.2 é endereço de H de anel aromático — e o 1-bromopropano nem tem anel." } ] },
+    { "type": "fala", "pose": "pipeta", "text": "Regra de bolso: vizinho eletronegativo = δ maior. O morador vai para a <strong>esquerda</strong> do espectro." }
+  ],
+  "4": [
+    { "type": "fala", "pose": "lousa", "text": "Um sinal vira vários picos quando o próton tem vizinhos: é o <strong>acoplamento spin-spin</strong>, e a conta é a regra <strong>n+1</strong>." },
+    { "type": "texto", "html": "<p><strong>n</strong> = número de H vizinhos equivalentes. O sinal se divide em <strong>n+1</strong> picos, com alturas dadas pelo triângulo de Pascal.</p>" },
+    { "type": "diagrama", "kind": "splitting-tree", "hint": "Escolha n e veja o padrão nascer do Pascal." },
+    { "type": "exemplo", "title": "Exemplo no quadro: CH₃–CH₂–Br", "smiles": "CCBr", "badges": [ { "label": "t", "atoms": [0] }, { "label": "q", "atoms": [1] } ], "caption": "O CH₃ vê 2 vizinhos → tripleto (3 picos). O CH₂ vê 3 vizinhos → quarteto (4 picos)." },
+    { "type": "quiz", "question": "O CH₃ do etanol (CH₃–CH₂–OH) aparece como…", "options": [ { "text": "Singleto", "correct": false, "feedback": "Singleto seria sem vizinhos. Aqui o CH₃ tem um CH₂ do lado." }, { "text": "Tripleto", "correct": true, "feedback": "n = 2 vizinhos (o CH₂) → n+1 = 3 picos: tripleto." }, { "text": "Quarteto", "correct": false, "feedback": "Quarteto é o padrão do CH₂ (3 vizinhos). O CH₃, com 2 vizinhos, dá tripleto." } ] },
+    { "type": "fala", "pose": "pensando", "text": "Pegadinha clássica: prótons <strong>equivalentes</strong> não acoplam entre si — os 4H do benzeno dão singleto!" }
+  ]
+}
