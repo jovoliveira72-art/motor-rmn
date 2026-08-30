@@ -1,0 +1,43 @@
+name: Lint data JSON
+
+on:
+  push:
+    paths:
+      - 'data/**.json'
+  pull_request:
+    paths:
+      - 'data/**.json'
+
+jobs:
+  lint-decimal:
+    runs-on: ubuntu-latest
+    name: Verifica notação decimal em strings
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Procura ponto decimal em campos de texto
+        run: |
+          # Regra: dentro de strings JSON (entre aspas), \d\.\d deve ser vírgula.
+          # Valores numéricos JSON (sem aspas) ficam com ponto — é sintaxe do JSON.
+          #
+          # Estratégia: extrair só strings com aspas, depois verificar \d\.\d.
+          # Falha se encontrar qualquer ocorrência.
+          
+          VIOLACOES=""
+          for arquivo in data/*.json; do
+            # Extrai strings entre aspas e procura padrão decimal com ponto
+            if grep -oP '"[^"]*"' "$arquivo" | grep -P '\d\.\d' > /tmp/violations.tmp; then
+              while IFS= read -r linha; do
+                VIOLACOES="$VIOLACOES\n  $arquivo: $linha"
+              done < /tmp/violations.tmp
+            fi
+          done
+          
+          if [ -n "$VIOLACOES" ]; then
+            echo "::error::Ponto decimal encontrado em campos de texto (deve ser vírgula):$VIOLACOES"
+            exit 1
+          fi
+          
+          echo "✓ Nenhum ponto decimal em campos de texto."
