@@ -203,7 +203,7 @@
       { "tagId": "t1", "label": "Isopropil", "atomIndices": [0, 1, 2] },
       { "tagId": "t2", "label": "CH₂", "atomIndices": [3] },
       { "tagId": "t3", "label": "Anel", "atomIndices": [4, 5, 6, 7, 13, 14] },
-      { "tagId": "t4", "label": "Cadeia ácida", "atomIndices": [8, 9, 10, 11, 12] }
+      { "tagId": "t4", "label": "Cadeia ácida", "atomIndices": [8, 9, 10] }
     ],
     "steps": [
       {
