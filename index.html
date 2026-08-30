@@ -228,10 +228,6 @@ main { flex: 1; overflow-y: auto; padding: 32px 24px 80px; }
 
 .mode-icon img { width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2)); }
 
-.mode-icon.tutorial { background: linear-gradient(135deg, var(--success), var(--success-light)); }
-.mode-icon.mapping { background: linear-gradient(135deg, var(--info), var(--info-light)); }
-.mode-icon.solo { background: linear-gradient(135deg, var(--secondary), var(--secondary-light)); }
-
 .mode-title { font-family: 'Poppins', sans-serif; font-size: 22px; font-weight: 700; color: var(--text); }
 
 .mode-desc { font-size: 14px; color: var(--text-light); line-height: 1.5; }
@@ -773,7 +769,7 @@ main { flex: 1; overflow-y: auto; padding: 32px 24px 80px; }
 
 </div>
 
-<div class="app-version">v3.19.0</div>
+<div class="app-version">v3.20.0</div>
 
 <script src="https://unpkg.com/smiles-drawer@2.1.7/dist/smiles-drawer.min.js"></script>
 <script>
@@ -812,8 +808,27 @@ const MASCOT_POSES = {
   reguaAlta: 'assets/mascot/regua-alta.png',
   aponta: 'assets/mascot/aponta.png',
   pensando: 'assets/mascot/pensando.png',
-  festa: 'assets/mascot/festa.png'
+  festa: 'assets/mascot/festa.png',
+  iconFundamentos: 'assets/mascot/icon-fundamentos.png',
+  iconAtribuicao: 'assets/mascot/icon-atribuicao.png',
+  iconSolo: 'assets/mascot/icon-solo.png',
+  iconGuiados: 'assets/mascot/icon-guiados.png'
 };
+
+/* Cadeia de fallback: ícone novo → pose corpo inteiro → emoji. */
+window.fallbackIcon = function(img) {
+  const pose = img.dataset.fallback;
+  if (pose && img.src !== pose) {
+    img.onerror = () => { img.outerHTML = img.dataset.emoji; };
+    img.src = pose;
+  } else {
+    img.outerHTML = img.dataset.emoji;
+  }
+};
+
+function modeIconImg(iconKey, poseKey, emoji) {
+  return `<img src="${MASCOT_POSES[iconKey]}" alt="" data-fallback="${MASCOT_POSES[poseKey]}" data-emoji="${emoji}" onerror="fallbackIcon(this)">`;
+}
 
 const fmt = v => String(v).replace('.', ',');
 
@@ -945,7 +960,7 @@ function renderHome() {
       <div class="mode-card solo" onclick="setView('guidedSelect')">
         <div class="mode-progress-check ${state.completed.guided.length > 0 ? 'visible' : ''}">✓</div>
         <div class="mode-header">
-          <div class="mode-icon solo"><img src="${MASCOT_POSES.caderno}" alt="" onerror="this.outerHTML='🧭'"></div>
+          <div class="mode-icon solo">${modeIconImg('iconGuiados', 'caderno', '🧭')}</div>
           <div>
             <div class="mode-title">Exemplos Guiados</div>
             <div class="mode-desc">Acompanhe um raciocínio completo de elucidação, passo a passo, com perguntas no caminho</div>
@@ -1014,7 +1029,7 @@ function renderHome() {
       <div class="mode-card tutorial" onclick="setView('tutorial', null, 1)">
         <div class="mode-progress-check ${tutorialCount > 0 ? 'visible' : ''}">✓</div>
         <div class="mode-header">
-          <div class="mode-icon tutorial"><img src="${MASCOT_POSES.lousa}" alt="" onerror="this.outerHTML='📚'"></div>
+          <div class="mode-icon tutorial">${modeIconImg('iconFundamentos', 'lousa', '📚')}</div>
           <div>
             <div class="mode-title">Fundamentos</div>
             <div class="mode-desc">Aprenda os conceitos básicos: ppm, Karplus, n+1 e filtros DEPT</div>
@@ -1027,7 +1042,7 @@ function renderHome() {
       <div class="mode-card mapping">
         <div class="mode-progress-check ${mappingCount > 0 ? 'visible' : ''}">✓</div>
         <div class="mode-header">
-          <div class="mode-icon mapping"><img src="${MASCOT_POSES.microscopio}" alt="" onerror="this.outerHTML='🧩'"></div>
+          <div class="mode-icon mapping">${modeIconImg('iconAtribuicao', 'microscopio', '🧩')}</div>
           <div>
             <div class="mode-title">Atribuição H/C</div>
             <div class="mode-desc">Associe cada átomo ao sinal correto no espectro. ${totalMolecules} moléculas disponíveis!</div>
@@ -1055,7 +1070,7 @@ function renderHome() {
       <div class="mode-card solo" onclick="setView('modeSelect', 'solo')">
         <div class="mode-progress-check ${soloCount > 0 ? 'visible' : ''}">✓</div>
         <div class="mode-header">
-          <div class="mode-icon solo"><img src="${MASCOT_POSES.pensando}" alt="" onerror="this.outerHTML='🏆'"></div>
+          <div class="mode-icon solo">${modeIconImg('iconSolo', 'pensando', '🏆')}</div>
           <div>
             <div class="mode-title">Desafio Solo</div>
             <div class="mode-desc">Espectros puros, sem pistas. Identifique a estrutura e ganhe muitos pontos!</div>
@@ -2030,7 +2045,7 @@ function renderGuidedList() {
         <div class="mode-card solo" onclick="startGuided(${g.id})">
           <div class="mode-progress-check ${isCompleted('guided', g.id) ? 'visible' : ''}">✓</div>
           <div class="mode-header">
-            <div class="mode-icon solo"><img src="${MASCOT_POSES.caderno}" alt="" onerror="this.outerHTML='🧭'"></div>
+            <div class="mode-icon solo">${modeIconImg('iconGuiados', 'caderno', '🧭')}</div>
             <div>
               <div class="mode-title">${g.title}</div>
               <div class="mode-desc">${g.subtitle}</div>
