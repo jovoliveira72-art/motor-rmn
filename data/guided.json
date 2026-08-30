@@ -157,6 +157,7 @@
           { "text": "É um CH₃ terminal.", "correct": false, "feedback": "CH₃ integraria 3H e, na ponta da cadeia, seria tripleto em ~1.0, não 3.4." },
           { "text": "É um OH trocável.", "correct": false, "feedback": "OH seria singleto largo e variável; aqui temos tripleto nítido de 2H." }
         ]
+        "highlight": ["sig1", "sig2", "sig3"]
       },
       {
         "type": "question",
@@ -180,7 +181,7 @@
     "id": 4,
     "title": "Ibuprofeno",
     "subtitle": "Para-substituição, isobutila e o fragmento ácido",
-    "formula": "C₁₃H₁O₂",
+    "formula": "C₁₃H₁₈O₂",
     "chain": [
       { "label": "COOH" },
       { "label": "CH", "branches": [ { "label": "CH₃" } ] },
@@ -198,7 +199,7 @@
       { "id": "sig5", "ppm": 7.2, "int": 2, "mult": "d", "J": 8, "height": 40 },
       { "id": "sig6", "ppm": 7.1, "int": 2, "mult": "d", "J": 8, "height": 40 },
       { "id": "sig7", "ppm": 0.9, "int": 6, "mult": "d", "J": 7, "height": 120 },
-      { "id": "sig8", "ppm": 1.5, "int": 3, "mult": "d", "J": 7, "height": 70 }
+      { "id": "sig8", "ppm": 1.5, "int": 3, "mult": "d", "J": 7, "height": 60 }
     ],
     "steps": [
       {
