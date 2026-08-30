@@ -165,7 +165,20 @@ main { flex: 1; overflow-y: auto; padding: 32px 24px 80px; }
 .home-sub { font-size: 15px; opacity: 0.95; max-width: 560px; margin: 0; line-height: 1.5; }
 
 .hero-spectrum { position: absolute; left: 0; right: 0; bottom: 0; width: 100%; height: 56px; opacity: 0.3; }
+.hero-lab {
+  margin-left: auto;
+  width: 250px;
+  flex-shrink: 0;
+  background: #f8fafc;
+  border-radius: 16px;
+  padding: 10px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+  transform: rotate(1.5deg);
+}
 
+.hero-lab img { width: 100%; display: block; border-radius: 10px; }
+
+@media (max-width: 1000px) { .hero-lab { display: none; } }
 .progress-card { background: var(--bg-card); border-radius: 20px; padding: 24px; margin-bottom: 32px; box-shadow: 0 4px 20px var(--shadow); }
 
 .progress-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
@@ -833,7 +846,8 @@ const MASCOT_POSES = {
   iconFundamentos: 'assets/mascot/icon-fundamentos.png',
   iconAtribuicao: 'assets/mascot/icon-atribuicao.png',
   iconSolo: 'assets/mascot/icon-solo.png',
-  iconGuiados: 'assets/mascot/icon-guiados.png'
+  iconGuiados: 'assets/mascot/icon-guiados.png',
+  espectrometro: 'assets/mascot/espectrometro.png'
 };
 
 /* Cadeia de fallback: ícone novo → pose corpo inteiro → emoji. */
@@ -1011,6 +1025,7 @@ function renderHome() {
           <h1 class="home-title">Domine RMN!</h1>
           <p class="home-sub">Aprenda a analisar espectros de Ressonância Magnética Nuclear com moléculas reais do mercado farmacêutico. Ganhe pontos e suba de nível!</p>
         </div>
+        <div class="hero-lab"><img src="${MASCOT_POSES.espectrometro}" alt="" onerror="this.parentElement.style.display='none'"></div>
       </div>
       <svg class="hero-spectrum" viewBox="0 0 800 60" preserveAspectRatio="none" aria-hidden="true">
         <path d="M0 55 L110 55 L116 18 L122 55 L200 55 L206 30 L212 55 L320 55 L326 10 L332 55 L450 55 L456 36 L462 55 L540 55 L546 24 L552 55 L680 55 L686 42 L692 55 L800 55" fill="none" stroke="white" stroke-width="2.5" stroke-linejoin="round"/>
