@@ -72,7 +72,7 @@
       { "id": "sig3", "ppm": 1.2, "mult": "t", "int": 3, "J": 7, "height": 20 }
     ],
     "chain": [
-      { "tagId": "t1", "label": "CH₃CO", "atomIndices": [0, 1, 2] },
+      { "tagId": "t1", "label": "CH₃CO", "atomIndices": [0, 1] },
       { "tagId": "t2", "label": "O éster", "atomIndices": [3] },
       { "tagId": "t3", "label": "CH₂CH₃", "atomIndices": [4, 5] }
     ],
@@ -136,8 +136,8 @@
     "chain": [
       { "tagId": "t1", "label": "CH₃CO", "atomIndices": [0, 1] },
       { "tagId": "t2", "label": "NH", "atomIndices": [3] },
-      { "tagId": "t3", "label": "Anel", "atomIndices": [4, 5, 6, 7, 9, 10] },
-      { "tagId": "t4", "label": "OH", "atomIndices": [8] }
+      { "tagId": "t3", "label": "Anel", "atomIndices": [4, 5, 6, 8, 9, 10] },
+      { "tagId": "t4", "label": "OH", "atomIndices": [7] }
     ],
     "steps": [
       {
@@ -177,7 +177,7 @@
       },
       {
         "type": "observe",
-        "text": "Paracetamol fechado: CH₃CO (2,1, s, 3H), 4H aromáticos (6,7 e 7,4, d, 2H cada), NH (9,8, s largo), OH (9,2, s largo). Cada sinal tem dono — fórmula C₈H₉NO₂ batida.",
+        "text": "Paracetamol fechado: CH₃CO (2,1, s, 3H), 4H aromáticos (6,7 e 7,4, d, 2H cada), OH (9,2, s largo), NH (9,8, s largo). Cada sinal tem dono — fórmula C₈H₉NO₂ batida.",
         "highlight": ["sig1", "sig2", "sig3", "sig4", "sig5"]
       }
     ]
@@ -199,12 +199,12 @@
       { "id": "sig7", "ppm": 7.2, "mult": "d", "int": 2, "J": 8, "height": 20 },
       { "id": "sig8", "ppm": 12.0, "mult": "s", "int": 1, "height": 15 }
     ],
-      "chain": [
-        { "tagId": "t1", "label": "Isopropil", "atomIndices": [0, 1, 2] },
-        { "tagId": "t2", "label": "CH₂", "atomIndices": [3] },
-        { "tagId": "t3", "label": "Anel", "atomIndices": [4, 5, 6, 7, 13, 14] },
-        { "tagId": "t4", "label": "Cadeia ácida", "atomIndices": [8, 9, 10, 11, 12] }
-      ],
+    "chain": [
+      { "tagId": "t1", "label": "Isopropil", "atomIndices": [0, 1, 2] },
+      { "tagId": "t2", "label": "CH₂", "atomIndices": [3] },
+      { "tagId": "t3", "label": "Anel", "atomIndices": [4, 5, 6, 12, 13, 14] },
+      { "tagId": "t4", "label": "Cadeia ácida", "atomIndices": [7, 8, 9, 10, 11] }
+    ],
     "steps": [
       {
         "type": "observe",
