@@ -144,7 +144,7 @@ main { flex: 1; overflow-y: auto; padding: 32px 24px 80px; }
   position: relative;
   overflow: hidden;
   padding: 36px 32px 76px;
-  min-height: 430px;
+  min-height: 380px;
   background: linear-gradient(135deg, var(--primary-light) 0%, var(--primary) 100%);
   border-radius: 24px;
   margin-bottom: 32px;
@@ -157,7 +157,7 @@ main { flex: 1; overflow-y: auto; padding: 32px 24px 80px; }
 .hero-mascot { width: 132px; flex-shrink: 0; filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.25)); }
 .hero-mascot img { width: 100%; display: block; transform: scaleX(-1); }
 
-.hero-copy { text-align: left; max-width: 560px; }
+.hero-copy { text-align: left; max-width: min(560px, calc(55% - 240px)); }
 
 .hero-hand { font-family: 'Caveat', cursive; font-size: 24px; font-weight: 600; color: #fde68a; transform: rotate(-1.5deg); margin-bottom: 2px; }
 
