@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-PT">
+<html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -516,6 +516,9 @@ main { flex: 1; overflow-y: auto; padding: 32px 24px 80px; }
 
 .guided-option.wrong { border-color: var(--error); background: var(--error-light); opacity: 0.6; }
 
+.guided-legend { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-top: 10px; font-size: 12px; font-weight: 700; color: var(--text-light); }
+.guided-legend b { color: var(--info); }
+
 .tutorial-index-card { background: var(--bg-card); border-radius: 20px; padding: 20px; box-shadow: 0 4px 20px var(--shadow); margin-bottom: 24px; }
 
 .tutorial-index-card summary { list-style: none; cursor: pointer; display: flex; align-items: center; justify-content: space-between; user-select: none; }
@@ -561,21 +564,6 @@ main { flex: 1; overflow-y: auto; padding: 32px 24px 80px; }
 
 .tii-title { font-size: 13px; font-weight: 600; line-height: 1.3; }
 
-/* ========== MASCOTE (PARTE DA AULA) ========== */
-.board-intro { display: flex; align-items: flex-end; gap: 16px; margin: 0 0 22px; }
-
-.board-intro .mascot-sticker { width: 95px; }
-
-.mascot-sticker img { width: 100%; display: block; }
-
-.board-intro .mascot-sticker img { transform: scaleX(-1); filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.2)); }
-
-.board-hand { font-family: 'Caveat', cursive; font-size: 27px; font-weight: 600; color: #1d4ed8; line-height: 1.15; transform: rotate(-1.5deg); padding-bottom: 4px; }
-
-.board-hand strong { color: #047857; }
-
-.mascot-aside { position: relative; padding-left: 58px; min-height: 52px; margin-bottom: 10px; }
-
 .mini-mascot { position: absolute; left: 0; top: 0; width: 48px; filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.25)); }
 
 .mini-mascot.static { position: static; width: 56px; flex-shrink: 0; }
@@ -590,6 +578,10 @@ main { flex: 1; overflow-y: auto; padding: 32px 24px 80px; }
 .lesson-beat .board-hand { font-size: 24px; }
 
 .lesson-aside-head { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; font-family: 'Caveat', cursive; font-size: 22px; font-weight: 600; color: #1d4ed8; }
+
+.board-hand { font-family: 'Caveat', cursive; font-size: 27px; font-weight: 600; color: #1d4ed8; line-height: 1.15; transform: rotate(-1.5deg); padding-bottom: 4px; }
+
+.board-hand strong { color: #047857; }
 
 .board-text { margin: 14px 0; }
 
@@ -704,9 +696,7 @@ main { flex: 1; overflow-y: auto; padding: 32px 24px 80px; }
 
 @media (max-width: 700px) {
   .board-card { padding: 20px 14px; }
-  .board-intro .mascot-sticker { width: 76px; }
   .board-hand { font-size: 22px; }
-  .mascot-aside { padding-left: 44px; min-height: 40px; }
   .mini-mascot { width: 36px; }
   .lesson-beat { gap: 12px; }
   .lesson-beat .mascot-sticker { width: 100px; }
@@ -781,7 +771,7 @@ main { flex: 1; overflow-y: auto; padding: 32px 24px 80px; }
 
 </div>
 
-<div class="app-version">v3.17.1</div>
+<div class="app-version">v3.18.0</div>
 
 <script src="https://unpkg.com/smiles-drawer@2.1.7/dist/smiles-drawer.min.js"></script>
 <script>
@@ -803,8 +793,6 @@ const state = {
 
 const db = { tutorial: [], mapping: [], solo: [], guided: [], blocks: null };
 
-/* TOTALS: agora todos os valores são contagens diretas de itens completáveis.
-   mapping = 3 tiers completáveis (não atribuições por tier). */
 const TOTALS = {
   tutorial: 12,
   mapping: 3,
@@ -826,10 +814,10 @@ const MASCOT_POSES = {
 };
 
 const fmt = v => String(v).replace('.', ',');
-  function fmtProse(text) {
+
+function fmtProse(text) {
   if (!text) return text;
-  // Converte padrões decimais (1.2, 3.45) para vírgula, preservando versões e referências
-  return text.replace(/(\d)\.(\d)/g, '$1,$2');
+  return String(text).replace(/(\d)\.(\d)/g, '$1,$2');
 }
 
 function loadProgress() {
@@ -1117,21 +1105,6 @@ window.iniciarMappingAleatorio = function(tier) {
   state.mappingTier = tier;
   setView('gameplay', 'mapping', escolhido.level);
 };
-
-function decorateContent(html) {
-  return html.split('</p>').map(chunk => {
-    if (!chunk.includes('<p>')) return chunk;
-    let pose = null;
-    if (/Ponto-chave|Ponto de atenção|Dica prática/i.test(chunk)) pose = 'pipeta';
-    else if (/Exemplos? clássicos|Exemplo prático|Exemplo:|Exemplo —/i.test(chunk)) pose = 'caderno';
-    else if (/Atenção:/i.test(chunk)) pose = 'pensando';
-    else if (/Erros comuns/i.test(chunk)) pose = 'pensando';
-    if (pose) {
-      chunk = chunk.replace('<p>', `<p class="mascot-aside"><img class="mini-mascot" src="${MASCOT_POSES[pose]}" alt="" onerror="this.style.display='none'">`);
-    }
-    return chunk;
-  }).join('</p>');
-}
 
 const PPM_ZONES = [
   { id: 'z1', range: '0–2', label: 'Alifáticos', grow: 2, color: '#10b981', info: '<b>0–2 ppm:</b> CH₃, CH₂ e CH longe de heteroátomos. Ex.: CH₃ de etano ~0,9; CH₃−C=O ~2,0.' },
@@ -1497,7 +1470,7 @@ function renderTutorial() {
 
   return div;
 }
-/* FIX 1: marcar o nível ATUAL antes de incrementar. */
+
 function handleTutorialNav(direction) {
   markCompleted('tutorial', state.currentLevel);
   state.currentLevel += direction;
@@ -1577,7 +1550,6 @@ function renderMoleculeStructure(smiles, svgId, tags = []) {
       });
     });
 
-    /* FIX 3: aplicar classes "assigned" agora que os badges existem no DOM. */
     updateBadges();
   }, function(err) {
     console.error('Erro ao desenhar estrutura:', err);
@@ -1706,12 +1678,12 @@ function deriveTagsFromChain(chain) {
   let c = 1;
   chain.forEach(item => {
     if (item.tagId) {
-      tags.push({ id: item.tagId, label: String(c), correctTarget: item.correctTarget, atoms: item.atomIndices || null });
+      tags.push({ id: item.tagId, label: String(c), correctTarget: item.correctTarget, atoms: item.atomIndices || null, name: item.label });
       c++;
     }
     (item.branches || []).forEach(b => {
       if (b.tagId) {
-        tags.push({ id: b.tagId, label: String(c), correctTarget: b.correctTarget, atoms: b.atomIndices || null });
+        tags.push({ id: b.tagId, label: String(c), correctTarget: b.correctTarget, atoms: b.atomIndices || null, name: b.label });
         c++;
       }
     });
@@ -1734,8 +1706,6 @@ function renderMapping() {
   const { isCarbon, chain, signals, maxPpm } = getActiveMappingData(q);
 
   const tags = deriveTagsFromChain(chain);
-  const tagNumbers = {};
-  tags.forEach(t => tagNumbers[t.id] = t.label);
   q._derivedTags = tags;
 
   if (!state.shuffledSignals) {
@@ -1815,7 +1785,6 @@ function renderMapping() {
   setTimeout(() => {
     attachSpectrumTooltips(signals, div.querySelector('.spectrum-card'));
     if (q.smiles) renderMoleculeStructure(q.smiles, 'mol-mapping', tags);
-    /* FIX 4: desabilitar botão validar no estado inicial. */
     checkMappingState();
   }, 0);
 
@@ -1838,8 +1807,6 @@ window.handleAssignment = function(sigId, tagId) {
   }
 
   render();
-
-  /* FIX 4: atualizar estado do botão validar após re-render. */
   setTimeout(checkMappingState, 0);
 };
 
@@ -1861,7 +1828,6 @@ window.toggleMappingSpectrum = function(type) {
   render();
 };
 
-/* FIX 4: reescrita para derivar tags do próprio q, sem depender de estado externo. */
 function checkMappingState() {
   const q = db.mapping.find(x => x.level === state.currentLevel);
   if (!q) return;
@@ -2108,7 +2074,7 @@ window.guidedAnswer = function(idx, btnEl) {
     btnEl.disabled = true;
     fb.innerHTML = `<div class="feedback error"><div class="feedback-title" style="color:var(--error);">Ainda não…</div><div class="feedback-body">${fmtProse(opt.feedback)}</div></div>`;
   }
-}
+};
 
 function renderGuided() {
   const ex = db.guided.find(g => g.id === state.guidedId);
@@ -2157,6 +2123,13 @@ function renderGuided() {
     ? '<div class="structure-card"><div class="mol-wrap"><svg id="mol-guided" width="320" height="220"></svg></div></div>'
     : '<div class="structure-card"><p style="color: var(--text-light);">Estrutura não disponível</p></div>';
 
+  const legendHtml = tags.length ? `
+    <div class="guided-legend">
+      ${tags.map(t => `<span><b>${t.label}</b> = ${t.name}</span>`).join('')}
+    </div>` : '';
+
+  const progressPct = ((state.guidedStep + 1) / ex.steps.length) * 100;
+
   const div = document.createElement('div');
   div.innerHTML = `
     <div class="section-header">
@@ -2165,13 +2138,14 @@ function renderGuided() {
     </div>
     <div class="guided-progress">
       <span>Passo ${state.guidedStep + 1} de ${ex.steps.length}</span>
-      <div class="progress-bar"><div class="progress-fill" style="width:${(state.guidedStep / ex.steps.length) * 100}%"></div></div>
+      <div class="progress-bar"><div class="progress-fill" style="width:${progressPct}%"></div></div>
     </div>
     <div class="context-card" style="background: linear-gradient(135deg, var(--secondary-light), var(--secondary));">
       <div class="context-title">${ex.title} · ${ex.formula}</div>
       <div class="context-text">${ex.subtitle}</div>
     </div>
     ${structureHtml}
+    ${legendHtml}
     <div class="spectrum-card">
       <div class="spectrum-axis-labels"><span>← Desblindado</span><span>Blindado →</span></div>
       ${renderSpectrumSVG(ex.signals, ex.maxPpm, false, hl)}
@@ -2180,10 +2154,10 @@ function renderGuided() {
     ${stepHtml}
   `;
   if (ex.smiles) {
-  setTimeout(() => renderMoleculeStructure(ex.smiles, 'mol-guided', tags), 0);
+    setTimeout(() => renderMoleculeStructure(ex.smiles, 'mol-guided', tags), 0);
   }
   return div;
-  }
+}
 
 document.addEventListener('keydown', (e) => {
   if (state.currentView === 'tutorial') {
