@@ -1,7 +1,7 @@
 {
   "1": [
     { "type": "fala", "pose": "lousa", "text": "A RMN enxerga núcleos com <strong>spin</strong>: num campo forte, eles absorvem rádio na frequência exata de ressonância." },
-    { "type": "texto", "html": "<p>Núcleos com número ímpar de prótons ou nêutrons (¹H, ¹³C, ¹⁹F, ³¹P) possuem spin. Em um campo B₀, eles se alinham <strong>paralelo</strong> (menor energia) ou <strong>antiparalelo</strong> (maior energia). A radiação na frequência certa promove a transição — isso é a <strong>ressonância</strong>.</p>" },
+    { "type": "texto", "html": "<p>Um núcleo tem spin quando o <strong>número de prótons é ímpar</strong> OU o <strong>número de nêutrons é ímpar</strong> (¹H, ¹³C, ¹⁹F, ³¹P). Em um campo B₀, eles se alinham <strong>paralelo</strong> (menor energia) ou <strong>antiparalelo</strong> (maior energia). A radiação na frequência certa promove a transição — isso é a <strong>ressonância</strong>.</p>" },
     { "type": "tabela", "title": "Núcleos úteis na RMN", "head": ["Núcleo", "Abundância", "Onde aparece"], "rows": [["¹H", "99,98%", "o protagonista deste curso"], ["¹³C", "1,1%", "o esqueleto da molécula"], ["¹⁹F / ³¹P", "100%", "fármacos fluorados, fosfatos"]] },
     { "type": "fala", "pose": "aponta", "text": "Cada ambiente químico sente um campo ligeiramente diferente — e vira um sinal próprio. É disso que vive o espectro." },
     { "type": "quiz", "question": "Por que o ¹²C não aparece na RMN?", "options": [ { "text": "Porque não tem spin nuclear", "correct": true, "feedback": "¹²C tem spin 0: sem spin, não há ressonância." }, { "text": "Porque é raro na natureza", "correct": false, "feedback": "O ¹²C é o carbono mais comum (98,9%) — o problema é o spin 0." }, { "text": "Porque ressoa no infravermelho", "correct": false, "feedback": "RMN usa radiofrequência, não infravermelho — e o ¹²C nem spin tem." } ] }
@@ -10,17 +10,16 @@
     { "type": "fala", "pose": "lousa", "text": "Todo pico tem um endereço: o <strong>deslocamento químico (δ)</strong> diz onde o próton mora no espectro." },
     { "type": "texto", "html": "<p><strong>δ (ppm)</strong> é a posição do sinal em relação ao TMS (δ = 0). Usamos ppm para o valor ser o mesmo em qualquer aparelho: 300, 500 ou 600 MHz.</p>" },
     { "type": "diagrama", "kind": "ppm-axis", "hint": "Clique nas regiões e veja quem mora em cada faixa." },
-    { "type": "exemplo", "title": "Exemplo no quadro: etanol", "smiles": "CCO", "badges": [ { "label": "1.2", "atoms": [0] }, { "label": "3.7", "atoms": [1] }, { "label": "OH", "atoms": [2] } ], "caption": "O CH₂ colado no oxigênio mora em 3.7 ppm; o CH₃, longe dele, em 1.2 ppm. Vizinho eletronegativo empurra o endereço para a esquerda." },
-    { "type": "quiz", "question": "O CH₂ do 1-bromopropano (CH₃–CH₂–Br) mora em qual faixa?", "options": [ { "text": "~0.9 ppm, longe de tudo", "correct": false, "feedback": "Esse é o endereço de CH₃ sem vizinhos eletronegativos. O Br puxa o CH₂ para bem mais à esquerda." }, { "text": "~3.4 ppm, desblindado pelo Br", "correct": true, "feedback": "O bromo retira densidade eletrônica dos prótons vizinhos: CH₂–Br aparece em ~3.4 ppm." }, { "text": "~7.2 ppm, região aromática", "correct": false, "feedback": "7.2 é endereço de H de anel aromático — e o 1-bromopropano nem tem anel." } ] },
+    { "type": "exemplo", "title": "Exemplo no quadro: etanol", "smiles": "CCO", "badges": [ { "label": "1,2", "atoms": [0] }, { "label": "3,7", "atoms": [1] }, { "label": "OH", "atoms": [2] } ], "caption": "O CH₂ colado no oxigênio mora em 3,7 ppm; o CH₃, longe dele, em 1,2 ppm. Vizinho eletronegativo empurra o endereço para a esquerda." },
+    { "type": "quiz", "question": "O CH₂ do 1-bromopropano (CH₃–CH₂–Br) mora em qual faixa?", "options": [ { "text": "~0,9 ppm, longe de tudo", "correct": false, "feedback": "Esse é o endereço de CH₃ sem vizinhos eletronegativos. O Br puxa o CH₂ para bem mais à esquerda." }, { "text": "~3,4 ppm, desblindado pelo Br", "correct": true, "feedback": "O bromo retira densidade eletrônica dos prótons vizinhos: CH₂–Br aparece em ~3,4 ppm." }, { "text": "~7,2 ppm, região aromática", "correct": false, "feedback": "7,2 é endereço de H de anel aromático — e o 1-bromopropano nem tem anel." } ] },
     { "type": "fala", "pose": "pipeta", "text": "Regra de bolso: vizinho eletronegativo = δ maior. O morador vai para a <strong>esquerda</strong> do espectro." }
   ],
   "3": [
     { "type": "fala", "pose": "lousa", "text": "Os elétrons ao redor do núcleo criam um campo que se <strong>opõe</strong> a B₀: quanto mais densidade eletrônica, mais blindado." },
     { "type": "texto", "html": "<p><strong>Mais blindado</strong> = sente menos o campo = ressonância em campo mais alto = <strong>menor δ</strong>. <strong>Mais desblindado</strong> = o contrário: <strong>maior δ</strong>.</p>" },
-    { "type": "diagrama", "kind": "ppm-axis", "hint": "Clique e compare: blindados à direita, desblindados à esquerda." },
-    { "type": "exemplo", "title": "Exemplo no quadro: fluorometano", "smiles": "CF", "badges": [ { "label": "4.3", "atoms": [0] } ], "caption": "O flúor, mais eletronegativo da tabela, arranca densidade do CH₃: δ 4.3, contra 0.23 do metano." },
+    { "type": "diagrama", "kind": "shield", "hint": "Troque o vizinho e veja o endereço andar." },
     { "type": "texto", "html": "<p>Três fatores mandam no δ: <strong>eletronegatividade</strong> dos vizinhos, <strong>anisotropia</strong> de sistemas π (anéis, C=O) e <strong>hibridização</strong> (sp² desblinda mais que sp³).</p>" },
-    { "type": "quiz", "question": "Qual destes prótons é o MAIS blindado?", "options": [ { "text": "CH₃–F", "correct": false, "feedback": "F é o vizinho mais eletronegativo possível: esse é bem desblindado." }, { "text": "CH₃–CH₃", "correct": true, "feedback": "Sem vizinho eletronegativo e sem sistema π: o mais blindado dos três." }, { "text": "CH₃–OH", "correct": false, "feedback": "O oxigênio desblinda o CH₃ para ~3.4 — menos que o F, mas não é o mais blindado." } ] }
+    { "type": "quiz", "question": "Qual destes prótons é o MAIS blindado?", "options": [ { "text": "CH₃–F", "correct": false, "feedback": "F é o vizinho mais eletronegativo possível: esse é bem desblindado." }, { "text": "CH₃–CH", "correct": true, "feedback": "Sem vizinho eletronegativo e sem sistema π: o mais blindado dos três." }, { "text": "CH₃–OH", "correct": false, "feedback": "O oxigênio desblinda o CH₃ para ~3,4 — menos que o F, mas não é o mais blindado." } ] }
   ],
   "4": [
     { "type": "fala", "pose": "lousa", "text": "Um sinal vira vários picos quando o próton tem vizinhos: é o <strong>acoplamento spin-spin</strong>, e a conta é a regra <strong>n+1</strong>." },
@@ -28,12 +27,12 @@
     { "type": "diagrama", "kind": "splitting-tree", "hint": "Escolha n e veja o padrão nascer do Pascal." },
     { "type": "exemplo", "title": "Exemplo no quadro: CH₃–CH₂–Br", "smiles": "CCBr", "badges": [ { "label": "t", "atoms": [0] }, { "label": "q", "atoms": [1] } ], "caption": "O CH₃ vê 2 vizinhos → tripleto (3 picos). O CH₂ vê 3 vizinhos → quarteto (4 picos)." },
     { "type": "quiz", "question": "O CH₃ do etanol (CH₃–CH₂–OH) aparece como…", "options": [ { "text": "Singleto", "correct": false, "feedback": "Singleto seria sem vizinhos. Aqui o CH₃ tem um CH₂ do lado." }, { "text": "Tripleto", "correct": true, "feedback": "n = 2 vizinhos (o CH₂) → n+1 = 3 picos: tripleto." }, { "text": "Quarteto", "correct": false, "feedback": "Quarteto é o padrão do CH₂ (3 vizinhos). O CH₃, com 2 vizinhos, dá tripleto." } ] },
-    { "type": "fala", "pose": "pensando", "text": "Pegadinha clássica: prótons <strong>equivalentes</strong> não acoplam entre si — os 4H do benzeno dão singleto!" }
+    { "type": "fala", "pose": "pensando", "text": "Pegadinha clássica: prótons <strong>equivalentes</strong> não acoplam entre si — os 6H do benzeno dão singleto!" }
   ],
   "5": [
     { "type": "fala", "pose": "lousa", "text": "A distância entre os picos de um multipleto é a <strong>constante J</strong> — e ela não muda com o campo do aparelho." },
-    { "type": "tabela", "title": "Valores típicos de J (¹H–¹H)", "head": ["Tipo", "J (Hz)"], "rows": [["Vizinho (H–C–C–H)", "6–8"], ["Alceno cis", "~10"], ["Alceno trans", "~15"], ["Geminal (H–C–H)", "12–15"], ["Aromático orto", "6–9"], ["Aromático meta", "1–3"]] },
-    { "type": "texto", "html": "<p>Quando os vizinhos não são equivalentes e têm J diferentes, o padrão vira <strong>dd, td, dt</strong>. Quando Δδ é pequeno perto de J, o padrão entorta: <strong>segunda ordem</strong>.</p>" },
+    { "type": "tabela", "title": "Valores típicos de J (¹H–¹H)", "head": ["Tipo", "J (Hz)"], "rows": [["Vicinal em cadeia livre (média)", "6–8"], ["Ciclohexano ax–ax", "8–12"], ["Ciclohexano ax–eq", "2–5"], ["Alceno cis", "~10"], ["Alceno trans", "~15"], ["Geminal (H–C–H)", "12–15"], ["Aromático orto", "6–9"], ["Aromático meta", "1–3"]] },
+    { "type": "texto", "html": "<p>J vicinal depende do <strong>ângulo diedro</strong> (Karplus): em cadeias de rotação livre a média é 6–8 Hz; em ciclohexanos, ax–ax chega a 8–12 e ax–eq cai a 2–5. Quando os vizinhos não são equivalentes e têm J diferentes, o padrão vira <strong>dd, td, dt</strong>. Quando Δδ é pequeno perto de J, o padrão entorta: <strong>segunda ordem</strong>.</p>" },
     { "type": "quiz", "question": "Dois H de um alceno dão J = 15 Hz. Qual a geometria?", "options": [ { "text": "cis", "correct": false, "feedback": "cis acopla ~10 Hz. Quinze é assinatura de trans." }, { "text": "trans", "correct": true, "feedback": "J trans ~15 Hz vs cis ~10 Hz: o J entrega a geometria." }, { "text": "Não dá para saber", "correct": false, "feedback": "Dá sim: a magnitude do J vicinal de alceno distingue cis de trans." } ] },
     { "type": "fala", "pose": "pensando", "text": "Multipletos tortos não são defeito: eles avisam que os núcleos acoplados têm δ parecidos." }
   ],
@@ -47,7 +46,7 @@
     { "type": "fala", "pose": "lousa", "text": "O–H e N–H <strong>trocam</strong> com o solvente: por isso aparecem largos e em posição variável." },
     { "type": "diagrama", "kind": "d2o", "hint": "Toque em Depois do D₂O e veja os trocáveis sumirem." },
     { "type": "texto", "html": "<p>Agite com <strong>D₂O</strong>: o D troca com O–H/N–H e o sinal some (D não aparece no ¹H). É o teste definitivo. Em geral eles também não acoplam com os vizinhos.</p>" },
-    { "type": "quiz", "question": "Depois do D₂O, um singleto largo em 5.5 ppm desaparece. Quem era ele?", "options": [ { "text": "Um O–H ou N–H", "correct": true, "feedback": "Largo + variável + some com D₂O = próton trocável." }, { "text": "Um CH aromático", "correct": false, "feedback": "C–H não troca com D₂O nessas condições — e aromático mora em 6.5–8.5." }, { "text": "Um CH₃", "correct": false, "feedback": "CH₃ não é trocável e não aparece largo em 5.5." } ] },
+    { "type": "quiz", "question": "Depois do D₂O, um singleto largo em 5,5 ppm desaparece. Quem era ele?", "options": [ { "text": "Um O–H ou N–H", "correct": true, "feedback": "Largo + variável + some com D₂O = próton trocável." }, { "text": "Um CH aromático", "correct": false, "feedback": "C–H não troca com D₂O nessas condições — e aromático mora em 6,5–8,5." }, { "text": "Um CH₃", "correct": false, "feedback": "CH₃ não é trocável e não aparece largo em 5,5." } ] },
     { "type": "fala", "pose": "pipeta", "text": "Não ache o OH pelo δ: ache ele pelo <strong>teste do D₂O</strong>." }
   ],
   "8": [
@@ -59,8 +58,8 @@
   ],
   "9": [
     { "type": "fala", "pose": "lousa", "text": "Irradiar os H durante a aquisição colapsa os múltiplos do ¹³C em singletos — e ainda empresta sinal via <strong>NOE</strong>." },
-    { "type": "texto", "html": "<p><strong>Decoplamento:</strong> todo carbono vira singleto. <strong>NOE:</strong> carbonos com H colado ganham reforço de sinal; <strong>quaternários</strong> ficam fraquinhos — procure-os pelas linhas baixas.</p>" },
-    { "type": "quiz", "question": "Por que o C=O de um éster aparece tão fraco no ¹³C?", "options": [ { "text": "Porque não tem H colado e não recebe NOE", "correct": true, "feedback": "Sem H direto, sem NOE: quaternários são as linhas fracas do espectro." }, { "text": "Porque o carbono é pesado", "correct": false, "feedback": "Massa não é o fator: é a ausência de H colado (e de NOE)." }, { "text": "Porque ressoa em campo baixo demais", "correct": false, "feedback": "C=O ressona em ~160–180 ppm, o campo alto do ¹³C — a fraqueza vem do NOE ausente." } ] }
+    { "type": "texto", "html": "<p><strong>Decoplamento:</strong> todo carbono vira singleto. <strong>Por que quaternário é fraco?</strong> Sem H colado, o carbono relaxa devagar (T₁ longo) e quase não recebe NOE — os dois efeitos juntos deixam a linha baixa. Aumentar o tempo de aquisição ajuda, mas custa caro: por isso quaternários seguem discretos.</p>" },
+    { "type": "quiz", "question": "Por que o C=O de um éster aparece tão fraco no ¹³C?", "options": [ { "text": "Porque não tem H colado: T₁ longo e pouco NOE", "correct": true, "feedback": "Sem H direto: relaxação lenta (T₁ longo) + NOE pequeno = sinal fraco." }, { "text": "Porque o carbono é pesado", "correct": false, "feedback": "Massa não é o fator: é a ausência de H colado (T₁ longo + NOE pequeno)." }, { "text": "Porque ressoa em campo baixo demais", "correct": false, "feedback": "C=O ressona em ~160–180 ppm, o campo alto do ¹³C — a fraqueza vem de T₁ + NOE, não da posição." } ] }
   ],
   "10": [
     { "type": "fala", "pose": "lousa", "text": "O DEPT é o filtro que diz quantos H cada carbono carrega: <strong>CH₃, CH₂, CH</strong> — ou nada." },
@@ -84,7 +83,7 @@
       "Devolva o resultado: todo pico precisa ter dono"
     ] },
     { "type": "exemplo", "title": "Caso fechado: paracetamol", "smiles": "CC(=O)Nc1ccc(O)cc1", "caption": "2 dupletos 2H (anel para) + 2 singletos largos (NH, OH) + singleto 3H (acetila) + 168 ppm (C=O de amida). Cada pico tem dono." },
-    { "type": "quiz", "question": "GI = 4 em uma molécula orgânica comum sugere fortemente…", "options": [ { "text": "Um anel benzênico", "correct": true, "feedback": "3 C=C + 1 anel = 4 insaturações: a assinatura do benzeno." }, { "text": "Quatro carbonilas", "correct": false, "feedback": "Possível, mas raro; o padrão aromático de 6.5–8.5 é que confirma o anel." }, { "text": "Dois anéis e duas carbonilas", "correct": false, "feedback": "Também soma 4 — mas os sinais aromáticos é que fecham o diagnóstico." } ] },
+    { "type": "quiz", "question": "GI = 4 em uma molécula orgânica comum sugere fortemente…", "options": [ { "text": "Um anel benzênico", "correct": true, "feedback": "3 C=C + 1 anel = 4 insaturações: a assinatura do benzeno." }, { "text": "Quatro carbonilas", "correct": false, "feedback": "Possível, mas raro; o padrão aromático de 6,5–8,5 é que confirma o anel." }, { "text": "Dois anéis e duas carbonilas", "correct": false, "feedback": "Também soma 4 — mas os sinais aromáticos é que fecham o diagnóstico." } ] },
     { "type": "fala", "pose": "festa", "text": "Checklist completa, estrutura fechada. A lousa agora é sua: bons espectros!" }
   ]
 }
