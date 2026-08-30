@@ -2167,13 +2167,19 @@ function renderGuided() {
         </div>
       </div>
     </div>
-    ${structureHtml}
-    ${legendHtml}
-    <div class="spectrum-card">
-      <div class="spectrum-axis-labels"><span>← Desblindado</span><span>Blindado →</span></div>
-      ${renderSpectrumSVG(ex.signals, ex.maxPpm, false, hl)}
+        <div class="mapping-layout">
+      <div class="mapping-left">
+        ${structureHtml}
+        ${legendHtml}
+      </div>
+      <div class="mapping-right">
+        <div class="spectrum-card">
+          <div class="spectrum-axis-labels"><span>← Desblindado</span><span>Blindado →</span></div>
+          ${renderSpectrumSVG(ex.signals, ex.maxPpm, false, hl)}
+        </div>
+        <div class="signals-list">${signalsHtml}</div>
+      </div>
     </div>
-    <div class="signals-list">${signalsHtml}</div>
     ${stepHtml}
   `;
   if (ex.smiles) {
