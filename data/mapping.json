@@ -225,57 +225,54 @@
       { "id": "csig1", "ppm": 23.9, "mult": "CH₃", "height": 60 }
     ]
   },
-{
-  "level": 302,
-  "tier": "dificil",
-  "title": "Ácido Acetilsalicílico",
-  "context": "Substituição orto no anel aromático quebra a simetria, gerando 4 sinais aromáticos distintos (dd, t, t, dd).",
-  "maxPpm": 11.5,
-  "smiles": "CC(=O)Oc1ccccc1C(=O)O",
-  "chain": [
-    { "label": "COOH", "tagId": "tag1", "correctTarget": "sig1", "atomIndices": [12] },
-    { "label": "Anel", "fixed": true, "branches": [
-      { "label": "H-Ar (C3)", "tagId": "tag2", "correctTarget": "sig2", "atomIndices": [8] },
-      { "label": "H-Ar (C4)", "tagId": "tag3", "correctTarget": "sig3", "atomIndices": [7] },
-      { "label": "H-Ar (C5)", "tagId": "tag4", "correctTarget": "sig4", "atomIndices": [6] },
-      { "label": "H-Ar (C6)", "tagId": "tag5", "correctTarget": "sig5", "atomIndices": [5] }
-    ] },
-    { "label": "O", "fixed": true },
-    { "label": "C=O", "fixed": true },
-    { "label": "CH₃", "tagId": "tag6", "correctTarget": "sig6", "atomIndices": [0] }
-  ],
-  "signals": [
-    { "id": "sig1", "ppm": 11.0, "int": 1, "mult": "s (largo)", "height": 20 },
-    { "id": "sig2", "ppm": 8.1, "int": 1, "mult": "dd", "J": 8, "height": 25 },
-    { "id": "sig3", "ppm": 7.6, "int": 1, "mult": "t", "J": 8, "height": 25 },
-    { "id": "sig4", "ppm": 7.4, "int": 1, "mult": "t", "J": 8, "height": 25 },
-    { "id": "sig5", "ppm": 7.1, "int": 1, "mult": "d", "J": 8, "height": 25 },
-    { "id": "sig6", "ppm": 2.3, "int": 3, "mult": "s", "height": 60 }
-  ],
-  "chain13C": [
-    { "label": "COOH", "tagId": "ctag1", "correctTarget": "csigCOOH", "atomIndices": [10] },
-    { "label": "Anel", "fixed": true, "branches": [
-      { "label": "C-ipso (COOH)", "tagId": "ctag2", "correctTarget": "csigIpsoCOOH", "atomIndices": [9] },
-      { "label": "CH (C3)", "tagId": "ctag3", "correctTarget": "csigC3", "atomIndices": [8] },
-      { "label": "CH (C4)", "tagId": "ctag4", "correctTarget": "csigC4", "atomIndices": [7] },
-      { "label": "CH (C5)", "tagId": "ctag5", "correctTarget": "csigC5", "atomIndices": [6] },
-      { "label": "CH (C6)", "tagId": "ctag6", "correctTarget": "csigC6", "atomIndices": [5] },
-      { "label": "C-ipso (O)", "tagId": "ctag7", "correctTarget": "csigIpsoO", "atomIndices": [4] }
-    ] },
-    { "label": "O", "fixed": true },
-    { "label": "C=O", "tagId": "ctag8", "correctTarget": "csigCOEster", "atomIndices": [1] },
-    { "label": "CH₃", "tagId": "ctag9", "correctTarget": "csig1", "atomIndices": [0] }
-  ],
-  "signals13C": [
-    { "id": "csigCOOH", "ppm": 170.0, "mult": "COOH (quaternário)", "height": 30 },
-    { "id": "csigCOEster", "ppm": 169.7, "mult": "C=O éster (quaternário)", "height": 30 },
-    { "id": "csigIpsoO", "ppm": 151.0, "mult": "C-ipso (quaternário)", "height": 25 },
-    { "id": "csigC4", "ppm": 134.9, "mult": "CH", "height": 40 },
-    { "id": "csigC6", "ppm": 132.5, "mult": "CH", "height": 40 },
-    { "id": "csigC5", "ppm": 126.1, "mult": "CH", "height": 40 },
-    { "id": "csigC3", "ppm": 124.0, "mult": "CH", "height": 40 },
-    { "id": "csigIpsoCOOH", "ppm": 122.2, "mult": "C-ipso (quaternário)", "height": 25 },
-    { "id": "csig1", "ppm": 20.9, "mult": "CH₃", "height": 60 }
+  {
+    "level": 302, "tier": "dificil", "title": "Ácido Acetilsalicílico",
+    "context": "Substituição orto no anel aromático quebra a simetria, gerando 4 sinais aromáticos distintos (dd, t, t, dd).",
+    "maxPpm": 11.5, "smiles": "CC(=O)Oc1ccccc1C(=O)O",
+    "chain": [
+      { "label": "COOH", "tagId": "tag1", "correctTarget": "sig1", "atomIndices": [12] },
+      { "label": "Anel", "fixed": true, "branches": [
+        { "label": "H-Ar (C3)", "tagId": "tag2", "correctTarget": "sig2", "atomIndices": [8] },
+        { "label": "H-Ar (C4)", "tagId": "tag3", "correctTarget": "sig3", "atomIndices": [7] },
+        { "label": "H-Ar (C5)", "tagId": "tag4", "correctTarget": "sig4", "atomIndices": [6] },
+        { "label": "H-Ar (C6)", "tagId": "tag5", "correctTarget": "sig5", "atomIndices": [5] }
+      ] },
+      { "label": "O", "fixed": true },
+      { "label": "C=O", "fixed": true },
+      { "label": "CH₃", "tagId": "tag6", "correctTarget": "sig6", "atomIndices": [0] }
+    ],
+    "signals": [
+      { "id": "sig1", "ppm": 11.0, "int": 1, "mult": "s (largo)", "height": 20 },
+      { "id": "sig2", "ppm": 8.1, "int": 1, "mult": "dd", "J": 8, "height": 25 },
+      { "id": "sig3", "ppm": 7.6, "int": 1, "mult": "t", "J": 8, "height": 25 },
+      { "id": "sig4", "ppm": 7.4, "int": 1, "mult": "t", "J": 8, "height": 25 },
+      { "id": "sig5", "ppm": 7.1, "int": 1, "mult": "d", "J": 8, "height": 25 },
+      { "id": "sig6", "ppm": 2.3, "int": 3, "mult": "s", "height": 60 }
+    ],
+    "chain13C": [
+      { "label": "COOH", "tagId": "ctag1", "correctTarget": "csigCOOH", "atomIndices": [10] },
+      { "label": "Anel", "fixed": true, "branches": [
+        { "label": "C-ipso (COOH)", "tagId": "ctag2", "correctTarget": "csigIpsoCOOH", "atomIndices": [9] },
+        { "label": "CH (C3)", "tagId": "ctag3", "correctTarget": "csigC3", "atomIndices": [8] },
+        { "label": "CH (C4)", "tagId": "ctag4", "correctTarget": "csigC4", "atomIndices": [7] },
+        { "label": "CH (C5)", "tagId": "ctag5", "correctTarget": "csigC5", "atomIndices": [6] },
+        { "label": "CH (C6)", "tagId": "ctag6", "correctTarget": "csigC6", "atomIndices": [5] },
+        { "label": "C-ipso (O)", "tagId": "ctag7", "correctTarget": "csigIpsoO", "atomIndices": [4] }
+      ] },
+      { "label": "O", "fixed": true },
+      { "label": "C=O", "tagId": "ctag8", "correctTarget": "csigCOEster", "atomIndices": [1] },
+      { "label": "CH₃", "tagId": "ctag9", "correctTarget": "csig1", "atomIndices": [0] }
+    ],
+    "signals13C": [
+      { "id": "csigCOOH", "ppm": 170.0, "mult": "COOH (quaternário)", "height": 30 },
+      { "id": "csigCOEster", "ppm": 169.7, "mult": "C=O éster (quaternário)", "height": 30 },
+      { "id": "csigIpsoO", "ppm": 151.0, "mult": "C-ipso (quaternário)", "height": 25 },
+      { "id": "csigC4", "ppm": 134.9, "mult": "CH", "height": 40 },
+      { "id": "csigC6", "ppm": 132.5, "mult": "CH", "height": 40 },
+      { "id": "csigC5", "ppm": 126.1, "mult": "CH", "height": 40 },
+      { "id": "csigC3", "ppm": 124.0, "mult": "CH", "height": 40 },
+      { "id": "csigIpsoCOOH", "ppm": 122.2, "mult": "C-ipso (quaternário)", "height": 25 },
+      { "id": "csig1", "ppm": 20.9, "mult": "CH₃", "height": 60 }
     ]
   },
   {
@@ -303,7 +300,7 @@
       { "id": "sig5", "ppm": 7.2, "int": 2, "mult": "d", "J": 8, "height": 40 },
       { "id": "sig6", "ppm": 7.1, "int": 2, "mult": "d", "J": 8, "height": 40 },
       { "id": "sig7", "ppm": 0.9, "int": 6, "mult": "d", "J": 7, "height": 120 },
-      { "id": "sig8", "ppm": 1.5, "int": 3, "mult": "d", "J": 7, "height": 70 }
+      { "id": "sig8", "ppm": 1.5, "int": 3, "mult": "d", "J": 7, "height": 60 }
     ],
     "chain13C": [
       { "label": "COOH", "tagId": "ctag1", "correctTarget": "csigCOOH", "atomIndices": [12] },
