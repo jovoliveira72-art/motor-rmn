@@ -614,6 +614,13 @@ main { flex: 1; overflow-y: auto; padding: 32px 24px 80px; }
 
 .split-bar { width: 26px; background: linear-gradient(180deg, #93c5fd, #3b82f6); border-radius: 4px 4px 0 0; transition: height 0.3s; }
 
+.energy-stage { position: relative; height: 170px; margin: 8px 0 14px; }
+.energy-level { position: absolute; left: 8%; right: 8%; height: 4px; border-radius: 2px; background: #3b82f6; transition: top 0.4s; }
+.energy-level.lower { top: 78%; background: #10b981; }
+.energy-level span { position: absolute; right: 0; top: -20px; font-size: 11px; font-weight: 700; color: #475569; white-space: nowrap; }
+.energy-level.lower span { top: 10px; }
+.energy-arrow { position: absolute; left: 50%; transform: translateX(-50%); font-size: 13px; font-weight: 800; color: #64748b; transition: top 0.4s; }
+  
 .d2o-peaks { position: relative; height: 100px; border-bottom: 2px solid #94a3b8; margin: 24px 0 8px; }
 
 .d2o-peak { position: absolute; bottom: 0; width: 10px; height: 70%; background: #3b82f6; border-radius: 3px 3px 0 0; transition: opacity 0.3s; }
@@ -1292,6 +1299,112 @@ function buildShieldDiagram() {
 
 const QUIZ_DATA = {};
 
+/* ========== NÍVEIS DE ENERGIA (nível 1) ========== */
+window.setEnergy = function(mhz) {
+  document.querySelectorAll('.energy-btn').forEach(b => b.classList.toggle('active', parseInt(b.dataset.mhz) === mhz));
+  const upperTop = mhz >= 600 ? 18 : 42;
+  const upper = document.getElementById('energy-upper');
+  const arrow = document.getElementById('energy-arrow');
+  if (upper) upper.style.top = upperTop + '%';
+  if (arrow) arrow.style.top = ((upperTop + 78) / 2 - 6) + '%';
+  const note = document.getElementById('energy-note');
+  if (note) note.innerHTML = mhz >= 600
+    ? '<b>600 MHz:</b> campo maior ≈ ΔE maior → diferença de população maior → sinal mais forte e picos mais separados. Por isso perseguimos campos altos.'
+    : '<b>300 MHz:</b> o ΔE é minúsculo — o excesso no nível inferior é da ordem de 1 em 10⁵ núcleos. Por isso a RMN é pouco sensível.';
+};
+
+function buildEnergyDiagram() {
+  return `
+    <div class="split-controls">
+      <button class="energy-btn split-btn active" style="width:auto;padding:0 14px;" data-mhz="300" onclick="setEnergy(300)">300 MHz</button>
+      <button class="energy-btn split-btn" style="width:auto;padding:0 14px;" data-mhz="600" onclick="setEnergy(600)">600 MHz</button>
+    </div>
+    <div class="energy-stage">
+      <div class="energy-level" id="energy-upper" style="top:42%"><span>antiparalelo · maior energia</span></div>
+      <div class="energy-arrow" id="energy-arrow" style="top:54%">ΔE = h·ν</div>
+      <div class="energy-level lower"><span>paralelo · menor energia</span></div>
+    </div>
+    <div class="ppm-info" id="energy-note"><b>300 MHz:</b> o ΔE é minúsculo — o excesso no nível inferior é da ordem de 1 em 10⁵ núcleos. Por isso a RMN é pouco sensível.</div>`;
+}
+
+/* ========== INTEGRAÇÃO (nível 6) ========== */
+const INTEG_CASES = [
+  { id: 'etoh', name: 'etanol', steps: [ { ppm: 3.7, h: 2, label: '2H' }, { ppm: 2.6, h: 1, label: '1H' }, { ppm: 1.2, h: 3, label: '3H' } ], note: '<b>Etanol:</b> a altura de cada degrau segue a razão 3:2:1. Com a fórmula, a proporção vira contagem absoluta.' },
+  { id: 'tol', name: 'tolueno', steps: [ { ppm: 7.2, h: 5, label: '5H' }, { ppm: 2.3, h: 3, label: '3H' } ], note: '<b>Tolueno:</b> razão 5:3. Sem a fórmula, a integração só dá proporção — nunca confie nela como número absoluto.' }
+];
+
+window.setInteg = function(id) {
+  const c = INTEG_CASES.find(x => x.id === id);
+  if (!c) return;
+  document.querySelectorAll('.integ-btn').forEach(b => b.classList.toggle('active', b.dataset.case === id));
+  const note = document.getElementById('integ-note');
+  if (note) note.innerHTML = c.note;
+  const svg = document.getElementById('integ-svg');
+  if (!svg) return;
+  const W = 400, base = 100;
+  let peaks = '', stair = `M 0 ${base - 8}`, level = 8;
+  c.steps.forEach(s => {
+    const x = 30 + (10 - s.ppm) * 34;
+    const ph = s.h * 18;
+    peaks += `<line x1="${x}" y1="${base}" x2="${x}" y2="${base - ph}" stroke="#3b82f6" stroke-width="3"/>`;
+    peaks += `<text x="${x}" y="${base - ph - 6}" text-anchor="middle" font-size="11" font-weight="700" fill="#475569">${s.label}</text>`;
+    stair += ` L ${x - 16} ${base - level} L ${x + 16} ${base - level - s.h * 11}`;
+    level += s.h * 11;
+  });
+  stair += ` L ${W} ${base - level}`;
+  svg.innerHTML = `<line x1="0" y1="${base}" x2="${W}" y2="${base}" stroke="#94a3b8" stroke-width="2"/>${peaks}<path d="${stair}" fill="none" stroke="#f59e0b" stroke-width="2.5"/>`;
+};
+
+function buildIntegrationDiagram() {
+  return `
+    <div class="split-controls">
+      ${INTEG_CASES.map(c => `<button class="integ-btn split-btn" style="width:auto;padding:0 14px;" data-case="${c.id}" onclick="setInteg('${c.id}')">${c.name}</button>`).join('')}
+    </div>
+    <svg id="integ-svg" viewBox="0 0 400 120" style="width:100%;height:120px;display:block;"></svg>
+    <div class="ppm-info" id="integ-note"></div>`;
+}
+
+/* ========== DECOPLAMENTO (nível 9) ========== */
+window.setDecouple = function(on) {
+  document.querySelectorAll('.dec-btn').forEach(b => b.classList.toggle('active', b.dataset.on === String(on)));
+  const note = document.getElementById('dec-note');
+  if (note) note.innerHTML = on
+    ? '<b>Decoplado (padrão):</b> todo carbono vira singleto; CH₃ e CH₂ ainda ganham NOE. Leitura limpa.'
+    : '<b>Com acoplamento ¹H:</b> CH₃ vira quarteto, CH₂ vira tripleto, C=O fica singleto. Informação rica, espectro ilegível — por isso decoplamos.';
+  const svg = document.getElementById('dec-svg');
+  if (!svg) return;
+  const W = 400, base = 100;
+  const x = ppm => 20 + (200 - Math.min(ppm, 200)) * 1.8;
+  const sigs = [ { ppm: 171, mult: 1 }, { ppm: 60, mult: 3 }, { ppm: 21, mult: 4 }, { ppm: 14, mult: 4 } ];
+  let out = `<line x1="0" y1="${base}" x2="${W}" y2="${base}" stroke="#94a3b8" stroke-width="2"/>`;
+  sigs.forEach(s => {
+    const cx = x(s.ppm);
+    if (!on && s.mult > 1) {
+      const pat = s.mult === 3 ? [1, 2, 1] : [1, 3, 3, 1];
+      const sp = 7, max = Math.max(...pat);
+      pat.forEach((r, i) => {
+        const px = cx - (pat.length - 1) * sp / 2 + i * sp;
+        out += `<line x1="${px}" y1="${base}" x2="${px}" y2="${base - 42 * r / max}" stroke="#8b5cf6" stroke-width="2.5"/>`;
+      });
+    } else {
+      const h = on ? 70 : (s.mult > 1 ? 28 : 45);
+      out += `<line x1="${cx}" y1="${base}" x2="${cx}" y2="${base - h}" stroke="#8b5cf6" stroke-width="3"/>`;
+    }
+    out += `<text x="${cx}" y="${base + 14}" text-anchor="middle" font-size="10" font-weight="700" fill="#64748b">${s.ppm}</text>`;
+  });
+  svg.innerHTML = out;
+};
+
+function buildDecoupleDiagram() {
+  return `
+    <div class="split-controls">
+      <button class="dec-btn split-btn" style="width:auto;padding:0 14px;" data-on="false" onclick="setDecouple(false)">com acoplamento ¹H</button>
+      <button class="dec-btn split-btn active" style="width:auto;padding:0 14px;" data-on="true" onclick="setDecouple(true)">decoplado (padrão)</button>
+    </div>
+    <svg id="dec-svg" viewBox="0 0 400 120" style="width:100%;height:120px;display:block;"></svg>
+    <div class="ppm-info" id="dec-note"></div>`;
+}
+  
 function wrapDiagram(inner, hint) {
   return `
     <div class="diagram-card">
@@ -1346,6 +1459,9 @@ function renderBlocks(blocks, levelId) {
       if (b.kind === 'd2o') return wrapDiagram(buildD2ODiagram(), b.hint);
       if (b.kind === 'dept') return wrapDiagram(buildDeptDiagram(), b.hint);
       if (b.kind === 'shield') return wrapDiagram(buildShieldDiagram(), b.hint);
+      if (b.kind === 'energy') return wrapDiagram(buildEnergyDiagram(), b.hint);
+      if (b.kind === 'integration') return wrapDiagram(buildIntegrationDiagram(), b.hint);
+      if (b.kind === 'decouple') return wrapDiagram(buildDecoupleDiagram(), b.hint);
       return '';
     }
     if (b.type === 'exemplo') {
@@ -1483,6 +1599,9 @@ function renderTutorial() {
     if (document.getElementById('c13-info')) window.showC13Zone('c1');
     if (document.getElementById('shield-note')) window.showShield('s1');
     if (document.getElementById('dept-note')) window.setDept('bb');
+    if (document.getElementById('energy-note')) window.setEnergy(300);
+    if (document.getElementById('integ-svg')) window.setInteg('etoh');
+    if (document.getElementById('dec-svg')) window.setDecouple(true);
   }, 0);
 
   return div;
