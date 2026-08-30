@@ -131,13 +131,13 @@
       { "id": "sig2", "ppm": 6.7, "mult": "d", "int": 2, "J": 9, "height": 20 },
       { "id": "sig3", "ppm": 7.4, "mult": "d", "int": 2, "J": 9, "height": 20 },
       { "id": "sig4", "ppm": 9.2, "mult": "s", "int": 1, "height": 15 },
-      { "id": "sig5", "ppm": 10.5, "mult": "s", "int": 1, "height": 15 }
+      { "id": "sig5", "ppm": 9.8, "mult": "s", "int": 1, "height": 15 }
     ],
     "chain": [
-      { "tagId": "t1", "label": "CH₃CO", "atomIndices": [0, 1, 2] },
+      { "tagId": "t1", "label": "CH₃CO", "atomIndices": [0, 1] },
       { "tagId": "t2", "label": "NH", "atomIndices": [3] },
-      { "tagId": "t3", "label": "Anel", "atomIndices": [4, 5, 6, 7, 8, 9] },
-      { "tagId": "t4", "label": "OH", "atomIndices": [10] }
+      { "tagId": "t3", "label": "Anel", "atomIndices": [4, 5, 6, 7, 9, 10] },
+      { "tagId": "t4", "label": "OH", "atomIndices": [8] }
     ],
     "steps": [
       {
@@ -167,7 +167,7 @@
       },
       {
         "type": "question",
-        "text": "Os dois singletos largos em 9,2 e 10,5 ppm (1H cada) desaparecem com D₂O. Quem são eles?",
+        "text": "Os dois singletos largos em 9,2 e 9,8 ppm (1H cada) desaparecem com D₂O. Quem são eles?",
         "options": [
           { "text": "O NH da amida e o OH do fenol — ambos trocáveis", "correct": true, "feedback": "Tanto NH quanto OH são prótons trocáveis. O NH da amida costuma estar ~8–10 ppm; o OH fenólico ~9–11 ppm." },
           { "text": "Dois CH aromáticos muito desblindados", "correct": false, "feedback": "CH aromático não some com D₂O — só H ligado a O ou N troca." },
@@ -177,7 +177,7 @@
       },
       {
         "type": "observe",
-        "text": "Paracetamol fechado: CH₃CO (2,1, s, 3H), 4H aromáticos (6,7 e 7,4, d, 2H cada), NH (10,5, s largo), OH (9,2, s largo). Cada sinal tem dono — fórmula C₈H₉NO₂ batida.",
+        "text": "Paracetamol fechado: CH₃CO (2,1, s, 3H), 4H aromáticos (6,7 e 7,4, d, 2H cada), NH (9,8, s largo), OH (9,2, s largo). Cada sinal tem dono — fórmula C₈H₉NO₂ batida.",
         "highlight": ["sig1", "sig2", "sig3", "sig4", "sig5"]
       }
     ]
@@ -199,12 +199,12 @@
       { "id": "sig7", "ppm": 7.2, "mult": "d", "int": 2, "J": 8, "height": 20 },
       { "id": "sig8", "ppm": 12.0, "mult": "s", "int": 1, "height": 15 }
     ],
-    "chain": [
-      { "tagId": "t1", "label": "Isobutila", "atomIndices": [0, 1, 2, 3] },
-      { "tagId": "t2", "label": "CH₂ ligação", "atomIndices": [4] },
-      { "tagId": "t3", "label": "Anel", "atomIndices": [5, 6, 7, 8, 9, 10] },
-      { "tagId": "t4", "label": "Cadeia ácida", "atomIndices": [11, 12, 13, 14, 15] }
-    ],
+      "chain": [
+        { "tagId": "t1", "label": "Isopropil", "atomIndices": [0, 1, 2] },
+        { "tagId": "t2", "label": "CH₂", "atomIndices": [3] },
+        { "tagId": "t3", "label": "Anel", "atomIndices": [4, 5, 6, 7, 13, 14] },
+        { "tagId": "t4", "label": "Cadeia ácida", "atomIndices": [8, 9, 10, 11, 12] }
+      ],
     "steps": [
       {
         "type": "observe",
