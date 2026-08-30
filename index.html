@@ -624,7 +624,6 @@ main { flex: 1; overflow-y: auto; padding: 32px 24px 80px; }
 
 .split-bar { width: 26px; background: linear-gradient(180deg, #93c5fd, #3b82f6); border-radius: 4px 4px 0 0; transition: height 0.3s; }
 
-/* ========== D₂O, DEPT E BLINDAGEM ========== */
 .d2o-peaks { position: relative; height: 100px; border-bottom: 2px solid #94a3b8; margin: 24px 0 8px; }
 
 .d2o-peak { position: absolute; bottom: 0; width: 10px; height: 70%; background: #3b82f6; border-radius: 3px 3px 0 0; transition: opacity 0.3s; }
@@ -658,7 +657,6 @@ main { flex: 1; overflow-y: auto; padding: 32px 24px 80px; }
 .shield-end.l { left: 0; }
 .shield-end.r { right: 0; }
 
-/* ========== CHECKLIST ========== */
 .checklist-card { background: #f8fafc; border: 2px solid #e2e8f0; border-radius: 12px; padding: 16px; margin: 20px 0; }
 
 .check-item { display: flex; gap: 10px; align-items: flex-start; padding: 8px 4px; font-size: 14px; color: #1f2937; cursor: pointer; border-bottom: 1px dashed #e2e8f0; }
@@ -673,7 +671,6 @@ main { flex: 1; overflow-y: auto; padding: 32px 24px 80px; }
 
 .check-done:empty { display: none; }
 
-/* ========== QUIZ NA LOUSA ========== */
 .quiz-card { background: #f8fafc; border: 2px dashed #94a3b8; border-radius: 12px; padding: 16px; margin: 22px 0; }
 
 .quiz-options { display: grid; gap: 8px; }
@@ -720,7 +717,6 @@ main { flex: 1; overflow-y: auto; padding: 32px 24px 80px; }
   .quiz-card { padding: 12px; }
 }
 
-/* ========== LOUSA BRANCA (FUNDAMENTOS) ========== */
 .board-frame { background: linear-gradient(145deg, #f3f4f6, #9ca3af); border-radius: 18px; padding: 10px; margin-bottom: 24px; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25); }
 
 .board-card {
@@ -785,7 +781,7 @@ main { flex: 1; overflow-y: auto; padding: 32px 24px 80px; }
 
 </div>
 
-<div class="app-version">v3.17.0</div>
+<div class="app-version">v3.17.1</div>
 
 <script src="https://unpkg.com/smiles-drawer@2.1.7/dist/smiles-drawer.min.js"></script>
 <script>
@@ -807,9 +803,11 @@ const state = {
 
 const db = { tutorial: [], mapping: [], solo: [], guided: [], blocks: null };
 
+/* TOTALS: agora todos os valores são contagens diretas de itens completáveis.
+   mapping = 3 tiers completáveis (não atribuições por tier). */
 const TOTALS = {
   tutorial: 12,
-  mapping: { facil: 3, medio: 3, dificil: 3 },
+  mapping: 3,
   solo: 8,
   guided: 4
 };
@@ -827,7 +825,6 @@ const MASCOT_POSES = {
   festa: 'assets/mascot/festa.png'
 };
 
-/* Notação pt-BR: vírgula decimal em todo texto exibido */
 const fmt = v => String(v).replace('.', ',');
 
 function loadProgress() {
@@ -940,6 +937,10 @@ function render() {
   c.appendChild(wrap);
 }
 
+function pct(num, den) {
+  return den > 0 ? Math.round((num / den) * 100) : 0;
+}
+
 function renderHome() {
   const div = document.createElement('div');
   const totalMolecules = db.mapping.length;
@@ -962,9 +963,9 @@ function renderHome() {
   const mappingCount = state.completed.mapping.length;
   const soloCount = state.completed.solo.length;
   const guidedCount = state.completed.guided.length;
-  const totalItems = TOTALS.tutorial + Object.values(TOTALS.mapping).reduce((a, b) => a + b, 0) + TOTALS.solo + TOTALS.guided;
+  const totalItems = TOTALS.tutorial + TOTALS.mapping + TOTALS.solo + TOTALS.guided;
   const completedItems = tutorialCount + mappingCount + soloCount + guidedCount;
-  const totalPercent = Math.round((completedItems / totalItems) * 100);
+  const totalPercent = pct(completedItems, totalItems);
 
   div.innerHTML = `
     <div class="home-hero">
@@ -991,22 +992,22 @@ function renderHome() {
           <div class="stat-card">
             <div class="stat-label">📚 Fundamentos</div>
             <div class="stat-value">${tutorialCount}/${TOTALS.tutorial}</div>
-            <div class="stat-detail">${Math.round((tutorialCount / TOTALS.tutorial) * 100)}% completo</div>
+            <div class="stat-detail">${pct(tutorialCount, TOTALS.tutorial)}% completo</div>
           </div>
           <div class="stat-card">
-            <div class="stat-label">🧩 Atribuição H/C</div>
-            <div class="stat-value">${mappingCount}/${totalMolecules}</div>
-            <div class="stat-detail">${Math.round((mappingCount / totalMolecules) * 100)}% completo</div>
+            <div class="stat-label">🧩 Tiers de Atribuição</div>
+            <div class="stat-value">${mappingCount}/${TOTALS.mapping}</div>
+            <div class="stat-detail">${pct(mappingCount, TOTALS.mapping)}% · ${totalMolecules} moléculas no pool</div>
           </div>
           <div class="stat-card">
             <div class="stat-label">🏆 Desafio Solo</div>
             <div class="stat-value">${soloCount}/${TOTALS.solo}</div>
-            <div class="stat-detail">${Math.round((soloCount / TOTALS.solo) * 100)}% completo</div>
+            <div class="stat-detail">${pct(soloCount, TOTALS.solo)}% completo</div>
           </div>
           <div class="stat-card">
-            <div class="stat-label"> Exemplos Guiados</div>
+            <div class="stat-label">🧭 Exemplos Guiados</div>
             <div class="stat-value">${guidedCount}/${TOTALS.guided}</div>
-            <div class="stat-detail">${Math.round((guidedCount / TOTALS.guided) * 100)}% completo</div>
+            <div class="stat-detail">${pct(guidedCount, TOTALS.guided)}% completo</div>
           </div>
         </div>
       </details>
@@ -1127,7 +1128,6 @@ function decorateContent(html) {
   }).join('</p>');
 }
 
-/* ========== DIAGRAMAS INTERATIVOS ========== */
 const PPM_ZONES = [
   { id: 'z1', range: '0–2', label: 'Alifáticos', grow: 2, color: '#10b981', info: '<b>0–2 ppm:</b> CH₃, CH₂ e CH longe de heteroátomos. Ex.: CH₃ de etano ~0,9; CH₃−C=O ~2,0.' },
   { id: 'z2', range: '2–5', label: 'Perto de O, N, X', grow: 3, color: '#3b82f6', info: '<b>2–5 ppm:</b> prótons em carbonos ligados a heteroátomo. Ex.: O−CH₃ ~3,7; CH₂−Br ~3,4; N−CH₃ ~2,5.' },
@@ -1177,7 +1177,6 @@ function buildSplittingDiagram() {
     <div class="split-bars" id="split-bars"></div>`;
 }
 
-/* ========== EIXO ¹³C ========== */
 const C13_ZONES = [
   { id: 'c1', range: '0–50', label: 'sp³', grow: 2, color: '#10b981', info: '<b>0–50 ppm:</b> carbonos sp³. CH₃ ~8–30; quanto mais ligado a heteroátomo, mais para o fim da faixa.' },
   { id: 'c2', range: '50–100', label: 'C–O / C–N', grow: 2, color: '#3b82f6', info: '<b>50–100 ppm:</b> C sp³ ligado a O/N (O−CH₃ ~55) e carbonos de alcino.' },
@@ -1204,7 +1203,6 @@ function buildC13AxisDiagram() {
     <div class="ppm-info" id="c13-info"></div>`;
 }
 
-/* ========== TROCA COM D₂O ========== */
 window.toggleD2O = function(on, btn) {
   document.querySelectorAll('.d2o-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
@@ -1230,7 +1228,6 @@ function buildD2ODiagram() {
     <div class="ppm-info" id="d2o-note"><b>Antes:</b> O–H e N–H aparecem como singletos largos, em posição variável.</div>`;
 }
 
-/* ========== FILTRO DEPT ========== */
 window.setDept = function(mode) {
   document.querySelectorAll('.dept-btn').forEach(b => b.classList.toggle('active', b.dataset.mode === mode));
   const rows = {
@@ -1266,7 +1263,6 @@ function buildDeptDiagram() {
     <div class="ppm-info" id="dept-note"><b>¹³C normal (decoplado):</b> todo carbono aparece, todo como singleto.</div>`;
 }
 
-/* ========== BLINDAGEM (vizinho eletronegativo) ========== */
 const SHIELD_CASES = [
   { id: 's1', mol: 'CH₃–CH₃', delta: 0.23, note: '<b>CH₃–CH₃:</b> sem vizinho eletronegativo — o mais blindado (δ 0,23).' },
   { id: 's2', mol: 'CH₃–OH', delta: 3.4, note: '<b>CH₃–OH:</b> o oxigênio puxa densidade eletrônica — δ 3,4.' },
@@ -1296,7 +1292,6 @@ function buildShieldDiagram() {
     <div class="ppm-info" id="shield-note"></div>`;
 }
 
-/* ========== AULA EM BLOCOS ========== */
 const QUIZ_DATA = {};
 
 function wrapDiagram(inner, hint) {
@@ -1469,10 +1464,11 @@ function renderTutorial() {
   return div;
 }
 
+/* FIX 1: marcar o nível ATUAL antes de incrementar. */
 function handleTutorialNav(direction) {
+  markCompleted('tutorial', state.currentLevel);
   state.currentLevel += direction;
   render();
-  markCompleted('tutorial', state.currentLevel);
 }
 
 function completeTutorial() {
@@ -1547,6 +1543,9 @@ function renderMoleculeStructure(smiles, svgId, tags = []) {
         wrap.appendChild(badge);
       });
     });
+
+    /* FIX 3: aplicar classes "assigned" agora que os badges existem no DOM. */
+    updateBadges();
   }, function(err) {
     console.error('Erro ao desenhar estrutura:', err);
   });
@@ -1775,7 +1774,7 @@ function renderMapping() {
 
         <div id="mapping-feedback"></div>
 
-        <button class="btn primary" id="btn-validate" onclick="validateMapping()" style="margin-top: 24px; width: 100%;">Validar atribuição</button>
+        <button class="btn primary" id="btn-validate" onclick="validateMapping()" disabled style="margin-top: 24px; width: 100%;">Validar atribuição</button>
       </div>
     </div>
   `;
@@ -1783,6 +1782,8 @@ function renderMapping() {
   setTimeout(() => {
     attachSpectrumTooltips(signals, div.querySelector('.spectrum-card'));
     if (q.smiles) renderMoleculeStructure(q.smiles, 'mol-mapping', tags);
+    /* FIX 4: desabilitar botão validar no estado inicial. */
+    checkMappingState();
   }, 0);
 
   return div;
@@ -1804,7 +1805,9 @@ window.handleAssignment = function(sigId, tagId) {
   }
 
   render();
-  updateBadges();
+
+  /* FIX 4: atualizar estado do botão validar após re-render. */
+  setTimeout(checkMappingState, 0);
 };
 
 function updateBadges() {
@@ -1825,9 +1828,13 @@ window.toggleMappingSpectrum = function(type) {
   render();
 };
 
+/* FIX 4: reescrita para derivar tags do próprio q, sem depender de estado externo. */
 function checkMappingState() {
   const q = db.mapping.find(x => x.level === state.currentLevel);
-  const tags = q._derivedTags;
+  if (!q) return;
+  const { chain } = getActiveMappingData(q);
+  const tags = deriveTagsFromChain(chain);
+  if (!tags.length) return;
   const allAssigned = tags.every(t => state.assignments[t.id]);
   const btn = document.getElementById('btn-validate');
   if (btn) btn.disabled = !allAssigned;
