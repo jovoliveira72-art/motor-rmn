@@ -1,14 +1,18 @@
 [
-  { "level": 1,  "title": "Introdução à RMN" },
-  { "level": 2,  "title": "Deslocamento químico" },
-  { "level": 3,  "title": "Blindagem e desblindagem" },
-  { "level": 4,  "title": "Regra n+1" },
-  { "level": 5,  "title": "Constante J" },
-  { "level": 6,  "title": "Integração" },
-  { "level": 7,  "title": "Prótons trocáveis" },
-  { "level": 8,  "title": "¹³C RMN" },
-  { "level": 9,  "title": "Decoplamento e NOE" },
+  { "level": 1, "title": "Introdução à RMN" },
+  { "level": 2, "title": "Deslocamento químico" },
+  { "level": 3, "title": "Blindagem e desblindagem" },
+  { "level": 4, "title": "Regra n+1" },
+  { "level": 5, "title": "Constante J" },
+  { "level": 6, "title": "Integração" },
+  { "level": 7, "title": "Prótons trocáveis" },
+  { "level": 8, "title": "¹³C RMN" },
+  { "level": 9, "title": "Decoplamento e NOE" },
   { "level": 10, "title": "Filtros DEPT" },
   { "level": 11, "title": "Exemplo integrado" },
-  { "level": 12, "title": "Checklist de elucidação" }
+  { "level": 12, "title": "Checklist de elucidação" },
+  { "level": 13, "title": "Equivalência e simetria" },
+  { "level": 14, "title": "Anisotropia magnética" },
+  { "level": 15, "title": "Solventes e impurezas" },
+  { "level": 16, "title": "RMN 2D: COSY, HSQC, HMBC" }
 ]
