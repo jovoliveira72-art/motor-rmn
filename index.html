@@ -771,7 +771,7 @@ main { flex: 1; overflow-y: auto; padding: 32px 24px 80px; }
 
 </div>
 
-<div class="app-version">v3.18.0</div>
+<div class="app-version">v3.19.0</div>
 
 <script src="https://unpkg.com/smiles-drawer@2.1.7/dist/smiles-drawer.min.js"></script>
 <script>
@@ -2067,12 +2067,12 @@ window.guidedAnswer = function(idx, btnEl) {
   if (opt.correct) {
     btnEl.classList.add('correct');
     document.querySelectorAll('.guided-option').forEach(b => b.disabled = true);
-    fb.innerHTML = `<div class="feedback success"><div class="feedback-title" style="color:var(--success);">✓ Exato!</div><div class="feedback-body">${fmtProse(opt.feedback)}</div></div>`;
+    fb.innerHTML = `<div class="feedback success" style="display:flex;gap:12px;align-items:flex-start;"><img class="mini-mascot static" src="${MASCOT_POSES.festa}" alt="" onerror="this.style.display='none'"><div><div class="feedback-title" style="color:var(--success);">✓ Exato!</div><div class="feedback-body">${fmtProse(opt.feedback)}</div></div></div>`;
     document.getElementById('guided-continue').style.display = 'block';
   } else {
     btnEl.classList.add('wrong');
     btnEl.disabled = true;
-    fb.innerHTML = `<div class="feedback error"><div class="feedback-title" style="color:var(--error);">Ainda não…</div><div class="feedback-body">${fmtProse(opt.feedback)}</div></div>`;
+    fb.innerHTML = `<div class="feedback error" style="display:flex;gap:12px;align-items:flex-start;"><img class="mini-mascot static" src="${MASCOT_POSES.pensando}" alt="" onerror="this.style.display='none'"><div><div class="feedback-title" style="color:var(--error);">Ainda não…</div><div class="feedback-body">${fmtProse(opt.feedback)}</div></div></div>`;
   }
 };
 
@@ -2140,11 +2140,12 @@ function renderGuided() {
       <span>Passo ${state.guidedStep + 1} de ${ex.steps.length}</span>
       <div class="progress-bar"><div class="progress-fill" style="width:${progressPct}%"></div></div>
     </div>
-        <div class="diagram-card">
+    <div class="diagram-card">
       <div class="lesson-beat">
         <div class="mascot-sticker"><img src="${MASCOT_POSES[ex.mascotPose || 'aponta']}" alt="" onerror="this.parentElement.style.display='none'"></div>
         <div class="board-hand">${ex.mascotIntro || `Vamos fechar o quebra-cabeça: <strong>${ex.title}</strong>.`}</div>
       </div>
+    </div>
     <div class="context-card" style="background: linear-gradient(135deg, var(--secondary-light), var(--secondary));">
       <div class="context-title">${ex.title} · ${ex.formula}</div>
       <div class="context-text">${ex.subtitle}</div>
