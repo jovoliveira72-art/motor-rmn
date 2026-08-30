@@ -2101,7 +2101,7 @@ window.guidedAnswer = function(idx, btnEl) {
   if (opt.correct) {
     btnEl.classList.add('correct');
     document.querySelectorAll('.guided-option').forEach(b => b.disabled = true);
-    fb.innerHTML = `<div class="feedback success"><div class="feedback-title" style="color:var(--success);">✓ Exato!</div><div class="feedback-body">${fmtProse(opt.feedback)}</div></div>`;;
+    fb.innerHTML = `<div class="feedback success"><div class="feedback-title" style="color:var(--success);">✓ Exato!</div><div class="feedback-body">${fmtProse(opt.feedback)}</div></div>`;
     document.getElementById('guided-continue').style.display = 'block';
   } else {
     btnEl.classList.add('wrong');
@@ -2113,8 +2113,7 @@ window.guidedAnswer = function(idx, btnEl) {
 function renderGuided() {
   const ex = db.guided.find(g => g.id === state.guidedId);
   const step = ex.steps[state.guidedStep];
-  const tagNumbers = {};
-  tags.forEach(t => tagNumbers[t.id] = t.label);
+  const tags = deriveTagsFromChain(ex.chain);
   const hl = step.highlight || [];
 
   const signalsHtml = ex.signals.map(sig => `
@@ -2181,11 +2180,10 @@ function renderGuided() {
     ${stepHtml}
   `;
   if (ex.smiles) {
-  const tags = deriveTagsFromChain(ex.chain);
   setTimeout(() => renderMoleculeStructure(ex.smiles, 'mol-guided', tags), 0);
-}
+  }
   return div;
-}
+  }
 
 document.addEventListener('keydown', (e) => {
   if (state.currentView === 'tutorial') {
