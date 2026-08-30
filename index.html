@@ -1232,6 +1232,7 @@ window.setDept = function(mode) {
   document.querySelectorAll('.dept-btn').forEach(b => b.classList.toggle('active', b.dataset.mode === mode));
   const rows = {
     'bb':  { ch3: 'up', ch2: 'up', ch: 'up', q: 'up' },
+    '45':  { ch3: 'up', ch2: 'up', ch: 'up', q: 'hide' },
     '90':  { ch3: 'hide', ch2: 'hide', ch: 'up', q: 'hide' },
     '135': { ch3: 'up', ch2: 'down', ch: 'up', q: 'hide' }
   }[mode];
@@ -1242,6 +1243,7 @@ window.setDept = function(mode) {
   const note = document.getElementById('dept-note');
   if (note) note.innerHTML = {
     'bb': '<b>¹³C normal (decoplado):</b> todo carbono aparece, todo como singleto.',
+    '45': '<b>DEPT-45:</b> CH₃, CH₂ e CH aparecem para cima; quaternário some. Útil para confirmar CH totais.',
     '90': '<b>DEPT-90:</b> só CH aparece.',
     '135': '<b>DEPT-135:</b> CH₃ e CH para cima, CH₂ para baixo, quaternário some.'
   }[mode];
@@ -1251,6 +1253,7 @@ function buildDeptDiagram() {
   return `
     <div class="split-controls">
       <button class="dept-btn split-btn active" style="width:auto;padding:0 14px;" data-mode="bb" onclick="setDept('bb')">¹³C normal</button>
+      <button class="dept-btn split-btn" style="width:auto;padding:0 14px;" data-mode="45" onclick="setDept('45')">DEPT-45</button>
       <button class="dept-btn split-btn" style="width:auto;padding:0 14px;" data-mode="90" onclick="setDept('90')">DEPT-90</button>
       <button class="dept-btn split-btn" style="width:auto;padding:0 14px;" data-mode="135" onclick="setDept('135')">DEPT-135</button>
     </div>
@@ -1401,6 +1404,40 @@ function renderBlocks(blocks, levelId) {
 function renderTutorial() {
   const data = db.tutorial.find(t => t.level === state.currentLevel);
   const div = document.createElement('div');
+
+  if (!data) {
+    div.innerHTML = `
+      <div class="section-header">
+        <button class="back-btn" onclick="setView('home')">←</button>
+        <h2 class="section-title">📚 Nível não encontrado</h2>
+      </div>
+      <div class="feedback error">
+        <div class="feedback-title" style="color:var(--error)">Nível ${state.currentLevel} ausente em tutorial.json</div>
+        <div class="feedback-body">O metadado deste nível não existe. Verifique o arquivo data/tutorial.json.</div>
+        <div class="feedback-actions">
+          <button class="btn" onclick="setView('home')">Voltar ao início</button>
+        </div>
+      </div>`;
+    return div;
+  }
+
+  const blocks = db.blocks ? db.blocks[data.level] : null;
+  if (!blocks) {
+    div.innerHTML = `
+      <div class="section-header">
+        <button class="back-btn" onclick="setView('home')">←</button>
+        <h2 class="section-title">📚 ${data.title}</h2>
+      </div>
+      <div class="feedback error">
+        <div class="feedback-title" style="color:var(--error)">⚠️ Conteúdo do nível ${data.level} indisponível</div>
+        <div class="feedback-body">O arquivo <code>data/blocks.json</code> não foi carregado ou não contém a entrada para o nível ${data.level}. O Motor RMN não tem mais conteúdo pedagógico duplicado — o bloco Fundamentos depende 100% desse arquivo.</div>
+        <div class="feedback-actions">
+          <button class="btn" onclick="setView('home')">Voltar ao início</button>
+        </div>
+      </div>`;
+    return div;
+  }
+
   const prev = state.currentLevel > 1
     ? `<button class="btn" onclick="handleTutorialNav(-1)">← Anterior</button>`
     : `<div></div>`;
@@ -1414,15 +1451,6 @@ function renderTutorial() {
       <span class="tii-title">${t.title}</span>
     </button>
   `).join('');
-
-  const blocks = db.blocks ? db.blocks[data.level] : null;
-
-  const boardContent = blocks ? renderBlocks(blocks, data.level) : `
-    <div class="board-intro">
-      <div class="mascot-sticker"><img src="${MASCOT_POSES[(data.mascotPose && MASCOT_POSES[data.mascotPose]) ? data.mascotPose : 'aponta']}" alt="" onerror="this.parentElement.style.display='none'"></div>
-      <div class="board-hand">${data.mascot || `Hoje no quadro: <strong>${data.title}</strong>`}</div>
-    </div>
-    <div class="tutorial-body">${decorateContent(data.content)}</div>`;
 
   div.innerHTML = `
     <div class="section-header">
@@ -1440,7 +1468,7 @@ function renderTutorial() {
 
     <div class="board-frame">
       <div class="board-card">
-        ${boardContent}
+        ${renderBlocks(blocks, data.level)}
       </div>
       <div class="board-tray">
         <div class="board-marker black"></div>
@@ -1459,11 +1487,11 @@ function renderTutorial() {
     if (document.getElementById('split-bars')) window.setSplit(2);
     if (document.getElementById('c13-info')) window.showC13Zone('c1');
     if (document.getElementById('shield-note')) window.showShield('s1');
+    if (document.getElementById('dept-note')) window.setDept('bb');
   }, 0);
 
   return div;
 }
-
 /* FIX 1: marcar o nível ATUAL antes de incrementar. */
 function handleTutorialNav(direction) {
   markCompleted('tutorial', state.currentLevel);
