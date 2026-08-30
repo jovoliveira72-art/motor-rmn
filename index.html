@@ -2140,6 +2140,11 @@ function renderGuided() {
       <span>Passo ${state.guidedStep + 1} de ${ex.steps.length}</span>
       <div class="progress-bar"><div class="progress-fill" style="width:${progressPct}%"></div></div>
     </div>
+        <div class="diagram-card">
+      <div class="lesson-beat">
+        <div class="mascot-sticker"><img src="${MASCOT_POSES[ex.mascotPose || 'aponta']}" alt="" onerror="this.parentElement.style.display='none'"></div>
+        <div class="board-hand">${ex.mascotIntro || `Vamos fechar o quebra-cabeça: <strong>${ex.title}</strong>.`}</div>
+      </div>
     <div class="context-card" style="background: linear-gradient(135deg, var(--secondary-light), var(--secondary));">
       <div class="context-title">${ex.title} · ${ex.formula}</div>
       <div class="context-text">${ex.subtitle}</div>
