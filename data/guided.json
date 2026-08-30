@@ -1,248 +1,261 @@
 [
   {
     "id": 1,
-    "title": "Acetato de Etila",
-    "subtitle": "O padrão etila e o singleto da acetila — o primeiro raciocínio completo",
-    "formula": "C₄H₈O₂",
-    "chain": [
-      { "label": "CH₃" },
-      { "label": "C=O", "fixed": true },
-      { "label": "O", "fixed": true },
-      { "label": "CH₂" },
-      { "label": "CH₃" }
-    ],
+    "title": "Etanol",
+    "subtitle": "Três ambientes, três sinais — o exemplo mais simples para começar.",
+    "formula": "C₂H₆O",
+    "smiles": "CCO",
     "maxPpm": 5,
     "signals": [
-      { "id": "sig1", "ppm": 2.0, "int": 3, "mult": "s", "height": 60 },
-      { "id": "sig2", "ppm": 4.1, "int": 2, "mult": "q", "J": 7, "height": 40 },
-      { "id": "sig3", "ppm": 1.2, "int": 3, "mult": "t", "J": 7, "height": 60 }
+      { "id": "sig1", "ppm": 1.2, "mult": "t", "int": 3, "J": 7, "height": 20 },
+      { "id": "sig2", "ppm": 3.7, "mult": "q", "int": 2, "J": 7, "height": 20 },
+      { "id": "sig3", "ppm": 2.5, "mult": "s", "int": 1, "height": 15 }
+    ],
+    "chain": [
+      { "tagId": "t1", "label": "CH₃", "atomIndices": [0] },
+      { "tagId": "t2", "label": "CH₂", "atomIndices": [1] },
+      { "tagId": "t3", "label": "OH", "atomIndices": [2] }
     ],
     "steps": [
       {
         "type": "observe",
-        "highlight": [],
-        "text": "Antes de olhar o espectro, use a fórmula: C₄H₈O₂. Grau de insaturação: GI = (2×4 + 2 − 8) / 2 = <strong>1</strong>. Uma insaturação — provavelmente uma ligação C=O. Guarde isso: a fórmula sempre vem primeiro, porque restringe as possibilidades antes de você ver qualquer pico."
+        "text": "Temos o etanol: CH₃–CH₂–OH. Três ambientes de prótons distintos — esperamos três sinais no ¹H RMN. A fórmula tem 6 H no total.",
+        "highlight": []
       },
       {
         "type": "question",
-        "highlight": ["sig1", "sig2", "sig3"],
-        "question": "Quantos ambientes químicos diferentes de prótons este espectro mostra?",
+        "text": "O tripleto em 1,2 ppm integra para 3H. Quem são esses prótons?",
         "options": [
-          { "text": "2", "correct": false, "feedback": "Conte de novo: há três picos separados (2.0, 4.1 e 1.2 ppm). Dois ambientes dariam apenas dois sinais." },
-          { "text": "3", "correct": true, "feedback": "Exato. Três sinais para 8 hidrogênios significa que hidrogênios equivalentes se repetem. A integração 3:2:3 confirma: 3 + 2 + 3 = 8 H da fórmula." },
-          { "text": "8", "correct": false, "feedback": "8 é o total de hidrogênios da fórmula, não o número de sinais. Hidrogênios equivalentes (como os 3 H de um CH₃) aparecem no MESMO sinal." }
-        ]
+          { "text": "Os 3H do CH₃ terminal", "correct": true, "feedback": "Tripleto com 3H em campo alto: clássico de CH₃ vizinho de CH₂." },
+          { "text": "Os 2H do CH₂ e 1H do OH", "correct": false, "feedback": "CH₂ daria quarteto (tem 3 vizinhos) e OH aparece como singleto largo." },
+          { "text": "O OH sozinho, mas alargado", "correct": false, "feedback": "OH não aparece como tripleto — e sua integração é 1H, não 3H." }
+        ],
+        "highlight": ["sig1"]
       },
       {
         "type": "question",
-        "highlight": ["sig2", "sig3"],
-        "question": "O quarteto em 4.1 ppm (2H) e o tripleto em 1.2 ppm (3H) formam o padrão clássico de etila. Mas ligada a quê? O CH₂ em 4.1 ppm está muito mais desblindado que um CH₂ comum (~1.3 ppm). O que isso indica?",
+        "text": "O quarteto em 3,7 ppm integra para 2H. Por que está tão à esquerda (desblindado)?",
         "options": [
-          { "text": "O CH₂ está ligado diretamente a um oxigênio (−O−CH₂−)", "correct": true, "feedback": "Exato. Oxigênio retira densidade eletrônica e desblinda o CH₂ para 3.5–4.5 ppm. O tripleto + quarteto confirma que ele vizinha um CH₃. Temos o fragmento −O−CH₂−CH₃." },
-          { "text": "O CH₂ está ligado ao C=O", "correct": false, "feedback": "Um CH₂ vizinho de carbonila aparece em ~2.0–2.5 ppm, não 4.1. A carbonila desblinda, mas menos que um oxigênio ligado diretamente." },
-          { "text": "O CH₂ faz parte de um anel aromático", "correct": false, "feedback": "Prótons aromáticos aparecem em 6.5–8.5 ppm — e um CH₂ nunca faz parte do anel em si. O deslocamento 4.1 é incompatível." }
-        ]
+          { "text": "Porque o CH₂ está ligado ao oxigênio eletronegativo", "correct": true, "feedback": "O oxigênio retira densidade eletrônica do CH₂ vizinho, empurrando o sinal para ~3,7 ppm." },
+          { "text": "Porque é um CH₂ aromático", "correct": false, "feedback": "Aromáticos moram em 6,5–8,5 ppm. Este etanol nem anel tem." },
+          { "text": "Porque está acoplando com o OH", "correct": false, "feedback": "O OH geralmente não acopla; o quarteto vem dos 3 vizinhos do CH₃." }
+        ],
+        "highlight": ["sig2"]
       },
       {
         "type": "question",
-        "highlight": ["sig1"],
-        "question": "Sobra o singleto em 2.0 ppm, integrando 3H. Singleto significa SEM vizinhos com hidrogênio. Qual fragmento encaixa?",
+        "text": "O singleto largo em 2,5 ppm integra para 1H. O que acontece quando agitamos com D₂O?",
         "options": [
-          { "text": "CH₃ ligado ao C=O (acetila), sem H do outro lado", "correct": true, "feedback": "Exato. CH₃−C(=O)− aparece em ~2.0 ppm como singleto, porque o carbono da carbonila não tem H. Fecha com o C=O que o GI já exigia." },
-          { "text": "CH₃ ligado a O (metoxi)", "correct": false, "feedback": "Um O−CH₃ apareceria em ~3.3–4.0 ppm, bem mais desblindado que 2.0. O deslocamento descarta." },
-          { "text": "CH₃ vizinho de um CH₂", "correct": false, "feedback": "Se vizinhasse um CH₂, seria TRIPLETO (n+1 = 3), não singleto. A multiplicidade descarta." }
-        ]
+          { "text": "O sinal desaparece — é um próton trocável (OH)", "correct": true, "feedback": "OH troca com D₂O: o H sai, entra D, e o sinal some do espectro de ¹H." },
+          { "text": "O sinal vira tripleto", "correct": false, "feedback": "D₂O não muda o padrão de acoplamento — só troca H por D." },
+          { "text": "O sinal desloca para 5,0 ppm", "correct": false, "feedback": "O sinal some, não desloca. Teste do D₂O é binário: presente ou ausente." }
+        ],
+        "highlight": ["sig3"]
       },
       {
         "type": "observe",
-        "highlight": ["sig1", "sig2", "sig3"],
-        "text": "Montagem final: CH₃−C(=O)− + −O−CH₂−CH₃ = <strong>acetato de etila</strong>. Note o método que você acabou de executar: (1) fórmula e GI primeiro; (2) contar sinais e integração; (3) reconhecer o padrão etila (tripleto + quarteto); (4) usar o δ para decidir a quê a etila está ligada; (5) alocar o singleto restante. É exatamente esse raciocínio que você vai repetir sozinho no Desafio Solo."
+        "text": "Etanol fechado: CH₃ em 1,2 (t, 3H), CH₂ em 3,7 (q, 2H), OH em 2,5 (s largo, 1H, trocável). Nenhum sinal ficou sem explicação.",
+        "highlight": ["sig1", "sig2", "sig3"]
       }
-    ],
-    "smiles": "CC(=O)OCC"
+    ]
   },
   {
     "id": 2,
-    "title": "Paracetamol",
-    "subtitle": "Substituição para, prótons trocáveis e o fragmento amida",
-    "formula": "C₈H₉NO₂",
-    "chain": [
-      { "label": "HO" },
-      { "label": "Anel", "fixed": true },
-      { "label": "NH" },
-      { "label": "C=O", "fixed": true },
-      { "label": "CH₃" }
-    ],
-    "maxPpm": 10.5,
+    "title": "Acetato de etila",
+    "subtitle": "Um éster comum — três fragmentos bem separados.",
+    "formula": "C₄H₈O₂",
+    "smiles": "CC(=O)OCC",
+    "maxPpm": 5,
     "signals": [
-      { "id": "sig1", "ppm": 9.8, "int": 1, "mult": "s (largo)", "height": 20 },
-      { "id": "sig2", "ppm": 9.2, "int": 1, "mult": "s (largo)", "height": 20 },
-      { "id": "sig3", "ppm": 7.3, "int": 2, "mult": "d", "J": 9, "height": 45 },
-      { "id": "sig4", "ppm": 6.7, "int": 2, "mult": "d", "J": 9, "height": 45 },
-      { "id": "sig5", "ppm": 2.1, "int": 3, "mult": "s", "height": 60 }
+      { "id": "sig1", "ppm": 2.0, "mult": "s", "int": 3, "height": 20 },
+      { "id": "sig2", "ppm": 4.1, "mult": "q", "int": 2, "J": 7, "height": 20 },
+      { "id": "sig3", "ppm": 1.2, "mult": "t", "int": 3, "J": 7, "height": 20 }
+    ],
+    "chain": [
+      { "tagId": "t1", "label": "CH₃CO", "atomIndices": [0, 1, 2] },
+      { "tagId": "t2", "label": "O éster", "atomIndices": [3] },
+      { "tagId": "t3", "label": "CH₂CH₃", "atomIndices": [4, 5] }
     ],
     "steps": [
       {
         "type": "observe",
-        "highlight": [],
-        "text": "Fórmula: C₈H₉NO₂. GI = (2×8 + 2 + 1 − 9) / 2 = <strong>5</strong>. Cinco insaturações: quatro sugerem fortemente um anel benzênico (3 ligações C=C + 1 anel). A quinta sugere um C=O. Já entramos no espectro com uma hipótese forte."
+        "text": "Acetato de etila: CH₃–C(=O)–O–CH₂–CH₃. Três grupos de prótons bem separados — esperamos três sinais, integrando 3 + 2 + 3 = 8 H.",
+        "highlight": []
       },
       {
         "type": "question",
-        "highlight": ["sig3", "sig4"],
-        "question": "Dois dupletos em 7.3 e 6.7 ppm, cada um integrando 2H, com J ≈ 9 Hz. O que esse padrão diz sobre o anel?",
+        "text": "O singleto em 2,0 ppm integra para 3H. Que fragmento é esse?",
         "options": [
-          { "text": "Anel 1,4-dissubstituído (para), com dois pares de H equivalentes", "correct": true, "feedback": "Exato. Dois dupletos de 2H com J ≈ 9 Hz são a assinatura clássica de anel para-dissubstituído: dois pares de H equivalentes acoplando apenas entre si. É um dos padrões mais reconhecíveis da RMN de ¹H." },
-          { "text": "Anel monossubstituído", "correct": false, "feedback": "Anel monossubstituído tem 5 H aromáticos, geralmente um conjunto de multipleto integrando 5H — não dois dupletos limpos de 2H cada." },
-          { "text": "Anel 1,2-dissubstituído (orto)", "correct": false, "feedback": "Substituição orto torna os 4 H aromáticos todos diferentes: você esperaria 4 sinais distintos (dd, td, td, dd), não dois dupletos de 2H." }
-        ]
+          { "text": "O CH₃ ligado à carbonila (acetila)", "correct": true, "feedback": "CH₃ vizinho de C=O mora em ~2,0 ppm. O singleto confirma que não tem vizinhos H." },
+          { "text": "O CH₃ terminal da etila", "correct": false, "feedback": "Esse CH₃ daria tripleto (vizinho de CH₂), não singleto." },
+          { "text": "Um CH₃ aromático", "correct": false, "feedback": "Não há anel aromático neste éster." }
+        ],
+        "highlight": ["sig1"]
       },
       {
         "type": "question",
-        "highlight": ["sig1", "sig2"],
-        "question": "Dois singletos LARGOS em 9.8 e 9.2 ppm, 1H cada, que desaparecem ao adicionar D₂O. Quem são eles?",
+        "text": "O quarteto em 4,1 ppm (2H) é muito desblindado. Qual a causa?",
         "options": [
-          { "text": "Prótons trocáveis: um N−H e um O−H", "correct": true, "feedback": "Exato. Singletos largos que somem com D₂O são a assinatura de N−H e O−H. Os deslocamentos (9–10 ppm) são coerentes com N−H de amida e O−H fenólico." },
-          { "text": "Dois prótons de aldeído", "correct": false, "feedback": "Aldeídos aparecem em 9–10 ppm, mas como sinais relativamente nítidos, NÃO trocam com D₂O — e a fórmula precisaria de dois grupos CHO, incompatível com o resto do espectro." },
-          { "text": "Prótons aromáticos", "correct": false, "feedback": "H aromáticos não trocam com D₂O e não aparecem largos assim. Além disso, os H aromáticos desta molécula já foram contados nos dois dupletos de 7.3 e 6.7." }
-        ]
+          { "text": "O CH₂ está ligado diretamente ao oxigênio do éster", "correct": true, "feedback": "O oxigênio eletronegativo desblinda o CH₂ vizinho, levando-o a ~4,1 ppm — posição típica de O–CH₂." },
+          { "text": "O CH₂ está vizinho de uma carbonila", "correct": false, "feedback": "CH₂ vizinho de C=O mora em ~2,3 ppm, não em 4,1." },
+          { "text": "É um CH₂ vinílico", "correct": false, "feedback": "Vinílicos aparecem em 5–6,5 ppm; aqui é um éster saturado." }
+        ],
+        "highlight": ["sig2"]
       },
       {
         "type": "question",
-        "highlight": ["sig5"],
-        "question": "Sobra o singleto em 2.1 ppm (3H). Considerando que já temos um N−H e que o GI exige um C=O, qual fragmento é mais provável?",
+        "text": "O tripleto em 1,2 ppm integra para 3H. Esse CH₃ é vizinho de quem?",
         "options": [
-          { "text": "CH₃−C(=O)− ligado ao nitrogênio (amida N-acetil)", "correct": true, "feedback": "Exato. O CH₃ de uma N-acetila aparece em ~2.0–2.1 ppm. O fragmento −NH−C(=O)−CH₃ explica TRÊS dados de uma vez: o singleto, o N−H em 9.8 e o C=O exigido pelo GI." },
-          { "text": "O−CH₃ (metoxi)", "correct": false, "feedback": "O−CH₃ apareceria em ~3.7–4.0 ppm, muito mais desblindado que 2.1. O deslocamento descarta." },
-          { "text": "CH₃ ligado diretamente ao anel (Ar−CH₃)", "correct": false, "feedback": "Bom distrator: Ar−CH₃ aparece mesmo em ~2.3 ppm. Mas nesse caso o C=O exigido pelo GI ficaria sem explicação, e o N−H em 9.8 também. Regra de ouro: prefira o fragmento que explica MAIS dados simultaneamente. A amida explica três; o Ar−CH₃ explica um." }
-        ]
+          { "text": "Do CH₂ (por isso dá tripleto: n = 2 → n+1 = 3)", "correct": true, "feedback": "n = 2 vizinhos H (o CH₂) → tripleto. A posição ~1,2 confirma que não há heteroátomo próximo." },
+          { "text": "Do oxigênio do éster", "correct": false, "feedback": "Se fosse vizinho direto de O, estaria em ~3,5 ppm." },
+          { "text": "De ninguém — é um CH₃ isolado", "correct": false, "feedback": "CH₃ isolado dá singleto. O tripleto exige vizinhos." }
+        ],
+        "highlight": ["sig3"]
       },
       {
         "type": "observe",
-        "highlight": ["sig1", "sig2", "sig3", "sig4", "sig5"],
-        "text": "Montagem final: anel para-dissubstituído + O−H + −NH−C(=O)−CH₃ = <strong>paracetamol</strong>. Cada dado foi usado: GI → anel + C=O; dois dupletos de 2H → substituição para; singletos largos + D₂O → OH e NH; singleto 3H + C=O + NH → amida. Nenhum sinal ficou sem explicação — e é essa a definição de uma elucidação fechada."
+        "text": "Acetato de etila fechado: CH₃CO em 2,0 (s, 3H), O–CH₂ em 4,1 (q, 2H), CH₃ da etila em 1,2 (t, 3H). A fragmentação encaixa perfeitamente com a fórmula C₄H₈O₂.",
+        "highlight": ["sig1", "sig2", "sig3"]
       }
-    ],
-    "smiles": "CC(=O)Nc1ccc(O)cc1"
+    ]
   },
   {
     "id": 3,
-    "title": "1-Bromopropano",
-    "subtitle": "Cadeia propil, o sexteto e o efeito do bromo",
-    "formula": "C₃H₇Br",
-    "chain": [
-      { "label": "CH₃" },
-      { "label": "CH₂" },
-      { "label": "CH₂" },
-      { "label": "Br", "fixed": true }
-    ],
-    "maxPpm": 5,
+    "title": "Paracetamol",
+    "subtitle": "Anel para-substituído + amida + fenol — 5 sinais, 9 H.",
+    "formula": "C₈H₉NO₂",
+    "smiles": "CC(=O)Nc1ccc(O)cc1",
+    "maxPpm": 12,
     "signals": [
-      { "id": "sig1", "ppm": 1.0, "int": 3, "mult": "t", "J": 7, "height": 60 },
-      { "id": "sig2", "ppm": 1.9, "int": 2, "mult": "sext", "J": 7, "height": 40 },
-      { "id": "sig3", "ppm": 3.4, "int": 2, "mult": "t", "J": 7, "height": 40 }
+      { "id": "sig1", "ppm": 2.1, "mult": "s", "int": 3, "height": 20 },
+      { "id": "sig2", "ppm": 6.7, "mult": "d", "int": 2, "J": 9, "height": 20 },
+      { "id": "sig3", "ppm": 7.4, "mult": "d", "int": 2, "J": 9, "height": 20 },
+      { "id": "sig4", "ppm": 9.2, "mult": "s", "int": 1, "height": 15 },
+      { "id": "sig5", "ppm": 10.5, "mult": "s", "int": 1, "height": 15 }
+    ],
+    "chain": [
+      { "tagId": "t1", "label": "CH₃CO", "atomIndices": [0, 1, 2] },
+      { "tagId": "t2", "label": "NH", "atomIndices": [3] },
+      { "tagId": "t3", "label": "Anel", "atomIndices": [4, 5, 6, 7, 8, 9] },
+      { "tagId": "t4", "label": "OH", "atomIndices": [10] }
     ],
     "steps": [
       {
         "type": "observe",
-        "highlight": [],
-        "text": "Fórmula C₃H₇Br → GI = 0: cadeia aberta, sem anel nem C=O. Tudo será padrão de acoplamento simples. O bromo, eletronegativo, desblinda os prótons vizinhos — espere o CH₂ ligado a ele bem à esquerda do espectro."
+        "text": "Paracetamol: CH₃–CO–NH–C₆H₄–OH. Anel benzênico para-substituído, grupo acetamida e fenol. Esperamos 5 sinais: CH₃ (3H), 4H aromáticos (dois dupletos) e 2 prótons trocáveis (NH e OH).",
+        "highlight": []
       },
       {
         "type": "question",
-        "highlight": ["sig3"],
-        "question": "O tripleto em 3.4 ppm integra 2H. Por que tão desblindado?",
+        "text": "O singleto em 2,1 ppm (3H) é o CH₃ da acetamida. Por que aparece como singleto?",
         "options": [
-          { "text": "É um CH₂ ligado diretamente ao Br.", "correct": true, "feedback": "Halogênios puxam densidade eletrônica; CH₂–Br aparece em ~3.4. O tripleto mostra que ele vizinha outro CH₂." },
-          { "text": "É um CH₃ terminal.", "correct": false, "feedback": "CH₃ integraria 3H e, na ponta da cadeia, seria tripleto em ~1.0, não 3.4." },
-          { "text": "É um OH trocável.", "correct": false, "feedback": "OH seria singleto largo e variável; aqui temos tripleto nítido de 2H." }
-        ]
-        "highlight": ["sig1", "sig2", "sig3"]
+          { "text": "Porque não tem vizinhos H — o carbono vizinho é a carbonila (sem H)", "correct": true, "feedback": "O CH₃ só vê o carbono da carbonila, que não tem H. n = 0 → singleto." },
+          { "text": "Porque o NH acopla com ele à distância", "correct": false, "feedback": "Acoplamento 4J geralmente não é observado, e o NH costuma não acoplar por troca rápida." },
+          { "text": "Porque o anel aromático é muito distante", "correct": false, "feedback": "A distância do anel é irrelevante — o que importa é não ter H no carbono vizinho." }
+        ],
+        "highlight": ["sig1"]
       },
       {
         "type": "question",
-        "highlight": ["sig1", "sig2"],
-        "question": "1.0 (t, 3H) + 1.9 (sexteto, 2H). O que o sexteto revela?",
+        "text": "Os dois dupletos em 6,7 e 7,4 ppm, cada um com 2H e J ≈ 9 Hz, indicam qual padrão de substituição?",
         "options": [
-          { "text": "Um CH₂ central com 5 vizinhos (CH₃ + CH₂).", "correct": true, "feedback": "5 vizinhos → n+1 = 6 picos. É o CH₂ do meio da cadeia propil." },
-          { "text": "Um CH com 6 vizinhos.", "correct": false, "feedback": "CH com 6 vizinhos daria septeto de 1H; aqui o sexteto integra 2H." },
-          { "text": "Dois CH₃ equivalentes.", "correct": false, "feedback": "Dois CH₃ equivalentes dariam dupleto 6H (padrão isopropil), não sexteto 2H." }
-        ]
+          { "text": "Anel para-substituído (dois pares de H equivalentes em orto)", "correct": true, "feedback": "O padrão AA'BB' com dupletos simétricos é a assinatura do anel para-disubstituído. Cada par acopla com o outro por orto (J ≈ 8–9 Hz)." },
+          { "text": "Anel mono-substituído (5H totais)", "correct": false, "feedback": "Mono-substituído daria 5H, não 4, e um padrão mais complexo." },
+          { "text": "Anel 1,3,5-trisubstituído", "correct": false, "feedback": "Esse padrão daria singleto + dois dupletos finos com J meta (~2 Hz)." }
+        ],
+        "highlight": ["sig2", "sig3"]
+      },
+      {
+        "type": "question",
+        "text": "Os dois singletos largos em 9,2 e 10,5 ppm (1H cada) desaparecem com D₂O. Quem são eles?",
+        "options": [
+          { "text": "O NH da amida e o OH do fenol — ambos trocáveis", "correct": true, "feedback": "Tanto NH quanto OH são prótons trocáveis. O NH da amida costuma estar ~8–10 ppm; o OH fenólico ~9–11 ppm." },
+          { "text": "Dois CH aromáticos muito desblindados", "correct": false, "feedback": "CH aromático não some com D₂O — só H ligado a O ou N troca." },
+          { "text": "Um aldeído e um ácido", "correct": false, "feedback": "Nenhum dos dois grupos está presente no paracetamol." }
+        ],
+        "highlight": ["sig4", "sig5"]
       },
       {
         "type": "observe",
-        "highlight": ["sig1", "sig2", "sig3"],
-        "text": "Montagem: CH₃–CH₂–CH₂–Br. Repare no padrão em \"escada\": quanto mais perto do Br, mais desblindado. O sexteto é a assinatura do CH₂ central espremido entre dois grupos."
+        "text": "Paracetamol fechado: CH₃CO (2,1, s, 3H), 4H aromáticos (6,7 e 7,4, d, 2H cada), NH (10,5, s largo), OH (9,2, s largo). Cada sinal tem dono — fórmula C₈H₉NO₂ batida.",
+        "highlight": ["sig1", "sig2", "sig3", "sig4", "sig5"]
       }
-    ],
-    "smiles": "CCCBr"
+    ]
   },
   {
     "id": 4,
     "title": "Ibuprofeno",
-    "subtitle": "Para-substituição, isobutila e o fragmento ácido",
+    "subtitle": "8 sinais, 18 H — o caso mais complexo da coleção.",
     "formula": "C₁₃H₁₈O₂",
-    "chain": [
-      { "label": "COOH" },
-      { "label": "CH", "branches": [ { "label": "CH₃" } ] },
-      { "label": "CH₂" },
-      { "label": "CH" },
-      { "label": "Anel (Ar)", "fixed": true, "branches": [ { "label": "H-Ar" }, { "label": "H-Ar" } ] },
-      { "label": "CH₃ (isobutila)" }
-    ],
-    "maxPpm": 12.5,
+    "smiles": "CC(C)Cc1ccc(C(C)C(=O)O)cc1",
+    "maxPpm": 12,
     "signals": [
-      { "id": "sig1", "ppm": 12.0, "int": 1, "mult": "s (largo)", "height": 20 },
-      { "id": "sig2", "ppm": 3.7, "int": 1, "mult": "q", "J": 7, "height": 20 },
-      { "id": "sig3", "ppm": 2.5, "int": 2, "mult": "d", "J": 7, "height": 40 },
-      { "id": "sig4", "ppm": 1.9, "int": 1, "mult": "m", "height": 20 },
-      { "id": "sig5", "ppm": 7.2, "int": 2, "mult": "d", "J": 8, "height": 40 },
-      { "id": "sig6", "ppm": 7.1, "int": 2, "mult": "d", "J": 8, "height": 40 },
-      { "id": "sig7", "ppm": 0.9, "int": 6, "mult": "d", "J": 7, "height": 120 },
-      { "id": "sig8", "ppm": 1.5, "int": 3, "mult": "d", "J": 7, "height": 60 }
+      { "id": "sig1", "ppm": 1.5, "mult": "d", "int": 3, "J": 7, "height": 20 },
+      { "id": "sig2", "ppm": 3.7, "mult": "q", "int": 1, "J": 7, "height": 20 },
+      { "id": "sig3", "ppm": 2.5, "mult": "d", "int": 2, "J": 7, "height": 20 },
+      { "id": "sig4", "ppm": 1.8, "mult": "m", "int": 1, "height": 20 },
+      { "id": "sig5", "ppm": 0.9, "mult": "d", "int": 6, "J": 7, "height": 60 },
+      { "id": "sig6", "ppm": 7.1, "mult": "d", "int": 2, "J": 8, "height": 20 },
+      { "id": "sig7", "ppm": 7.2, "mult": "d", "int": 2, "J": 8, "height": 20 },
+      { "id": "sig8", "ppm": 12.0, "mult": "s", "int": 1, "height": 15 }
+    ],
+    "chain": [
+      { "tagId": "t1", "label": "Isobutila", "atomIndices": [0, 1, 2, 3] },
+      { "tagId": "t2", "label": "CH₂ ligação", "atomIndices": [4] },
+      { "tagId": "t3", "label": "Anel", "atomIndices": [5, 6, 7, 8, 9, 10] },
+      { "tagId": "t4", "label": "Cadeia ácida", "atomIndices": [11, 12, 13, 14, 15] }
     ],
     "steps": [
       {
         "type": "observe",
-        "highlight": [],
-        "text": "C₁₃H₁₈O₂ → GI = (2×13 + 2 − 18) / 2 = <strong>5</strong>. Quatro insaturações sugerem anel benzênico; a quinta, um C=O. Com 18H, espere vários grupos alifáticos."
+        "text": "Ibuprofeno: ácido 2-(4-isobutilfenil)propanoico. Fórmula C₁₃H₁₈O₂ — 18 H para distribuir. Temos: um anel para-substituído, uma cadeia isobutila e um fragmento ácido (–CH(CH₃)COOH). Vamos aos sinais.",
+        "highlight": []
       },
       {
         "type": "question",
-        "highlight": ["sig5", "sig6"],
-        "question": "Dois dupletos de 2H em 7.2 e 7.1. Qual o padrão do anel?",
+        "text": "Os dois dupletos em 7,1 e 7,2 ppm (2H cada, J ≈ 8 Hz) são um padrão clássico. Que estrutura sugerem?",
         "options": [
-          { "text": "Para-dissubstituído.", "correct": true, "feedback": "2d × 2H é a assinatura de anel para: os quatro H formam dois pares equivalentes." },
-          { "text": "Monossubstituído.", "correct": false, "feedback": "Seriam 5H em multipletos, não 2 dupletos limpos de 2H." },
-          { "text": "Orto-dissubstituído.", "correct": false, "feedback": "Orto daria 4 sinais 1H distintos (dd, t, t, d)." }
-        ]
+          { "text": "Anel aromático para-substituído (AA'BB')", "correct": true, "feedback": "Dois dupletos simétricos, 2H cada, J orto ~8 Hz: a assinatura do anel 1,4-disubstituído. Confirma a parte central do ibuprofeno." },
+          { "text": "Dois anéis benzênicos separados", "correct": false, "feedback": "A fórmula tem apenas um anel. 4H aromáticos totais confirmam mono-anel." },
+          { "text": "H vinílicos de uma cadeia longa", "correct": false, "feedback": "Vinílicos moram em 5–6,5 ppm; estes estão na região aromática." }
+        ],
+        "highlight": ["sig6", "sig7"]
       },
       {
         "type": "question",
-        "highlight": ["sig7", "sig4"],
-        "question": "0.9 (d, 6H) + 1.9 (m, 1H). Que fragmento é esse?",
+        "text": "O dupleto em 1,5 ppm (3H) e o quarteto em 3,7 ppm (1H) formam um par típico. Já o dupleto em 2,5 ppm (2H) aparece ao lado. Qual o significado desses três sinais juntos?",
         "options": [
-          { "text": "(CH₃)₂CH–CH₂– (isobutila).", "correct": true, "feedback": "Dupleto 6H + multipleto 1H é o par isopropil; o CH₂ a mais completa a isobutila." },
-          { "text": "Dois CH₃ isolados.", "correct": false, "feedback": "CH₃ isolados seriam singletos; o dupleto mostra que vizinham um CH." },
-          { "text": "CH₂–CH₃ (etila).", "correct": false, "feedback": "Etila é tripleto + quarteto, não dupleto 6H." }
-        ]
+          { "text": "O par 1,5/3,7 é o CH₃–CH do ácido; o 2,5 é o CH₂ que liga o anel à isobutila", "correct": true, "feedback": "CH₃ em 1,5 (d, 3H) acopla com o CH em 3,7 (q, 1H): típico de CH(CH₃) vizinho de COOH. O CH₂ em 2,5 ppm (d, 2H) liga o anel à isobutila — fica desblindado por estar entre o anel e a cadeia alifática." },
+          { "text": "São três CH₃ independentes, sem vizinhos", "correct": false, "feedback": "CH₃ sem vizinhos dá singleto — aqui temos dupletos e quarteto, indicando acoplamento." },
+          { "text": "É um isopropil ligado ao anel", "correct": false, "feedback": "Isopropil daria 6H como dupleto (dois CH₃ equivalentes). Aqui temos 3H + 1H, padrão de CH(CH₃)." }
+        ],
+        "highlight": ["sig1", "sig2", "sig3"]
       },
       {
         "type": "question",
-        "highlight": ["sig1", "sig2", "sig8"],
-        "question": "12.0 (largo, 1H), 3.7 (q, 1H) e 1.5 (d, 3H). O que fecham juntos?",
+        "text": "O dupleto em 0,9 ppm (6H) e o multiplete em 1,8 ppm (1H) formam um grupo característico. Que fragmento temos?",
         "options": [
-          { "text": "–CH(CH₃)–COOH: o q e o d se acoplam entre si e o largo é COOH.", "correct": true, "feedback": "q 1H + d 3H = CH acoplado a CH₃; 12.0 = COOH. Fragmento ácido 2-arilpropanoico, clássico dos AINEs." },
-          { "text": "Um éster etílico.", "correct": false, "feedback": "Éster etil seria q 2H + t 3H em ~4.1/1.2; e não explicaria o 12.0." },
-          { "text": "Um OH alcoólico + CH₃ de cetona.", "correct": false, "feedback": "OH alcoólico não chega a 12 ppm; e o q/d mostram acoplamento CH–CH₃, não singletos." }
-        ]
+          { "text": "Isopropil, ou seja, um grupo –CH(CH₃)₂ da cadeia isobutila", "correct": true, "feedback": "6H em dupleto + 1H em multiplete = isopropil. Combinado com o CH₂ em 2,5, completa a isobutila: –CH₂–CH(CH₃)₂." },
+          { "text": "Três CH₃ equivalentes num carbono terciário", "correct": false, "feedback": "Três CH₃ equivalentes dariam 9H singleto, como em t-butila." },
+          { "text": "Uma cadeia etila comum", "correct": false, "feedback": "Etila dá tripleto + quarteto com razão 3:2, não dupleto + multiplete 6:1." }
+        ],
+        "highlight": ["sig4", "sig5"]
+      },
+      {
+        "type": "question",
+        "text": "O singleto largo em 12,0 ppm (1H) é o último sinal a explicar. Quem é ele?",
+        "options": [
+          { "text": "O H do grupo carboxílico (–COOH)", "correct": true, "feedback": "COOH aparece em 10–12 ppm, sempre largo, e troca com D₂O. É a assinatura do ácido carboxílico." },
+          { "text": "Um H aromático muito desblindado", "correct": false, "feedback": "Aromáticos moram em 6,5–8,5 ppm. 12 ppm é região exclusiva de COOH." },
+          { "text": "Um aldeído", "correct": false, "feedback": "Aldeídos ficam em 9–10 ppm, não em 12; e não costumam ser tão largos." }
+        ],
+        "highlight": ["sig8"]
       },
       {
         "type": "observe",
-        "highlight": ["sig1", "sig2", "sig3", "sig4", "sig5", "sig6", "sig7", "sig8"],
-        "text": "Montagem final: anel para + isobutila de um lado e –CH(CH₃)COOH do outro = <strong>ibuprofeno</strong>. Todos os 18H atribuídos: 4 (anel) + 9 (isobutila) + 4 (fragmento ácido) + 1 (COOH) = 18."
+        "text": "Ibuprofeno fechado: anel para (7,1 + 7,2, d, 2H cada), CH(CH₃)COOH (1,5 d 3H + 3,7 q 1H + 12 s 1H), isobutila (0,9 d 6H + 1,8 m 1H + 2,5 d 2H). Soma: 4+3+1+1+6+1+2 = 18 H, batendo com C₁₃H₁₈O₂. Nenhum sinal ficou sem explicação.",
+        "highlight": ["sig1", "sig2", "sig3", "sig4", "sig5", "sig6", "sig7", "sig8"]
       }
-    ],
-    "smiles": "CC(C)Cc1ccc(cc1)C(C)C(=O)O"
+    ]
   }
 ]
