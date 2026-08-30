@@ -61,12 +61,12 @@
     { "type": "texto", "html": "<p><strong>Decoplamento:</strong> todo carbono vira singleto. <strong>Por que quaternário é fraco?</strong> Sem H colado, o carbono relaxa devagar (T₁ longo) e quase não recebe NOE — os dois efeitos juntos deixam a linha baixa. Aumentar o tempo de aquisição ajuda, mas custa caro: por isso quaternários seguem discretos.</p>" },
     { "type": "quiz", "question": "Por que o C=O de um éster aparece tão fraco no ¹³C?", "options": [ { "text": "Porque não tem H colado: T₁ longo e pouco NOE", "correct": true, "feedback": "Sem H direto: relaxação lenta (T₁ longo) + NOE pequeno = sinal fraco." }, { "text": "Porque o carbono é pesado", "correct": false, "feedback": "Massa não é o fator: é a ausência de H colado (T₁ longo + NOE pequeno)." }, { "text": "Porque ressoa em campo baixo demais", "correct": false, "feedback": "C=O ressona em ~160–180 ppm, o campo alto do ¹³C — a fraqueza vem de T₁ + NOE, não da posição." } ] }
   ],
-  "10": [
-    { "type": "fala", "pose": "lousa", "text": "O DEPT é o filtro que diz quantos H cada carbono carrega: <strong>CH₃, CH₂, CH</strong> — ou nada." },
-    { "type": "diagrama", "kind": "dept", "hint": "Alterne os modos e veja quem sobe, desce ou some." },
-    { "type": "tabela", "title": "Quem aparece em cada modo", "head": ["Carbono", "DEPT-90", "DEPT-135"], "rows": [["CH₃", "some", "para cima"], ["CH₂", "some", "para baixo"], ["CH", "aparece", "para cima"], ["C quaternário", "some", "some"]] },
-    { "type": "quiz", "question": "No DEPT-135, um carbono apontando para baixo é…", "options": [ { "text": "CH₂", "correct": true, "feedback": "CH₂ é o único que inverte no DEPT-135." }, { "text": "CH₃", "correct": false, "feedback": "CH₃ aponta para cima no 135." }, { "text": "CH", "correct": false, "feedback": "CH aponta para cima; quem desce é o CH₂." } ] }
-  ],
+ "10": [
+  { "type": "fala", "pose": "lousa", "text": "O DEPT é o filtro que diz quantos H cada carbono carrega: <strong>CH₃, CH₂, CH</strong> — ou nada." },
+  { "type": "diagrama", "kind": "dept", "hint": "Alterne os modos e veja quem sobe, desce ou some." },
+  { "type": "tabela", "title": "Quem aparece em cada modo", "head": ["Carbono", "DEPT-45", "DEPT-90", "DEPT-135"], "rows": [["CH₃", "para cima", "some", "para cima"], ["CH₂", "para cima", "some", "para baixo"], ["CH", "para cima", "aparece", "para cima"], ["C quaternário", "some", "some", "some"]] },
+  { "type": "quiz", "question": "No DEPT-135, um carbono apontando para baixo é…", "options": [ { "text": "CH₂", "correct": true, "feedback": "CH₂ é o único que inverte no DEPT-135." }, { "text": "CH₃", "correct": false, "feedback": "CH₃ aponta para cima no 135." }, { "text": "CH", "correct": false, "feedback": "CH aponta para cima; quem desce é o CH₂." } ] }
+],
   "11": [
     { "type": "fala", "pose": "caderno", "text": "Vamos aplicar: o acetato de etila no ¹³C + DEPT, carbono por carbono." },
     { "type": "exemplo", "title": "Exemplo no quadro: acetato de etila", "smiles": "CC(=O)OCC", "badges": [ { "label": "Cq", "atoms": [1] }, { "label": "CH₂↓", "atoms": [4] }, { "label": "CH₃↑", "atoms": [0] }, { "label": "CH₃↑", "atoms": [5] } ], "caption": "170 ppm (C=O, some no DEPT), 60 ppm (CH₂, para baixo), 21 e 14 ppm (CH₃, para cima)." },
