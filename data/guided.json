@@ -134,10 +134,10 @@
       { "id": "sig5", "ppm": 9.8, "mult": "s", "int": 1, "height": 15 }
     ],
     "chain": [
-      { "tagId": "t1", "label": "CH₃CO", "atomIndices": [0, 1] },
-      { "tagId": "t2", "label": "NH", "atomIndices": [3] },
-      { "tagId": "t3", "label": "Anel", "atomIndices": [4, 5, 6, 8, 9, 10] },
-      { "tagId": "t4", "label": "OH", "atomIndices": [7] }
+      { "tagId": "t1", "label": "Isopropil", "atomIndices": [0, 1, 2] },
+      { "tagId": "t2", "label": "CH₂", "atomIndices": [3] },
+      { "tagId": "t3", "label": "Anel", "atomIndices": [4, 5, 6, 7, 13, 14] },
+      { "tagId": "t4", "label": "Cadeia ácida", "atomIndices": [8, 9, 10, 11, 12] }
     ],
     "steps": [
       {
