@@ -792,7 +792,7 @@ const state = {
 const db = { tutorial: [], mapping: [], solo: [], guided: [], blocks: null };
 
 const TOTALS = {
-  tutorial: 12,
+  tutorial: 16,
   mapping: 3,
   solo: 8,
   guided: 4
@@ -1492,6 +1492,7 @@ function handleTutorialNav(direction) {
   markCompleted('tutorial', state.currentLevel);
   state.currentLevel += direction;
   render();
+  document.getElementById('app-container').scrollTop = 0;
 }
 
 function completeTutorial() {
