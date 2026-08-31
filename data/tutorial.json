@@ -14,5 +14,6 @@
   { "level": 13, "title": "Equivalência e simetria" },
   { "level": 14, "title": "Anisotropia magnética" },
   { "level": 15, "title": "Solventes e impurezas" },
-  { "level": 16, "title": "RMN 2D: COSY, HSQC, HMBC" }
+  { "level": 16, "title": "RMN 2D: COSY, HSQC, HMBC" },
+  { "level": 17, "title": "RMN quantitativa (qNMR)" }
 ]
