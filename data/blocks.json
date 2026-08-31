@@ -45,7 +45,7 @@
     { "type": "exemplo", "title": "Exemplo no quadro: etanol", "smiles": "CCO", "badges": [ { "label": "3H", "atoms": [0] }, { "label": "2H", "atoms": [1] }, { "label": "1H", "atoms": [2] } ], "caption": "Razão 3:2:1 — a integração dá proporção, não número absoluto. A fórmula transforma proporção em contagem." },
     { "type": "diagrama", "kind": "integration", "hint": "Troque a molécula e compare os degraus." },
     { "type": "texto", "html": "<p>Some as razões e compare com o total de H da fórmula: a escala vira absoluta. Em anéis monossubstituídos, 5H aromáticos são a assinatura clássica.</p>" },
-    { "type": "exemplo", "title": "Exemplo no quadro: tolueno", "smiles": "Cc1ccccc1", "badges": [ { "label": "2,3", "atoms": [0] }, { "label": "7,2", "atoms": [1, 2, 3, 4, 5, 6, 7] } ], "caption": "Tolueno: 5H aromáticos (7,2) + CH₃ (2,3) na razão 5:3 — anel monossubstituído confirmado pela integração." },
+    { "type": "exemplo", "title": "Exemplo no quadro: tolueno", "smiles": "Cc1ccccc1", "badges": [ { "label": "2,3", "atoms": [0] }, { "label": "7,2", "atoms": [2, 3, 4, 5, 6] } ], "caption": "Tolueno: 5H aromáticos (7,2) + CH₃ (2,3) na razão 5:3 — anel monossubstituído confirmado pela integração." },
     { "type": "quiz", "question": "Um espectro mostra razão 3:2 e a molécula tem 10 H. Quantos H em cada sinal?", "options": [ { "text": "3 e 2", "correct": false, "feedback": "3:2 é a razão. Com 10 H totais, multiplique por 2: 6 e 4." }, { "text": "6 e 4", "correct": true, "feedback": "Razão 3:2 com 10 H = 6 e 4. Integração é proporção escalada pela fórmula." }, { "text": "5 e 5", "correct": false, "feedback": "5:5 seria razão 1:1, não 3:2." } ] }
   ],
   "7": [
