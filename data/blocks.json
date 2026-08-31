@@ -92,6 +92,7 @@
     { "type": "quiz", "question": "Checkpoint: por que o C=O de um éster aparece fraco no ¹³C convencional (níveis 8–9)?", "options": [ { "text": "T₁ longo + pouco NOE, porque não tem H colado", "correct": true, "feedback": "Sem H direto: relaxa devagar e não recebe NOE — linha baixa." }, { "text": "Porque o ¹³C é raro (1,1%)", "correct": false, "feedback": "A raridade explica a baixa sensibilidade geral, não por que o C=O é mais fraco que os outros carbonos." }, { "text": "Porque ressona em campo baixo", "correct": false, "feedback": "C=O ressona em ~170 ppm, campo alto do ¹³C; a fraqueza vem de T₁/NOE." } ] }
   ],
   "12": [
+    { "type": "fala", "pose": "aponta", "text": "Elucidação é método, não adivinhação. 
     { "type": "checklist", "title": "Checklist de elucidação", "items": [
       "Fórmula molecular → calcule o GI (anel? carbonila?)",
       "Limpe o terreno: residual de solvente, água e graxa não se atribuem — não são da amostra",
