@@ -838,7 +838,7 @@ const state = {
 const db = { tutorial: [], mapping: [], solo: [], guided: [], blocks: null };
 
 const TOTALS = {
-  tutorial: 16,
+  tutorial: 17,
   mapping: 3,
   solo: 8,
   guided: 4
@@ -1323,7 +1323,9 @@ function buildDeptDiagram() {
 const SHIELD_CASES = [
   { id: 's1', mol: 'CH₃–CH₃', delta: 0.23, note: '<b>CH₃–CH:</b> sem vizinho eletronegativo — o mais blindado (δ 0,23).' },
   { id: 's2', mol: 'CH₃–OH', delta: 3.4, note: '<b>CH₃–OH:</b> o oxigênio puxa densidade eletrônica — δ 3,4.' },
-  { id: 's3', mol: 'CH₃–F', delta: 4.3, note: '<b>CH₃–F:</b> flúor, o mais eletronegativo — δ 4,3.' }
+  { id: 's3', mol: 'CH₃–F', delta: 4.3, note: '<b>CH₃–F:</b> flúor, o mais eletronegativo — δ 4,3.' },
+  { id: 's4', mol: 'CH₂=CH₂', delta: 5.3, note: '<b>CH₂=CH₂:</b> H em carbono sp² — desblindado pela anisotropia do π (~5,3).' },
+  { id: 's5', mol: 'HC≡CH', delta: 2.5, note: '<b>HC≡CH:</b> H em carbono sp, mas no eixo do cone de anisotropia — blindado (~2,5). Hibridização não é tudo.' }
 ];
 
 window.showShield = function(id) {
@@ -1380,7 +1382,8 @@ function buildEnergyDiagram() {
 /* ========== INTEGRAÇÃO (nível 6) ========== */
 const INTEG_CASES = [
   { id: 'etoh', name: 'etanol', steps: [ { ppm: 3.7, h: 2, label: '2H' }, { ppm: 2.6, h: 1, label: '1H' }, { ppm: 1.2, h: 3, label: '3H' } ], note: '<b>Etanol:</b> a altura de cada degrau segue a razão 3:2:1. Com a fórmula, a proporção vira contagem absoluta.' },
-  { id: 'tol', name: 'tolueno', steps: [ { ppm: 7.2, h: 5, label: '5H' }, { ppm: 2.3, h: 3, label: '3H' } ], note: '<b>Tolueno:</b> razão 5:3. Sem a fórmula, a integração só dá proporção — nunca confie nela como número absoluto.' }
+  { id: 'tol', name: 'tolueno', steps: [ { ppm: 7.2, h: 5, label: '5H' }, { ppm: 2.3, h: 3, label: '3H' } ], note: '<b>Tolueno:</b> razão 5:3. Sem a fórmula, a integração só dá proporção — nunca confie nela como número absoluto.' },
+  { id: 'real', name: 'dados reais', steps: [ { ppm: 7.3, h: 5, label: '4,8H' }, { ppm: 4.4, h: 2, label: '2,0H' }, { ppm: 1.3, h: 3, label: '3,1H' } ], note: '<b>Dados reais:</b> 4,8 : 2,0 : 3,1 não vem redondo. Arredonde com critério (≈5:2:3) e confirme pela fórmula — integração é proporção com ruído, não contagem exata.' }
 ];
 
 window.setInteg = function(id) {
