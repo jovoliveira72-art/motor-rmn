@@ -92,14 +92,16 @@
     { "type": "quiz", "question": "Checkpoint: por que o C=O de um éster aparece fraco no ¹³C convencional (níveis 8–9)?", "options": [ { "text": "T₁ longo + pouco NOE, porque não tem H colado", "correct": true, "feedback": "Sem H direto: relaxa devagar e não recebe NOE — linha baixa." }, { "text": "Porque o ¹³C é raro (1,1%)", "correct": false, "feedback": "A raridade explica a baixa sensibilidade geral, não por que o C=O é mais fraco que os outros carbonos." }, { "text": "Porque ressona em campo baixo", "correct": false, "feedback": "C=O ressona em ~170 ppm, campo alto do ¹³C; a fraqueza vem de T₁/NOE." } ] }
   ],
   "12": [
-    { "type": "fala", "pose": "aponta", "text": "Elucidação é método, não adivinhação. Hoje você assina a checklist e <strong>fecha a estrutura</strong> — cada pico com dono." },
     { "type": "checklist", "title": "Checklist de elucidação", "items": [
       "Fórmula molecular → calcule o GI (anel? carbonila?)",
-      "¹H: conte sinais, integração e multiplicidade",
+      "Limpe o terreno: residual de solvente, água e graxa não se atribuem — não são da amostra",
+      "¹H: conte sinais, integração e multiplicidade; trocáveis? Teste do D₂O",
       "Monte os fragmentos: etila, anel para/mono, CH₃ isolado, O–H/N–H",
-      "¹³C + DEPT: confirme C=O, aromáticos, CH₂/CH₃ e quaternários",
+      "¹³C + DEPT: confirme C=O, aromáticos, CH₂/CH₃ e quaternários; δ coincidente ≠ simetria",
       "Some os fragmentos e confira cada átomo com a fórmula",
-      "Devolva o resultado: todo pico precisa ter dono"
+      "Não fechou? Não force: convoque 2D (COSY/HSQC/HMBC) ou mais dados",
+      "Valide cruzado: preveja o espectro da estrutura proposta e compare com o real — todo pico com dono"
+    ] },
     ] },
     { "type": "exemplo", "title": "Caso fechado: paracetamol", "smiles": "CC(=O)Nc1ccc(O)cc1", "caption": "2 dupletos 2H (anel para) + 2 singletos largos (NH, OH) + singleto 3H (acetila) + 168 ppm (C=O de amida). Cada pico tem dono." },
     { "type": "texto", "html": "<p><strong>Duas habilidades, mesmo conteúdo:</strong> até aqui você <strong>elucidou</strong> (espectro → estrutura). A habilidade inversa — <strong>prever</strong> o espectro a partir da estrutura — é a que confirma identidade e flagra impureza no dia a dia: você sabe o composto, escreve os δ esperados e compara com a amostra.</p>" },
