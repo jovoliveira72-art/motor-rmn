@@ -102,7 +102,6 @@
       "Não fechou? Não force: convoque 2D (COSY/HSQC/HMBC) ou mais dados",
       "Valide cruzado: preveja o espectro da estrutura proposta e compare com o real — todo pico com dono"
     ] },
-    ] },
     { "type": "exemplo", "title": "Caso fechado: paracetamol", "smiles": "CC(=O)Nc1ccc(O)cc1", "caption": "2 dupletos 2H (anel para) + 2 singletos largos (NH, OH) + singleto 3H (acetila) + 168 ppm (C=O de amida). Cada pico tem dono." },
     { "type": "texto", "html": "<p><strong>Duas habilidades, mesmo conteúdo:</strong> até aqui você <strong>elucidou</strong> (espectro → estrutura). A habilidade inversa — <strong>prever</strong> o espectro a partir da estrutura — é a que confirma identidade e flagra impureza no dia a dia: você sabe o composto, escreve os δ esperados e compara com a amostra.</p>" },
     { "type": "quiz", "question": "GI = 4 em uma molécula orgânica comum sugere fortemente…", "options": [ { "text": "Um anel benzênico", "correct": true, "feedback": "3 C=C + 1 anel = 4 insaturações: a assinatura do benzeno." }, { "text": "Quatro carbonilas", "correct": false, "feedback": "Possível, mas raro; o padrão aromático de 6,5–8,5 é que confirma o anel." }, { "text": "Dois anéis e duas carbonilas", "correct": false, "feedback": "Também soma 4 — mas os sinais aromáticos é que fecham o diagnóstico." } ] },
