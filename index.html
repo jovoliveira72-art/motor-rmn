@@ -777,6 +777,20 @@ main { flex: 1; overflow-y: auto; padding: 32px 24px 80px; }
 
 .board-eraser { width: 36px; height: 14px; background: linear-gradient(180deg, #9ca3af, #6b7280); border-radius: 3px; margin-left: auto; box-shadow: 0 1px 2px rgba(0,0,0,0.3); }
 
+.gloss-term { border-bottom: 2px dotted var(--info); cursor: help; }
+
+.gloss-tip {
+  position: fixed; z-index: 60; max-width: 260px;
+  background: var(--bg-card); color: var(--text);
+  border: 2px solid var(--info); border-radius: 12px;
+  padding: 10px 12px; font-size: 13px; line-height: 1.5;
+  box-shadow: 0 8px 24px var(--shadow);
+  opacity: 0; pointer-events: none; transition: opacity 0.15s;
+}
+
+.gloss-tip.visible { opacity: 1; }
+.gloss-tip b { color: var(--info); }
+  
 .app-version { position: fixed; bottom: 6px; right: 10px; font-size: 10px; font-family: 'Poppins', sans-serif; color: var(--text-lighter); opacity: 0.6; pointer-events: none; z-index: 5; }
 
 @media (max-width: 700px) {
@@ -816,7 +830,7 @@ main { flex: 1; overflow-y: auto; padding: 32px 24px 80px; }
 
 </div>
 
-<div class="app-version">v3.25.0</div>
+<div class="app-version">v3.28.0</div>
 
 <script src="https://unpkg.com/smiles-drawer@2.1.7/dist/smiles-drawer.min.js"></script>
 <script>
@@ -836,8 +850,8 @@ const state = {
   shuffledSignals: null
 };
 
-const db = { tutorial: [], mapping: [], solo: [], guided: [], blocks: null };
-
+const db = { tutorial: [], mapping: [], solo: [], guided: [], blocks: null, glossary: [] };
+  
 const TOTALS = {
   tutorial: 17,
   mapping: 3,
@@ -948,6 +962,10 @@ async function carregarDados() {
       const b = await fetch('data/blocks.json');
       if (b.ok) db.blocks = await b.json();
     } catch (e) { db.blocks = null; }
+    try {
+      const gl = await fetch('data/glossary.json');
+      if (gl.ok) db.glossary = await gl.json();
+    } catch (e) { db.glossary = []; }
     return true;
   } catch (e) { console.error(e); return false; }
 }
@@ -992,6 +1010,9 @@ function render() {
   }
 
   c.appendChild(wrap);
+  applyGlossary(wrap);
+  const tip = document.getElementById('gloss-tip');
+  if (tip) tip.classList.remove('visible');
 }
 
 function pct(num, den) {
@@ -2439,6 +2460,79 @@ document.addEventListener('keydown', (e) => {
     setView('home');
   }
 });
+
+/* ========== GLOSSÁRIO ========== */
+function escapeReg(s) { return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
+
+function applyGlossary(root) {
+  if (!db.glossary || !db.glossary.length) return;
+  const linked = new Set();
+  const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+  const nodes = [];
+  while (walker.nextNode()) nodes.push(walker.currentNode);
+  for (const node of nodes) {
+    const text = node.nodeValue;
+    if (!text || !text.trim()) continue;
+    const parentEl = node.parentElement;
+    if (!parentEl || parentEl.closest('option, select, textarea, script, style, .gloss-term, .gloss-tip')) continue;
+    for (const g of db.glossary) {
+      if (linked.has(g.id)) continue;
+      const names = [g.termo, ...(g.aliases || [])];
+      let hit = null;
+      for (const name of names) {
+        const re = new RegExp(`(^|[^\\wÀ-ú-])(${escapeReg(name)})(?![\\wÀ-ú-])`, 'i');
+        const m = re.exec(text);
+        if (m) { hit = { name, start: m.index + m[1].length }; break; }
+      }
+      if (!hit) continue;
+      linked.add(g.id);
+      const before = text.slice(0, hit.start);
+      const term = text.slice(hit.start, hit.start + hit.name.length);
+      const after = text.slice(hit.start + hit.name.length);
+      const span = document.createElement('span');
+      span.className = 'gloss-term';
+      span.dataset.gloss = g.id;
+      span.tabIndex = 0;
+      span.textContent = term;
+      const frag = document.createDocumentFragment();
+      if (before) frag.appendChild(document.createTextNode(before));
+      frag.appendChild(span);
+      if (after) frag.appendChild(document.createTextNode(after));
+      node.parentNode.replaceChild(frag, node);
+      break;
+    }
+  }
+}
+
+function showGlossTip(termEl, g) {
+  let tip = document.getElementById('gloss-tip');
+  if (!tip) {
+    tip = document.createElement('div');
+    tip.id = 'gloss-tip';
+    tip.className = 'gloss-tip';
+    document.body.appendChild(tip);
+  }
+  tip.innerHTML = `<b>${g.termo}</b> · ${g.def}`;
+  tip.classList.add('visible');
+  const r = termEl.getBoundingClientRect();
+  const tw = Math.min(260, window.innerWidth - 16);
+  tip.style.left = Math.min(Math.max(8, r.left), window.innerWidth - tw - 8) + 'px';
+  tip.style.top = '0px';
+  const th = tip.offsetHeight;
+  tip.style.top = (r.top - th - 8 < 8 ? r.bottom + 8 : r.top - th - 8) + 'px';
+}
+
+document.addEventListener('click', (e) => {
+  const termEl = e.target.closest('.gloss-term');
+  if (termEl) {
+    e.stopPropagation();
+    const g = db.glossary.find(x => x.id === termEl.dataset.gloss);
+    if (g) showGlossTip(termEl, g);
+    return;
+  }
+  const tip = document.getElementById('gloss-tip');
+  if (tip) tip.classList.remove('visible');
+}, true);
 
 async function iniciar() {
   loadProgress();
