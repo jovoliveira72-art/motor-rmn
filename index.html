@@ -898,6 +898,20 @@ function fmtProse(text) {
   return String(text).replace(/(\d)\.(\d)/g, '$1,$2');
 }
 
+function shuffle(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+function embaralharOpcoes() {
+  (db.solo || []).forEach(q => q.options && shuffle(q.options));
+  (db.guided || []).forEach(g => (g.steps || []).forEach(s => s.options && shuffle(s.options)));
+  Object.values(db.blocks || {}).forEach(list => list.forEach(b => b.options && shuffle(b.options)));
+}
+  
 function loadProgress() {
   try {
     const saved = localStorage.getItem('motorRMN_progress');
@@ -966,6 +980,7 @@ async function carregarDados() {
       const gl = await fetch('data/glossary.json');
       if (gl.ok) db.glossary = await gl.json();
     } catch (e) { db.glossary = []; }
+    embaralharOpcoes();
     return true;
   } catch (e) { console.error(e); return false; }
 }
