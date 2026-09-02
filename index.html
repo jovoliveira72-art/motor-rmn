@@ -1460,6 +1460,49 @@ function buildDecoupleDiagram() {
     <div class="ppm-info" id="dec-note"></div>`;
 }
 
+/* ========== DO APARELHO AO GRÁFICO (nível 1) ========== */
+window.setFT = function(mode) {
+  document.querySelectorAll('.ft-btn').forEach(b => b.classList.toggle('active', b.dataset.mode === mode));
+  const note = document.getElementById('ft-note');
+  if (note) note.innerHTML = {
+    pulse: '<b>1 · O pulso:</b> a bobina dispara um pulso de radiofrequência curto que excita todos os núcleos de uma vez — a RMN moderna não varre frequência por frequência.',
+    fid: '<b>2 · O FID:</b> as magnetizações precessando induzem na bobina uma corrente que oscila e decai. É o dado cru, no domínio do tempo.',
+    freq: '<b>3 · A Fourier:</b> a transformada decompõe o FID nas frequências que o compõem — cada frequência vira um pico. Pronto: o espectro.'
+  }[mode];
+  const svg = document.getElementById('ft-svg');
+  if (!svg) return;
+  const W = 400, H = 120, mid = 60;
+  let p = '';
+  if (mode === 'pulse') {
+    p = `M 0 ${mid} L 170 ${mid}`;
+    for (let x = 170; x <= 210; x += 2) p += ` L ${x} ${mid - 50 * Math.sin((x - 170) / 40 * Math.PI * 8)}`;
+    p += ` L ${W} ${mid}`;
+  } else if (mode === 'fid') {
+    p = `M 0 ${mid}`;
+    for (let x = 0; x <= W; x += 2) {
+      const env = 50 * Math.exp(-x / 120);
+      p += ` L ${x} ${mid - env * (0.7 * Math.sin(x / 9) + 0.3 * Math.sin(x / 5.3))}`;
+    }
+  } else {
+    p = `M 0 ${H - 10} L 120 ${H - 10} L 138 20 L 156 ${H - 10} L 250 ${H - 10} L 268 45 L 286 ${H - 10} L ${W} ${H - 10}`;
+  }
+  svg.innerHTML = (mode === 'freq'
+    ? `<line x1="0" y1="${H - 10}" x2="${W}" y2="${H - 10}" stroke="#94a3b8" stroke-width="2"/>`
+    : `<line x1="0" y1="${mid}" x2="${W}" y2="${mid}" stroke="#94a3b8" stroke-width="1" opacity="0.5"/>`)
+    + `<path d="${p}" fill="none" stroke="#3b82f6" stroke-width="2.5"/>`;
+};
+
+function buildFTDiagram() {
+  return `
+    <div class="split-controls">
+      <button class="ft-btn split-btn active" style="width:auto;padding:0 14px;" data-mode="pulse" onclick="setFT('pulse')">1 · pulso</button>
+      <button class="ft-btn split-btn" style="width:auto;padding:0 14px;" data-mode="fid" onclick="setFT('fid')">2 · FID</button>
+      <button class="ft-btn split-btn" style="width:auto;padding:0 14px;" data-mode="freq" onclick="setFT('freq')">3 · Fourier</button>
+    </div>
+    <svg id="ft-svg" viewBox="0 0 400 120" style="width:100%;height:120px;display:block;"></svg>
+    <div class="ppm-info" id="ft-note"></div>`;
+}
+  
 const QUIZ_DATA = {};
 
 function wrapDiagram(inner, hint) {
@@ -1518,7 +1561,8 @@ function renderBlocks(blocks, levelId) {
       if (b.kind === 'shield') return wrapDiagram(buildShieldDiagram(), b.hint);
       if (b.kind === 'energy') return wrapDiagram(buildEnergyDiagram(), b.hint);
       if (b.kind === 'integration') return wrapDiagram(buildIntegrationDiagram(), b.hint);
-      if (b.kind === 'decouple') return wrapDiagram(buildDecoupleDiagram(), b.hint);
+      if (b.kind === 'decouple') return wrapDiagram(buildDecoupleDiagram(), b.hint);       
+      if (b.kind === 'ft') return wrapDiagram(buildFTDiagram(), b.hint);
       return '';
     }
     if (b.type === 'exemplo') {
@@ -1659,6 +1703,7 @@ function renderTutorial() {
     if (document.getElementById('energy-note')) window.setEnergy(300);
     if (document.getElementById('integ-svg')) window.setInteg('etoh');
     if (document.getElementById('dec-svg')) window.setDecouple(true);
+    if (document.getElementById('ft-note')) window.setFT('pulse');
   }, 0);
 
   return div;
