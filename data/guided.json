@@ -27,7 +27,7 @@
         "text": "O tripleto em 1,2 ppm integra para 3H. Quem são esses prótons?",
         "options": [
           { "text": "Os 3H do CH₃ terminal", "correct": true, "feedback": "Tripleto com 3H em campo alto: clássico de CH₃ vizinho de CH₂." },
-          { "text": "Os 2H do CH₂ e 1H do OH", "correct": false, "feedback": "CH₂ daria quarteto (tem 3 vizinhos) e OH aparece como singleto largo." },
+          { "text": "Os 2H do CH₂ e 1H do OH", "correct": false, "feedback": "CH₂ daria quarteto (tem 3 vizinhos) e OH aparece como simpleto largo." },
           { "text": "O OH sozinho, mas alargado", "correct": false, "feedback": "OH não aparece como tripleto — e sua integração é 1H, não 3H." }
         ],
         "highlight": ["sig1"]
@@ -44,7 +44,7 @@
       },
       {
         "type": "question",
-        "text": "O singleto largo em 2,5 ppm integra para 1H. O que acontece quando agitamos com D₂O?",
+        "text": "O simpleto largo em 2,5 ppm integra para 1H. O que acontece quando agitamos com D₂O?",
         "options": [
           { "text": "O sinal desaparece — é um próton trocável (OH)", "correct": true, "feedback": "OH troca com D₂O: o H sai, entra D, e o sinal some do espectro de ¹H." },
           { "text": "O sinal vira tripleto", "correct": false, "feedback": "D₂O não muda o padrão de acoplamento — só troca H por D." },
@@ -84,10 +84,10 @@
       },
       {
         "type": "question",
-        "text": "O singleto em 2,0 ppm integra para 3H. Que fragmento é esse?",
+        "text": "O simpleto em 2,0 ppm integra para 3H. Que fragmento é esse?",
         "options": [
-          { "text": "O CH₃ ligado à carbonila (acetila)", "correct": true, "feedback": "CH₃ vizinho de C=O mora em ~2,0 ppm. O singleto confirma que não tem vizinhos H." },
-          { "text": "O CH₃ terminal da etila", "correct": false, "feedback": "Esse CH₃ daria tripleto (vizinho de CH₂), não singleto." },
+          { "text": "O CH₃ ligado à carbonila (acetila)", "correct": true, "feedback": "CH₃ vizinho de C=O mora em ~2,0 ppm. O simpleto confirma que não tem vizinhos H." },
+          { "text": "O CH₃ terminal da etila", "correct": false, "feedback": "Esse CH₃ daria tripleto (vizinho de CH₂), não simpleto." },
           { "text": "Um CH₃ aromático", "correct": false, "feedback": "Não há anel aromático neste éster." }
         ],
         "highlight": ["sig1"]
@@ -108,7 +108,7 @@
         "options": [
           { "text": "Do CH₂ (por isso dá tripleto: n = 2 → n+1 = 3)", "correct": true, "feedback": "n = 2 vizinhos H (o CH₂) → tripleto. A posição ~1,2 confirma que não há heteroátomo próximo." },
           { "text": "Do oxigênio do éster", "correct": false, "feedback": "Se fosse vizinho direto de O, estaria em ~3,5 ppm." },
-          { "text": "De ninguém — é um CH₃ isolado", "correct": false, "feedback": "CH₃ isolado dá singleto. O tripleto exige vizinhos." }
+          { "text": "De ninguém — é um CH₃ isolado", "correct": false, "feedback": "CH₃ isolado dá simpleto. O tripleto exige vizinhos." }
         ],
         "highlight": ["sig3"]
       },
@@ -147,9 +147,9 @@
       },
       {
         "type": "question",
-        "text": "O singleto em 2,1 ppm (3H) é o CH₃ da acetamida. Por que aparece como singleto?",
+        "text": "O simpleto em 2,1 ppm (3H) é o CH₃ da acetamida. Por que aparece como simpleto?",
         "options": [
-          { "text": "Porque não tem vizinhos H — o carbono vizinho é a carbonila (sem H)", "correct": true, "feedback": "O CH₃ só vê o carbono da carbonila, que não tem H. n = 0 → singleto." },
+          { "text": "Porque não tem vizinhos H — o carbono vizinho é a carbonila (sem H)", "correct": true, "feedback": "O CH₃ só vê o carbono da carbonila, que não tem H. n = 0 → simpleto." },
           { "text": "Porque o NH acopla com ele à distância", "correct": false, "feedback": "Acoplamento 4J geralmente não é observado, e o NH costuma não acoplar por troca rápida." },
           { "text": "Porque o anel aromático é muito distante", "correct": false, "feedback": "A distância do anel é irrelevante — o que importa é não ter H no carbono vizinho." }
         ],
@@ -161,13 +161,13 @@
         "options": [
           { "text": "Anel para-substituído (dois pares de H equivalentes em orto)", "correct": true, "feedback": "O padrão AA'BB' com dupletos simétricos é a assinatura do anel para-disubstituído. Cada par acopla com o outro por orto (J ≈ 8–9 Hz)." },
           { "text": "Anel mono-substituído (5H totais)", "correct": false, "feedback": "Mono-substituído daria 5H, não 4, e um padrão mais complexo." },
-          { "text": "Anel 1,3,5-trisubstituído", "correct": false, "feedback": "Esse padrão daria singleto + dois dupletos finos com J meta (~2 Hz)." }
+          { "text": "Anel 1,3,5-trisubstituído", "correct": false, "feedback": "Esse padrão daria simpleto + dois dupletos finos com J meta (~2 Hz)." }
         ],
         "highlight": ["sig2", "sig3"]
       },
       {
         "type": "question",
-        "text": "Os dois singletos largos em 9,2 e 9,8 ppm (1H cada) desaparecem com D₂O. Quem são eles?",
+        "text": "Os dois simpletos largos em 9,2 e 9,8 ppm (1H cada) desaparecem com D₂O. Quem são eles?",
         "options": [
           { "text": "O NH da amida e o OH do fenol — ambos trocáveis", "correct": true, "feedback": "Tanto NH quanto OH são prótons trocáveis. O NH da amida costuma estar ~8–10 ppm; o OH fenólico ~9–11 ppm." },
           { "text": "Dois CH aromáticos muito desblindados", "correct": false, "feedback": "CH aromático não some com D₂O — só H ligado a O ou N troca." },
@@ -226,7 +226,7 @@
         "text": "O dupleto em 1,5 ppm (3H) e o quarteto em 3,7 ppm (1H) formam um par típico. Já o dupleto em 2,5 ppm (2H) aparece ao lado. Qual o significado desses três sinais juntos?",
         "options": [
           { "text": "O par 1,5/3,7 é o CH₃–CH do ácido; o 2,5 é o CH₂ que liga o anel à isobutila", "correct": true, "feedback": "CH₃ em 1,5 (d, 3H) acopla com o CH em 3,7 (q, 1H): típico de CH(CH₃) vizinho de COOH. O CH₂ em 2,5 ppm (d, 2H) liga o anel à isobutila — fica desblindado por estar entre o anel e a cadeia alifática." },
-          { "text": "São três CH₃ independentes, sem vizinhos", "correct": false, "feedback": "CH₃ sem vizinhos dá singleto — aqui temos dupletos e quarteto, indicando acoplamento." },
+          { "text": "São três CH₃ independentes, sem vizinhos", "correct": false, "feedback": "CH₃ sem vizinhos dá simpleto — aqui temos dupletos e quarteto, indicando acoplamento." },
           { "text": "É um isopropil ligado ao anel", "correct": false, "feedback": "Isopropil daria 6H como dupleto (dois CH₃ equivalentes). Aqui temos 3H + 1H, padrão de CH(CH₃)." }
         ],
         "highlight": ["sig1", "sig2", "sig3"]
@@ -236,14 +236,14 @@
         "text": "O dupleto em 0,9 ppm (6H) e o multiplete em 1,8 ppm (1H) formam um grupo característico. Que fragmento temos?",
         "options": [
           { "text": "Isopropil, ou seja, um grupo –CH(CH₃)₂ da cadeia isobutila", "correct": true, "feedback": "6H em dupleto + 1H em multiplete = isopropil. Combinado com o CH₂ em 2,5, completa a isobutila: –CH₂–CH(CH₃)₂." },
-          { "text": "Três CH₃ equivalentes num carbono terciário", "correct": false, "feedback": "Três CH₃ equivalentes dariam 9H singleto, como em t-butila." },
+          { "text": "Três CH₃ equivalentes num carbono terciário", "correct": false, "feedback": "Três CH₃ equivalentes dariam 9H simpleto, como em t-butila." },
           { "text": "Uma cadeia etila comum", "correct": false, "feedback": "Etila dá tripleto + quarteto com razão 3:2, não dupleto + multiplete 6:1." }
         ],
         "highlight": ["sig4", "sig5"]
       },
       {
         "type": "question",
-        "text": "O singleto largo em 12,0 ppm (1H) é o último sinal a explicar. Quem é ele?",
+        "text": "O simpleto largo em 12,0 ppm (1H) é o último sinal a explicar. Quem é ele?",
         "options": [
           { "text": "O H do grupo carboxílico (–COOH)", "correct": true, "feedback": "COOH aparece em 10–12 ppm, sempre largo, e troca com D₂O. É a assinatura do ácido carboxílico." },
           { "text": "Um H aromático muito desblindado", "correct": false, "feedback": "Aromáticos moram em 6,5–8,5 ppm. 12 ppm é região exclusiva de COOH." },
