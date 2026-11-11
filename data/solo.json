@@ -73,12 +73,12 @@
           { "id": "sig1", "ppm": 3.4, "int": 3, "mult": "s", "height": 60 },
           { "id": "sig2", "ppm": 3.6, "int": 3, "mult": "s", "height": 60 },
           { "id": "sig3", "ppm": 4.0, "int": 3, "mult": "s", "height": 60 },
-          { "id": "sig4", "ppm": 7.6, "int": 1, "mult": "s", "height": 20 }
+          { "id": "sig4", "ppm": 7.5, "int": 1, "mult": "s", "height": 20 }
         ]
       }
     },
     "options": [
-      { "id": "a", "text": "Cafeína", "smiles": "Cn1cnc2c1c(=O)n(C)c(=O)n2C", "correct": true, "feedback": "Três N−CH₃ em ambientes distintos (simpleto em 3,4, 3,6 e 4,0 ppm) e um único H aromático (7,6 ppm)." },
+      { "id": "a", "text": "Cafeína", "smiles": "Cn1cnc2c1c(=O)n(C)c(=O)n2C", "correct": true, "feedback": "Três N−CH₃ em ambientes distintos (simpletos em 3,4, 3,6 e 4,0 ppm) e um único H aromático (H-8, 7,5 ppm)." },
       { "id": "b", "text": "Teobromina", "smiles": "Cn1cnc2c1c(=O)[nH]c(=O)n2C", "correct": false, "feedback": "Teobromina tem apenas 2 N−CH₃ e um NH (simpleto largo), não 3 N−CH₃." },
       { "id": "c", "text": "Teofilina", "smiles": "Cn1c(=O)c2[nH]cnc2n(C)c1=O", "correct": false, "feedback": "Teofilina também tem apenas 2 N−CH₃ e um NH, padrão incompatível com 3 simpleto de 3H." }
     ]
