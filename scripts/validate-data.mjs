@@ -164,9 +164,17 @@ if (glossary) {
       if (nomes.has(k) && nomes.get(k) !== g.id) falha(`glossary: "${n}" aparece em "${nomes.get(k)}" e "${g.id}" (ambíguo)`);
       nomes.set(k, g.id);
     });
-    if ((g.def || '').length > 220) falha(`glossary: definição de "${g.id}" com ${g.def.length} caracteres (máx. 220, o tooltip é pequeno)`);
+    if ((g.def || '').length > 150) falha(`glossary: def de "${g.id}" com ${g.def.length} caracteres (máx. 150: é o texto curto do pop-up)`);
+    const det = g.detalhe || '';
+    if (det.length < 100 || det.length > 700) falha(`glossary: detalhe de "${g.id}" com ${det.length} caracteres (esperado 100–700)`);
+    if (det.trim() === (g.def || '').trim()) falha(`glossary: detalhe de "${g.id}" repete a def`);
+    if (!Array.isArray(g.veja) || g.veja.length > 5) falha(`glossary: "${g.id}" precisa de "veja" (lista de até 5 ids)`);
   });
-  if (problemas === antesGl) ok(`glossary: ${glossary.length} verbetes sem ids ou nomes duplicados, definições curtas`);
+  glossary.forEach(g => (g.veja || []).forEach(r => {
+    if (r === g.id) falha(`glossary: "${g.id}" aponta para si mesmo em "veja"`);
+    else if (!ids.has(r)) falha(`glossary: "veja" de "${g.id}" aponta para "${r}", que não existe`);
+  }));
+  if (problemas === antesGl) ok(`glossary: ${glossary.length} verbetes sem ids/nomes duplicados; def curta + detalhe + veja em todos`);
 }
 
 // ponto decimal em texto livre (padrão: vírgula)
