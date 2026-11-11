@@ -794,7 +794,9 @@ main { flex: 1; overflow-y: auto; padding: 32px 24px 80px; }
   opacity: 0; pointer-events: none; transition: opacity 0.15s;
 }
 
-.gloss-tip.visible { opacity: 1; }
+.gloss-tip.visible { opacity: 1; pointer-events: auto; }
+.gloss-more { display: block; margin-top: 6px; padding: 6px 0 2px; border: none; background: none; color: var(--info); font: inherit; font-size: 12px; font-weight: 800; cursor: pointer; text-align: left; }
+.gloss-more:hover { text-decoration: underline; }
 .gloss-tip b { color: var(--info); }
   
 .app-version { position: fixed; bottom: 6px; right: 10px; font-size: 10px; font-family: 'Poppins', sans-serif; color: var(--text-lighter); opacity: 0.6; pointer-events: none; z-index: 5; }
@@ -836,7 +838,15 @@ main { flex: 1; overflow-y: auto; padding: 32px 24px 80px; }
 .dict-item:last-child { border-bottom: none; }
 .dict-term { font-weight: 800; font-size: 16px; }
 .dict-alias { font-weight: 600; font-size: 12px; color: var(--text-light); margin-left: 8px; }
-.dict-def { margin-top: 2px; font-size: 14px; line-height: 1.5; color: var(--text); }
+.dict-item { padding: 12px 8px; border-radius: 10px; }
+.dict-item:focus { outline: none; }
+.dict-def { margin-top: 2px; font-size: 14px; line-height: 1.5; color: var(--text); font-weight: 700; }
+.dict-detail { margin-top: 6px; font-size: 14px; line-height: 1.6; color: var(--text); }
+.dict-see { margin-top: 10px; display: flex; flex-wrap: wrap; gap: 6px; align-items: center; font-size: 12px; font-weight: 700; color: var(--text-light); }
+.dict-chip { border: 1px solid var(--border-strong); background: var(--bg); color: var(--primary); border-radius: 999px; padding: 5px 12px; font: inherit; font-size: 12px; font-weight: 800; cursor: pointer; }
+.dict-chip:hover { background: var(--primary); color: white; border-color: var(--primary); }
+.dict-flash { animation: dictflash 1.8s ease-out; }
+@keyframes dictflash { 0% { background: rgba(245,158,11,0.35); } 100% { background: transparent; } }
 .dict-empty { text-align: center; color: var(--text-light); padding: 40px 0; font-weight: 600; }
 @media (max-width: 700px) { #dict-overlay { padding: 0; } .dict-panel { height: 100%; max-width: none; border-radius: 0; } }
 </style>
@@ -2540,7 +2550,12 @@ document.addEventListener('keydown', (e) => {
   const alvo = e.target;
   if ((e.key === 'Enter' || e.key === ' ') && alvo && alvo.matches && alvo.matches('[role="button"]:not(button), .gloss-term')) {
     e.preventDefault();
-    alvo.click();
+    const tipo = document.getElementById('gloss-tip');
+    if (alvo.classList.contains('gloss-term') && tipo && tipo.classList.contains('visible') && tipo.dataset.gloss === alvo.dataset.gloss) {
+      // o pop-up já está aberto para este termo: Enter de novo leva ao dicionário
+      tipo.classList.remove('visible');
+      abrirDicionario(alvo.dataset.gloss, alvo);
+    } else alvo.click();
     return;
   }
   if (e.key === 'Escape') {
@@ -2642,6 +2657,7 @@ function applyGlossary(root) {
   }
 }
 
+let _glossTermoAtivo = null;
 function showGlossTip(termEl, g) {
   let tip = document.getElementById('gloss-tip');
   if (!tip) {
@@ -2650,7 +2666,9 @@ function showGlossTip(termEl, g) {
     tip.className = 'gloss-tip';
     document.body.appendChild(tip);
   }
-  tip.innerHTML = `<b>${g.termo}</b> · ${g.def}`;
+  tip.dataset.gloss = g.id;
+  _glossTermoAtivo = termEl;
+  tip.innerHTML = `<b>${g.termo}</b> · ${g.def}` + (g.detalhe ? `<button type="button" class="gloss-more" data-gloss="${g.id}">Ver no dicionário →</button>` : '');
   tip.classList.add('visible');
   const r = termEl.getBoundingClientRect();
   const tw = Math.min(260, window.innerWidth - 16);
@@ -2661,6 +2679,15 @@ function showGlossTip(termEl, g) {
 }
 
 document.addEventListener('click', (e) => {
+  const mais = e.target.closest && e.target.closest('.gloss-more');
+  if (mais) {
+    e.stopPropagation();
+    const t = document.getElementById('gloss-tip');
+    if (t) t.classList.remove('visible');
+    abrirDicionario(mais.dataset.gloss, _glossTermoAtivo);
+    return;
+  }
+  if (e.target.closest && e.target.closest('.gloss-tip')) return;
   const termEl = e.target.closest('.gloss-term');
   if (termEl) {
     e.stopPropagation();
@@ -2683,7 +2710,7 @@ function renderDicionario(q = '') {
   lista.innerHTML = '';
   const termos = (db.glossary || []).slice().sort((a, b) => a.termo.localeCompare(b.termo, 'pt', { sensitivity: 'base' }));
   const busca = semAcento(q.trim());
-  const achados = termos.filter(g => !busca || semAcento([g.termo, ...(g.aliases || []), g.def].join(' ')).includes(busca));
+  const achados = termos.filter(g => !busca || semAcento([g.termo, ...(g.aliases || []), g.def, g.detalhe || ''].join(' ')).includes(busca));
   count.textContent = busca ? `${achados.length} de ${termos.length} termos` : `${termos.length} termos`;
   if (!achados.length) {
     const vazio = document.createElement('div');
@@ -2714,26 +2741,56 @@ function renderDicionario(q = '') {
     const def = document.createElement('div');
     def.className = 'dict-def'; def.textContent = g.def.charAt(0).toUpperCase() + g.def.slice(1);
     item.append(termo, def);
+    if (g.detalhe) {
+      const det = document.createElement('div');
+      det.className = 'dict-detail'; det.textContent = g.detalhe;
+      item.appendChild(det);
+    }
+    const rel = (g.veja || []).map(id => termos.find(t => t.id === id)).filter(Boolean);
+    if (rel.length) {
+      const see = document.createElement('div');
+      see.className = 'dict-see';
+      see.append('Veja também:');
+      rel.forEach(r => {
+        const b = document.createElement('button');
+        b.type = 'button'; b.className = 'dict-chip'; b.textContent = r.termo;
+        b.setAttribute('aria-label', 'Ir para ' + r.termo);
+        b.addEventListener('click', () => irParaTermo(r.id));
+        see.appendChild(b);
+      });
+      item.appendChild(see);
+    }
     lista.appendChild(item);
   });
 }
 
-function abrirDicionario(idTermo) {
+// rola até o verbete, destaca e leva o foco para ele (limpa a busca se ele estiver filtrado)
+function irParaTermo(id) {
+  const q = document.getElementById('dict-q');
+  let el = document.getElementById('dict-' + id);
+  if (!el && q.value) { q.value = ''; renderDicionario(''); el = document.getElementById('dict-' + id); }
+  if (!el) return;
+  el.scrollIntoView({ block: 'start' });
+  el.classList.remove('dict-flash'); void el.offsetWidth; el.classList.add('dict-flash');
+  el.tabIndex = -1;
+  el.focus({ preventScroll: true });
+}
+
+function abrirDicionario(idTermo, focoOrigem) {
   const o = document.getElementById('dict-overlay');
   if (!o) return;
   if (!o.hidden) { document.getElementById('dict-q').focus(); return; } // já aberto: não perde o foco de origem
   // Safari não foca <button> ao clicar: sem elemento ativo útil, o foco volta ao ícone do dicionário
   const ativo = document.activeElement;
-  _dictFoco = (ativo && ativo !== document.body) ? ativo : document.getElementById('dict-btn');
+  _dictFoco = focoOrigem || ((ativo && ativo !== document.body) ? ativo : document.getElementById('dict-btn'));
   const q = document.getElementById('dict-q');
   q.value = '';
   renderDicionario('');
   o.hidden = false;
   const shell = document.querySelector('.app-shell');
   if (shell) shell.inert = true;
-  const alvo = idTermo && document.getElementById('dict-' + idTermo);
-  if (alvo) alvo.scrollIntoView({ block: 'center' });
   q.focus();
+  if (idTermo) irParaTermo(idTermo);
 }
 
 function fecharDicionario() {
