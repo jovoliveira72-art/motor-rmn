@@ -906,6 +906,17 @@ function shuffle(arr) {
   return arr;
 }
 
+// Fisher–Yates em cópia; com 2+ itens evita devolver a ordem original (que nos dados coincide com o gabarito do ¹H)
+function shuffleDistinct(arr) {
+  const orig = arr.slice();
+  let out = orig.slice();
+  for (let t = 0; t < 10; t++) {
+    out = shuffle(orig.slice());
+    if (orig.length < 2 || out.some((x, i) => x !== orig[i])) break;
+  }
+  return out;
+}
+
 function embaralharOpcoes() {
   (db.solo || []).forEach(q => q.options && shuffle(q.options));
   (db.guided || []).forEach(g => (g.steps || []).forEach(s => s.options && shuffle(s.options)));
@@ -917,8 +928,11 @@ function loadProgress() {
     const saved = localStorage.getItem('motorRMN_progress');
     if (saved) {
       const data = JSON.parse(saved);
-      state.xp = data.xp || 0;
-      state.completed = data.completed || { mapping: [], solo: [], guided: [], tutorial: [] };
+      state.xp = Number.isFinite(data.xp) ? data.xp : 0;
+      // mescla com os padrões: progresso salvo em formato antigo/parcial (sem "guided", por ex.) não pode quebrar a home
+      const padrao = { mapping: [], solo: [], guided: [], tutorial: [] };
+      state.completed = { ...padrao, ...(data.completed || {}) };
+      Object.keys(padrao).forEach(k => { if (!Array.isArray(state.completed[k])) state.completed[k] = []; });
       updateXPDisplay();
     }
   } catch (e) { console.warn('Erro ao carregar progresso:', e); }
@@ -1083,7 +1097,7 @@ function renderHome() {
     <div class="progress-card">
       <div class="progress-header">
         <div class="progress-title"> Seu progresso</div>
-        <div class="progress-stats">${state.xp} / 500 pts · ${totalPercent}% completo</div>
+        <div class="progress-stats">${state.xp >= 500 ? `${state.xp} pts · meta de 500 atingida` : `${state.xp} / 500 pts`} · ${totalPercent}% completo</div>
       </div>
       <div class="progress-bar">
         <div class="progress-fill" style="width: ${progressPercent}%"></div>
@@ -1358,7 +1372,7 @@ function buildDeptDiagram() {
 }
 
 const SHIELD_CASES = [
-  { id: 's1', mol: 'CH₃–CH₃', delta: 0.23, note: '<b>CH₃–CH:</b> sem vizinho eletronegativo — o mais blindado (δ 0,23).' },
+  { id: 's1', mol: 'CH₃–CH₃', delta: 0.86, note: '<b>CH₃–CH₃:</b> sem vizinho eletronegativo — o mais blindado (δ ~0,9).' },
   { id: 's2', mol: 'CH₃–OH', delta: 3.4, note: '<b>CH₃–OH:</b> o oxigênio puxa densidade eletrônica — δ 3,4.' },
   { id: 's3', mol: 'CH₃–F', delta: 4.3, note: '<b>CH₃–F:</b> flúor, o mais eletronegativo — δ 4,3.' },
   { id: 's4', mol: 'CH₂=CH₂', delta: 5.3, note: '<b>CH₂=CH₂:</b> H em carbono sp² — desblindado pela anisotropia do π (~5,3).' },
@@ -1370,7 +1384,7 @@ window.showShield = function(id) {
   if (!c) return;
   document.querySelectorAll('.shield-btn').forEach(b => b.classList.toggle('active', b.dataset.case === id));
   const marker = document.getElementById('shield-marker');
-  if (marker) marker.style.left = (c.delta / 5 * 100) + '%';
+  if (marker) marker.style.left = (c.delta / 6 * 100) + '%'; // escala 0–6 ppm: o maior caso (5,3) fica dentro da trilha
   const note = document.getElementById('shield-note');
   if (note) note.innerHTML = c.note;
 };
@@ -1381,7 +1395,7 @@ function buildShieldDiagram() {
       ${SHIELD_CASES.map(c => `<button class="shield-btn split-btn" style="width:auto;padding:0 14px;" data-case="${c.id}" onclick="showShield('${c.id}')">${c.mol}</button>`).join('')}
     </div>
     <div class="shield-track">
-      <div class="shield-marker" id="shield-marker" style="left:4.6%"></div>
+      <div class="shield-marker" id="shield-marker" style="left:14.3%"></div>
       <span class="shield-end l">blindado</span>
       <span class="shield-end r">desblindado</span>
     </div>
@@ -1746,7 +1760,7 @@ function renderTutorial() {
 }
 
 function handleTutorialNav(direction) {
-  markCompleted('tutorial', state.currentLevel);
+  if (direction > 0) markCompleted('tutorial', state.currentLevel); // voltar não conclui o nível
   state.currentLevel += direction;
   render();
   document.getElementById('app-container').scrollTop = 0;
@@ -1950,12 +1964,12 @@ function deriveTagsFromChain(chain) {
   let c = 1;
   chain.forEach(item => {
     if (item.tagId) {
-      tags.push({ id: item.tagId, label: String(c), correctTarget: item.correctTarget, atoms: item.atomIndices || null, name: item.label });
+      tags.push({ id: item.tagId, label: String(c), correctTarget: item.correctTarget, alt: item.altTargets || [], atoms: item.atomIndices || null, name: item.label });
       c++;
     }
     (item.branches || []).forEach(b => {
       if (b.tagId) {
-        tags.push({ id: b.tagId, label: String(c), correctTarget: b.correctTarget, atoms: b.atomIndices || null, name: b.label });
+        tags.push({ id: b.tagId, label: String(c), correctTarget: b.correctTarget, alt: b.altTargets || [], atoms: b.atomIndices || null, name: b.label });
         c++;
       }
     });
@@ -1980,9 +1994,7 @@ function renderMapping() {
   const tags = deriveTagsFromChain(chain);
   q._derivedTags = tags;
 
-  if (!state.shuffledSignals) {
-    state.shuffledSignals = [...signals].sort(() => Math.random() - 0.5);
-  }
+  if (!state.shuffledSignals) state.shuffledSignals = shuffleDistinct(signals);
   const shuffledSignals = state.shuffledSignals;
 
   const structureHtml = q.smiles
@@ -2115,16 +2127,22 @@ function checkMappingState() {
   if (btn) btn.disabled = !allAssigned;
 }
 
+// correto = alvo do gabarito ou um alvo alternativo (sinais indistinguíveis, ex.: C=O do COOH e do éster no AAS)
+function tagIsCorrect(t, sigId) {
+  return sigId === t.correctTarget || (t.alt || []).includes(sigId);
+}
+
 window.validateMapping = function() {
   const q = db.mapping.find(x => x.level === state.currentLevel);
   const tags = q._derivedTags;
+  const nivel0 = state.currentLevel;
   let allCorrect = true;
 
   tags.forEach(t => {
     const assignedSig = state.assignments[t.id];
     const row = document.getElementById(`row-${assignedSig}`);
 
-    if (assignedSig === t.correctTarget) {
+    if (tagIsCorrect(t, assignedSig)) {
       if (row) row.classList.add('correct');
       const badge = document.getElementById(`badge-${t.id}`);
       if (badge) badge.classList.add('assigned');
@@ -2167,7 +2185,10 @@ window.validateMapping = function() {
       </div>
     `;
     setTimeout(() => {
-      state.assignments = {};
+      // o usuário pode ter saído do exercício nesses 2,2 s: não mexe no estado de outra tela
+      if (state.currentView !== 'gameplay' || state.currentLevel !== nivel0) return;
+      // mantém os acertos; só limpa as atribuições erradas
+      tags.forEach(t => { if (!tagIsCorrect(t, state.assignments[t.id])) delete state.assignments[t.id]; });
       render();
       fb.innerHTML = '';
     }, 2200);
@@ -2472,12 +2493,30 @@ document.addEventListener('keydown', (e) => {
   }
 
   if (e.key === 'Escape' && state.currentView !== 'home') {
+    // com um campo (select/input) em foco, o 1º Esc só sai do campo; não derruba o exercício nem apaga as atribuições
+    const ativo = document.activeElement;
+    if (ativo && /^(SELECT|INPUT|TEXTAREA)$/.test(ativo.tagName)) { ativo.blur(); return; }
     setView('home');
   }
 });
 
 /* ========== GLOSSÁRIO ========== */
 function escapeReg(s) { return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
+
+// regexes do glossário compiladas uma vez (antes: uma RegExp nova por nó de texto × termo × alias, a cada render)
+let _glossCache = null;
+function glossMatchers() {
+  if (_glossCache && _glossCache.src === db.glossary) return _glossCache.list;
+  const list = db.glossary.map(g => ({
+    g,
+    res: [g.termo, ...(g.aliases || [])].map(name => ({
+      name,
+      re: new RegExp(`(^|[^\\wÀ-ú-])(${escapeReg(name)})(?![\\wÀ-ú-])`, 'i')
+    }))
+  }));
+  _glossCache = { src: db.glossary, list };
+  return list;
+}
 
 function applyGlossary(root) {
   if (!db.glossary || !db.glossary.length) return;
@@ -2489,13 +2528,13 @@ function applyGlossary(root) {
     const text = node.nodeValue;
     if (!text || !text.trim()) continue;
     const parentEl = node.parentElement;
-    if (!parentEl || parentEl.closest('option, select, textarea, script, style, .gloss-term, .gloss-tip')) continue;
-    for (const g of db.glossary) {
+    // não linka dentro de elementos clicáveis (botões, <summary>, cards com onclick) nem de títulos:
+    // o clique no termo abriria o tooltip em vez de navegar, e o índice recolhido "gastava" o link de cada termo
+    if (!parentEl || parentEl.closest('option, select, textarea, script, style, button, summary, [onclick], .section-title, .gloss-term, .gloss-tip')) continue;
+    for (const { g, res } of glossMatchers()) {
       if (linked.has(g.id)) continue;
-      const names = [g.termo, ...(g.aliases || [])];
       let hit = null;
-      for (const name of names) {
-        const re = new RegExp(`(^|[^\\wÀ-ú-])(${escapeReg(name)})(?![\\wÀ-ú-])`, 'i');
+      for (const { name, re } of res) {
         const m = re.exec(text);
         if (m) { hit = { name, start: m.index + m[1].length }; break; }
       }

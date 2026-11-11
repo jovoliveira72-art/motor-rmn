@@ -233,11 +233,11 @@
       },
       {
         "type": "question",
-        "text": "O dupleto em 0,9 ppm (6H) e o multiplete em 1,8 ppm (1H) formam um grupo característico. Que fragmento temos?",
+        "text": "O dupleto em 0,9 ppm (6H) e o multipleto em 1,8 ppm (1H) formam um grupo característico. Que fragmento temos?",
         "options": [
-          { "text": "Isopropil, ou seja, um grupo –CH(CH₃)₂ da cadeia isobutila", "correct": true, "feedback": "6H em dupleto + 1H em multiplete = isopropil. Combinado com o CH₂ em 2,5, completa a isobutila: –CH₂–CH(CH₃)₂." },
+          { "text": "Isopropil, ou seja, um grupo –CH(CH₃)₂ da cadeia isobutila", "correct": true, "feedback": "6H em dupleto + 1H em multipleto = isopropil. Combinado com o CH₂ em 2,5, completa a isobutila: –CH₂–CH(CH₃)₂." },
           { "text": "Três CH₃ equivalentes num carbono terciário", "correct": false, "feedback": "Três CH₃ equivalentes dariam 9H simpleto, como em t-butila." },
-          { "text": "Uma cadeia etila comum", "correct": false, "feedback": "Etila dá tripleto + quarteto com razão 3:2, não dupleto + multiplete 6:1." }
+          { "text": "Uma cadeia etila comum", "correct": false, "feedback": "Etila dá tripleto + quarteto com razão 3:2, não dupleto + multipleto 6:1." }
         ],
         "highlight": ["sig4", "sig5"]
       },

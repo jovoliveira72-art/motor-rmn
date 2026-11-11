@@ -12,7 +12,7 @@
   { "id": "multiplicidade", "termo": "multiplicidade", "def": "número de picos de um sinal (simpleto, dupleto, tripleto…); dada por n+1." },
   { "id": "j", "termo": "constante de acoplamento", "aliases": ["J"], "def": "distância entre picos de um multipleto, em Hz; não depende do campo." },
   { "id": "karplus", "termo": "Karplus", "def": "relação entre ângulo diedro e J vicinal: máximos em 0°/180°, mínimo perto de 90°." },
-  { "id": "integracao", "termo": "integração", "def": "área do pico; proporcional ao número de H." },
+  { "id": "integracao", "termo": "integração", "def": "área do sinal; proporcional ao número de H." },
   { "id": "trocaveis", "termo": "prótons trocáveis", "def": "O–H e N–H; trocam com D₂O e somem do espectro." },
   { "id": "d2o", "termo": "D₂O", "def": "água pesada; troca com O–H/N–H e apaga esses sinais." },
   { "id": "fid", "termo": "FID", "def": "free induction decay; o sinal cru no domínio do tempo, que decai após o pulso." },
