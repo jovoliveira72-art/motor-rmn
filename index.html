@@ -1358,7 +1358,7 @@ function buildDeptDiagram() {
 }
 
 const SHIELD_CASES = [
-  { id: 's1', mol: 'CH₃–CH₃', delta: 0.23, note: '<b>CH₃–CH:</b> sem vizinho eletronegativo — o mais blindado (δ 0,23).' },
+  { id: 's1', mol: 'CH₃–CH₃', delta: 0.86, note: '<b>CH₃–CH₃:</b> sem vizinho eletronegativo — o mais blindado (δ ~0,9).' },
   { id: 's2', mol: 'CH₃–OH', delta: 3.4, note: '<b>CH₃–OH:</b> o oxigênio puxa densidade eletrônica — δ 3,4.' },
   { id: 's3', mol: 'CH₃–F', delta: 4.3, note: '<b>CH₃–F:</b> flúor, o mais eletronegativo — δ 4,3.' },
   { id: 's4', mol: 'CH₂=CH₂', delta: 5.3, note: '<b>CH₂=CH₂:</b> H em carbono sp² — desblindado pela anisotropia do π (~5,3).' },
@@ -1370,7 +1370,7 @@ window.showShield = function(id) {
   if (!c) return;
   document.querySelectorAll('.shield-btn').forEach(b => b.classList.toggle('active', b.dataset.case === id));
   const marker = document.getElementById('shield-marker');
-  if (marker) marker.style.left = (c.delta / 5 * 100) + '%';
+  if (marker) marker.style.left = (c.delta / 6 * 100) + '%'; // escala 0–6 ppm: o maior caso (5,3) fica dentro da trilha
   const note = document.getElementById('shield-note');
   if (note) note.innerHTML = c.note;
 };
@@ -1381,7 +1381,7 @@ function buildShieldDiagram() {
       ${SHIELD_CASES.map(c => `<button class="shield-btn split-btn" style="width:auto;padding:0 14px;" data-case="${c.id}" onclick="showShield('${c.id}')">${c.mol}</button>`).join('')}
     </div>
     <div class="shield-track">
-      <div class="shield-marker" id="shield-marker" style="left:4.6%"></div>
+      <div class="shield-marker" id="shield-marker" style="left:14.3%"></div>
       <span class="shield-end l">blindado</span>
       <span class="shield-end r">desblindado</span>
     </div>
