@@ -52,7 +52,7 @@
   },
   {
     "level": 103, "tier": "facil", "title": "Propilenoglicol",
-    "context": "Excipiente cosmético e farmacêutico comum. Observe o doublet do grupo metila e o efeito do próton hidroxílico.",
+    "context": "Excipiente cosmético e farmacêutico comum. Observe o dupleto do grupo metila e o efeito do próton hidroxílico.",
     "maxPpm": 5, "smiles": "CC(O)CO",
     "chain": [
       { "label": "CH₃", "tagId": "tag1", "correctTarget": "sig1", "atomIndices": [0] },
@@ -277,7 +277,7 @@
   },
   {
     "level": 303, "tier": "dificil", "title": "Ibuprofeno",
-    "context": "AINE clássico. O padrão do grupo isobutila (doublet 6H + multiplet 1H) é a chave para a elucidação, junto com o padrão para-substituído do anel.",
+    "context": "AINE clássico. O padrão do grupo isobutila (dupleto 6H + multipleto 1H) é a chave para a elucidação, junto com o padrão para-substituído do anel.",
     "maxPpm": 12.5, "smiles": "CC(C)Cc1ccc(cc1)C(C)C(=O)O",
     "chain": [
       { "label": "COOH", "tagId": "tag1", "correctTarget": "sig1", "atomIndices": [12] },
