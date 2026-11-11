@@ -152,6 +152,23 @@ if (glossary) {
   if (problemas === antes) ok('glossary.json: entradas ok');
 }
 
+// glossário: ids únicos; nenhum nome (termo/alias) repetido entre verbetes; defs curtas p/ caber no tooltip
+if (glossary) {
+  const antesGl = problemas;
+  const ids = new Set(), nomes = new Map();
+  glossary.forEach(g => {
+    if (ids.has(g.id)) falha(`glossary: id duplicado "${g.id}"`);
+    ids.add(g.id);
+    [g.termo, ...(g.aliases || [])].forEach(n => {
+      const k = n.toLowerCase();
+      if (nomes.has(k) && nomes.get(k) !== g.id) falha(`glossary: "${n}" aparece em "${nomes.get(k)}" e "${g.id}" (ambíguo)`);
+      nomes.set(k, g.id);
+    });
+    if ((g.def || '').length > 220) falha(`glossary: definição de "${g.id}" com ${g.def.length} caracteres (máx. 220, o tooltip é pequeno)`);
+  });
+  if (problemas === antesGl) ok(`glossary: ${glossary.length} verbetes sem ids ou nomes duplicados, definições curtas`);
+}
+
 // ponto decimal em texto livre (padrão: vírgula)
 let antes = problemas;
 for (const [nome, d] of Object.entries({ blocks, mapping, solo, guided, glossary })) {
@@ -194,7 +211,9 @@ const PROIBIDOS = [
   [/\b(singlets?|doublets?|triplets?|quartets?|multiplets?)\b/i, 'termo em inglês — use simpleto/dupleto/tripleto/quarteto/multipleto'],
   [/\bmultiplete/i, 'use "multipleto"'],
   [/\bcolad[oa]s?\b/i, 'use "ligado"'],
-  [/\b[2-9] (simpleto|dupleto|tripleto|quarteto)\b/i, 'faltou o plural (ex.: "2 simpletos")']
+  [/\b[2-9] (simpleto|dupleto|tripleto|quarteto)\b/i, 'faltou o plural (ex.: "2 simpletos")'],
+  [/\bdecopl/i, 'use "desacoplamento/desacoplado"'],
+  [/\bdesblindamento\b/i, 'use "desblindagem"']
 ];
 antes = problemas;
 for (const [nome, d] of Object.entries({ blocks, mapping, solo, guided, glossary, tutorial })) {

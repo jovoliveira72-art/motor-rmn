@@ -1366,7 +1366,7 @@ window.setDept = function(mode) {
   });
   const note = document.getElementById('dept-note');
   if (note) note.innerHTML = {
-    'bb': '<b>¹³C normal (decoplado):</b> todo carbono aparece, todo como simpleto.',
+    'bb': '<b>¹³C normal (desacoplado):</b> todo carbono aparece, todo como simpleto.',
     '45': '<b>DEPT-45:</b> CH₃, CH₂ e CH aparecem para cima; quaternário some. Útil para confirmar CH totais.',
     '90': '<b>DEPT-90:</b> só CH aparece.',
     '135': '<b>DEPT-135:</b> CH₃ e CH para cima, CH₂ para baixo, quaternário some.'
@@ -1387,7 +1387,7 @@ function buildDeptDiagram() {
       <div class="dept-col"><div class="dept-bar up" id="dept-ch"></div><span>CH</span></div>
       <div class="dept-col"><div class="dept-bar up" id="dept-q"></div><span>Cq</span></div>
     </div>
-    <div class="ppm-info" id="dept-note"><b>¹³C normal (decoplado):</b> todo carbono aparece, todo como simpleto.</div>`;
+    <div class="ppm-info" id="dept-note"><b>¹³C normal (desacoplado):</b> todo carbono aparece, todo como simpleto.</div>`;
 }
 
 const SHIELD_CASES = [
@@ -1488,13 +1488,13 @@ function buildIntegrationDiagram() {
     <div class="ppm-info" id="integ-note"></div>`;
 }
 
-/* ========== DECOPLAMENTO (nível 9) ========== */
+/* ========== DESACOPLAMENTO (nível 9) ========== */
 window.setDecouple = function(on) {
   document.querySelectorAll('.dec-btn').forEach(b => b.classList.toggle('active', b.dataset.on === String(on)));
   const note = document.getElementById('dec-note');
   if (note) note.innerHTML = on
-    ? '<b>Decoplado (padrão):</b> todo carbono vira simpleto; CH₃ e CH₂ ainda ganham NOE. Leitura limpa.'
-    : '<b>Com acoplamento ¹H:</b> CH₃ vira quarteto, CH₂ vira tripleto, C=O fica simpleto. Informação rica, espectro ilegível — por isso decoplamos.';
+    ? '<b>Desacoplado (padrão):</b> todo carbono vira simpleto; CH₃ e CH₂ ainda ganham NOE. Leitura limpa.'
+    : '<b>Com acoplamento ¹H:</b> CH₃ vira quarteto, CH₂ vira tripleto, C=O fica simpleto. Informação rica, espectro ilegível — por isso desacoplamos.';
   const svg = document.getElementById('dec-svg');
   if (!svg) return;
   const W = 400, base = 100;
@@ -1523,7 +1523,7 @@ function buildDecoupleDiagram() {
   return `
     <div class="split-controls">
       <button class="dec-btn split-btn" style="width:auto;padding:0 14px;" data-on="false" onclick="setDecouple(false)">com acoplamento ¹H</button>
-      <button class="dec-btn split-btn active" style="width:auto;padding:0 14px;" data-on="true" onclick="setDecouple(true)">decoplado (padrão)</button>
+      <button class="dec-btn split-btn active" style="width:auto;padding:0 14px;" data-on="true" onclick="setDecouple(true)">desacoplado (padrão)</button>
     </div>
     <svg id="dec-svg" viewBox="0 0 400 120" style="width:100%;height:120px;display:block;"></svg>
     <div class="ppm-info" id="dec-note"></div>`;
@@ -2561,30 +2561,36 @@ function applyGlossary(root) {
     // não linka dentro de elementos clicáveis (botões, <summary>, cards com onclick) nem de títulos:
     // o clique no termo abriria o tooltip em vez de navegar, e o índice recolhido "gastava" o link de cada termo
     if (!parentEl || parentEl.closest('option, select, textarea, script, style, button, summary, [onclick], .section-title, .gloss-term, .gloss-tip')) continue;
-    for (const { g, res } of glossMatchers()) {
-      if (linked.has(g.id)) continue;
-      let hit = null;
-      for (const { name, re } of res) {
-        const m = re.exec(text);
-        if (m) { hit = { name, start: m.index + m[1].length }; break; }
+    // varre o trecho: a cada passo liga a ocorrência mais cedo (empate: o nome mais longo) entre os
+    // verbetes ainda não ligados nesta tela, e segue procurando no resto do texto
+    const frag = document.createDocumentFragment();
+    let resto = text, mudou = false;
+    for (;;) {
+      let melhor = null;
+      for (const { g, res } of glossMatchers()) {
+        if (linked.has(g.id)) continue;
+        for (const { name, re } of res) {
+          const m = re.exec(resto);
+          if (!m) continue;
+          const start = m.index + m[1].length;
+          if (!melhor || start < melhor.start || (start === melhor.start && name.length > melhor.name.length)) melhor = { g, name, start };
+        }
       }
-      if (!hit) continue;
-      linked.add(g.id);
-      const before = text.slice(0, hit.start);
-      const term = text.slice(hit.start, hit.start + hit.name.length);
-      const after = text.slice(hit.start + hit.name.length);
+      if (!melhor) break;
+      linked.add(melhor.g.id);
+      mudou = true;
+      if (melhor.start > 0) frag.appendChild(document.createTextNode(resto.slice(0, melhor.start)));
       const span = document.createElement('span');
       span.className = 'gloss-term';
-      span.dataset.gloss = g.id;
+      span.dataset.gloss = melhor.g.id;
       span.tabIndex = 0;
-      span.textContent = term;
-      const frag = document.createDocumentFragment();
-      if (before) frag.appendChild(document.createTextNode(before));
+      span.textContent = resto.slice(melhor.start, melhor.start + melhor.name.length);
       frag.appendChild(span);
-      if (after) frag.appendChild(document.createTextNode(after));
-      node.parentNode.replaceChild(frag, node);
-      break;
+      resto = resto.slice(melhor.start + melhor.name.length);
     }
+    if (!mudou) continue;
+    if (resto) frag.appendChild(document.createTextNode(resto));
+    node.parentNode.replaceChild(frag, node);
   }
 }
 
