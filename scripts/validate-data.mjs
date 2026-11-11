@@ -181,12 +181,13 @@ for (const [nome, d] of Object.entries({ blocks, mapping, solo, guided, glossary
 }
 if (problemas === antes) ok('terminologia padronizada');
 
-// assets referenciados no index.html existem
+// assets e scripts locais referenciados no index.html existem
 {
   antes = problemas;
   const raiz = join(dataDir, '..');
   const html = readFileSync(join(raiz, 'index.html'), 'utf8');
   const refs = new Set([...html.matchAll(/['"`](assets\/[^'"`$]+\.(?:png|webp|jpg|jpeg|svg|gif))['"`]/g)].map(m => m[1]));
+  [...html.matchAll(/<script src="(?!https?:)([^"]+)"/g)].forEach(m => refs.add(m[1]));
   refs.forEach(r => { if (!existsSync(join(raiz, r))) falha(`index.html referencia ${r}, que não existe`); });
   if (problemas === antes) ok(`assets: ${refs.size} arquivos referenciados, todos existem`);
 }
