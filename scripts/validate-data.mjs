@@ -136,5 +136,50 @@ for (const [nome, d] of Object.entries({ blocks, mapping, solo, guided, glossary
 }
 if (problemas === antes) ok('sem decimais com ponto em textos');
 
+// mapping: cada tag aponta para um sinal que existe, sem dois tags no mesmo sinal (gabarito resolvível)
+if (mapping) {
+  antes = problemas;
+  mapping.forEach(q => {
+    for (const [cadeia, sinais] of [['chain', 'signals'], ['chain13C', 'signals13C']]) {
+      if (!q[cadeia]) continue;
+      const ids = new Set((q[sinais] || []).map(s => s.id));
+      const alvos = [];
+      const varrer = it => (it || []).forEach(x => {
+        if (x.tagId) {
+          alvos.push(x.correctTarget);
+          if (!ids.has(x.correctTarget)) falha(`mapping ${q.level} (${cadeia}): ${x.tagId} aponta para "${x.correctTarget}", que não existe em ${sinais}`);
+          (x.altTargets || []).forEach(a => { if (!ids.has(a)) falha(`mapping ${q.level} (${cadeia}): altTargets de ${x.tagId} aponta para "${a}", que não existe em ${sinais}`); });
+        }
+        varrer(x.branches);
+      });
+      varrer(q[cadeia]);
+      const dup = alvos.filter((a, i) => alvos.indexOf(a) !== i);
+      if (dup.length) falha(`mapping ${q.level} (${cadeia}): mais de um tag no mesmo sinal (${[...new Set(dup)].join(', ')})`);
+      const sobra = [...ids].filter(i => !alvos.includes(i));
+      if (sobra.length) falha(`mapping ${q.level} (${cadeia}): sinais sem dono (${sobra.join(', ')})`);
+    }
+  });
+  if (problemas === antes) ok('mapping.json: cada tag tem um sinal próprio e todo sinal tem dono');
+}
+
+// terminologia padronizada (PT-BR): simpleto/dupleto/tripleto/multipleto, "sinal" ≠ "pico", sem "colado"
+const PROIBIDOS = [
+  [/\b(singlets?|doublets?|triplets?|quartets?|multiplets?)\b/i, 'termo em inglês — use simpleto/dupleto/tripleto/quarteto/multipleto'],
+  [/\bmultiplete/i, 'use "multipleto"'],
+  [/\bcolad[oa]s?\b/i, 'use "ligado"'],
+  [/\b[2-9] (simpleto|dupleto|tripleto|quarteto)\b/i, 'faltou o plural (ex.: "2 simpletos")']
+];
+antes = problemas;
+for (const [nome, d] of Object.entries({ blocks, mapping, solo, guided, glossary, tutorial })) {
+  if (!d) continue;
+  varrerStrings(d, (s, caminho) => {
+    for (const [re, msg] of PROIBIDOS) {
+      const m = s.match(re);
+      if (m) falha(`${nome}${caminho}: "${m[0]}" — ${msg}`);
+    }
+  });
+}
+if (problemas === antes) ok('terminologia padronizada');
+
 console.log(problemas ? `\n${problemas} problema(s).` : '\nTudo certo.');
 process.exit(problemas ? 1 : 0);
