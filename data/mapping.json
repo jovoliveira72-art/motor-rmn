@@ -148,7 +148,7 @@
   },
   {
     "level": 203, "tier": "medio", "title": "Cafeína",
-    "context": "Estimulante do SNC. Os três N–CH₃ e o único H aromático (H-8) são simpletos, sem acoplamento. Dica (HMBC, 3 ligações): N7–CH₃ correlaciona com C5 e C8; N3–CH₃ com C2 e C4; N1–CH₃ com C2 e C6.",
+    "context": "Estimulante do SNC. Os três N–CH₃ e o único H aromático (H-8) são simpletos, sem acoplamento. Dica (HMBC, 3 ligações): N7–CH₃ correlaciona com C5 e C8; N3–CH₃ com C2 e C4; N1–CH₃ com C2 e C6. No ¹³C, as fontes divergem em dois pares — N1–CH₃/N3–CH₃ (27,9 e 29,7) e C2/C4 (151,7 e 148,7) —, então qualquer ordem dentro de cada par vale.",
     "maxPpm": 8.5, "smiles": "Cn1cnc2c1c(=O)n(C)c(=O)n2C",
     "chain": [
       { "label": "N7–CH₃", "tagId": "tag1", "correctTarget": "sig3", "atomIndices": [0] },
@@ -164,12 +164,12 @@
     ],
     "chain13C": [
       { "label": "N7–CH₃", "tagId": "ctag1", "correctTarget": "csigN7", "atomIndices": [0] },
-      { "label": "N1–CH₃", "tagId": "ctag2", "correctTarget": "csigN1", "atomIndices": [9] },
-      { "label": "N3–CH₃", "tagId": "ctag3", "correctTarget": "csigN3", "atomIndices": [13] },
-      { "label": "C2 (C=O)", "tagId": "ctag4", "correctTarget": "csigC2", "atomIndices": [10] },
+      { "label": "N1–CH₃", "tagId": "ctag2", "correctTarget": "csigN1", "altTargets": ["csigN3"], "atomIndices": [9] },
+      { "label": "N3–CH₃", "tagId": "ctag3", "correctTarget": "csigN3", "altTargets": ["csigN1"], "atomIndices": [13] },
+      { "label": "C2 (C=O)", "tagId": "ctag4", "correctTarget": "csigC2", "altTargets": ["csigC4"], "atomIndices": [10] },
       { "label": "C6 (C=O)", "tagId": "ctag5", "correctTarget": "csigC6", "atomIndices": [6] },
-      { "label": "C (fusão)", "tagId": "ctag6", "correctTarget": "csigC4", "atomIndices": [4] },
-      { "label": "C (fusão)", "tagId": "ctag7", "correctTarget": "csigC5", "atomIndices": [5] },
+      { "label": "C4 (fusão)", "tagId": "ctag6", "correctTarget": "csigC4", "altTargets": ["csigC2"], "atomIndices": [4] },
+      { "label": "C5 (fusão)", "tagId": "ctag7", "correctTarget": "csigC5", "atomIndices": [5] },
       { "label": "C-H (Ar)", "tagId": "ctag8", "correctTarget": "csigC8", "atomIndices": [2] }
     ],
     "signals13C": [
