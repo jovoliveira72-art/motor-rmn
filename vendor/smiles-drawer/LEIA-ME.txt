@@ -1,0 +1,4 @@
+smiles-drawer 2.1.7 (MIT) - copia local de dist/smiles-drawer.min.js do pacote npm.
+Origem: https://www.npmjs.com/package/smiles-drawer/v/2.1.7  (sourceMappingURL removido da ultima linha).
+SHA-384: 310b60c9c9795d45a76da778860b9284a2aa5f6a5234a8a49b4e252a7648de11676542bc4539a0de7ba658cd9a76bf51
+Para atualizar: baixe a nova versao, substitua o arquivo e confira a renderizacao das moleculas.
