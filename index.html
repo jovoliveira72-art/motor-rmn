@@ -981,20 +981,33 @@ function isDarkTheme() {
   return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
 }
 
+// data/molecules.json guarda cada SMILES uma única vez; os demais arquivos citam "mol": "<id>".
+// Aqui o id vira o campo "smiles" que o resto do app já usa.
+function hidratarMoleculas(v) {
+  if (Array.isArray(v)) { v.forEach(hidratarMoleculas); return; }
+  if (!v || typeof v !== 'object') return;
+  if (typeof v.mol === 'string') {
+    const m = db.molecules && db.molecules[v.mol];
+    if (m) v.smiles = m.smiles; else console.error('Molécula desconhecida em molecules.json:', v.mol);
+  }
+  Object.values(v).forEach(hidratarMoleculas);
+}
+
 async function carregarDados() {
   try {
-    const arquivos = ['tutorial', 'mapping', 'solo'];
+    const arquivos = ['tutorial', 'mapping', 'solo', 'molecules'];
     const respostas = await Promise.all(arquivos.map(n => fetch(`data/${n}.json`)));
     for (const r of respostas) if (!r.ok) throw new Error(`Falha: ${r.url}`);
     const dados = await Promise.all(respostas.map(r => r.json()));
-    db.tutorial = dados[0]; db.mapping = dados[1]; db.solo = dados[2];
+    db.tutorial = dados[0]; db.mapping = dados[1]; db.solo = dados[2]; db.molecules = dados[3];
+    hidratarMoleculas(db.mapping); hidratarMoleculas(db.solo);
     try {
       const g = await fetch('data/guided.json');
-      if (g.ok) db.guided = await g.json();
+      if (g.ok) { db.guided = await g.json(); hidratarMoleculas(db.guided); }
     } catch (e) { db.guided = []; }
     try {
       const b = await fetch('data/blocks.json');
-      if (b.ok) db.blocks = await b.json();
+      if (b.ok) { db.blocks = await b.json(); hidratarMoleculas(db.blocks); }
     } catch (e) { db.blocks = null; }
     try {
       const gl = await fetch('data/glossary.json');
