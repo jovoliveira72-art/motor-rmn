@@ -26,6 +26,33 @@ const mapping = ler('mapping.json');
 const solo = ler('solo.json');
 const guided = ler('guided.json');
 const glossary = ler('glossary.json');
+const molecules = ler('molecules.json');
+
+// molecules.json: SMILES únicos; os demais arquivos citam "mol" (id) e o validador o expande em "smiles"
+if (molecules) {
+  const vistos = new Map();
+  for (const [id, m] of Object.entries(molecules)) {
+    if (!m.nome || !m.smiles) falha(`molecules.json: "${id}" sem nome ou smiles`);
+    if (vistos.has(m.smiles)) falha(`molecules.json: "${id}" repete o SMILES de "${vistos.get(m.smiles)}" (átomos indexados mudam com a grafia; só duplique de propósito)`);
+    vistos.set(m.smiles, id);
+  }
+  const usados = new Set();
+  const hidratar = (v, nome, caminho = '') => {
+    if (Array.isArray(v)) v.forEach((x, i) => hidratar(x, nome, `${caminho}[${i}]`));
+    else if (v && typeof v === 'object') {
+      if ('smiles' in v) falha(`${nome}${caminho}: "smiles" inline — use "mol" com um id de molecules.json`);
+      if (typeof v.mol === 'string') {
+        if (molecules[v.mol]) { v.smiles = molecules[v.mol].smiles; usados.add(v.mol); }
+        else falha(`${nome}${caminho}: molécula "${v.mol}" não existe em molecules.json`);
+      }
+      Object.entries(v).forEach(([k, x]) => hidratar(x, nome, `${caminho}.${k}`));
+    }
+  };
+  for (const [nome, d] of Object.entries({ blocks, mapping, solo, guided })) if (d) hidratar(d, nome);
+  const orfas = Object.keys(molecules).filter(i => !usados.has(i));
+  if (orfas.length) falha(`molecules.json: ids sem uso (${orfas.join(', ')})`);
+  ok(`molecules.json: ${vistos.size} moléculas únicas, todas usadas, sem SMILES inline nos demais arquivos`);
+}
 
 // kinds de diagrama que o index.html sabe desenhar
 const KINDS = ['ppm-axis', 'splitting-tree', 'c13-axis', 'd2o', 'dept', 'shield', 'energy', 'integration', 'decouple', 'ft'];

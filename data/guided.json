@@ -4,7 +4,7 @@
     "title": "Etanol",
     "subtitle": "Três ambientes, três sinais — o exemplo mais simples para começar.",
     "formula": "C₂H₆O",
-    "smiles": "CCO",
+    "mol": "etanol",
     "maxPpm": 5,
     "signals": [
       { "id": "sig1", "ppm": 1.2, "mult": "t", "int": 3, "J": 7, "height": 20 },
@@ -64,7 +64,7 @@
     "title": "Acetato de etila",
     "subtitle": "Um éster comum — três fragmentos bem separados.",
     "formula": "C₄H₈O₂",
-    "smiles": "CC(=O)OCC",
+    "mol": "acetato-etila",
     "maxPpm": 5,
     "signals": [
       { "id": "sig1", "ppm": 2.0, "mult": "s", "int": 3, "height": 20 },
@@ -124,7 +124,7 @@
     "title": "Paracetamol",
     "subtitle": "Anel para-substituído + amida + fenol — 5 sinais, 9 H.",
     "formula": "C₈H₉NO₂",
-    "smiles": "CC(=O)Nc1ccc(O)cc1",
+    "mol": "paracetamol",
     "maxPpm": 12,
     "signals": [
       { "id": "sig1", "ppm": 2.1, "mult": "s", "int": 3, "height": 20 },
@@ -187,7 +187,7 @@
     "title": "Ibuprofeno",
     "subtitle": "8 sinais, 18 H — o caso mais complexo da coleção.",
     "formula": "C₁₃H₁₈O₂",
-    "smiles": "CC(C)Cc1ccc(C(C)C(=O)O)cc1",
+    "mol": "ibuprofeno-guiado",
     "maxPpm": 12,
     "signals": [
       { "id": "sig1", "ppm": 1.5, "mult": "d", "int": 3, "J": 7, "height": 20 },

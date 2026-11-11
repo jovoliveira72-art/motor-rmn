@@ -2,7 +2,7 @@
   {
     "level": 101, "tier": "facil", "title": "Etanol",
     "context": "Espectro de ¹H RMN em CDCl₃. Observe a troca rápida do próton hidroxílico.",
-    "maxPpm": 6, "smiles": "CCO",
+    "maxPpm": 6, "mol": "etanol",
     "chain": [
       { "label": "CH₃", "tagId": "tag1", "correctTarget": "sig1", "atomIndices": [0] },
       { "label": "CH₂", "tagId": "tag2", "correctTarget": "sig2", "atomIndices": [1] },
@@ -26,7 +26,7 @@
   {
     "level": 102, "tier": "facil", "title": "1-Bromopropano",
     "context": "Haleto de alquila. Note o forte efeito desblindante do bromo.",
-    "maxPpm": 5, "smiles": "CCCBr",
+    "maxPpm": 5, "mol": "1-bromopropano",
     "chain": [
       { "label": "CH₃", "tagId": "tag1", "correctTarget": "sig1", "atomIndices": [0] },
       { "label": "CH₂", "tagId": "tag2", "correctTarget": "sig2", "atomIndices": [1] },
@@ -53,7 +53,7 @@
   {
     "level": 103, "tier": "facil", "title": "Propilenoglicol",
     "context": "Excipiente cosmético e farmacêutico comum. Observe o dupleto do grupo metila e o efeito do próton hidroxílico.",
-    "maxPpm": 5, "smiles": "CC(O)CO",
+    "maxPpm": 5, "mol": "propano-1,2-diol",
     "chain": [
       { "label": "CH₃", "tagId": "tag1", "correctTarget": "sig1", "atomIndices": [0] },
       { "label": "CH", "tagId": "tag2", "correctTarget": "sig2", "atomIndices": [1] },
@@ -81,7 +81,7 @@
   {
     "level": 201, "tier": "medio", "title": "Acetato de Etila",
     "context": "Éster comum. Compare o deslocamento do CH₃ ligado ao C=O com o CH₂ ligado ao O.",
-    "maxPpm": 5, "smiles": "CC(=O)OCC",
+    "maxPpm": 5, "mol": "acetato-etila",
     "chain": [
       { "label": "CH₃", "tagId": "tag1", "correctTarget": "sig1", "atomIndices": [0] },
       { "label": "C=O", "fixed": true },
@@ -111,7 +111,7 @@
   {
     "level": 202, "tier": "medio", "title": "Acetofenona",
     "context": "Cetona aromática. Anel monossubstituído: 2H orto (d), 2H meta (t), 1H para (t).",
-    "maxPpm": 8.5, "smiles": "CC(=O)c1ccccc1",
+    "maxPpm": 8.5, "mol": "acetofenona",
     "chain": [
       { "label": "CH₃", "tagId": "tag1", "correctTarget": "sig1", "atomIndices": [0] },
       { "label": "C=O", "fixed": true },
@@ -149,7 +149,7 @@
   {
     "level": 203, "tier": "medio", "title": "Cafeína",
     "context": "Estimulante do SNC. Os três N–CH₃ e o único H aromático (H-8) são simpletos, sem acoplamento. Dica (HMBC, 3 ligações): N7–CH₃ correlaciona com C5 e C8; N3–CH₃ com C2 e C4; N1–CH₃ com C2 e C6. No ¹³C, as fontes divergem em dois pares — N1–CH₃/N3–CH₃ (27,9 e 29,7) e C2/C4 (151,7 e 148,7) —, então qualquer ordem dentro de cada par vale.",
-    "maxPpm": 8.5, "smiles": "Cn1cnc2c1c(=O)n(C)c(=O)n2C",
+    "maxPpm": 8.5, "mol": "cafeina",
     "chain": [
       { "label": "N7–CH₃", "tagId": "tag1", "correctTarget": "sig3", "atomIndices": [0] },
       { "label": "N1–CH₃", "tagId": "tag2", "correctTarget": "sig1", "atomIndices": [9] },
@@ -186,7 +186,7 @@
   {
     "level": 301, "tier": "dificil", "title": "Paracetamol",
     "context": "Fármaco analgésico. Espectro em DMSO-d₆, onde OH e NH aparecem separados em ~9–10 ppm. Substituição para no anel aromático gera dois dupletos característicos; OH e NH são simpletos largos.",
-    "maxPpm": 10.5, "smiles": "CC(=O)Nc1ccc(O)cc1",
+    "maxPpm": 10.5, "mol": "paracetamol",
     "chain": [
       { "label": "HO", "tagId": "tag1", "correctTarget": "sig1", "atomIndices": [8] },
       { "label": "Anel", "fixed": true, "branches": [
@@ -228,7 +228,7 @@
   {
     "level": 302, "tier": "dificil", "title": "Ácido Acetilsalicílico",
     "context": "Substituição orto no anel aromático quebra a simetria, gerando 4 sinais aromáticos distintos (dd, t, t, dd). Os C=O do COOH e da acetila (~170) são quase coincidentes: aqui, qualquer ordem entre eles vale.",
-    "maxPpm": 11.5, "smiles": "CC(=O)Oc1ccccc1C(=O)O",
+    "maxPpm": 11.5, "mol": "aas",
     "chain": [
       { "label": "COOH", "tagId": "tag1", "correctTarget": "sig1", "atomIndices": [12] },
       { "label": "Anel", "fixed": true, "branches": [
@@ -278,7 +278,7 @@
   {
     "level": 303, "tier": "dificil", "title": "Ibuprofeno",
     "context": "AINE clássico. O padrão do grupo isobutila (dupleto 6H + multipleto 1H) é a chave para a elucidação, junto com o padrão para-substituído do anel.",
-    "maxPpm": 12.5, "smiles": "CC(C)Cc1ccc(cc1)C(C)C(=O)O",
+    "maxPpm": 12.5, "mol": "ibuprofeno",
     "chain": [
       { "label": "COOH", "tagId": "tag1", "correctTarget": "sig1", "atomIndices": [12] },
       { "label": "CH", "tagId": "tag2", "correctTarget": "sig2", "atomIndices": [10], "branches": [
